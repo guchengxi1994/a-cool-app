@@ -41,6 +41,8 @@ dependencies:
   fluttertoast: ^8.0.8
   dio: ^4.0.4
   extended_image: ^6.0.1
+  flutter_markdown: ^0.6.9
+  url_launcher: ^6.0.18
 
 dev_dependencies:
   flutter_test:
@@ -51,7 +53,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
+  flutter_lints: ^1.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -69,6 +71,7 @@ flutter:
     - assets/i18n/
     - assets/icons/
     - assets/images/
+    - assets/reserved_md_files/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

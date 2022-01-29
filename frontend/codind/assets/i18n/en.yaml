@@ -5,6 +5,10 @@ label:
   main: "Hello {user}!"
   localization: "Localization"
   personalCenter: "Personal Center"
+  loadingStr: "loading ..."
+  errorMdStr: "## ERROR"
+  cannotLaunch: "Cannot launch"
+  clickToLaunch: "Click To Launch"
 
 # Objects can be many levels deep
 button:

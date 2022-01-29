@@ -4,6 +4,10 @@ label:
   main: "你好，{ user }!"
   localization: "本地化"
   personalCenter: "个人中心"
+  loadingStr: "加载中..."
+  errorMdStr: "## 异常"
+  cannotLaunch: "无法打开链接"
+  clickToLaunch: "点此打开"
 
 button:
   label:
