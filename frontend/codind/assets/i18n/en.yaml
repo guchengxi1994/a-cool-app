@@ -1,0 +1,16 @@
+title: "flutter-admin-template for zxx-h5"
+
+# With yaml, you can also comment your translations
+label:
+  main: "Hello {user}!"
+  localization: "Localization"
+  personalCenter: "Personal Center"
+
+# Objects can be many levels deep
+button:
+  label:
+    submit: "Submit"
+    search: "Search"
+    language: "Change language"
+    delete: "Delete"
+    update: "Update"

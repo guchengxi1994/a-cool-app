@@ -1,0 +1,14 @@
+title: "flutter-admin-template for zxx-h5"
+
+label:
+  main: "你好，{ user }!"
+  localization: "本地化"
+  personalCenter: "个人中心"
+
+button:
+  label:
+    submit: "提交"
+    search: "搜索"
+    language: "修改语言"
+    delete: "删除"
+    update: "修改"
