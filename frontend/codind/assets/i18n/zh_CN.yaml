@@ -8,6 +8,7 @@ label:
   errorMdStr: "## 异常"
   cannotLaunch: "无法打开链接"
   clickToLaunch: "点此打开"
+  pickAColor: "选择颜色"
 
 button:
   label:
@@ -16,3 +17,5 @@ button:
     language: "修改语言"
     delete: "删除"
     update: "修改"
+    ok: "确定"
+    quit: "取消"

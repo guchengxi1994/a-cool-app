@@ -1,8 +1,11 @@
+import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'pages/pages.dart';
+import 'providers/my_providers.dart';
+import 'package:provider/provider.dart';
 
 Future main() async {
   final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
@@ -13,8 +16,16 @@ Future main() async {
         forcedLocale: const Locale('zh_CN')),
   );
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp(
-    flutterI18nDelegate: flutterI18nDelegate,
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => ThemeController()),
+      ChangeNotifierProvider(
+        create: (context) => MenuController(),
+      )
+    ],
+    child: MyApp(
+      flutterI18nDelegate: flutterI18nDelegate,
+    ),
   ));
 }
 
@@ -25,6 +36,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: Routers.routers,
+      theme: context.watch<ThemeController>().themeData,
       debugShowCheckedModeBanner: false,
       builder: FlutterI18n.rootAppBuilder(),
       home: const MainPage(),

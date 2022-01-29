@@ -9,6 +9,7 @@ label:
   errorMdStr: "## ERROR"
   cannotLaunch: "Cannot launch"
   clickToLaunch: "Click To Launch"
+  pickAColor: "Pick a color"
 
 # Objects can be many levels deep
 button:
@@ -18,3 +19,5 @@ button:
     language: "Change language"
     delete: "Delete"
     update: "Update"
+    ok: "OK"
+    quit: "Quit"

@@ -4,9 +4,14 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 class LanguageController extends ChangeNotifier {
   BuildContext _context;
   LanguageController(this._context);
+
+  String _currentlang = "zh_CN";
+  String get currentLang => _currentlang;
+
   getContext() => _context;
   setContext(BuildContext context) => _context = context;
   changeLanguage(String lang) async {
+    _currentlang = lang;
     await FlutterI18n.refresh(_context, Locale(lang));
     notifyListeners();
   }

@@ -45,15 +45,17 @@ class BasePageState<T extends BasePage> extends State<T> {
                     buildPopupMenuItem("中文"),
                     buildPopupMenuItem("English"),
                   ]),
-          PopupMenuButton<String>(
+          IconButton(
               tooltip: FlutterI18n.translate(context, "label.personalCenter"),
+              onPressed: () {
+                Navigator.pushNamed(context, Routers.pageSetting);
+              },
               icon: Container(
                 color: Colors.white,
                 height: 20,
                 width: 20,
                 child: Image.asset("assets/icons/self_male.png"),
-              ),
-              itemBuilder: (context) => <PopupMenuItem<String>>[]),
+              ))
         ],
       ),
     );
@@ -64,8 +66,10 @@ class BasePageState<T extends BasePage> extends State<T> {
       child: Text(key),
       onTap: () async {
         String lang = reservedOptions[key]!;
-        await context.read<LanguageController>().changeLanguage(lang);
-        setState(() {});
+        if (lang != context.read<LanguageController>().currentLang) {
+          await context.read<LanguageController>().changeLanguage(lang);
+          setState(() {});
+        }
       },
     );
   }

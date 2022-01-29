@@ -46,9 +46,6 @@ class MainPage extends StatelessWidget {
       body: MultiProvider(
         providers: [
           ChangeNotifierProvider(
-            create: (context) => MenuController(),
-          ),
-          ChangeNotifierProvider(
             create: (context) => LanguageController(context),
           ),
         ],
