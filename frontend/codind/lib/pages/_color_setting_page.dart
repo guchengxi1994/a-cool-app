@@ -57,6 +57,7 @@
 //   CupertinoThemeData cupertinoOverrideTheme
 // })
 
+import 'package:codind/pages/_loading_page_mixin.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +72,8 @@ class ColorSettingPage extends StatefulWidget {
   State<ColorSettingPage> createState() => _ColorSettingPageState();
 }
 
-class _ColorSettingPageState extends State<ColorSettingPage> {
+class _ColorSettingPageState extends State<ColorSettingPage>
+    with LoadingPageMixin {
   final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
@@ -117,7 +119,12 @@ class _ColorSettingPageState extends State<ColorSettingPage> {
                 height: 100,
               ),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    print(isLoading);
+                    print(context
+                        .read<ThemeController>()
+                        .initialColor['appBarColor']!);
+                  },
                   child:
                       Text(FlutterI18n.translate(context, "button.label.ok")))
             ],
