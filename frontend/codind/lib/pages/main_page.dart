@@ -46,7 +46,7 @@ class MainPage extends StatelessWidget {
       body: MultiProvider(
         providers: [
           ChangeNotifierProvider(
-            create: (context) => LanguageController(context),
+            create: (_) => LanguageController(context),
           ),
         ],
         child: const MainStatefulPage(),

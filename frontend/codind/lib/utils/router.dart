@@ -1,3 +1,4 @@
+import 'package:codind/pages/_color_setting_page.dart';
 import 'package:codind/pages/pages.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,7 @@ class Routers {
   static const pageMain = 'pageMain';
 
   static final Map<String, WidgetBuilder> routers = {
-    pageSetting: (ctx) => SettingPage(),
+    pageSetting: (ctx) => ColorSettingPage(),
     pageMain: (ctx) => const MainPage(),
   };
 }

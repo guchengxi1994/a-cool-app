@@ -18,10 +18,10 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (context) => ThemeController()),
+      ChangeNotifierProvider(create: (_) => ThemeController()),
       ChangeNotifierProvider(
-        create: (context) => MenuController(),
-      )
+        create: (_) => MenuController(),
+      ),
     ],
     child: MyApp(
       flutterI18nDelegate: flutterI18nDelegate,

@@ -6,7 +6,8 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/src/provider.dart';
 
 class ColorPickerWidget extends StatefulWidget {
-  ColorPickerWidget({Key? key}) : super(key: key);
+  ColorPickerWidget({Key? key, this.currentColor}) : super(key: key);
+  Color? currentColor;
 
   @override
   State<ColorPickerWidget> createState() => _ColorPickerWidgetState();
@@ -18,7 +19,8 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
   @override
   void initState() {
     super.initState();
-    selectedColor = context.read<ThemeController>().themeData.primaryColor;
+    selectedColor = widget.currentColor ??
+        context.read<ThemeController>().themeData.primaryColor;
   }
 
   @override
