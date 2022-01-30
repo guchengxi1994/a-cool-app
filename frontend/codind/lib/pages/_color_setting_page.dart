@@ -76,7 +76,7 @@ class _ColorSettingPageState extends State<ColorSettingPage>
     with LoadingPageMixin {
   final ScrollController _scrollController = ScrollController();
   @override
-  Widget build(BuildContext context) {
+  Widget baseBuild(BuildContext context) {
     return buildView();
   }
 
@@ -119,11 +119,21 @@ class _ColorSettingPageState extends State<ColorSettingPage>
                 height: 100,
               ),
               ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     print(isLoading);
                     print(context
                         .read<ThemeController>()
                         .initialColor['appBarColor']!);
+
+                    setState(() {
+                      isLoading = true;
+                    });
+
+                    await Future.delayed(Duration(seconds: 2));
+                    print(isLoading);
+                    setState(() {
+                      isLoading = false;
+                    });
                   },
                   child:
                       Text(FlutterI18n.translate(context, "button.label.ok")))
