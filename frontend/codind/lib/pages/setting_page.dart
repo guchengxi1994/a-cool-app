@@ -1,3 +1,12 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: xiaoshuyui
+ * @email: guchengxi1994@qq.com
+ * @Date: 2022-01-30 21:46:56
+ * @LastEditors: xiaoshuyui
+ * @LastEditTime: 2022-01-31 21:22:30
+ */
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +21,8 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  late ThemeData themeData;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +37,7 @@ class _SettingPageState extends State<SettingPage> {
                   return ColorPickerWidget();
                 });
             if (null != selectedColor) {
-              ThemeData themeData = ThemeData(
+              themeData = ThemeData(
                   primaryColor: selectedColor,
                   appBarTheme: AppBarTheme(color: selectedColor));
               context.read<ThemeController>().changeThemeData(themeData);

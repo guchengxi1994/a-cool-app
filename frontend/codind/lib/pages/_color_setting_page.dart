@@ -59,6 +59,7 @@
 
 import 'package:codind/pages/_loading_page_mixin.dart';
 import 'package:codind/providers/my_providers.dart';
+import 'package:codind/utils/utils.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -75,6 +76,7 @@ class ColorSettingPage extends StatefulWidget {
 class _ColorSettingPageState extends State<ColorSettingPage>
     with LoadingPageMixin {
   final ScrollController _scrollController = ScrollController();
+
   @override
   Widget baseBuild(BuildContext context) {
     return buildView();
@@ -120,17 +122,35 @@ class _ColorSettingPageState extends State<ColorSettingPage>
               ),
               ElevatedButton(
                   onPressed: () async {
-                    print(isLoading);
-                    print(context
-                        .read<ThemeController>()
-                        .initialColor['appBarColor']!);
+                    Map<String, Color> savedColor =
+                        context.read<ThemeController>().savedColor;
 
                     setState(() {
                       isLoading = true;
                     });
 
-                    await Future.delayed(Duration(seconds: 2));
-                    print(isLoading);
+                    await context
+                        .read<ThemeController>()
+                        .setThemeByMap(savedColor);
+
+                    var _primaryColor = savedColor['primaryColor'];
+                    var _primaryColorLight = savedColor['primaryColorLight'];
+                    var _primaryColorDark = savedColor['primaryColorDark'];
+                    var _bottomAppBarColor = savedColor['bottomAppBarColor'];
+                    var _appBarColor = savedColor['appBarColor'];
+
+                    List<String> ls = [];
+
+                    ls.addAll([
+                      _primaryColor!.value.toString(),
+                      _primaryColorLight!.value.toString(),
+                      _primaryColorDark!.value.toString(),
+                      _bottomAppBarColor!.value.toString(),
+                      _appBarColor!.value.toString()
+                    ]);
+
+                    await SharedPreferencesUtils.saveColorData(ls);
+
                     setState(() {
                       isLoading = false;
                     });
@@ -155,6 +175,7 @@ class ColorTheme extends StatefulWidget {
 
 class _ColorThemeState extends State<ColorTheme> {
   late Color currentColor;
+  Map<String, Color>? _map;
 
   @override
   void initState() {
@@ -190,13 +211,9 @@ class _ColorThemeState extends State<ColorTheme> {
                 setState(() {
                   currentColor = selectedColor;
                 });
-
-                Map<String, Color> _map =
-                    context.read<ThemeController>().initialColor;
-
-                _map[widget.title] = selectedColor;
-
-                context.read<ThemeController>().setThemeByMap(_map);
+                _map = context.read<ThemeController>().initialColor;
+                _map![widget.title] = selectedColor;
+                context.read<ThemeController>().setSavedMap(_map!);
               }
             },
           )

@@ -5,4 +5,9 @@ class SharedPreferencesUtils {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setStringList("colorData", ls);
   }
+
+  static Future<List<String>?> getColorData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList("colorData");
+  }
 }
