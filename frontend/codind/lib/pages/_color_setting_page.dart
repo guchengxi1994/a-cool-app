@@ -57,6 +57,9 @@
 //   CupertinoThemeData cupertinoOverrideTheme
 // })
 
+// ignore_for_file: prefer_const_constructors_in_immutables
+
+import 'package:codind/pages/_back_screen_minin.dart';
 import 'package:codind/pages/_loading_page_mixin.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart';
@@ -74,7 +77,7 @@ class ColorSettingPage extends StatefulWidget {
 }
 
 class _ColorSettingPageState extends State<ColorSettingPage>
-    with LoadingPageMixin {
+    with BackScreenMixin, LoadingPageMixin {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -154,6 +157,8 @@ class _ColorSettingPageState extends State<ColorSettingPage>
                     setState(() {
                       isLoading = false;
                     });
+
+                    Navigator.of(context).pop();
                   },
                   child:
                       Text(FlutterI18n.translate(context, "button.label.ok")))

@@ -19,6 +19,54 @@ abstract class BasePage extends StatefulWidget {
 }
 
 class BasePageState<T extends BasePage> extends State<T> {
+  List<Widget> actions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      List<Widget> _actions = [
+        PopupMenuButton<String>(
+            tooltip: FlutterI18n.translate(context, "label.localization"),
+            icon: Container(
+              color: Colors.white,
+              height: 20,
+              width: 20,
+              child: Image.asset("assets/icons/lan.png"),
+            ),
+            itemBuilder: (context) => <PopupMenuItem<String>>[
+                  buildPopupMenuItem("中文"),
+                  buildPopupMenuItem("English"),
+                ]),
+        IconButton(
+            tooltip: FlutterI18n.translate(context, "label.settings"),
+            onPressed: () {
+              Navigator.pushNamed(context, Routers.pageSetting);
+            },
+            icon: Container(
+              color: Colors.white,
+              height: 20,
+              width: 20,
+              child: Image.asset("assets/icons/self_male.png"),
+            ))
+      ];
+
+      addActions(_actions);
+    });
+  }
+
+  addAction(Widget w) {
+    setState(() {
+      actions.add(w);
+    });
+  }
+
+  addActions(List<Widget> ws) {
+    setState(() {
+      actions.addAll(ws);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,31 +80,7 @@ class BasePageState<T extends BasePage> extends State<T> {
                 },
                 icon: const Icon(Icons.menu))
             : null,
-        actions: [
-          PopupMenuButton<String>(
-              tooltip: FlutterI18n.translate(context, "label.localization"),
-              icon: Container(
-                color: Colors.white,
-                height: 20,
-                width: 20,
-                child: Image.asset("assets/icons/lan.png"),
-              ),
-              itemBuilder: (context) => <PopupMenuItem<String>>[
-                    buildPopupMenuItem("中文"),
-                    buildPopupMenuItem("English"),
-                  ]),
-          IconButton(
-              tooltip: FlutterI18n.translate(context, "label.personalCenter"),
-              onPressed: () {
-                Navigator.pushNamed(context, Routers.pageSetting);
-              },
-              icon: Container(
-                color: Colors.white,
-                height: 20,
-                width: 20,
-                child: Image.asset("assets/icons/self_male.png"),
-              ))
-        ],
+        actions: actions,
       ),
     );
   }

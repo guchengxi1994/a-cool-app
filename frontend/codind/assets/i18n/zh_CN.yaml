@@ -9,6 +9,10 @@ label:
   cannotLaunch: "无法打开链接"
   clickToLaunch: "点此打开"
   pickAColor: "选择颜色"
+  changeColor: "选择颜色"
+  click: "点击修改"
+  leaveYourCommit: "写下你的评论"
+  settings: "设置"
 
 button:
   label:

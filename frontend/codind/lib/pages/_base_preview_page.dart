@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 enum DataFrom { net, asset, string, file }
 
+// ignore: must_be_immutable
 class BaseMarkdownPreviewPage extends StatefulWidget {
   BaseMarkdownPreviewPage({Key? key, this.mdData, required this.from, this.tip})
       : super(key: key);
@@ -21,6 +22,7 @@ class BaseMarkdownPreviewPage extends StatefulWidget {
 
 class _BaseMarkdownPreviewPageState extends State<BaseMarkdownPreviewPage> {
   late String markdownData;
+  // ignore: prefer_typing_uninitialized_variables
   var _loadDataFuture;
 
   @override
@@ -65,46 +67,43 @@ class _BaseMarkdownPreviewPageState extends State<BaseMarkdownPreviewPage> {
     return Scaffold(
       appBar: null,
       // ignore: avoid_unnecessary_containers
-      body: Container(
-        child: FutureBuilder(
-          future: _loadDataFuture,
-          builder: (context, snap) {
-            if (snap.connectionState == ConnectionState.done) {
-              if (widget.from != DataFrom.net) {
-                return Markdown(
-                  data: markdownData,
-                  onTapLink: (text, href, title) async {
-                    if (await canLaunch(href!)) {
-                      await launch(href);
+      body: FutureBuilder(
+        future: _loadDataFuture,
+        builder: (context, snap) {
+          if (snap.connectionState == ConnectionState.done) {
+            if (widget.from != DataFrom.net) {
+              return Markdown(
+                data: markdownData,
+                onTapLink: (text, href, title) async {
+                  if (await canLaunch(href!)) {
+                    await launch(href);
+                  } else {
+                    showToastMessage(
+                        FlutterI18n.translate(context, "label.cannotLaunch"),
+                        context);
+                  }
+                },
+              );
+            } else {
+              return TextButton(
+                  onPressed: () async {
+                    if (await canLaunch(widget.mdData!)) {
+                      await launch(widget.mdData!);
                     } else {
                       showToastMessage(
                           FlutterI18n.translate(context, "label.cannotLaunch"),
                           context);
                     }
                   },
-                );
-              } else {
-                return TextButton(
-                    onPressed: () async {
-                      if (await canLaunch(widget.mdData!)) {
-                        await launch(widget.mdData!);
-                      } else {
-                        showToastMessage(
-                            FlutterI18n.translate(
-                                context, "label.cannotLaunch"),
-                            context);
-                      }
-                    },
-                    child: Text(
-                        FlutterI18n.translate(context, "label.clickToLaunch")));
-              }
-            } else {
-              return Center(
-                child: Text(FlutterI18n.translate(context, "label.loadingStr")),
-              );
+                  child: Text(
+                      FlutterI18n.translate(context, "label.clickToLaunch")));
             }
-          },
-        ),
+          } else {
+            return Center(
+              child: Text(FlutterI18n.translate(context, "label.loadingStr")),
+            );
+          }
+        },
       ),
     );
   }

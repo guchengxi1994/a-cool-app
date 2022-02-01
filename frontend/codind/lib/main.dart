@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-01-31 22:48:15
+ * @LastEditTime: 2022-02-01 09:12:38
  */
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -42,10 +42,10 @@ Future main() async {
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({Key? key, required this.flutterI18nDelegate, this.colorList})
+  const MyApp({Key? key, required this.flutterI18nDelegate, this.colorList})
       : super(key: key);
   final FlutterI18nDelegate flutterI18nDelegate;
-  List<String>? colorList;
+  final List<String>? colorList;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -64,9 +64,15 @@ class _MyAppState extends State<MyApp> {
         "appBarColor": Color(int.parse(widget.colorList![4])),
       };
 
-      Future.delayed(Duration.zero).then((value) {
-        context.read<ThemeController>().setThemeByMap(savedColor);
-      });
+      WidgetsBinding.instance!.addPostFrameCallback(
+        (timeStamp) {
+          context.read<ThemeController>().setThemeByMap(savedColor);
+        },
+      );
+
+      // Future.delayed(Duration.zero).then((value) {
+      //       context.read<ThemeController>().setThemeByMap(savedColor);
+      //     });
     }
   }
 
@@ -86,59 +92,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-// class MyApp extends StatelessWidget {
-//   MyApp({Key? key, required this.flutterI18nDelegate, this.colorList})
-//       : super(key: key);
-//   final FlutterI18nDelegate flutterI18nDelegate;
-//   List<String>? colorList;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     if (colorList != null) {
-//       Map<String, Color> savedColor = {
-//         "primaryColor": Color(int.parse(colorList![0])),
-//         "primaryColorLight": Color(int.parse(colorList![1])),
-//         "primaryColorDark": Color(int.parse(colorList![2])),
-//         "bottomAppBarColor": Color(int.parse(colorList![3])),
-//         "appBarColor": Color(int.parse(colorList![4])),
-//       };
-
-//       return FutureBuilder(
-//           future: context.read<ThemeController>().setThemeByMap(savedColor),
-//           builder: (context, snap) {
-//             if (snap.connectionState == ConnectionState.done) {
-//               return MaterialApp(
-//                 routes: Routers.routers,
-//                 theme: context.watch<ThemeController>().themeData,
-//                 debugShowCheckedModeBanner: false,
-//                 builder: FlutterI18n.rootAppBuilder(),
-//                 home: const MainPage(),
-//                 localizationsDelegates: [
-//                   flutterI18nDelegate,
-//                   GlobalMaterialLocalizations.delegate,
-//                   GlobalWidgetsLocalizations.delegate
-//                 ],
-//               );
-//             } else {
-//               return const Center(
-//                 child: CircularProgressIndicator(),
-//               );
-//             }
-//           });
-//     }
-
-//     return MaterialApp(
-//       routes: Routers.routers,
-//       theme: context.watch<ThemeController>().themeData,
-//       debugShowCheckedModeBanner: false,
-//       builder: FlutterI18n.rootAppBuilder(),
-//       home: const MainPage(),
-//       localizationsDelegates: [
-//         flutterI18nDelegate,
-//         GlobalMaterialLocalizations.delegate,
-//         GlobalWidgetsLocalizations.delegate
-//       ],
-//     );
-//   }
-// }

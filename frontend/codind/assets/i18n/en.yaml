@@ -10,6 +10,10 @@ label:
   cannotLaunch: "Cannot launch"
   clickToLaunch: "Click To Launch"
   pickAColor: "Pick a color"
+  changeColor: "Change color"
+  click: "Click"
+  leaveYourCommit: "Leave your comment"
+  settings: "Settings"
 
 # Objects can be many levels deep
 button:
