@@ -14,6 +14,7 @@ label:
   click: "Click"
   leaveYourCommit: "Leave your comment"
   settings: "Settings"
+  typeHere: "Type here ..."
 
 # Objects can be many levels deep
 button:

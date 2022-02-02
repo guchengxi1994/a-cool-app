@@ -70,7 +70,9 @@ class BasePageState<T extends BasePage> extends State<T> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: baseBuild(context),
+      body: SafeArea(
+        child: baseBuild(context),
+      ),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: !Responsive.isDesktop(context)

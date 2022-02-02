@@ -13,6 +13,7 @@ label:
   click: "点击修改"
   leaveYourCommit: "写下你的评论"
   settings: "设置"
+  typeHere: "请在这里输入 ..."
 
 button:
   label:

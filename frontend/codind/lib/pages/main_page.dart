@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-01 12:00:52
+ * @LastEditTime: 2022-02-02 11:46:24
  */
 import 'package:codind/pages/_test_page.dart';
 import 'package:codind/providers/my_providers.dart';
@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 
 import '_base_preview_page.dart';
 import 'learning_compare_page.dart';
+import 'writing_page.dart';
 
 class MainStatefulPage extends StatefulWidget {
   const MainStatefulPage({Key? key}) : super(key: key);
@@ -40,13 +41,14 @@ class _MainStatefulPageState extends State<MainStatefulPage> {
           children: [
             Expanded(
               flex: 5,
-              child: LearningComparePage(
-                right: BaseMarkdownPreviewPage(
-                  from: DataFrom.asset,
-                  mdData: "assets/reserved_md_files/demo.md",
-                ),
-                left: Center(child: Text("这是一个测试的页面")),
-              ),
+              // child: LearningComparePage(
+              //   right: BaseMarkdownPreviewPage(
+              //     from: DataFrom.asset,
+              //     mdData: "assets/reserved_md_files/demo.md",
+              //   ),
+              //   left: Center(child: Text("这是一个测试的页面")),
+              // ),
+              child: WritingPage(),
             )
           ],
         ),
