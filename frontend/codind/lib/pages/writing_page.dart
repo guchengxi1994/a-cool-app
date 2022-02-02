@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-02 19:55:23
+ * @LastEditTime: 2022-02-02 23:00:13
  */
 import 'dart:convert';
 
@@ -25,11 +25,13 @@ class WritingPage extends BasePage {
   }
 }
 
-class _WritingPageState<T> extends BasePageState<WritingPage> {
+class _WritingPageState<T> extends BasePageState<WritingPage>
+    with SingleTickerProviderStateMixin {
   TextEditingController textEditingController = TextEditingController();
   final GlobalKey<__ChangedMdEditorState> _globalKey = GlobalKey();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   FocusNode focusNode = FocusNode();
+  late TabController? _tabcontroller;
   var loadEmojiFuture;
   final ScrollController _scrollController = ScrollController();
 
@@ -59,6 +61,9 @@ class _WritingPageState<T> extends BasePageState<WritingPage> {
     textEditingController.dispose();
     _scrollController.dispose();
     focusNode.dispose();
+    if (_tabcontroller != null) {
+      _tabcontroller!.dispose();
+    }
     super.dispose();
   }
 
@@ -150,33 +155,76 @@ class _WritingPageState<T> extends BasePageState<WritingPage> {
                             if (snapshot.hasData) {
                               List<dynamic> data =
                                   json.decode(snapshot.data.toString());
-                              return GridView.custom(
-                                controller: _scrollController,
-                                physics: ClampingScrollPhysics(),
-                                padding: const EdgeInsets.all(3),
-                                shrinkWrap: true,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 6,
-                                  mainAxisSpacing: 0.5,
-                                  crossAxisSpacing: 6.0,
-                                ),
-                                childrenDelegate: SliverChildBuilderDelegate(
-                                    ((context, index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      print(String.fromCharCode(
-                                          data[index]["unicode"]));
-                                    },
-                                    child: Center(
-                                      child: Text(
-                                        String.fromCharCode(
-                                            data[index]["unicode"]),
-                                        style: const TextStyle(fontSize: 33),
-                                      ),
-                                    ),
-                                  );
-                                }), childCount: data.length),
+
+                              List _lists = splitList(data, 100);
+                              print(_lists.length);
+
+                              List<int> _indexList = List<int>.generate(
+                                  _lists.length, (index) => index);
+
+                              _tabcontroller = TabController(
+                                  length: _lists.length, vsync: this);
+
+                              return Column(
+                                children: [
+                                  TabBar(
+                                      controller: _tabcontroller,
+                                      onTap: (i) {
+                                        setState(() {
+                                          _tabcontroller!.index = i;
+                                        });
+                                      },
+                                      tabs: _indexList.map((e) {
+                                        return Container(
+                                          child: Text(e.toString()),
+                                        );
+                                      }).toList()),
+                                  Expanded(
+                                      child: TabBarView(
+                                          controller: _tabcontroller,
+                                          children: _lists.map((e) {
+                                            return GridView.custom(
+                                              // controller: _scrollController,
+                                              // physics: ClampingScrollPhysics(),
+                                              padding: const EdgeInsets.all(3),
+                                              shrinkWrap: true,
+                                              gridDelegate:
+                                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount:
+                                                    (MediaQuery.of(context)
+                                                            .size
+                                                            .width ~/
+                                                        80),
+                                                mainAxisSpacing: 0.5,
+                                                crossAxisSpacing: 6.0,
+                                              ),
+                                              childrenDelegate:
+                                                  SliverChildBuilderDelegate(
+                                                      ((context, index) {
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    print(String.fromCharCode(
+                                                        e[index]["unicode"]));
+                                                    textEditingController
+                                                            .text +=
+                                                        String.fromCharCode(
+                                                            e[index]
+                                                                ["unicode"]);
+                                                  },
+                                                  child: Center(
+                                                    child: Text(
+                                                      String.fromCharCode(
+                                                          data[index]
+                                                              ["unicode"]),
+                                                      style: const TextStyle(
+                                                          fontSize: 33),
+                                                    ),
+                                                  ),
+                                                );
+                                              }), childCount: e.length),
+                                            );
+                                          }).toList()))
+                                ],
                               );
                             } else {
                               return const CircularProgressIndicator();
