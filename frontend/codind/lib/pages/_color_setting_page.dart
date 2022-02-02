@@ -79,6 +79,7 @@ class ColorSettingPage extends StatefulWidget {
 class _ColorSettingPageState extends State<ColorSettingPage>
     with BackScreenMixin, LoadingPageMixin {
   final ScrollController _scrollController = ScrollController();
+  StorageUtil _storageUtil = StorageUtil.storageInstance;
 
   @override
   Widget baseBuild(BuildContext context) {
@@ -152,7 +153,7 @@ class _ColorSettingPageState extends State<ColorSettingPage>
                       _appBarColor!.value.toString()
                     ]);
 
-                    await SharedPreferencesUtils.saveColorData(ls);
+                    await _storageUtil.saveColorData(ls);
 
                     setState(() {
                       isLoading = false;

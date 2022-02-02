@@ -25,8 +25,10 @@ Future main() async {
         forcedLocale: const Locale('zh_CN')),
   );
   // 获取 theme
-  List<String>? ls = await SharedPreferencesUtils.getColorData();
+
   WidgetsFlutterBinding.ensureInitialized();
+  StorageUtil _storageUtil = StorageUtil.storageInstance;
+  List<String>? ls = await _storageUtil.getColorData();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => ThemeController()),

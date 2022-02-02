@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.codind">
+    package="com.xiaoshuyui.codind">
    <application
         android:label="codind"
         android:name="${applicationName}"
