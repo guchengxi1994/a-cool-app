@@ -5,8 +5,10 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-02 14:04:14
+ * @LastEditTime: 2022-02-02 19:55:23
  */
+import 'dart:convert';
+
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -28,6 +30,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage> {
   final GlobalKey<__ChangedMdEditorState> _globalKey = GlobalKey();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   FocusNode focusNode = FocusNode();
+  var loadEmojiFuture;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -38,7 +42,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage> {
 
     super.addAction(TextButton(
         onPressed: () {
-          if (Responsive.isMobile(context)) {
+          if (Responsive.isRoughMobile(context)) {
             _scaffoldKey.currentState!.openEndDrawer();
           }
         },
@@ -46,13 +50,16 @@ class _WritingPageState<T> extends BasePageState<WritingPage> {
           "点击",
           style: TextStyle(color: Color.fromARGB(255, 201, 28, 28)),
         )));
+    loadEmojiFuture =
+        DefaultAssetBundle.of(context).loadString("assets/emoji.json");
   }
 
   @override
   void dispose() {
     textEditingController.dispose();
-    super.dispose();
+    _scrollController.dispose();
     focusNode.dispose();
+    super.dispose();
   }
 
   Widget getWritingRegion() {
@@ -62,7 +69,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage> {
       maxLines: null,
       controller: textEditingController,
       onChanged: (s) {
-        if (Responsive.isDesktop(context)) {
+        if (Responsive.isRoughDesktop(context)) {
           _globalKey.currentState!.changeData(textEditingController.text);
         }
       },
@@ -75,7 +82,9 @@ class _WritingPageState<T> extends BasePageState<WritingPage> {
 
   @override
   Widget baseBuild(BuildContext context) {
-    if (Responsive.isMobile(context)) {
+    Widget w = getWritingRegion();
+
+    if (Responsive.isRoughMobile(context)) {
       return Scaffold(
         key: _scaffoldKey,
         endDrawer: SizedBox(
@@ -84,11 +93,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage> {
           ),
           width: 0.8 * MediaQuery.of(context).size.width,
         ),
-        body: Column(
-          children: [
-            getWritingRegion(),
-          ],
-        ),
+        body: w,
+        bottomSheet: bottomSheet(),
       );
     } else {
       return Scaffold(
@@ -96,7 +102,10 @@ class _WritingPageState<T> extends BasePageState<WritingPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: getWritingRegion(),
+              child: Scaffold(
+                bottomSheet: bottomSheet(),
+                body: w,
+              ),
               flex: 1,
             ),
             const VerticalDivider(
@@ -115,6 +124,73 @@ class _WritingPageState<T> extends BasePageState<WritingPage> {
         ),
       );
     }
+  }
+
+  Widget bottomSheet() {
+    return Container(
+      color: Colors.grey[300],
+      child: Row(
+        children: [
+          IconButton(
+              tooltip: FlutterI18n.translate(context, "label.showEmoji"),
+              onPressed: () {
+                showModalBottomSheet(
+                    enableDrag: false,
+                    context: context,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                    ),
+                    builder: (BuildContext context) {
+                      return FutureBuilder(
+                          future: loadEmojiFuture,
+                          builder: ((context, snapshot) {
+                            if (snapshot.hasData) {
+                              List<dynamic> data =
+                                  json.decode(snapshot.data.toString());
+                              return GridView.custom(
+                                controller: _scrollController,
+                                physics: ClampingScrollPhysics(),
+                                padding: const EdgeInsets.all(3),
+                                shrinkWrap: true,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 6,
+                                  mainAxisSpacing: 0.5,
+                                  crossAxisSpacing: 6.0,
+                                ),
+                                childrenDelegate: SliverChildBuilderDelegate(
+                                    ((context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      print(String.fromCharCode(
+                                          data[index]["unicode"]));
+                                    },
+                                    child: Center(
+                                      child: Text(
+                                        String.fromCharCode(
+                                            data[index]["unicode"]),
+                                        style: const TextStyle(fontSize: 33),
+                                      ),
+                                    ),
+                                  );
+                                }), childCount: data.length),
+                              );
+                            } else {
+                              return const CircularProgressIndicator();
+                            }
+                          }));
+                    });
+              },
+              icon: const Icon(
+                Icons.emoji_emotions,
+                color: Colors.orangeAccent,
+              )),
+        ],
+      ),
+    );
   }
 }
 

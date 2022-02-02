@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-02 11:46:24
+ * @LastEditTime: 2022-02-02 18:06:46
  */
 import 'package:codind/pages/_test_page.dart';
 import 'package:codind/providers/my_providers.dart';
@@ -29,7 +29,7 @@ class _MainStatefulPageState extends State<MainStatefulPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Responsive.isDesktop(context) ? null : Sidemenu(),
+      drawer: Responsive.isRoughDesktop(context) ? null : Sidemenu(),
       key: context.read<MenuController>().scaffoldKey,
       body: ConstrainedBox(
         constraints: BoxConstraints(
@@ -41,13 +41,6 @@ class _MainStatefulPageState extends State<MainStatefulPage> {
           children: [
             Expanded(
               flex: 5,
-              // child: LearningComparePage(
-              //   right: BaseMarkdownPreviewPage(
-              //     from: DataFrom.asset,
-              //     mdData: "assets/reserved_md_files/demo.md",
-              //   ),
-              //   left: Center(child: Text("这是一个测试的页面")),
-              // ),
               child: WritingPage(),
             )
           ],

@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-01 10:33:14
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-02 09:50:44
+ * @LastEditTime: 2022-02-02 18:03:15
  */
 
 import 'package:codind/utils/utils.dart';
@@ -39,7 +39,7 @@ class _LearningComparePageState<T> extends BasePageState<LearningComparePage> {
   }
 
   Widget buildView() {
-    if (Responsive.isMobile(context)) {
+    if (Responsive.isRoughMobile(context)) {
       return Scaffold(
         endDrawer: SizedBox(
           width: 0.8 * CommonUtils.screenW(),

@@ -1,3 +1,12 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: xiaoshuyui
+ * @email: guchengxi1994@qq.com
+ * @Date: 2022-01-30 21:46:56
+ * @LastEditors: xiaoshuyui
+ * @LastEditTime: 2022-02-02 18:08:31
+ */
 import 'package:flutter/material.dart';
 import "dart:ui" as _ui;
 
@@ -14,6 +23,12 @@ class Responsive {
 
   static bool isDesktop(BuildContext context) =>
       MediaQuery.of(context).size.width >= 1100;
+
+  static bool isRoughMobile(BuildContext context) =>
+      MediaQuery.of(context).size.width < 850;
+
+  static bool isRoughDesktop(BuildContext context) =>
+      MediaQuery.of(context).size.width >= 850;
 }
 
 class CommonUtils {

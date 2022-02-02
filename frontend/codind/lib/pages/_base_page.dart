@@ -75,7 +75,7 @@ class BasePageState<T extends BasePage> extends State<T> {
       ),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        leading: !Responsive.isDesktop(context)
+        leading: Responsive.isRoughMobile(context)
             ? IconButton(
                 onPressed: () {
                   context.read<MenuController>().controlMenu();

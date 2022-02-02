@@ -14,6 +14,7 @@ label:
   leaveYourCommit: "写下你的评论"
   settings: "设置"
   typeHere: "请在这里输入 ..."
+  showEmoji: "选择表情"
 
 button:
   label:
