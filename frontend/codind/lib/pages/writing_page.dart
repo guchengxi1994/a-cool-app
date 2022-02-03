@@ -213,8 +213,11 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                             .read<EmojiController>()
                                             .addEmoji(
                                                 e[index]["unicode"].toString());
-                                        _globalKey.currentState!.changeData(
-                                            textEditingController.text);
+                                        if (Responsive.isRoughDesktop(
+                                            context)) {
+                                          _globalKey.currentState!.changeData(
+                                              textEditingController.text);
+                                        }
                                       },
                                       child: Center(
                                         child: Text(
@@ -262,10 +265,13 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                                                 listen: false)
                                                             .useEmojis[index]));
 
-                                                _globalKey.currentState!
-                                                    .changeData(
-                                                        textEditingController
-                                                            .text);
+                                                if (Responsive.isRoughDesktop(
+                                                    context)) {
+                                                  _globalKey.currentState!
+                                                      .changeData(
+                                                          textEditingController
+                                                              .text);
+                                                }
                                               },
                                               child: Center(
                                                 child: Text(

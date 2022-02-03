@@ -1,5 +1,3 @@
-title: "flutter-admin-template for zxx-h5"
-
 label:
   main: "你好，{ user }!"
   localization: "本地化"

@@ -44,9 +44,12 @@ Future<void> spAppendColorData(String emoji) async {
     await _preferences.setStringList("emoji", []);
     res = [];
   }
-  if (res.length == 30) {
-    res.removeAt(0);
+  if (!res.contains(emoji)) {
+    if (res.length == 30) {
+      res.removeAt(0);
+    }
+    res.add(emoji);
   }
-  res.add(emoji);
+
   _preferences.setStringList("emoji", res);
 }
