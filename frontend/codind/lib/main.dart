@@ -5,11 +5,12 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-03 12:19:52
+ * @LastEditTime: 2022-02-03 21:05:48
  */
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'pages/pages.dart';
@@ -19,6 +20,7 @@ import 'package:provider/provider.dart';
 Future main() async {
   final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
     translationLoader: FileTranslationLoader(
+        decodeStrategies: [YamlDecodeStrategy()],
         useCountryCode: false,
         fallbackFile: 'zh_CN',
         basePath: 'assets/i18n',

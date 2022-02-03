@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-03 18:51:14
+ * @LastEditTime: 2022-02-03 22:43:44
  */
 import 'dart:convert';
 
@@ -38,6 +38,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
   final ScrollController _scrollController = ScrollController();
   _EmojiFutureEntity emojiEntity = _EmojiFutureEntity();
   int _currentIndex = 0;
+  double fontSize = 14;
 
   late String markdownStr = "";
 
@@ -89,20 +90,26 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
   }
 
   Widget getWritingRegion() {
-    return TextField(
-      focusNode: focusNode,
-      key: const ValueKey<String>("md_editor"),
-      maxLines: null,
-      controller: textEditingController,
-      onChanged: (s) {
-        if (Responsive.isRoughDesktop(context)) {
-          _globalKey.currentState!.changeData(textEditingController.text);
-        }
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(focusNode);
       },
-      toolbarOptions: const ToolbarOptions(
-          copy: true, paste: true, cut: true, selectAll: true),
-      decoration: InputDecoration.collapsed(
-          hintText: FlutterI18n.translate(context, "label.typeHere")),
+      child: TextField(
+        focusNode: focusNode,
+        style: TextStyle(fontSize: fontSize),
+        key: const ValueKey<String>("md_editor"),
+        maxLines: null,
+        controller: textEditingController,
+        onChanged: (s) {
+          if (Responsive.isRoughDesktop(context)) {
+            _globalKey.currentState!.changeData(textEditingController.text);
+          }
+        },
+        toolbarOptions: const ToolbarOptions(
+            copy: true, paste: true, cut: true, selectAll: true),
+        decoration: InputDecoration.collapsed(
+            hintText: FlutterI18n.translate(context, "label.typeHere")),
+      ),
     );
   }
 
@@ -126,12 +133,12 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
       );
     } else {
       return Scaffold(
+        bottomSheet: bottomSheet(),
         body: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: Scaffold(
-                bottomSheet: bottomSheet(),
                 body: w,
               ),
               flex: 1,
@@ -368,6 +375,196 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                 Icons.emoji_emotions,
                 color: Colors.orangeAccent,
               )),
+          IconButton(
+              tooltip: FlutterI18n.translate(context, "label.font"),
+              onPressed: () {
+                showModalBottomSheet(
+                    enableDrag: false,
+                    context: context,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                    ),
+                    builder: (context) {
+                      return SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text("字体大小"),
+                                PopupMenuButton(
+                                    icon: SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: Image.asset(
+                                          "assets/icons/details.png"),
+                                    ),
+                                    itemBuilder: (_) {
+                                      List<int> _indexList = List<int>.generate(
+                                          10, (index) => 14 + index);
+                                      return _indexList.map((e) {
+                                        return PopupMenuItem(
+                                            onTap: () {
+                                              setState(() {
+                                                fontSize = e * 1.0;
+                                              });
+                                            },
+                                            child: Text(e.toString()));
+                                      }).toList();
+                                    })
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    });
+              },
+              icon: const Icon(Icons.font_download)),
+          IconButton(
+            onPressed: () {
+              showModalBottomSheet(
+                  enableDrag: false,
+                  context: context,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                  builder: (context) {
+                    return SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text("插入标题"),
+                              PopupMenuButton(
+                                  icon: SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: Image.asset("assets/icons/head.png"),
+                                  ),
+                                  itemBuilder: (_) {
+                                    return [
+                                      PopupMenuItem(
+                                          child: TextButton(
+                                        onPressed: () {
+                                          textEditingController.text += "\n# ";
+                                        },
+                                        child: Text("插入一级标题"),
+                                      )),
+                                      PopupMenuItem(
+                                          child: TextButton(
+                                        onPressed: () {
+                                          textEditingController.text += "\n## ";
+                                        },
+                                        child: Text("插入二级标题"),
+                                      )),
+                                      PopupMenuItem(
+                                          child: TextButton(
+                                        onPressed: () {
+                                          textEditingController.text +=
+                                              "\n### ";
+                                        },
+                                        child: Text("插入三级标题"),
+                                      )),
+                                      PopupMenuItem(
+                                          child: TextButton(
+                                        onPressed: () {
+                                          textEditingController.text +=
+                                              "\n#### ";
+                                        },
+                                        child: Text("插入四级标题"),
+                                      )),
+                                      PopupMenuItem(
+                                          child: TextButton(
+                                        onPressed: () {
+                                          textEditingController.text +=
+                                              "\n##### ";
+                                        },
+                                        child: Text("插入五级标题"),
+                                      )),
+                                      PopupMenuItem(
+                                          child: TextButton(
+                                        onPressed: () {
+                                          textEditingController.text +=
+                                              "\n###### ";
+                                        },
+                                        child: Text("插入六级标题"),
+                                      )),
+                                    ];
+                                  })
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text("插入样式"),
+                              PopupMenuButton(
+                                  icon: SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: Image.asset("assets/icons/ct.png"),
+                                  ),
+                                  itemBuilder: (_) {
+                                    return [
+                                      PopupMenuItem(
+                                          child: TextButton(
+                                        onPressed: () {
+                                          textEditingController.text += "** **";
+                                        },
+                                        child: Text("插入粗体"),
+                                      )),
+                                      PopupMenuItem(
+                                          child: TextButton(
+                                        onPressed: () {
+                                          textEditingController.text += "* *";
+                                        },
+                                        child: Text("插入斜体"),
+                                      )),
+                                      PopupMenuItem(
+                                          child: TextButton(
+                                        onPressed: () {
+                                          textEditingController.text +=
+                                              "*** ***";
+                                        },
+                                        child: Text("插入粗斜体"),
+                                      )),
+                                      PopupMenuItem(
+                                          child: TextButton(
+                                        onPressed: () {
+                                          textEditingController.text +=
+                                              "\n***\n";
+                                        },
+                                        child: Text("插入分割线"),
+                                      )),
+                                    ];
+                                  }),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  });
+            },
+            icon: SizedBox(
+              height: 20,
+              width: 20,
+              child: Image.asset("assets/icons/cursor.png"),
+            ),
+          ),
         ],
       ),
     );

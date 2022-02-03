@@ -19,6 +19,7 @@ label:
   nPage: "Page {n}"
   recentlyUsed: "Recently used"
   preview: "Preview"
+  font: "Font"
 
 # Objects can be many levels deep
 button:
