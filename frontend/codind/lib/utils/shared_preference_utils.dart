@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-03 10:15:44
+ * @LastEditTime: 2022-02-03 17:19:59
  */
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,6 +43,9 @@ Future<void> spAppendColorData(String emoji) async {
   if (null == res) {
     await _preferences.setStringList("emoji", []);
     res = [];
+  }
+  if (res.length == 30) {
+    res.removeAt(0);
   }
   res.add(emoji);
   _preferences.setStringList("emoji", res);

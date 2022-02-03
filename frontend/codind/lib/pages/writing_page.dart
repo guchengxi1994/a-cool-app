@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-03 13:22:04
+ * @LastEditTime: 2022-02-03 17:33:40
  */
 import 'dart:convert';
 
@@ -37,24 +37,27 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
   var loadEmojiFuture;
   final ScrollController _scrollController = ScrollController();
   _EmojiFutureEntity emojiEntity = _EmojiFutureEntity();
+  int _currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       FocusScope.of(context).requestFocus(focusNode);
-    });
-
-    super.addAction(TextButton(
+      super.addAction(IconButton(
         onPressed: () {
           if (Responsive.isRoughMobile(context)) {
             _scaffoldKey.currentState!.openEndDrawer();
           }
         },
-        child: Text(
-          "点击",
-          style: TextStyle(color: Color.fromARGB(255, 201, 28, 28)),
-        )));
+        tooltip: FlutterI18n.translate(context, "label.preview"),
+        icon: const Icon(
+          Icons.preview,
+          color: Colors.white,
+        ),
+      ));
+    });
+
     loadEmojiFuture = getEmojiInfo();
   }
 
@@ -149,6 +152,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
           IconButton(
               tooltip: FlutterI18n.translate(context, "label.showEmoji"),
               onPressed: () {
+                // print("我这里重新绘制页面啦");
+
                 showModalBottomSheet(
                     enableDrag: false,
                     context: context,
@@ -175,6 +180,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
 
                               _tabcontroller = TabController(
                                   length: _lists.length + 1, vsync: this);
+
+                              _tabcontroller!.index = _currentIndex;
 
                               List<Widget> _body = _lists.map((e) {
                                 return GridView.custom(
@@ -307,6 +314,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                     onTap: (i) {
                                       setState(() {
                                         _tabcontroller!.index = i;
+                                        _currentIndex = i;
                                       });
                                     },
                                     tabs: _indexList.map((e) {

@@ -17,7 +17,8 @@ label:
   typeHere: "Type here ..."
   showEmoji: "Choose emoji"
   nPage: "Page {n}"
-  recentlyUsed: "常用"
+  recentlyUsed: "Recently used"
+  preview: "Preview"
 
 # Objects can be many levels deep
 button:

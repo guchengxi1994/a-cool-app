@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-03 12:19:47
+ * @LastEditTime: 2022-02-03 17:38:28
  */
 import 'package:codind/pages/_test_page.dart';
 import 'package:codind/providers/my_providers.dart';
@@ -42,6 +42,7 @@ class _MainStatefulPageState extends State<MainStatefulPage> {
             Expanded(
               flex: 5,
               child: WritingPage(),
+              // child: TestPage(),
             )
           ],
         ),
