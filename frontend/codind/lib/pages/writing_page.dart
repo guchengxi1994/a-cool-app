@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-02 23:00:13
+ * @LastEditTime: 2022-02-03 11:38:14
  */
 import 'dart:convert';
 
@@ -26,7 +26,7 @@ class WritingPage extends BasePage {
 }
 
 class _WritingPageState<T> extends BasePageState<WritingPage>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   TextEditingController textEditingController = TextEditingController();
   final GlobalKey<__ChangedMdEditorState> _globalKey = GlobalKey();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -34,6 +34,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
   late TabController? _tabcontroller;
   var loadEmojiFuture;
   final ScrollController _scrollController = ScrollController();
+  _EmojiFutureEntity emojiEntity = _EmojiFutureEntity();
 
   @override
   void initState() {
@@ -52,8 +53,14 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
           "点击",
           style: TextStyle(color: Color.fromARGB(255, 201, 28, 28)),
         )));
-    loadEmojiFuture =
-        DefaultAssetBundle.of(context).loadString("assets/emoji.json");
+    loadEmojiFuture = getEmojiInfo();
+  }
+
+  Future<void> getEmojiInfo() async {
+    emojiEntity.jsonLikeStr =
+        await DefaultAssetBundle.of(context).loadString("assets/emoji.json");
+    emojiEntity.usedEmoji = await spGetEmojiData();
+    setState(() {});
   }
 
   @override
@@ -152,80 +159,171 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                       return FutureBuilder(
                           future: loadEmojiFuture,
                           builder: ((context, snapshot) {
-                            if (snapshot.hasData) {
-                              List<dynamic> data =
-                                  json.decode(snapshot.data.toString());
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              List<dynamic> data = json
+                                  .decode(emojiEntity.jsonLikeStr.toString());
 
                               List _lists = splitList(data, 100);
-                              print(_lists.length);
+                              // print(_lists.length);
 
                               List<int> _indexList = List<int>.generate(
-                                  _lists.length, (index) => index);
+                                  _lists.length + 1, (index) => index);
 
                               _tabcontroller = TabController(
-                                  length: _lists.length, vsync: this);
+                                  length: _lists.length + 1, vsync: this);
 
-                              return Column(
-                                children: [
-                                  TabBar(
-                                      controller: _tabcontroller,
-                                      onTap: (i) {
+                              List<Widget> _body = _lists.map((e) {
+                                return GridView.custom(
+                                  // controller: _scrollController,
+                                  // physics: ClampingScrollPhysics(),
+                                  padding: const EdgeInsets.all(3),
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount:
+                                        (MediaQuery.of(context).size.width ~/
+                                            80),
+                                    mainAxisSpacing: 0.5,
+                                    crossAxisSpacing: 6.0,
+                                  ),
+                                  childrenDelegate: SliverChildBuilderDelegate(
+                                      ((context, index) {
+                                    return GestureDetector(
+                                      onTap: () async {
+                                        // print(String.fromCharCode(
+                                        //     e[index]["unicode"]));
+                                        textEditingController.text +=
+                                            String.fromCharCode(
+                                                e[index]["unicode"]);
+                                        await spAppendColorData(
+                                            e[index]["unicode"].toString());
+
                                         setState(() {
-                                          _tabcontroller!.index = i;
+                                          if (emojiEntity.usedEmoji != null) {
+                                            emojiEntity.usedEmoji!.add(
+                                                e[index]["unicode"].toString());
+                                          } else {
+                                            emojiEntity.usedEmoji = [
+                                              e[index]["unicode"].toString()
+                                            ];
+                                          }
                                         });
                                       },
-                                      tabs: _indexList.map((e) {
-                                        return Container(
-                                          child: Text(e.toString()),
-                                        );
-                                      }).toList()),
-                                  Expanded(
-                                      child: TabBarView(
-                                          controller: _tabcontroller,
-                                          children: _lists.map((e) {
-                                            return GridView.custom(
-                                              // controller: _scrollController,
-                                              // physics: ClampingScrollPhysics(),
-                                              padding: const EdgeInsets.all(3),
-                                              shrinkWrap: true,
-                                              gridDelegate:
-                                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount:
-                                                    (MediaQuery.of(context)
-                                                            .size
-                                                            .width ~/
-                                                        80),
-                                                mainAxisSpacing: 0.5,
-                                                crossAxisSpacing: 6.0,
+                                      child: Center(
+                                        child: Text(
+                                          String.fromCharCode(
+                                              e[index]["unicode"]),
+                                          style: const TextStyle(fontSize: 33),
+                                        ),
+                                      ),
+                                    );
+                                  }), childCount: e.length),
+                                );
+                              }).toList();
+
+                              _body.insert(
+                                  0,
+                                  emojiEntity.usedEmoji != null &&
+                                          emojiEntity.usedEmoji!.isNotEmpty
+                                      ? GridView.custom(
+                                          // controller: _scrollController,
+                                          // physics: ClampingScrollPhysics(),
+                                          padding: const EdgeInsets.all(3),
+                                          shrinkWrap: true,
+                                          gridDelegate:
+                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount:
+                                                (MediaQuery.of(context)
+                                                        .size
+                                                        .width ~/
+                                                    80),
+                                            mainAxisSpacing: 0.5,
+                                            crossAxisSpacing: 6.0,
+                                          ),
+                                          childrenDelegate:
+                                              SliverChildBuilderDelegate(
+                                                  ((context, index) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                // print(String.fromCharCode(
+                                                //     e[index]["unicode"]));
+                                                textEditingController.text +=
+                                                    String.fromCharCode(
+                                                        int.parse(emojiEntity
+                                                                .usedEmoji![
+                                                            index]));
+                                              },
+                                              child: Center(
+                                                child: Text(
+                                                  String.fromCharCode(int.parse(
+                                                      emojiEntity
+                                                          .usedEmoji![index])),
+                                                  style: const TextStyle(
+                                                      fontSize: 33),
+                                                ),
                                               ),
-                                              childrenDelegate:
-                                                  SliverChildBuilderDelegate(
-                                                      ((context, index) {
-                                                return GestureDetector(
-                                                  onTap: () {
-                                                    print(String.fromCharCode(
-                                                        e[index]["unicode"]));
-                                                    textEditingController
-                                                            .text +=
-                                                        String.fromCharCode(
-                                                            e[index]
-                                                                ["unicode"]);
-                                                  },
-                                                  child: Center(
-                                                    child: Text(
-                                                      String.fromCharCode(
-                                                          data[index]
-                                                              ["unicode"]),
-                                                      style: const TextStyle(
-                                                          fontSize: 33),
-                                                    ),
-                                                  ),
-                                                );
-                                              }), childCount: e.length),
                                             );
-                                          }).toList()))
-                                ],
-                              );
+                                          }),
+                                                  childCount: emojiEntity
+                                                      .usedEmoji!.length),
+                                        )
+                                      : GridView(
+                                          gridDelegate:
+                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount:
+                                                (MediaQuery.of(context)
+                                                        .size
+                                                        .width ~/
+                                                    80),
+                                            mainAxisSpacing: 0.5,
+                                            crossAxisSpacing: 6.0,
+                                          ),
+                                        ));
+
+                              // print(_body.length);
+                              // print(_indexList.length);
+
+                              return Column(children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                TabBar(
+                                    // unselectedLabelColor: Colors.grey[300],
+                                    // unselectedLabelStyle:
+                                    //     const TextStyle(color: Colors.grey),
+                                    isScrollable: true,
+                                    controller: _tabcontroller,
+                                    onTap: (i) {
+                                      setState(() {
+                                        _tabcontroller!.index = i;
+                                      });
+                                    },
+                                    tabs: _indexList.map((e) {
+                                      if (e == 0) {
+                                        return Text(
+                                            FlutterI18n.translate(
+                                                context, "label.recentlyUsed"),
+                                            style: const TextStyle(
+                                                color: Colors.blue));
+                                      } else {
+                                        return Text(
+                                          FlutterI18n.translate(
+                                              context, "label.nPage",
+                                              translationParams: {
+                                                'n': (e).toString()
+                                              }),
+                                          style: const TextStyle(
+                                              color: Colors.blue),
+                                        );
+                                      }
+                                    }).toList()),
+                                Expanded(
+                                  child: TabBarView(
+                                      controller: _tabcontroller,
+                                      children: _body),
+                                ),
+                              ]);
                             } else {
                               return const CircularProgressIndicator();
                             }
@@ -270,5 +368,25 @@ class __ChangedMdEditorState extends State<_ChangedMdEditor> {
     return Markdown(
       data: data,
     );
+  }
+}
+
+class _EmojiFutureEntity {
+  List<String>? usedEmoji;
+  String? jsonLikeStr;
+
+  _EmojiFutureEntity({this.usedEmoji, this.jsonLikeStr});
+
+  // ignore: unused_element
+  _EmojiFutureEntity.fromJson(Map<String, dynamic> json) {
+    usedEmoji = json['usedEmoji'].cast<String>();
+    jsonLikeStr = json['jsonLikeStr'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['usedEmoji'] = usedEmoji;
+    data['jsonLikeStr'] = jsonLikeStr;
+    return data;
   }
 }

@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-02 22:00:56
+ * @LastEditTime: 2022-02-03 10:10:05
  */
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +27,7 @@ Future main() async {
   // 获取 theme
 
   WidgetsFlutterBinding.ensureInitialized();
-  List<String>? ls = await getColorData();
+  List<String>? ls = await spGetColorData();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => ThemeController()),
