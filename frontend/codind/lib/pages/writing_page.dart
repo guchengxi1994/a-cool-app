@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-03 17:33:40
+ * @LastEditTime: 2022-02-03 18:51:14
  */
 import 'dart:convert';
 
@@ -44,19 +44,19 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       FocusScope.of(context).requestFocus(focusNode);
-      super.addAction(IconButton(
-        onPressed: () {
-          if (Responsive.isRoughMobile(context)) {
-            _scaffoldKey.currentState!.openEndDrawer();
-          }
-        },
-        tooltip: FlutterI18n.translate(context, "label.preview"),
-        icon: const Icon(
-          Icons.preview,
-          color: Colors.white,
-        ),
-      ));
     });
+
+    super.addAction(IconButton(
+      onPressed: () {
+        if (Responsive.isRoughMobile(context)) {
+          _scaffoldKey.currentState!.openEndDrawer();
+        }
+      },
+      icon: const Icon(
+        Icons.preview,
+        color: Colors.white,
+      ),
+    ));
 
     loadEmojiFuture = getEmojiInfo();
   }
