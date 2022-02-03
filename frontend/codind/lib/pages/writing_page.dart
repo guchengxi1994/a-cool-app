@@ -5,14 +5,16 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-03 11:38:14
+ * @LastEditTime: 2022-02-03 12:31:53
  */
 import 'dart:convert';
 
+import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:provider/provider.dart';
 
 import '_base_page.dart';
 
@@ -60,6 +62,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
     emojiEntity.jsonLikeStr =
         await DefaultAssetBundle.of(context).loadString("assets/emoji.json");
     emojiEntity.usedEmoji = await spGetEmojiData();
+    await context.read<EmojiController>().setEmojis(emojiEntity.usedEmoji);
     setState(() {});
   }
 
@@ -199,16 +202,10 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                         await spAppendColorData(
                                             e[index]["unicode"].toString());
 
-                                        setState(() {
-                                          if (emojiEntity.usedEmoji != null) {
-                                            emojiEntity.usedEmoji!.add(
+                                        await context
+                                            .read<EmojiController>()
+                                            .addEmoji(
                                                 e[index]["unicode"].toString());
-                                          } else {
-                                            emojiEntity.usedEmoji = [
-                                              e[index]["unicode"].toString()
-                                            ];
-                                          }
-                                        });
                                       },
                                       child: Center(
                                         child: Text(
@@ -224,8 +221,10 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
 
                               _body.insert(
                                   0,
-                                  emojiEntity.usedEmoji != null &&
-                                          emojiEntity.usedEmoji!.isNotEmpty
+                                  context
+                                          .watch<EmojiController>()
+                                          .useEmojis
+                                          .isNotEmpty
                                       ? GridView.custom(
                                           // controller: _scrollController,
                                           // physics: ClampingScrollPhysics(),
@@ -250,23 +249,28 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                                 //     e[index]["unicode"]));
                                                 textEditingController.text +=
                                                     String.fromCharCode(
-                                                        int.parse(emojiEntity
-                                                                .usedEmoji![
-                                                            index]));
+                                                        int.parse(context
+                                                            .watch<
+                                                                EmojiController>()
+                                                            .useEmojis[index]));
                                               },
                                               child: Center(
                                                 child: Text(
                                                   String.fromCharCode(int.parse(
-                                                      emojiEntity
-                                                          .usedEmoji![index])),
+                                                      context
+                                                          .watch<
+                                                              EmojiController>()
+                                                          .useEmojis[index])),
                                                   style: const TextStyle(
                                                       fontSize: 33),
                                                 ),
                                               ),
                                             );
                                           }),
-                                                  childCount: emojiEntity
-                                                      .usedEmoji!.length),
+                                                  childCount: context
+                                                      .watch<EmojiController>()
+                                                      .useEmojis
+                                                      .length),
                                         )
                                       : GridView(
                                           gridDelegate:

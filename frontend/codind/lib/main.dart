@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-03 10:10:05
+ * @LastEditTime: 2022-02-03 12:19:52
  */
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +34,9 @@ Future main() async {
       ChangeNotifierProvider(
         create: (_) => MenuController(),
       ),
+      ChangeNotifierProvider(
+        create: (_) => EmojiController(),
+      )
     ],
     child: MyApp(
       flutterI18nDelegate: flutterI18nDelegate,

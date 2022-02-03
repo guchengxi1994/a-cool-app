@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-31 21:06:54
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-02 17:17:28
+ * @LastEditTime: 2022-02-03 12:38:51
 -->
 # code-find
 
@@ -19,6 +19,12 @@
 
 # 部分演示demo
 
-![code_find_01](./docs/code_find_01.gif)
+## 2022.2.3
+
+![code_find_02](./docs/code_find_03.gif)
+
+## 2022.2.2
 
 ![code_find_02](./docs/code_find_02.gif)
+![code_find_01](./docs/code_find_01.gif)
+
