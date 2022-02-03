@@ -1,5 +1,3 @@
-title: "flutter-admin-template for zxx-h5"
-
 label:
   main: "你好，{ user }!"
   localization: "本地化"
@@ -17,6 +15,7 @@ label:
   showEmoji: "选择表情"
   nPage: "第{n}页"
   recentlyUsed: "常用"
+  preview: "预览"
 
 button:
   label:
