@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-03 11:53:34
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-03 12:02:46
+ * @LastEditTime: 2022-02-03 12:59:07
  */
 import 'package:flutter/material.dart';
 
@@ -16,7 +16,7 @@ class EmojiController extends ChangeNotifier {
 
   addEmoji(String s) {
     if (!_usedEmojis.contains(s)) {
-      _usedEmojis.insert(0, s);
+      _usedEmojis.add(s);
     }
     notifyListeners();
   }

@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-03 12:31:53
+ * @LastEditTime: 2022-02-03 13:22:04
  */
 import 'dart:convert';
 
@@ -206,6 +206,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                             .read<EmojiController>()
                                             .addEmoji(
                                                 e[index]["unicode"].toString());
+                                        _globalKey.currentState!.changeData(
+                                            textEditingController.text);
                                       },
                                       child: Center(
                                         child: Text(
@@ -245,14 +247,18 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                                   ((context, index) {
                                             return GestureDetector(
                                               onTap: () {
-                                                // print(String.fromCharCode(
-                                                //     e[index]["unicode"]));
                                                 textEditingController.text +=
                                                     String.fromCharCode(
-                                                        int.parse(context
-                                                            .watch<
-                                                                EmojiController>()
+                                                        int.parse(Provider.of<
+                                                                    EmojiController>(
+                                                                context,
+                                                                listen: false)
                                                             .useEmojis[index]));
+
+                                                _globalKey.currentState!
+                                                    .changeData(
+                                                        textEditingController
+                                                            .text);
                                               },
                                               child: Center(
                                                 child: Text(
