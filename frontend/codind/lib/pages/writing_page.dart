@@ -39,6 +39,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
   _EmojiFutureEntity emojiEntity = _EmojiFutureEntity();
   int _currentIndex = 0;
 
+  late String markdownStr = "";
+
   @override
   void initState() {
     super.initState();
@@ -49,7 +51,13 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
     super.addAction(IconButton(
       onPressed: () {
         if (Responsive.isRoughMobile(context)) {
-          _scaffoldKey.currentState!.openEndDrawer();
+          if (!_scaffoldKey.currentState!.isEndDrawerOpen) {
+            setState(() {
+              markdownStr = textEditingController.text;
+            });
+
+            _scaffoldKey.currentState!.openEndDrawer();
+          }
         }
       },
       icon: const Icon(
@@ -107,7 +115,9 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
         key: _scaffoldKey,
         endDrawer: SizedBox(
           child: Scaffold(
-            body: Markdown(data: textEditingController.text),
+            body: Markdown(
+              data: markdownStr,
+            ),
           ),
           width: 0.8 * MediaQuery.of(context).size.width,
         ),
