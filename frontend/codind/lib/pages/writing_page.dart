@@ -5,20 +5,69 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-04 10:10:34
+ * @LastEditTime: 2022-02-04 10:43:50
  */
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
 
 import '_base_page.dart';
+
+class _EmojiFutureEntity {
+  List<String>? usedEmoji;
+  String? jsonLikeStr;
+
+  _EmojiFutureEntity({this.usedEmoji, this.jsonLikeStr});
+
+  // ignore: unused_element
+  _EmojiFutureEntity.fromJson(Map<String, dynamic> json) {
+    usedEmoji = json['usedEmoji'].cast<String>();
+    jsonLikeStr = json['jsonLikeStr'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['usedEmoji'] = usedEmoji;
+    data['jsonLikeStr'] = jsonLikeStr;
+    return data;
+  }
+}
+
+class _ChangedMdEditor extends StatefulWidget {
+  _ChangedMdEditor({Key? key, this.mdData}) : super(key: key);
+  String? mdData;
+
+  @override
+  State<_ChangedMdEditor> createState() => __ChangedMdEditorState();
+}
+
+class __ChangedMdEditorState extends State<_ChangedMdEditor> {
+  String data = "";
+
+  @override
+  void initState() {
+    super.initState();
+    data = widget.mdData ?? "";
+  }
+
+  changeData(String d) {
+    setState(() {
+      data = d;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Markdown(
+      data: data,
+    );
+  }
+}
 
 class WritingPage extends BasePage {
   WritingPage({Key? key}) : super(key: key);
@@ -165,222 +214,277 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
 
   Widget bottomSheet() {
     return Container(
-      color: Colors.grey[300],
-      child: Row(
-        children: [
-          IconButton(
-              tooltip: FlutterI18n.translate(context, "label.showEmoji"),
-              onPressed: () {
-                // print("我这里重新绘制页面啦");
+        color: Colors.grey[300],
+        child: Row(
+          children: [
+            IconButton(
+                tooltip: FlutterI18n.translate(context, "label.showEmoji"),
+                onPressed: () {
+                  // print("我这里重新绘制页面啦");
 
-                showModalBottomSheet(
-                    enableDrag: false,
-                    context: context,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
+                  showModalBottomSheet(
+                      enableDrag: false,
+                      context: context,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
                       ),
-                    ),
-                    builder: (BuildContext context) {
-                      return FutureBuilder(
-                          future: loadEmojiFuture,
-                          builder: ((context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              List<dynamic> data = json
-                                  .decode(emojiEntity.jsonLikeStr.toString());
+                      builder: (BuildContext context) {
+                        return FutureBuilder(
+                            future: loadEmojiFuture,
+                            builder: ((context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                List<dynamic> data = json
+                                    .decode(emojiEntity.jsonLikeStr.toString());
 
-                              List _lists = splitList(data, 100);
-                              // print(_lists.length);
+                                List _lists = splitList(data, 100);
+                                // print(_lists.length);
 
-                              List<int> _indexList = List<int>.generate(
-                                  _lists.length + 1, (index) => index);
+                                List<int> _indexList = List<int>.generate(
+                                    _lists.length + 1, (index) => index);
 
-                              _tabcontroller = TabController(
-                                  length: _lists.length + 1, vsync: this);
+                                _tabcontroller = TabController(
+                                    length: _lists.length + 1, vsync: this);
 
-                              _tabcontroller!.index = _currentIndex;
+                                _tabcontroller!.index = _currentIndex;
 
-                              List<Widget> _body = _lists.map((e) {
-                                return GridView.custom(
-                                  // controller: _scrollController,
-                                  // physics: ClampingScrollPhysics(),
-                                  padding: const EdgeInsets.all(3),
-                                  shrinkWrap: true,
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount:
-                                        (MediaQuery.of(context).size.width ~/
-                                            80),
-                                    mainAxisSpacing: 0.5,
-                                    crossAxisSpacing: 6.0,
-                                  ),
-                                  childrenDelegate: SliverChildBuilderDelegate(
-                                      ((context, index) {
-                                    return GestureDetector(
-                                      onTap: () async {
-                                        // print(String.fromCharCode(
-                                        //     e[index]["unicode"]));
-                                        textEditingController.text +=
+                                List<Widget> _body = _lists.map((e) {
+                                  return GridView.custom(
+                                    // controller: _scrollController,
+                                    // physics: ClampingScrollPhysics(),
+                                    padding: const EdgeInsets.all(3),
+                                    shrinkWrap: true,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount:
+                                          (MediaQuery.of(context).size.width ~/
+                                              80),
+                                      mainAxisSpacing: 0.5,
+                                      crossAxisSpacing: 6.0,
+                                    ),
+                                    childrenDelegate:
+                                        SliverChildBuilderDelegate(
+                                            ((context, index) {
+                                      return GestureDetector(
+                                        onTap: () async {
+                                          // print(String.fromCharCode(
+                                          //     e[index]["unicode"]));
+                                          textEditingController.text +=
+                                              String.fromCharCode(
+                                                  e[index]["unicode"]);
+                                          await spAppendColorData(
+                                              e[index]["unicode"].toString());
+
+                                          await context
+                                              .read<EmojiController>()
+                                              .addEmoji(e[index]["unicode"]
+                                                  .toString());
+                                          if (Responsive.isRoughDesktop(
+                                              context)) {
+                                            _globalKey.currentState!.changeData(
+                                                textEditingController.text);
+                                          }
+                                        },
+                                        child: Center(
+                                          child: Text(
                                             String.fromCharCode(
-                                                e[index]["unicode"]);
-                                        await spAppendColorData(
-                                            e[index]["unicode"].toString());
-
-                                        await context
-                                            .read<EmojiController>()
-                                            .addEmoji(
-                                                e[index]["unicode"].toString());
-                                        if (Responsive.isRoughDesktop(
-                                            context)) {
-                                          _globalKey.currentState!.changeData(
-                                              textEditingController.text);
-                                        }
-                                      },
-                                      child: Center(
-                                        child: Text(
-                                          String.fromCharCode(
-                                              e[index]["unicode"]),
-                                          style: const TextStyle(fontSize: 33),
+                                                e[index]["unicode"]),
+                                            style:
+                                                const TextStyle(fontSize: 33),
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  }), childCount: e.length),
-                                );
-                              }).toList();
+                                      );
+                                    }), childCount: e.length),
+                                  );
+                                }).toList();
 
-                              _body.insert(
-                                  0,
-                                  context
-                                          .watch<EmojiController>()
-                                          .useEmojis
-                                          .isNotEmpty
-                                      ? GridView.custom(
-                                          // controller: _scrollController,
-                                          // physics: ClampingScrollPhysics(),
-                                          padding: const EdgeInsets.all(3),
-                                          shrinkWrap: true,
-                                          gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount:
-                                                (MediaQuery.of(context)
-                                                        .size
-                                                        .width ~/
-                                                    80),
-                                            mainAxisSpacing: 0.5,
-                                            crossAxisSpacing: 6.0,
-                                          ),
-                                          childrenDelegate:
-                                              SliverChildBuilderDelegate(
-                                                  ((context, index) {
-                                            return GestureDetector(
-                                              onTap: () {
-                                                textEditingController.text +=
+                                _body.insert(
+                                    0,
+                                    context
+                                            .watch<EmojiController>()
+                                            .useEmojis
+                                            .isNotEmpty
+                                        ? GridView.custom(
+                                            // controller: _scrollController,
+                                            // physics: ClampingScrollPhysics(),
+                                            padding: const EdgeInsets.all(3),
+                                            shrinkWrap: true,
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount:
+                                                  (MediaQuery.of(context)
+                                                          .size
+                                                          .width ~/
+                                                      80),
+                                              mainAxisSpacing: 0.5,
+                                              crossAxisSpacing: 6.0,
+                                            ),
+                                            childrenDelegate:
+                                                SliverChildBuilderDelegate(
+                                                    ((context, index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  textEditingController.text +=
+                                                      String.fromCharCode(
+                                                          int.parse(Provider.of<
+                                                                      EmojiController>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .useEmojis[index]));
+
+                                                  if (Responsive.isRoughDesktop(
+                                                      context)) {
+                                                    _globalKey.currentState!
+                                                        .changeData(
+                                                            textEditingController
+                                                                .text);
+                                                  }
+                                                },
+                                                child: Center(
+                                                  child: Text(
                                                     String.fromCharCode(
-                                                        int.parse(Provider.of<
-                                                                    EmojiController>(
-                                                                context,
-                                                                listen: false)
-                                                            .useEmojis[index]));
-
-                                                if (Responsive.isRoughDesktop(
-                                                    context)) {
-                                                  _globalKey.currentState!
-                                                      .changeData(
-                                                          textEditingController
-                                                              .text);
-                                                }
-                                              },
-                                              child: Center(
-                                                child: Text(
-                                                  String.fromCharCode(int.parse(
-                                                      context
-                                                          .watch<
-                                                              EmojiController>()
-                                                          .useEmojis[index])),
-                                                  style: const TextStyle(
-                                                      fontSize: 33),
+                                                        int.parse(context
+                                                            .watch<
+                                                                EmojiController>()
+                                                            .useEmojis[index])),
+                                                    style: const TextStyle(
+                                                        fontSize: 33),
+                                                  ),
                                                 ),
-                                              ),
-                                            );
-                                          }),
-                                                  childCount: context
-                                                      .watch<EmojiController>()
-                                                      .useEmojis
-                                                      .length),
-                                        )
-                                      : GridView(
-                                          gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount:
-                                                (MediaQuery.of(context)
-                                                        .size
-                                                        .width ~/
-                                                    80),
-                                            mainAxisSpacing: 0.5,
-                                            crossAxisSpacing: 6.0,
-                                          ),
-                                        ));
+                                              );
+                                            }),
+                                                    childCount: context
+                                                        .watch<
+                                                            EmojiController>()
+                                                        .useEmojis
+                                                        .length),
+                                          )
+                                        : GridView(
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount:
+                                                  (MediaQuery.of(context)
+                                                          .size
+                                                          .width ~/
+                                                      80),
+                                              mainAxisSpacing: 0.5,
+                                              crossAxisSpacing: 6.0,
+                                            ),
+                                          ));
 
-                              // print(_body.length);
-                              // print(_indexList.length);
-
-                              return Column(children: [
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                TabBar(
-                                    // unselectedLabelColor: Colors.grey[300],
-                                    // unselectedLabelStyle:
-                                    //     const TextStyle(color: Colors.grey),
-                                    isScrollable: true,
-                                    controller: _tabcontroller,
-                                    onTap: (i) {
-                                      setState(() {
-                                        _tabcontroller!.index = i;
-                                        _currentIndex = i;
-                                      });
-                                    },
-                                    tabs: _indexList.map((e) {
-                                      if (e == 0) {
-                                        return Text(
-                                            FlutterI18n.translate(
-                                                context, "label.recentlyUsed"),
-                                            style: const TextStyle(
-                                                color: Colors.blue));
-                                      } else {
-                                        return Text(
-                                          FlutterI18n.translate(
-                                              context, "label.nPage",
-                                              translationParams: {
-                                                'n': (e).toString()
-                                              }),
-                                          style: const TextStyle(
-                                              color: Colors.blue),
-                                        );
-                                      }
-                                    }).toList()),
-                                Expanded(
-                                  child: TabBarView(
+                                return Column(children: [
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  TabBar(
+                                      isScrollable: true,
                                       controller: _tabcontroller,
-                                      children: _body),
-                                ),
-                              ]);
-                            } else {
-                              return const CircularProgressIndicator();
-                            }
-                          }));
-                    });
-              },
-              icon: const Icon(
-                Icons.emoji_emotions,
-                color: Colors.orangeAccent,
-              )),
-          IconButton(
-              tooltip: FlutterI18n.translate(context, "label.font"),
-              onPressed: () {
-                showModalBottomSheet(
+                                      onTap: (i) {
+                                        setState(() {
+                                          _tabcontroller!.index = i;
+                                          _currentIndex = i;
+                                        });
+                                      },
+                                      tabs: _indexList.map((e) {
+                                        if (e == 0) {
+                                          return Text(
+                                              FlutterI18n.translate(context,
+                                                  "label.recentlyUsed"),
+                                              style: const TextStyle(
+                                                  color: Colors.blue));
+                                        } else {
+                                          return Text(
+                                            FlutterI18n.translate(
+                                                context, "label.nPage",
+                                                translationParams: {
+                                                  'n': (e).toString()
+                                                }),
+                                            style: const TextStyle(
+                                                color: Colors.blue),
+                                          );
+                                        }
+                                      }).toList()),
+                                  Expanded(
+                                    child: TabBarView(
+                                        controller: _tabcontroller,
+                                        children: _body),
+                                  ),
+                                ]);
+                              } else {
+                                return const CircularProgressIndicator();
+                              }
+                            }));
+                      });
+                },
+                icon: const Icon(
+                  Icons.emoji_emotions,
+                  color: Colors.orangeAccent,
+                )),
+            IconButton(
+                tooltip: FlutterI18n.translate(context, "label.font"),
+                onPressed: () {
+                  showModalBottomSheet(
+                      enableDrag: false,
+                      context: context,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                      builder: (context) {
+                        return SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const Text("字体大小"),
+                                  PopupMenuButton(
+                                      icon: SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: Image.asset(
+                                            "assets/icons/details.png"),
+                                      ),
+                                      itemBuilder: (_) {
+                                        List<int> _indexList =
+                                            List<int>.generate(
+                                                10, (index) => 14 + index);
+                                        return _indexList.map((e) {
+                                          return PopupMenuItem(
+                                              onTap: () {
+                                                setState(() {
+                                                  fontSize = e * 1.0;
+                                                });
+                                              },
+                                              child: Text(e.toString()));
+                                        }).toList();
+                                      })
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      });
+                },
+                icon: const Icon(Icons.font_download)),
+            IconButton(
+              icon: SizedBox(
+                height: 20,
+                width: 20,
+                child: Image.asset("assets/icons/cursor.png"),
+              ),
+              onPressed: () async {
+                int? result = await showModalBottomSheet(
                     enableDrag: false,
                     context: context,
                     shape: const RoundedRectangleBorder(
@@ -400,279 +504,129 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text("字体大小"),
+                                Text("插入标题"),
                                 PopupMenuButton(
                                     icon: SizedBox(
                                       width: 20,
                                       height: 20,
-                                      child: Image.asset(
-                                          "assets/icons/details.png"),
+                                      child:
+                                          Image.asset("assets/icons/head.png"),
                                     ),
                                     itemBuilder: (_) {
-                                      List<int> _indexList = List<int>.generate(
-                                          10, (index) => 14 + index);
-                                      return _indexList.map((e) {
-                                        return PopupMenuItem(
-                                            onTap: () {
-                                              setState(() {
-                                                fontSize = e * 1.0;
-                                              });
-                                            },
-                                            child: Text(e.toString()));
-                                      }).toList();
+                                      return [
+                                        PopupMenuItem(
+                                            child: TextButton(
+                                          onPressed: () {
+                                            textEditingController.text +=
+                                                "\n# ";
+                                          },
+                                          child: Text("插入一级标题"),
+                                        )),
+                                        PopupMenuItem(
+                                            child: TextButton(
+                                          onPressed: () {
+                                            textEditingController.text +=
+                                                "\n## ";
+                                          },
+                                          child: Text("插入二级标题"),
+                                        )),
+                                        PopupMenuItem(
+                                            child: TextButton(
+                                          onPressed: () {
+                                            textEditingController.text +=
+                                                "\n### ";
+                                          },
+                                          child: Text("插入三级标题"),
+                                        )),
+                                        PopupMenuItem(
+                                            child: TextButton(
+                                          onPressed: () {
+                                            textEditingController.text +=
+                                                "\n#### ";
+                                          },
+                                          child: Text("插入四级标题"),
+                                        )),
+                                        PopupMenuItem(
+                                            child: TextButton(
+                                          onPressed: () {
+                                            textEditingController.text +=
+                                                "\n##### ";
+                                          },
+                                          child: Text("插入五级标题"),
+                                        )),
+                                        PopupMenuItem(
+                                            child: TextButton(
+                                          onPressed: () {
+                                            textEditingController.text +=
+                                                "\n###### ";
+                                          },
+                                          child: Text("插入六级标题"),
+                                        )),
+                                      ];
                                     })
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const Text("插入样式"),
+                                PopupMenuButton(
+                                    onSelected: ((value) {
+                                      if (value == "\n***\n") {
+                                        textEditingController.text +=
+                                            value.toString();
+                                        Navigator.of(context).pop(null);
+                                      } else {
+                                        if (value != null) {
+                                          textEditingController.text +=
+                                              value.toString();
+                                          Navigator.of(context).pop(
+                                              value.toString().length * 0.5);
+                                        } else {
+                                          Navigator.of(context).pop(null);
+                                        }
+                                      }
+                                    }),
+                                    icon: SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: Image.asset("assets/icons/ct.png"),
+                                    ),
+                                    itemBuilder: (_) {
+                                      return [
+                                        const PopupMenuItem(
+                                          value: "****",
+                                          child: Text("插入粗体"),
+                                        ),
+                                        const PopupMenuItem(
+                                          value: "**",
+                                          child: Text("插入斜体"),
+                                        ),
+                                        const PopupMenuItem(
+                                          value: "******",
+                                          child: Text("插入粗斜体"),
+                                        ),
+                                        const PopupMenuItem(
+                                            value: "\n***\n",
+                                            child: Text("插入分割线")),
+                                      ];
+                                    }),
                               ],
                             ),
                           ],
                         ),
                       );
                     });
+
+                if (result != null) {
+                  FocusScope.of(context).requestFocus(focusNode);
+                  textEditingController.selection = TextSelection(
+                      baseOffset: textEditingController.text.length - result,
+                      extentOffset: textEditingController.text.length - result);
+                }
               },
-              icon: const Icon(Icons.font_download)),
-          IconButton(
-            onPressed: () async {
-              int? result = await showModalBottomSheet(
-                  enableDrag: false,
-                  context: context,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  builder: (context) {
-                    return SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text("插入标题"),
-                              PopupMenuButton(
-                                  icon: SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: Image.asset("assets/icons/head.png"),
-                                  ),
-                                  itemBuilder: (_) {
-                                    return [
-                                      PopupMenuItem(
-                                          child: TextButton(
-                                        onPressed: () {
-                                          textEditingController.text += "\n# ";
-                                        },
-                                        child: Text("插入一级标题"),
-                                      )),
-                                      PopupMenuItem(
-                                          child: TextButton(
-                                        onPressed: () {
-                                          textEditingController.text += "\n## ";
-                                        },
-                                        child: Text("插入二级标题"),
-                                      )),
-                                      PopupMenuItem(
-                                          child: TextButton(
-                                        onPressed: () {
-                                          textEditingController.text +=
-                                              "\n### ";
-                                        },
-                                        child: Text("插入三级标题"),
-                                      )),
-                                      PopupMenuItem(
-                                          child: TextButton(
-                                        onPressed: () {
-                                          textEditingController.text +=
-                                              "\n#### ";
-                                        },
-                                        child: Text("插入四级标题"),
-                                      )),
-                                      PopupMenuItem(
-                                          child: TextButton(
-                                        onPressed: () {
-                                          textEditingController.text +=
-                                              "\n##### ";
-                                        },
-                                        child: Text("插入五级标题"),
-                                      )),
-                                      PopupMenuItem(
-                                          child: TextButton(
-                                        onPressed: () {
-                                          textEditingController.text +=
-                                              "\n###### ";
-                                        },
-                                        child: Text("插入六级标题"),
-                                      )),
-                                    ];
-                                  })
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              const Text("插入样式"),
-                              PopupMenuButton(
-                                  onSelected: ((value) {
-                                    if (value=="\n***\n"){
-                                      textEditingController.text += value.toString();
-                                      Navigator.of(context).pop(null);
-                                    }else{
-                                      if (value!=null){
-                                      textEditingController.text += value.toString();
-                                      Navigator.of(context).pop(value.toString().length*0.5);
-                                    }else{
-                                      Navigator.of(context).pop(null);
-                                    }
-                                    }
-                                    
-                                  }),
-                                  icon: SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: Image.asset("assets/icons/ct.png"),
-                                  ),
-                                  itemBuilder: (_) {
-                                    return [
-                                      const PopupMenuItem(
-                                        value: "****",
-                                        child: Text("插入粗体"),
-                                        // child: TextButton(
-                                        //   onPressed: () {
-                                        //     textEditingController.text +=
-                                        //         "****";
-                                        //     textEditingController.selection =
-                                        //         TextSelection(
-                                        //             baseOffset:
-                                        //                 textEditingController
-                                        //                         .text.length -
-                                        //                     2,
-                                        //             extentOffset:
-                                        //                 textEditingController
-                                        //                         .text.length -
-                                        //                     2);
-                                        //     Navigator.of(context).pop();
-                                        //   },
-                                        //   child: Text("插入粗体"),
-                                        // )
-                                      ),
-                                      const PopupMenuItem(
-                                        value: "**"
-                                        child: Text("插入斜体"),
-                                        //     child: TextButton(
-                                        //   onPressed: () {
-                                        //     textEditingController.text += "* *";
-                                        //   },
-                                        //   child: Text("插入斜体"),
-                                        // )
-                                      ),
-                                      const PopupMenuItem(
-                                        value: "******",
-                                        child: Text("插入粗斜体"),
-                                        //     child: TextButton(
-                                        //   onPressed: () {
-                                        //     textEditingController.text +=
-                                        //         "*** ***";
-                                        //   },
-                                        //   child: Text("插入粗斜体"),
-                                        // )
-                                      ),
-                                      const PopupMenuItem(
-                                        value: "\n***\n",
-                                        child: Text("插入分割线")
-                                      //     child: TextButton(
-                                      //   onPressed: () {
-                                      //     textEditingController.text +=
-                                      //         "\n***\n";
-                                      //   },
-                                      //   child: Text("插入分割线"),
-                                      // )
-                                      ),
-                                    ];
-                                  }),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  });
-              // print(result);
-              if (result!=null){
-                FocusScope.of(context).requestFocus(focusNode);
-                         textEditingController.selection =
-                                                TextSelection(
-                                                    baseOffset:
-                                                        textEditingController
-                                                                .text.length -
-                                                            result,
-                                                    extentOffset:
-                                                        textEditingController
-                                                                .text.length -
-                                                            result);
-                                                          
-              }
-            },
-            icon: SizedBox(
-              height: 20,
-              width: 20,
-              child: Image.asset("assets/icons/cursor.png"),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ChangedMdEditor extends StatefulWidget {
-  _ChangedMdEditor({Key? key, this.mdData}) : super(key: key);
-  String? mdData;
-
-  @override
-  State<_ChangedMdEditor> createState() => __ChangedMdEditorState();
-}
-
-class __ChangedMdEditorState extends State<_ChangedMdEditor> {
-  String data = "";
-
-  @override
-  void initState() {
-    super.initState();
-    data = widget.mdData ?? "";
-  }
-
-  changeData(String d) {
-    setState(() {
-      data = d;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Markdown(
-      data: data,
-    );
-  }
-}
-
-class _EmojiFutureEntity {
-  List<String>? usedEmoji;
-  String? jsonLikeStr;
-
-  _EmojiFutureEntity({this.usedEmoji, this.jsonLikeStr});
-
-  // ignore: unused_element
-  _EmojiFutureEntity.fromJson(Map<String, dynamic> json) {
-    usedEmoji = json['usedEmoji'].cast<String>();
-    jsonLikeStr = json['jsonLikeStr'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['usedEmoji'] = usedEmoji;
-    data['jsonLikeStr'] = jsonLikeStr;
-    return data;
+          ],
+        ));
   }
 }
