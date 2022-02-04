@@ -5,13 +5,15 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-03 22:43:44
+ * @LastEditTime: 2022-02-04 10:10:34
  */
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
@@ -428,8 +430,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
               },
               icon: const Icon(Icons.font_download)),
           IconButton(
-            onPressed: () {
-              showModalBottomSheet(
+            onPressed: () async {
+              int? result = await showModalBottomSheet(
                   enableDrag: false,
                   context: context,
                   shape: const RoundedRectangleBorder(
@@ -511,8 +513,22 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text("插入样式"),
+                              const Text("插入样式"),
                               PopupMenuButton(
+                                  onSelected: ((value) {
+                                    if (value=="\n***\n"){
+                                      textEditingController.text += value.toString();
+                                      Navigator.of(context).pop(null);
+                                    }else{
+                                      if (value!=null){
+                                      textEditingController.text += value.toString();
+                                      Navigator.of(context).pop(value.toString().length*0.5);
+                                    }else{
+                                      Navigator.of(context).pop(null);
+                                    }
+                                    }
+                                    
+                                  }),
                                   icon: SizedBox(
                                     width: 20,
                                     height: 20,
@@ -520,36 +536,60 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                   ),
                                   itemBuilder: (_) {
                                     return [
-                                      PopupMenuItem(
-                                          child: TextButton(
-                                        onPressed: () {
-                                          textEditingController.text += "** **";
-                                        },
+                                      const PopupMenuItem(
+                                        value: "****",
                                         child: Text("插入粗体"),
-                                      )),
-                                      PopupMenuItem(
-                                          child: TextButton(
-                                        onPressed: () {
-                                          textEditingController.text += "* *";
-                                        },
+                                        // child: TextButton(
+                                        //   onPressed: () {
+                                        //     textEditingController.text +=
+                                        //         "****";
+                                        //     textEditingController.selection =
+                                        //         TextSelection(
+                                        //             baseOffset:
+                                        //                 textEditingController
+                                        //                         .text.length -
+                                        //                     2,
+                                        //             extentOffset:
+                                        //                 textEditingController
+                                        //                         .text.length -
+                                        //                     2);
+                                        //     Navigator.of(context).pop();
+                                        //   },
+                                        //   child: Text("插入粗体"),
+                                        // )
+                                      ),
+                                      const PopupMenuItem(
+                                        value: "**"
                                         child: Text("插入斜体"),
-                                      )),
-                                      PopupMenuItem(
-                                          child: TextButton(
-                                        onPressed: () {
-                                          textEditingController.text +=
-                                              "*** ***";
-                                        },
+                                        //     child: TextButton(
+                                        //   onPressed: () {
+                                        //     textEditingController.text += "* *";
+                                        //   },
+                                        //   child: Text("插入斜体"),
+                                        // )
+                                      ),
+                                      const PopupMenuItem(
+                                        value: "******",
                                         child: Text("插入粗斜体"),
-                                      )),
-                                      PopupMenuItem(
-                                          child: TextButton(
-                                        onPressed: () {
-                                          textEditingController.text +=
-                                              "\n***\n";
-                                        },
-                                        child: Text("插入分割线"),
-                                      )),
+                                        //     child: TextButton(
+                                        //   onPressed: () {
+                                        //     textEditingController.text +=
+                                        //         "*** ***";
+                                        //   },
+                                        //   child: Text("插入粗斜体"),
+                                        // )
+                                      ),
+                                      const PopupMenuItem(
+                                        value: "\n***\n",
+                                        child: Text("插入分割线")
+                                      //     child: TextButton(
+                                      //   onPressed: () {
+                                      //     textEditingController.text +=
+                                      //         "\n***\n";
+                                      //   },
+                                      //   child: Text("插入分割线"),
+                                      // )
+                                      ),
                                     ];
                                   }),
                             ],
@@ -558,6 +598,21 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                       ),
                     );
                   });
+              // print(result);
+              if (result!=null){
+                FocusScope.of(context).requestFocus(focusNode);
+                         textEditingController.selection =
+                                                TextSelection(
+                                                    baseOffset:
+                                                        textEditingController
+                                                                .text.length -
+                                                            result,
+                                                    extentOffset:
+                                                        textEditingController
+                                                                .text.length -
+                                                            result);
+                                                          
+              }
             },
             icon: SizedBox(
               height: 20,
