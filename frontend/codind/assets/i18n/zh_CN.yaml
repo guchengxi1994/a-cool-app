@@ -16,6 +16,9 @@ label:
   nPage: "第{n}页"
   recentlyUsed: "常用"
   preview: "预览"
+  font: "字体"
+  insert: "插入..."
+  link: "超链接..."
 
 button:
   label:
