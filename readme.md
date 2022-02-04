@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-31 21:06:54
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-03 12:38:51
+ * @LastEditTime: 2022-02-04 11:42:36
 -->
 # code-find
 
@@ -21,10 +21,10 @@
 
 ## 2022.2.3
 
-![code_find_02](./docs/code_find_03.gif)
+![code_find_03](https://gitee.com/guchengxi1994/xiaoshuyui_doc/raw/master/code-find/code_find_03.gif)
 
 ## 2022.2.2
 
-![code_find_02](./docs/code_find_02.gif)
-![code_find_01](./docs/code_find_01.gif)
+![code_find_02](https://gitee.com/guchengxi1994/xiaoshuyui_doc/raw/master/code-find/code_find_02.gif)
+![code_find_01](https://gitee.com/guchengxi1994/xiaoshuyui_doc/raw/master/code-find/code_find_01.gif)
 

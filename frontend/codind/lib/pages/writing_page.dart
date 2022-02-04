@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-04 10:43:50
+ * @LastEditTime: 2022-02-04 11:26:36
  */
 import 'dart:convert';
 
@@ -478,6 +478,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                 },
                 icon: const Icon(Icons.font_download)),
             IconButton(
+              tooltip: FlutterI18n.translate(context, "label.insert"),
               icon: SizedBox(
                 height: 20,
                 width: 20,
@@ -504,8 +505,9 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text("插入标题"),
+                                const Text("插入标题"),
                                 PopupMenuButton(
+                                    tooltip: "",
                                     icon: SizedBox(
                                       width: 20,
                                       height: 20,
@@ -520,7 +522,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                             textEditingController.text +=
                                                 "\n# ";
                                           },
-                                          child: Text("插入一级标题"),
+                                          child: const Text("插入一级标题"),
                                         )),
                                         PopupMenuItem(
                                             child: TextButton(
@@ -528,7 +530,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                             textEditingController.text +=
                                                 "\n## ";
                                           },
-                                          child: Text("插入二级标题"),
+                                          child: const Text("插入二级标题"),
                                         )),
                                         PopupMenuItem(
                                             child: TextButton(
@@ -536,7 +538,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                             textEditingController.text +=
                                                 "\n### ";
                                           },
-                                          child: Text("插入三级标题"),
+                                          child: const Text("插入三级标题"),
                                         )),
                                         PopupMenuItem(
                                             child: TextButton(
@@ -544,7 +546,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                             textEditingController.text +=
                                                 "\n#### ";
                                           },
-                                          child: Text("插入四级标题"),
+                                          child: const Text("插入四级标题"),
                                         )),
                                         PopupMenuItem(
                                             child: TextButton(
@@ -552,7 +554,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                             textEditingController.text +=
                                                 "\n##### ";
                                           },
-                                          child: Text("插入五级标题"),
+                                          child: const Text("插入五级标题"),
                                         )),
                                         PopupMenuItem(
                                             child: TextButton(
@@ -560,7 +562,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                             textEditingController.text +=
                                                 "\n###### ";
                                           },
-                                          child: Text("插入六级标题"),
+                                          child: const Text("插入六级标题"),
                                         )),
                                       ];
                                     })
@@ -571,6 +573,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                               children: [
                                 const Text("插入样式"),
                                 PopupMenuButton(
+                                    tooltip: "",
                                     onSelected: ((value) {
                                       if (value == "\n***\n") {
                                         textEditingController.text +=
@@ -607,6 +610,10 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                           child: Text("插入粗斜体"),
                                         ),
                                         const PopupMenuItem(
+                                          value: "~~~~",
+                                          child: Text("插入删除线"),
+                                        ),
+                                        const PopupMenuItem(
                                             value: "\n***\n",
                                             child: Text("插入分割线")),
                                       ];
@@ -626,6 +633,58 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                 }
               },
             ),
+            IconButton(
+                tooltip: FlutterI18n.translate(context, "label.link"),
+                onPressed: () {
+                  showModalBottomSheet(
+                      enableDrag: false,
+                      context: context,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                      builder: (context) {
+                        return SingleChildScrollView(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text("插入图片链接"),
+                                  IconButton(
+                                      onPressed: () {
+                                        textEditingController.text += "![]()";
+                                      },
+                                      icon: const Icon(Icons.add)),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text("插入网络链接"),
+                                  IconButton(
+                                      onPressed: () {
+                                        textEditingController.text += "[]()";
+                                      },
+                                      icon: const Icon(Icons.add)),
+                                ],
+                              )
+                            ]));
+                      });
+                },
+                icon: SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: Image.asset("assets/icons/link.png"),
+                ))
           ],
         ));
   }

@@ -20,6 +20,8 @@ label:
   recentlyUsed: "Recently used"
   preview: "Preview"
   font: "Font"
+  insert: "Insert ..."
+  link: "Link ..."
 
 # Objects can be many levels deep
 button:
