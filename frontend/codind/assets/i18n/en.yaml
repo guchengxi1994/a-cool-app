@@ -22,6 +22,8 @@ label:
   font: "Font"
   insert: "Insert ..."
   link: "Link ..."
+  insertList: "Insert list ..."
+  insertTable: "Insert Table ..."
 
 # Objects can be many levels deep
 button:
