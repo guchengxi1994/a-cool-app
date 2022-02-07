@@ -15,6 +15,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import '_base_page.dart';
 import '_base_preview_page.dart';
 
+// ignore: must_be_immutable
 class LearningComparePage extends BasePage {
   LearningComparePage({Key? key, required this.left, this.right})
       : super(key: key);

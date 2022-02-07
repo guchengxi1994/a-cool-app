@@ -1,0 +1,42 @@
+{
+    "name": "root",
+    "children": [
+        {
+            "name": "aaa.md",
+            "savePath": "aaa.md",
+            "tags": [
+                "deep learning",
+                "useful tool"
+            ],
+            "fatherPath": "root",
+            "timestamp": "2022-02-07 9:09:10",
+            "depth": 0
+        },
+        {
+            "name": "folder_aaa",
+            "children": [
+                {
+                    "name": "bbb.md",
+                    "savePath": "bbb.md",
+                    "tags": [
+                        "deep learning",
+                        "useful tool"
+                    ],
+                    "fatherPath": "folder_aaa",
+                    "timestamp": "2022-02-07 9:09:11",
+                    "depth": 1
+                },
+                {
+                    "name": "folder_bbb",
+                    "children": [],
+                    "fatherPath": "folder_aaa",
+                    "depth": 1
+                }
+            ],
+            "fatherPath": "root",
+            "depth": 0
+        }
+    ],
+    "depth": 0,
+    "fatherPath": ""
+}
