@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
+
 /*
  * @Descripttion: 
  * @version: 
@@ -5,12 +7,13 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-04 11:26:36
+ * @LastEditTime: 2022-02-05 11:08:25
  */
 import 'dart:convert';
 
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -91,6 +94,9 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
   int _currentIndex = 0;
   double fontSize = 14;
 
+  late TextEditingController? _controllerRow;
+  late TextEditingController? _controllerColumn;
+
   late String markdownStr = "";
 
   @override
@@ -136,6 +142,10 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
     focusNode.dispose();
     if (_tabcontroller != null) {
       _tabcontroller!.dispose();
+    }
+    if (_controllerRow != null) {
+      _controllerRow!.dispose();
+      _controllerColumn!.dispose();
     }
     super.dispose();
   }
@@ -684,8 +694,144 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                   height: 20,
                   width: 20,
                   child: Image.asset("assets/icons/link.png"),
-                ))
+                )),
+            IconButton(
+                tooltip: FlutterI18n.translate(context, "label.insertList"),
+                onPressed: () {
+                  textEditingController.text += "\n* ";
+                },
+                icon: const Icon(Icons.list)),
+            IconButton(
+                tooltip: FlutterI18n.translate(context, "label.insertTable"),
+                onPressed: () async {
+                  // textEditingController.text += "\n* ";
+                  _controllerRow = TextEditingController();
+                  _controllerColumn = TextEditingController();
+                  List? result = await showCupertinoDialog(
+                      context: context,
+                      builder: (context) {
+                        return CupertinoAlertDialog(
+                          title: Text("选择表格尺寸"),
+                          content: Card(
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text("行"),
+                                    SizedBox(
+                                      height: 30,
+                                      width: 50,
+                                      child: TextField(
+                                        decoration: InputDecoration(
+                                            contentPadding:
+                                                const EdgeInsets.all(10.0),
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(3.0),
+                                            )),
+                                        controller: _controllerRow,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text("列"),
+                                    SizedBox(
+                                      height: 30,
+                                      width: 50,
+                                      child: TextField(
+                                        decoration: InputDecoration(
+                                            contentPadding:
+                                                const EdgeInsets.all(10.0),
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(3.0),
+                                            )),
+                                        controller: _controllerColumn,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                              ],
+                            ),
+                          ),
+                          actions: [
+                            CupertinoActionSheetAction(
+                                onPressed: () {
+                                  int? rowNumber;
+                                  int? columnNumber;
+                                  try {
+                                    rowNumber = int.parse(_controllerRow!.text);
+                                    columnNumber =
+                                        int.parse(_controllerColumn!.text);
+                                  } catch (e) {
+                                    rowNumber = null;
+                                    columnNumber = null;
+                                  }
+                                  Navigator.of(context)
+                                      .pop([rowNumber, columnNumber]);
+                                },
+                                child: Text(FlutterI18n.translate(
+                                    context, "button.label.ok"))),
+                            CupertinoActionSheetAction(
+                                onPressed: () {
+                                  Navigator.of(context).pop(null);
+                                },
+                                child: Text(FlutterI18n.translate(
+                                    context, "button.label.quit"))),
+                          ],
+                        );
+                      });
+                  if (result != null &&
+                      result[0] != null &&
+                      result[1] != null) {
+                    textEditingController.text +=
+                        convertTabelScaleToString(result[0], result[1]);
+                  } else {
+                    showToastMessage("行列数值错误", null);
+                  }
+                },
+                icon: const Icon(Icons.table_chart)),
           ],
         ));
   }
+}
+
+String convertTabelScaleToString(int rowNumber, int columnNumber) {
+  if (rowNumber <= 0) rowNumber = 1;
+  if (columnNumber <= 0) columnNumber = 1;
+  String titleStr = "|";
+  for (int i = 0; i < columnNumber; i++) {
+    titleStr += "表头 |";
+  }
+  titleStr += "\n";
+  String subTitleStr = "|";
+  for (int i = 0; i < columnNumber; i++) {
+    subTitleStr += "---- |";
+  }
+  subTitleStr += '\n';
+
+  String contentStr = "";
+  for (int i = 0; i < rowNumber; i++) {
+    contentStr += '|';
+    for (int j = 0; j < columnNumber; j++) {
+      contentStr += "单元格 |";
+    }
+    contentStr += "\n";
+  }
+  return titleStr + subTitleStr + contentStr;
 }

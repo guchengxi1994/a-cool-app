@@ -19,6 +19,8 @@ label:
   font: "字体"
   insert: "插入..."
   link: "超链接..."
+  insertList: "插入无序列表..."
+  insertTable: "插入表格..."
 
 button:
   label:

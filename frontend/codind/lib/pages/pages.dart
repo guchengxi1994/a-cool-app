@@ -10,3 +10,4 @@
 export './main_page.dart';
 export './setting_page.dart';
 export './writing_page.dart';
+export './file_explore_page.dart';
