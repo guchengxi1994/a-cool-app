@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-31 21:06:54
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-05 11:41:29
+ * @LastEditTime: 2022-02-07 20:19:07
 -->
 # code-find
 
@@ -18,6 +18,10 @@
 # [后端说明](./backend/README.md)
 
 # 部分演示demo
+
+## 2022.2.7 一个简易的文件管理页面
+
+![code_find_04](https://github.com/guchengxi1994/xiaoshuyui_docs/raw/main/code-find/code_find_05.gif)
 
 ## 2022.2.5
 
