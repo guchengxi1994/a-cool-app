@@ -10,6 +10,10 @@
  * @LastEditTime: 2022-02-06 10:18:37
  */
 
+import 'dart:convert';
+
+// import 'package:codind/utils/utils.dart';
+
 enum FileType { folder, file }
 
 class CanOperateFiles {
@@ -140,6 +144,72 @@ class EntityFile {
       return (other as EntityFile).name == name && (other).depth == depth;
     } else {
       return false;
+    }
+  }
+}
+
+EntityFolder? fromJsonToEntityAdd(String jsonStr, String fatherPath, int depth,
+    Object object, String originJsonStr) {
+  if (object.runtimeType != EntityFile && object.runtimeType != EntityFolder) {
+    // showToastMessage("输入的类型不符", null);
+    print("输入的类型不符");
+    return null;
+  }
+  // print(jsonStr);
+  Map<String, dynamic> data = json.decode(jsonStr);
+  EntityFolder entityFolder = EntityFolder.fromJson(data);
+  if (fatherPath == "root") {
+    CanOperateFiles canOperateFiles = entityFolder.addFile(object);
+    if (!canOperateFiles.canOperate) {
+      // showToastMessage(canOperateFiles.message ?? "error", null);
+      print(canOperateFiles.message ?? "error");
+      return null;
+    } else {
+      return entityFolder;
+    }
+  } else {
+    String fath = fatherPath.split("/").last;
+    // EntityFolder _entity = entityFolder;
+
+    if (fath == entityFolder.fatherPath && depth == entityFolder.depth + 1) {
+      CanOperateFiles canOperateFiles = entityFolder.addFile(object);
+      if (!canOperateFiles.canOperate) {
+        // showToastMessage(canOperateFiles.message ?? "error", null);
+        print(canOperateFiles.message ?? "error");
+        return null;
+      } else {
+        var _s = originJsonStr.replaceAll(
+            jsonStr, json.encode(entityFolder.toJson()));
+        return EntityFolder.fromJson(json.decode(_s));
+      }
+    } else {
+      var _list =
+          entityFolder.children.where((e) => e.runtimeType == EntityFolder);
+      for (var j in _list) {
+        if (depth == (j as EntityFolder).depth + 1 && fatherPath == fath) {
+          EntityFolder _j = j;
+          CanOperateFiles canOperateFiles = _j.addFile(object);
+          if (canOperateFiles.canOperate) {
+            entityFolder.children.remove(j);
+            entityFolder.children.add(_j);
+          } else {
+            print("error");
+          }
+          break;
+        } else {
+          return fromJsonToEntityAdd(
+              jsonEncode((j).toJson()), fath, depth, object, originJsonStr);
+        }
+      }
+      print(jsonStr);
+      print(json.encode(entityFolder.toJson()));
+      Map<String, dynamic> _data = json.decode(originJsonStr);
+
+      print(originJsonStr.contains(jsonStr));
+
+      String _s = originJsonStr.replaceFirst(
+          jsonStr, json.encode(entityFolder.toJson()));
+      return EntityFolder.fromJson(json.decode(_s));
     }
   }
 }

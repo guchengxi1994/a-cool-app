@@ -53,3 +53,18 @@ Future<void> spAppendColorData(String emoji) async {
 
   _preferences.setStringList("emoji", res);
 }
+
+Future<String> spGetFolderStructure() async {
+  SharedPreferences _preferences = await SharedPreferences.getInstance();
+  var res = _preferences.getString("fileStructure");
+  if (res == null) {
+    return "";
+  } else {
+    return res;
+  }
+}
+
+Future<void> spSetFolderStructure(String s) async {
+  SharedPreferences _preferences = await SharedPreferences.getInstance();
+  await _preferences.setString("fileStructure", s);
+}

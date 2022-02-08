@@ -28,7 +28,16 @@
                 },
                 {
                     "name": "folder_bbb",
-                    "children": [],
+                    "children": [
+                        {
+                            "name": "folder_ccc",
+                            "children": [
+                                
+                            ],
+                            "fatherPath": "folder_bbb",
+                            "depth": 2
+                        }
+                    ],
                     "fatherPath": "folder_aaa",
                     "depth": 1
                 }
