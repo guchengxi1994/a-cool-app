@@ -10,7 +10,7 @@
             ],
             "fatherPath": "root",
             "timestamp": "2022-02-07 9:09:10",
-            "depth": 0
+            "depth": 1
         },
         {
             "name": "folder_aaa",
@@ -24,7 +24,7 @@
                     ],
                     "fatherPath": "folder_aaa",
                     "timestamp": "2022-02-07 9:09:11",
-                    "depth": 1
+                    "depth": 2
                 },
                 {
                     "name": "folder_bbb",
@@ -35,15 +35,15 @@
                                 
                             ],
                             "fatherPath": "folder_bbb",
-                            "depth": 2
+                            "depth": 3
                         }
                     ],
                     "fatherPath": "folder_aaa",
-                    "depth": 1
+                    "depth": 2
                 }
             ],
             "fatherPath": "root",
-            "depth": 0
+            "depth": 1
         }
     ],
     "depth": 0,

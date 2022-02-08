@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:codind/entity/file_entity.dart';
 import 'package:codind/pages/_loading_page_mixin.dart';
 import 'package:codind/utils/common.dart';
+import 'package:codind/utils/shared_preference_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -18,7 +19,6 @@ class FileExplorePage extends StatefulWidget {
 
 class _FileExplorePageState extends State<FileExplorePage>
     with LoadingPageMixin {
-  var loadFileFuture;
   List<Object> _list = [];
   GlobalKey<_FileExploreStackState> globalKey = GlobalKey();
   late int currentDepth;
@@ -27,39 +27,25 @@ class _FileExplorePageState extends State<FileExplorePage>
   @override
   void initState() {
     super.initState();
-    loadFileFuture = loadJson();
-  }
-
-  Future<void> loadJson() async {
-    var snapdata = await DefaultAssetBundle.of(context)
-        .loadString("assets/_json_test.json");
-    // print(snapdata);
-    Map<String, dynamic> data = json.decode(snapdata.toString());
-    EntityFolder entityFolder = EntityFolder.fromJson(data);
-    // print(data);
-    _list = entityFolder.children;
   }
 
   @override
   Widget baseBuild(BuildContext context) {
     EntityFolder? _e =
         ModalRoute.of(context)?.settings.arguments as EntityFolder?;
+    // print(_e?.toJson());
     currentDepth = _e == null ? 0 : _e.depth;
+    // print(currentDepth);
     if (_e != null) {
-      currentFatherPath = _e.fatherPath == "root"
-          ? _e.fatherPath + "/" + _e.name
+      currentFatherPath = _e.fatherPath == ""
+          ? "../root"
           : "../" + _e.fatherPath + "/" + _e.name;
     } else {
-      currentFatherPath = "root";
+      currentFatherPath = "../root";
     }
 
     return Scaffold(
-      appBar: _e == null
-          ? AppBar(
-              title: const Text("root"),
-              centerTitle: true,
-            )
-          : AppBar(centerTitle: true, title: Text(currentFatherPath)),
+      appBar: AppBar(centerTitle: true, title: Text(currentFatherPath)),
       body: FileExploreStack(
         entityFolder: _e,
         key: globalKey,
@@ -90,7 +76,7 @@ class _FileExplorePageState extends State<FileExplorePage>
                         content: Material(
                           child: TextField(
                             decoration: InputDecoration(
-                                errorText: text == "root" ? "不能命名为root" : null),
+                                errorText: validateString(text)),
                             onChanged: ((value) => text = value),
                           ),
                         ),
@@ -112,11 +98,20 @@ class _FileExplorePageState extends State<FileExplorePage>
                     });
 
                 if (result != null && result != "") {
-                  globalKey.currentState!.addAFolder(EntityFolder(
-                      name: result,
-                      depth: currentDepth,
-                      children: [],
-                      fatherPath: currentFatherPath));
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await globalKey.currentState!.addAFolder(
+                      EntityFolder(
+                          name: result,
+                          depth: currentDepth,
+                          children: [],
+                          fatherPath: currentFatherPath),
+                      currentFatherPath,
+                      currentDepth);
+                  setState(() {
+                    isLoading = false;
+                  });
                 }
               },
               icon: const Icon(Icons.folder_special)),
@@ -128,11 +123,11 @@ class _FileExplorePageState extends State<FileExplorePage>
                     context: context,
                     builder: (context) {
                       return CupertinoAlertDialog(
-                        title: const Text("输入文件夹名称"),
+                        title: const Text("输入MD文件名称"),
                         content: Material(
                           child: TextField(
                             decoration: InputDecoration(
-                                errorText: text == "root" ? "不能命名为root" : null),
+                                errorText: validateString(text)),
                             onChanged: ((value) => text = value),
                           ),
                         ),
@@ -155,17 +150,40 @@ class _FileExplorePageState extends State<FileExplorePage>
 
                 if (result != null && result != "") {
                   DateTime dateTime = DateTime.now();
-                  globalKey.currentState!.addAFile(EntityFile(
-                      name: result,
-                      depth: currentDepth,
-                      fatherPath: currentFatherPath,
-                      timestamp: dateTime.toString()));
+                  setState(() {
+                    isLoading = true;
+                  });
+                  if (!(result as String).endsWith(".md")) {
+                    result += ".md";
+                  }
+                  String fath = currentFatherPath.split("/").last;
+                  await globalKey.currentState!.addAFile(
+                      EntityFile(
+                          name: result,
+                          depth: currentDepth + 1,
+                          fatherPath: fath,
+                          timestamp: dateTime.toString()),
+                      currentFatherPath,
+                      currentDepth + 1);
+                  setState(() {
+                    isLoading = false;
+                  });
                 }
               },
               icon: const Icon(Icons.file_copy))
         ],
       ),
     );
+  }
+
+  String? validateString(String s) {
+    if (s.contains("/")) {
+      return "不能以'/'命名";
+    } else if (s == "root") {
+      return "不能命名为root";
+    } else {
+      return null;
+    }
   }
 }
 
@@ -181,16 +199,30 @@ class _FileExploreStackState extends State<FileExploreStack> {
   List<Object> _list = [];
   var loadFileFuture;
 
-  void addAFolder(EntityFolder e) {
-    setState(() {
-      _list.add(e);
-    });
+  Future addAFolder(EntityFolder e, String fatherPath, int depth) async {
+    var s = await spGetFolderStructure();
+    EntityFolder? en = fromJsonToEntityAdd(s, fatherPath, depth, e, s);
+    if (en != null) {
+      setState(() {
+        _list.add(e);
+      });
+      await spSetFolderStructure(jsonEncode(en.toJson()));
+    }
   }
 
-  void addAFile(EntityFile e) {
-    setState(() {
-      _list.add(e);
-    });
+  Future addAFile(EntityFile e, String fatherPath, int depth) async {
+    var s = await spGetFolderStructure();
+    // print(fatherPath);
+
+    print(depth);
+    EntityFolder? en = fromJsonToEntityAdd(s, fatherPath, depth, e, s);
+    print(jsonEncode(en?.toJson()));
+    if (en != null) {
+      setState(() {
+        _list.add(e);
+      });
+      await spSetFolderStructure(jsonEncode(en.toJson()));
+    }
   }
 
   @override
@@ -202,12 +234,20 @@ class _FileExploreStackState extends State<FileExploreStack> {
   }
 
   Future<void> loadJson() async {
-    var snapdata = await DefaultAssetBundle.of(context)
-        .loadString("assets/_json_test.json");
-    Map<String, dynamic> data = json.decode(snapdata.toString());
-    EntityFolder entityFolder = EntityFolder.fromJson(data);
-    // print(data);
-    _list = entityFolder.children;
+    String _savedData = await spGetFolderStructure();
+    if (_savedData == "") {
+      var snapdata = await DefaultAssetBundle.of(context)
+          .loadString("assets/_json_test.json");
+      Map<String, dynamic> data = json.decode(snapdata.toString());
+      EntityFolder entityFolder = EntityFolder.fromJson(data);
+      // print(data);
+      _list = entityFolder.children;
+      await spSetFolderStructure(snapdata);
+    } else {
+      Map<String, dynamic> data = json.decode(_savedData.toString());
+      EntityFolder entityFolder = EntityFolder.fromJson(data);
+      _list = entityFolder.children;
+    }
   }
 
   @override

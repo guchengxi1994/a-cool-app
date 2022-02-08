@@ -5,14 +5,15 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-04 10:27:53
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-04 10:42:57
+ * @LastEditTime: 2022-02-08 19:21:07
  */
 
 import 'dart:convert';
 
 import 'package:codind/entity/file_entity.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-void main(List<String> args) {
+void main() {
   var s = """
 {
     "name": "root",
@@ -68,19 +69,23 @@ void main(List<String> args) {
 
 """;
 
-  EntityFolder? res = fromJsonToEntityAdd(
-      s,
-      "../root/folder_aaa/folder_bbb/folder_ccc",
-      3,
-      EntityFile(
-        depth: 3,
-        savePath: "./aaa.md",
-        fatherPath: 'folder_ccc',
-        timestamp: 'aaaa',
-        name: '测试的名称-1.md',
-      ),
-      jsonEncode(jsonDecode(s)));
+  test("run 1", () {
+    EntityFolder? res = fromJsonToEntityAdd(
+        s,
+        "../root/folder_aaa/folder_bbb/folder_ccc",
+        2,
+        EntityFile(
+          depth: 2,
+          savePath: "./aaa.md",
+          fatherPath: 'folder_bbb',
+          timestamp: 'aaaa',
+          name: '测试的名称-1.md',
+        ),
+        jsonEncode(jsonDecode(s)));
 
-  print("========================");
-  print(json.encode(res?.toJson()));
+    // ignore: avoid_print
+    print(json.encode(res?.toJson()));
+
+    // expect(res, res != null);
+  });
 }
