@@ -7,7 +7,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-06 09:06:31
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-08 21:59:37
+ * @LastEditTime: 2022-02-09 21:28:29
  */
 
 import 'dart:convert';
@@ -261,38 +261,37 @@ EntityFolder? toStructured(FlattenObject object,
     _depthEntityMap[i] = _res;
   }
 
-  // print(_depthEntityMap);
+  print(_depthEntityMap);
 
   generateFromMap(_depthEntityMap, maxDepth, object.files);
-  print(jsonEncode(_depthEntityMap[0]![0].toJson()));
+  // print(jsonEncode(_depthEntityMap[0]![0].toJson()));
+
+  return EntityFolder.fromJson(_depthEntityMap[0]![0].toJson());
 }
 
 void generateFromMap(Map<int, List<EntityFolder>> depthEntityMap, int maxDepth,
     List<EntityFile> files) {
   for (int index = maxDepth; index > 0; index--) {
-    for (var i in depthEntityMap[index - 1]!) {
-      for (var j in depthEntityMap[index]!) {
-        var fil = files.firstWhere(
-            (element) => element.fatherPath.endsWith(j.name),
-            orElse: () => EntityFile(
-                name: "error", timestamp: "", depth: -1, fatherPath: ""));
+    for (var j in depthEntityMap[index]!) {
+      for (var i in depthEntityMap[index - 1]!) {
+        // var fil = files.firstWhere((element) {
+        //   return element.fatherPath.endsWith(j.name);
+        // },
+        //     orElse: () => EntityFile(
+        //         name: "error", timestamp: "", depth: -1, fatherPath: ""));
 
-        if (fil.name != "error") {
-          j.addFile(fil);
-          files.remove(fil);
-        }
-
-        fil = files.firstWhere((element) => element.fatherPath.endsWith(i.name),
-            orElse: () => EntityFile(
-                name: "error", timestamp: "", depth: -1, fatherPath: ""));
-
-        if (fil.name != "error") {
-          i.addFile(fil);
-          files.remove(fil);
+        // if (fil.name != "error") {
+        //   j.children.add(fil);
+        //   files.remove(fil);
+        // }
+        for (var f in files) {
+          if (f.fatherPath.endsWith(i.name)) {
+            i.addFile(f);
+          }
         }
 
         if (j.fatherPath.endsWith(i.name)) {
-          i.addFile(j);
+          i.children.add(j);
         }
       }
     }

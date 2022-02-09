@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-03 18:49:09
+ * @LastEditTime: 2022-02-09 19:40:34
  */
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -64,7 +64,22 @@ Future<String> spGetFolderStructure() async {
   }
 }
 
+Future<List<String>> spGetFolderFlattenStructure() async {
+  SharedPreferences _preferences = await SharedPreferences.getInstance();
+  var res = _preferences.getStringList("flatten");
+  if (res == null) {
+    return [];
+  } else {
+    return res;
+  }
+}
+
 Future<void> spSetFolderStructure(String s) async {
   SharedPreferences _preferences = await SharedPreferences.getInstance();
   await _preferences.setString("fileStructure", s);
+}
+
+Future<void> spSetFolderFlattenStructure(List<String> s) async {
+  SharedPreferences _preferences = await SharedPreferences.getInstance();
+  await _preferences.setStringList("flatten", s);
 }

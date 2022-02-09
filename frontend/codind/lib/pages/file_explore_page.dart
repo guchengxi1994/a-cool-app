@@ -37,9 +37,9 @@ class _FileExplorePageState extends State<FileExplorePage>
     currentDepth = _e == null ? 0 : _e.depth;
     // print(currentDepth);
     if (_e != null) {
-      currentFatherPath = _e.fatherPath == ""
-          ? "../root"
-          : "../" + _e.fatherPath + "/" + _e.name;
+      currentFatherPath =
+          _e.fatherPath == "" ? "" : _e.fatherPath + "/" + _e.name;
+      // print(currentFatherPath);
     } else {
       currentFatherPath = "../root";
     }
@@ -156,12 +156,12 @@ class _FileExplorePageState extends State<FileExplorePage>
                   if (!(result as String).endsWith(".md")) {
                     result += ".md";
                   }
-                  String fath = currentFatherPath.split("/").last;
+                  // String fath = currentFatherPath.split("/").last;
                   await globalKey.currentState!.addAFile(
                       EntityFile(
                           name: result,
                           depth: currentDepth + 1,
-                          fatherPath: fath,
+                          fatherPath: currentFatherPath,
                           timestamp: dateTime.toString()),
                       currentFatherPath,
                       currentDepth + 1);
@@ -212,14 +212,23 @@ class _FileExploreStackState extends State<FileExploreStack> {
 
   Future addAFile(EntityFile e, String fatherPath, int depth) async {
     var s = await spGetFolderStructure();
-    // print(fatherPath);
+    var res = flatten(EntityFolder.fromJson(json.decode(s)));
+    // var s = await spGetFolderFlattenStructure();
+    // print(e.toJson());
+    // print("================");
+    var _addFile = e.fatherPath + "/" + e.name;
+    // print(_addFile);
+    res.files.add(e);
+    res.path.add(_addFile);
+    // print(res.path);
+    // print(res.files);
+    // s.add(_addFile);
+    EntityFolder? en = toStructured(res);
 
-    print(depth);
-    EntityFolder? en = fromJsonToEntityAdd(s, fatherPath, depth, e, s);
-    print(jsonEncode(en?.toJson()));
     if (en != null) {
       setState(() {
         _list.add(e);
+        // print(jsonEncode(en.toJson()));
       });
       await spSetFolderStructure(jsonEncode(en.toJson()));
     }
@@ -241,8 +250,10 @@ class _FileExploreStackState extends State<FileExploreStack> {
       Map<String, dynamic> data = json.decode(snapdata.toString());
       EntityFolder entityFolder = EntityFolder.fromJson(data);
       // print(data);
+      var res = flatten(entityFolder);
       _list = entityFolder.children;
       await spSetFolderStructure(snapdata);
+      await spSetFolderFlattenStructure(res.path);
     } else {
       Map<String, dynamic> data = json.decode(_savedData.toString());
       EntityFolder entityFolder = EntityFolder.fromJson(data);
