@@ -12,7 +12,7 @@
 
 import 'dart:convert';
 
-import 'package:codind/utils/utils.dart';
+// import 'package:codind/utils/utils.dart' show showToastMessage;
 
 enum FileType { folder, file }
 
@@ -33,7 +33,17 @@ class EntityFolder {
       required this.children,
       required this.fatherPath});
 
-  CanOperateFiles addFile(Object fileOrFolder) {
+  CanOperateFiles addFile(Object fileOrFolder, {bool? force}) {
+    if (force != null && force) {
+      if (!children.contains(fileOrFolder)) {
+        children.add(fileOrFolder);
+      } else {
+        children.remove(fileOrFolder);
+        children.add(fileOrFolder);
+      }
+      return CanOperateFiles(canOperate: true, message: "");
+    }
+
     if (fileOrFolder.runtimeType != EntityFile &&
         fileOrFolder.runtimeType != EntityFolder) {
       return CanOperateFiles(canOperate: false, message: "Cannot operate");
@@ -64,6 +74,8 @@ class EntityFolder {
     return data;
   }
 
+  bool get hasChildren => children.isNotEmpty;
+
   EntityFolder.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     if (json['children'] != null) {
@@ -89,6 +101,139 @@ class EntityFolder {
       return (other as EntityFolder).name == name && (other).depth == depth;
     } else {
       return false;
+    }
+  }
+}
+
+FlattenObject flatten(EntityFolder entityFolder) {
+  var names = _getPath(entityFolder, "..");
+  // print(names);
+  var files = _getFiles(entityFolder);
+  // names = _merge(names);
+  return FlattenObject(files: files, path: names);
+}
+
+@Deprecated("unnecessary")
+List<String> _merge(List<String> names) {
+  List<String> results = [];
+
+  for (String i in names) {
+    if (i.endsWith(".md")) {
+      var _l = i.split("/");
+      _l.removeLast();
+      var _s = _l.join("/");
+      if (!results.contains(_s)) {
+        results.add(_s);
+      }
+    } else {
+      results.add(i);
+    }
+  }
+
+  return results;
+}
+
+List<String> _getPath(EntityFolder entityFolder, String storedFatherPath) {
+  List<String> names = [];
+
+  if (entityFolder.hasChildren) {
+    for (var i in entityFolder.children) {
+      if (i.runtimeType == EntityFile) {
+        names.add(storedFatherPath +
+            "/" +
+            (i as EntityFile).fatherPath +
+            "/" +
+            i.name);
+      } else {
+        if (!(i as EntityFolder).hasChildren) {
+          names.add(storedFatherPath + "/" + i.fatherPath + "/" + i.name);
+        } else {
+          storedFatherPath = storedFatherPath + "/" + entityFolder.name;
+          names.addAll(_getPath(i, storedFatherPath));
+        }
+      }
+    }
+  }
+  return names;
+}
+
+List<EntityFile> _getFiles(EntityFolder entityFolder) {
+  List<EntityFile> names = [];
+
+  if (entityFolder.hasChildren) {
+    for (var i in entityFolder.children) {
+      if (i.runtimeType == EntityFile) {
+        names.add(i as EntityFile);
+      } else {
+        if (!(i as EntityFolder).hasChildren) {
+          continue;
+        } else {
+          names.addAll(_getFiles(i));
+        }
+      }
+    }
+  }
+  return names;
+}
+
+class FlattenObject {
+  List<String> path;
+  List<EntityFile> files;
+
+  FlattenObject({this.files = const [], this.path = const []});
+}
+
+EntityFolder? toStructured(FlattenObject object,
+    {String? newPath, EntityFile? newFile}) {
+  if (newFile != null) {
+    object.path.add(newPath!);
+    object.files.add(newFile);
+  }
+
+  if (newPath != null && !newPath.endsWith(".md")) {
+    object.path.add(newPath);
+  }
+
+  EntityFolder entityFolder =
+      EntityFolder(fatherPath: "", name: "root", children: [], depth: 0);
+
+  for (var s in object.path) {
+    var slist = s.split("/");
+    slist.remove("..");
+    slist.remove("root");
+    // print(slist);
+    _addFile(entityFolder, slist, object.files);
+  }
+  print(jsonEncode(entityFolder.toJson()));
+}
+
+void _addFile(
+  EntityFolder father,
+  List<String> names,
+  List<EntityFile> files,
+) {
+  if (names.isNotEmpty) {
+    if (names.length == 1 && names.last.endsWith(".md")) {
+      EntityFile _file = files.firstWhere((element) =>
+          element.fatherPath == father.name && element.name == names.last);
+      father.addFile(_file, force: true);
+      return;
+    } else {
+      for (int i = 0; i < names.length; i++) {
+        var listCopy = names;
+
+        EntityFolder entity = EntityFolder(
+            name: listCopy[0],
+            depth: father.depth + 1,
+            children: [],
+            fatherPath: father.name);
+        father.addFile(entity, force: true);
+
+        if (listCopy.length > 1) {
+          listCopy.removeAt(0);
+          return _addFile(entity, listCopy, files);
+        }
+      }
     }
   }
 }
@@ -151,7 +296,7 @@ class EntityFile {
 EntityFolder? fromJsonToEntityAdd(String jsonStr, String fatherPath, int depth,
     Object object, String originJsonStr) {
   if (object.runtimeType != EntityFile && object.runtimeType != EntityFolder) {
-    showToastMessage("输入的类型不符", null);
+    // showToastMessage("输入的类型不符", null);
     return null;
   }
 
@@ -161,7 +306,7 @@ EntityFolder? fromJsonToEntityAdd(String jsonStr, String fatherPath, int depth,
   if (fatherPath == "root") {
     CanOperateFiles canOperateFiles = entityFolder.addFile(object);
     if (!canOperateFiles.canOperate) {
-      showToastMessage(canOperateFiles.message ?? "error", null);
+      // showToastMessage(canOperateFiles.message ?? "error", null);
       return null;
     } else {
       return entityFolder;
@@ -187,7 +332,7 @@ EntityFolder? fromJsonToEntityAdd(String jsonStr, String fatherPath, int depth,
       print("要执行这个!");
       CanOperateFiles canOperateFiles = entityFolder.addFile(object);
       if (!canOperateFiles.canOperate) {
-        showToastMessage(canOperateFiles.message ?? "error", null);
+        // showToastMessage(canOperateFiles.message ?? "error", null);
         return null;
       } else {
         // print(jsonStr);
@@ -212,7 +357,7 @@ EntityFolder? fromJsonToEntityAdd(String jsonStr, String fatherPath, int depth,
             entityFolder.children.remove(j);
             entityFolder.children.add(_j);
           } else {
-            showToastMessage(canOperateFiles.message ?? "error", null);
+            // showToastMessage(canOperateFiles.message ?? "error", null);
           }
           break;
         } else {
