@@ -14,7 +14,7 @@ void main() {
                 "deep learning",
                 "useful tool"
             ],
-            "fatherPath": "root",
+            "fatherPath": "../root",
             "timestamp": "2022-02-07 9:09:10",
             "depth": 1
         },
@@ -28,7 +28,18 @@ void main() {
                         "deep learning",
                         "useful tool"
                     ],
-                    "fatherPath": "folder_aaa",
+                    "fatherPath": "../root/folder_aaa",
+                    "timestamp": "2022-02-07 9:09:11",
+                    "depth": 2
+                },
+                {
+                    "name": "bbb2.md",
+                    "savePath": "bbb2.md",
+                    "tags": [
+                        "deep learning 2",
+                        "useful tool 2"
+                    ],
+                    "fatherPath": "../root/folder_aaa",
                     "timestamp": "2022-02-07 9:09:11",
                     "depth": 2
                 },
@@ -40,15 +51,23 @@ void main() {
                             "children": [
                                 
                             ],
-                            "fatherPath": "folder_bbb",
+                            "fatherPath": "../root/folder_aaa/folder_bbb",
                             "depth": 3
                         }
                     ],
-                    "fatherPath": "folder_aaa",
+                    "fatherPath": "../root/folder_aaa",
+                    "depth": 2
+                },
+                {
+                    "name": "folder_ddd",
+                    "children": [
+                        
+                    ],
+                    "fatherPath": "../root/folder_aaa",
                     "depth": 2
                 }
             ],
-            "fatherPath": "root",
+            "fatherPath": "../root",
             "depth": 1
         }
     ],
@@ -64,7 +83,7 @@ void main() {
 
   var res = flatten(_en);
 
-  // print(res.path);
+  print(res.path);
 
   toStructured(res);
 

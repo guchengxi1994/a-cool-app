@@ -34,19 +34,37 @@ class EntityFolder {
       required this.fatherPath});
 
   CanOperateFiles addFile(Object fileOrFolder, {bool? force}) {
-    if (force != null && force) {
-      if (!children.contains(fileOrFolder)) {
-        children.add(fileOrFolder);
-      } else {
-        children.remove(fileOrFolder);
-        children.add(fileOrFolder);
-      }
-      return CanOperateFiles(canOperate: true, message: "");
-    }
-
     if (fileOrFolder.runtimeType != EntityFile &&
         fileOrFolder.runtimeType != EntityFolder) {
       return CanOperateFiles(canOperate: false, message: "Cannot operate");
+    }
+    if (force != null) {
+      if (force) {
+        if (!children.contains(fileOrFolder)) {
+          children.add(fileOrFolder);
+        } else {
+          children.remove(fileOrFolder);
+          children.add(fileOrFolder);
+        }
+      } else {
+        if (!children.contains(fileOrFolder)) {
+          children.add(fileOrFolder);
+        } else {
+          if (fileOrFolder.runtimeType == EntityFolder) {
+            EntityFolder _en =
+                children.firstWhere((element) => element == fileOrFolder)
+                    as EntityFolder;
+            _en.children.addAll((fileOrFolder as EntityFolder).children);
+            children.remove(fileOrFolder);
+            children.add(_en);
+          } else {
+            children.remove(fileOrFolder);
+            children.add(fileOrFolder);
+          }
+        }
+      }
+
+      return CanOperateFiles(canOperate: true, message: "");
     }
 
     if (!children.contains(fileOrFolder)) {
@@ -106,7 +124,7 @@ class EntityFolder {
 }
 
 FlattenObject flatten(EntityFolder entityFolder) {
-  var names = _getPath(entityFolder, "..");
+  var names = _getPath(entityFolder);
   // print(names);
   var files = _getFiles(entityFolder);
   // names = _merge(names);
@@ -133,27 +151,22 @@ List<String> _merge(List<String> names) {
   return results;
 }
 
-List<String> _getPath(EntityFolder entityFolder, String storedFatherPath) {
+List<String> _getPath(EntityFolder entityFolder) {
   List<String> names = [];
 
-  if (entityFolder.hasChildren) {
-    for (var i in entityFolder.children) {
-      if (i.runtimeType == EntityFile) {
-        names.add(storedFatherPath +
-            "/" +
-            (i as EntityFile).fatherPath +
-            "/" +
-            i.name);
+  for (var i in entityFolder.children) {
+    if (i.runtimeType == EntityFile) {
+      names.add((i as EntityFile).fatherPath + "/" + i.name);
+    } else {
+      if (!(i as EntityFolder).hasChildren) {
+        var s = i.fatherPath + "/" + i.name;
+        names.add(s);
       } else {
-        if (!(i as EntityFolder).hasChildren) {
-          names.add(storedFatherPath + "/" + i.fatherPath + "/" + i.name);
-        } else {
-          storedFatherPath = storedFatherPath + "/" + entityFolder.name;
-          names.addAll(_getPath(i, storedFatherPath));
-        }
+        names.addAll(_getPath(i));
       }
     }
   }
+
   return names;
 }
 
@@ -194,17 +207,90 @@ EntityFolder? toStructured(FlattenObject object,
     object.path.add(newPath);
   }
 
+  List<EntityFolder> allFolders = [];
+
   EntityFolder entityFolder =
       EntityFolder(fatherPath: "", name: "root", children: [], depth: 0);
 
+  allFolders.add(entityFolder);
+
+  // Map<String, dynamic> _json = entityFolder.toJson();
+  int maxDepth = 0;
   for (var s in object.path) {
-    var slist = s.split("/");
-    slist.remove("..");
-    slist.remove("root");
-    // print(slist);
-    _addFile(entityFolder, slist, object.files);
+    if (!s.endsWith(".md")) {
+      var slist = s.split("/");
+      slist.remove("..");
+      slist.remove("root");
+
+      for (int i = 0; i < slist.length; i++) {
+        EntityFolder _en;
+        if (i == 0) {
+          _en = EntityFolder(
+              name: slist[0],
+              depth: i + 1,
+              children: [],
+              fatherPath: '../root');
+          if (maxDepth <= _en.depth) maxDepth = _en.depth;
+        } else {
+          slist.removeLast();
+          var _fatherpath = slist.join("/");
+          _en = EntityFolder(
+              name: slist[i],
+              depth: i + 1,
+              children: [],
+              fatherPath: _fatherpath);
+          if (maxDepth <= _en.depth) maxDepth = _en.depth;
+        }
+        if (!allFolders.contains(_en)) allFolders.add(_en);
+      }
+    }
   }
-  print(jsonEncode(entityFolder.toJson()));
+  // print(allFolders.length);
+
+  Map<int, List<EntityFolder>> _depthEntityMap = {};
+  _depthEntityMap[0] = [entityFolder];
+
+  for (int i = 1; i <= maxDepth; i++) {
+    List<EntityFolder> _res =
+        allFolders.where((element) => element.depth == i).toList();
+    _depthEntityMap[i] = _res;
+  }
+  generateFromMap(_depthEntityMap, maxDepth, object.files);
+  print(jsonEncode(_depthEntityMap[0]![0].toJson()));
+
+  for (int i = 1; i < maxDepth; i++) {}
+}
+
+void generateFromMap(Map<int, List<EntityFolder>> depthEntityMap, int maxDepth,
+    List<EntityFile> files) {
+  for (int index = maxDepth; index > 0; index--) {
+    for (var i in depthEntityMap[index - 1]!) {
+      for (var j in depthEntityMap[index]!) {
+        var fil = files.firstWhere(
+            (element) => element.fatherPath.endsWith(j.name),
+            orElse: () => EntityFile(
+                name: "error", timestamp: "", depth: -1, fatherPath: ""));
+
+        if (fil.name != "error") {
+          j.addFile(fil);
+          files.remove(fil);
+        }
+
+        fil = files.firstWhere((element) => element.fatherPath.endsWith(i.name),
+            orElse: () => EntityFile(
+                name: "error", timestamp: "", depth: -1, fatherPath: ""));
+
+        if (fil.name != "error") {
+          i.addFile(fil);
+          files.remove(fil);
+        }
+
+        if (j.fatherPath.endsWith(i.name)) {
+          i.addFile(j);
+        }
+      }
+    }
+  }
 }
 
 void _addFile(
@@ -213,28 +299,39 @@ void _addFile(
   List<EntityFile> files,
 ) {
   if (names.isNotEmpty) {
-    if (names.length == 1 && names.last.endsWith(".md")) {
-      EntityFile _file = files.firstWhere((element) =>
-          element.fatherPath == father.name && element.name == names.last);
-      father.addFile(_file, force: true);
-      return;
-    } else {
-      for (int i = 0; i < names.length; i++) {
-        var listCopy = names;
+    var listCopy = names;
 
-        EntityFolder entity = EntityFolder(
-            name: listCopy[0],
-            depth: father.depth + 1,
-            children: [],
-            fatherPath: father.name);
-        father.addFile(entity, force: true);
+    EntityFolder entity = EntityFolder(
+        name: listCopy[0],
+        depth: father.depth + 1,
+        children: [],
+        fatherPath: father.name);
 
-        if (listCopy.length > 1) {
-          listCopy.removeAt(0);
-          return _addFile(entity, listCopy, files);
-        }
-      }
+    if (!father.children.contains(entity)) {
+      father.addFile(entity, force: true);
     }
+
+    if (listCopy.length > 1) {
+      listCopy.removeAt(0);
+      _addFile(entity, listCopy, files);
+    }
+  }
+}
+
+void _addFileMap(Map<String, dynamic> father, List<String> names) {
+  var listCopy = names;
+  EntityFolder entity = EntityFolder(
+      name: listCopy[0],
+      depth: father['depth'] + 1,
+      children: [],
+      fatherPath: father['name']);
+  if (!father['children'].contains(entity.toJson())) {
+    father['children'].add(entity.toJson());
+  }
+
+  if (listCopy.length > 1) {
+    listCopy.removeAt(0);
+    _addFileMap(entity.toJson(), listCopy);
   }
 }
 
