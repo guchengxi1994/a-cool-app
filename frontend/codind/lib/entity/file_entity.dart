@@ -218,27 +218,32 @@ EntityFolder? toStructured(FlattenObject object,
   int maxDepth = 0;
   for (var s in object.path) {
     if (!s.endsWith(".md")) {
+      // print(s);
       var slist = s.split("/");
-      slist.remove("..");
-      slist.remove("root");
+      // slist.remove("..");
+      // slist.remove("root");
 
-      for (int i = 0; i < slist.length; i++) {
+      for (int i = 2; i < slist.length; i++) {
         EntityFolder _en;
-        if (i == 0) {
+        if (i == 2) {
           _en = EntityFolder(
-              name: slist[0],
-              depth: i + 1,
+              name: slist[i],
+              depth: i - 1,
               children: [],
               fatherPath: '../root');
           if (maxDepth <= _en.depth) maxDepth = _en.depth;
         } else {
-          slist.removeLast();
-          var _fatherpath = slist.join("/");
+          var name = slist[i];
+          var fatherPath = '';
+          for (int j = 0; j < i; j++) {
+            if (j == 0) {
+              fatherPath = fatherPath + slist[j];
+            } else {
+              fatherPath = fatherPath + "/" + slist[j];
+            }
+          }
           _en = EntityFolder(
-              name: slist[i],
-              depth: i + 1,
-              children: [],
-              fatherPath: _fatherpath);
+              name: name, depth: i - 1, children: [], fatherPath: fatherPath);
           if (maxDepth <= _en.depth) maxDepth = _en.depth;
         }
         if (!allFolders.contains(_en)) allFolders.add(_en);
@@ -255,10 +260,11 @@ EntityFolder? toStructured(FlattenObject object,
         allFolders.where((element) => element.depth == i).toList();
     _depthEntityMap[i] = _res;
   }
+
+  // print(_depthEntityMap);
+
   generateFromMap(_depthEntityMap, maxDepth, object.files);
   print(jsonEncode(_depthEntityMap[0]![0].toJson()));
-
-  for (int i = 1; i < maxDepth; i++) {}
 }
 
 void generateFromMap(Map<int, List<EntityFolder>> depthEntityMap, int maxDepth,
@@ -397,7 +403,7 @@ EntityFolder? fromJsonToEntityAdd(String jsonStr, String fatherPath, int depth,
     return null;
   }
 
-  print(fatherPath);
+  // print(fatherPath);
   Map<String, dynamic> data = json.decode(jsonStr);
   EntityFolder entityFolder = EntityFolder.fromJson(data);
   if (fatherPath == "root") {
@@ -411,13 +417,13 @@ EntityFolder? fromJsonToEntityAdd(String jsonStr, String fatherPath, int depth,
   } else {
     String fath = fatherPath.split("/").last;
     // EntityFolder _entity = entityFolder;
-    print("------------------");
-    // // print(entityFolder.toJson());
-    print(fath);
-    print(entityFolder.name);
-    print(depth);
-    print(entityFolder.depth);
-    print("------------------");
+    // print("------------------");
+    // // // print(entityFolder.toJson());
+    // print(fath);
+    // print(entityFolder.name);
+    // print(depth);
+    // print(entityFolder.depth);
+    // print("------------------");
 
     Map<String, dynamic> _data = json.decode(originJsonStr);
 
@@ -426,7 +432,7 @@ EntityFolder? fromJsonToEntityAdd(String jsonStr, String fatherPath, int depth,
     originJsonStr = json.encode(_en.toJson());
 
     if (fath == entityFolder.name && depth == entityFolder.depth + 1) {
-      print("要执行这个!");
+      // print("要执行这个!");
       CanOperateFiles canOperateFiles = entityFolder.addFile(object);
       if (!canOperateFiles.canOperate) {
         // showToastMessage(canOperateFiles.message ?? "error", null);
