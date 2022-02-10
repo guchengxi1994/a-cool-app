@@ -1,3 +1,9 @@
+import 'dart:convert';
+
+import 'package:codind/entity/file_entity.dart';
+
+void main() {
+  var s = """
 {
     "name": "root",
     "children": [
@@ -67,4 +73,19 @@
     ],
     "depth": 0,
     "fatherPath": ""
+}
+
+""";
+
+  EntityFolder _en = EntityFolder.fromJson(jsonDecode(s));
+
+  // print(_en.next("folder_ccc", 3));
+
+  var res = flatten(_en);
+
+  // print(res.path);
+
+  toStructured(res);
+
+  // expect(res, res != null);
 }
