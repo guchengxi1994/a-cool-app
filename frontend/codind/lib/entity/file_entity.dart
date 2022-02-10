@@ -261,7 +261,7 @@ EntityFolder? toStructured(FlattenObject object,
     _depthEntityMap[i] = _res;
   }
 
-  print(_depthEntityMap);
+  // print(_depthEntityMap);
 
   generateFromMap(_depthEntityMap, maxDepth, object.files);
   // print(jsonEncode(_depthEntityMap[0]![0].toJson()));
@@ -274,20 +274,17 @@ void generateFromMap(Map<int, List<EntityFolder>> depthEntityMap, int maxDepth,
   for (int index = maxDepth; index > 0; index--) {
     for (var j in depthEntityMap[index]!) {
       for (var i in depthEntityMap[index - 1]!) {
-        // var fil = files.firstWhere((element) {
-        //   return element.fatherPath.endsWith(j.name);
-        // },
-        //     orElse: () => EntityFile(
-        //         name: "error", timestamp: "", depth: -1, fatherPath: ""));
+        List<EntityFile> caches = [];
 
-        // if (fil.name != "error") {
-        //   j.children.add(fil);
-        //   files.remove(fil);
-        // }
         for (var f in files) {
           if (f.fatherPath.endsWith(i.name)) {
             i.addFile(f);
+            caches.add(f);
           }
+        }
+
+        for (var f in caches) {
+          files.remove(f);
         }
 
         if (j.fatherPath.endsWith(i.name)) {

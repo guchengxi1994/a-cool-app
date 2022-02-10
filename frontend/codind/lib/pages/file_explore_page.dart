@@ -4,6 +4,7 @@ import 'package:codind/entity/file_entity.dart';
 import 'package:codind/pages/_loading_page_mixin.dart';
 import 'package:codind/utils/common.dart';
 import 'package:codind/utils/shared_preference_utils.dart';
+import 'package:codind/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -61,7 +62,8 @@ class _FileExplorePageState extends State<FileExplorePage>
         children: [
           IconButton(
               onPressed: () {
-                setState(() {});
+                // showToastMessage("当前无法完成此操作", null);
+                globalKey.currentState!.setState(() {});
               },
               icon: const Icon(Icons.refresh)),
           IconButton(
@@ -179,8 +181,8 @@ class _FileExplorePageState extends State<FileExplorePage>
   String? validateString(String s) {
     if (s.contains("/")) {
       return "不能以'/'命名";
-    } else if (s == "root") {
-      return "不能命名为root";
+    } else if (s == "root" || s == "..") {
+      return "不能命名为'root'或者'..'";
     } else {
       return null;
     }
@@ -201,7 +203,12 @@ class _FileExploreStackState extends State<FileExploreStack> {
 
   Future addAFolder(EntityFolder e, String fatherPath, int depth) async {
     var s = await spGetFolderStructure();
-    EntityFolder? en = fromJsonToEntityAdd(s, fatherPath, depth, e, s);
+    // EntityFolder? en = fromJsonToEntityAdd(s, fatherPath, depth, e, s);
+    var res = flatten(EntityFolder.fromJson(json.decode(s)));
+    var _addFile = e.fatherPath + "/" + e.name;
+
+    res.path.add(_addFile);
+    EntityFolder? en = toStructured(res);
     if (en != null) {
       setState(() {
         _list.add(e);
@@ -210,25 +217,22 @@ class _FileExploreStackState extends State<FileExploreStack> {
     }
   }
 
+  // Future refreshWorkboard() async {
+  //   await loadJson();
+  // }
+
   Future addAFile(EntityFile e, String fatherPath, int depth) async {
     var s = await spGetFolderStructure();
     var res = flatten(EntityFolder.fromJson(json.decode(s)));
-    // var s = await spGetFolderFlattenStructure();
-    // print(e.toJson());
-    // print("================");
     var _addFile = e.fatherPath + "/" + e.name;
     // print(_addFile);
     res.files.add(e);
     res.path.add(_addFile);
-    // print(res.path);
-    // print(res.files);
-    // s.add(_addFile);
     EntityFolder? en = toStructured(res);
 
     if (en != null) {
       setState(() {
         _list.add(e);
-        // print(jsonEncode(en.toJson()));
       });
       await spSetFolderStructure(jsonEncode(en.toJson()));
     }
@@ -244,6 +248,7 @@ class _FileExploreStackState extends State<FileExploreStack> {
 
   Future<void> loadJson() async {
     String _savedData = await spGetFolderStructure();
+    _list.clear();
     if (_savedData == "") {
       var snapdata = await DefaultAssetBundle.of(context)
           .loadString("assets/_json_test.json");
