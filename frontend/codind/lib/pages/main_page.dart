@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-10 21:04:11
+ * @LastEditTime: 2022-02-10 21:52:44
  */
 import 'package:codind/providers/my_providers.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +29,9 @@ class _MainStatefulPageState extends State<MainStatefulPage> {
             maxHeight: MediaQuery.of(context).size.height < 500
                 ? 700
                 : MediaQuery.of(context).size.height * 1.5),
-        child: MainPageBody(),
+        child: MainPageBody(
+          routeName: "main",
+        ),
       ),
     );
   }

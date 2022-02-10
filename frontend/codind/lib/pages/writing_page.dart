@@ -7,7 +7,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-10 21:09:05
+ * @LastEditTime: 2022-02-10 21:52:59
  */
 
 /*
@@ -80,7 +80,7 @@ class __ChangedMdEditorState extends State<_ChangedMdEditor> {
 }
 
 class WritingPage extends BasePage {
-  WritingPage({Key? key}) : super(key: key);
+  WritingPage({required String routeName}) : super(routeName: routeName);
 
   @override
   BasePageState<BasePage> getState() {
@@ -858,7 +858,9 @@ class WritingProviderPage extends StatelessWidget {
           create: (_) => LanguageController(context),
         ),
       ],
-      child: WritingPage(),
+      child: WritingPage(
+        routeName: "md editor",
+      ),
     );
   }
 }

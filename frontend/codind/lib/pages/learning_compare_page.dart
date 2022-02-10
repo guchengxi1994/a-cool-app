@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-01 10:33:14
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-02 18:03:15
+ * @LastEditTime: 2022-02-10 21:55:17
  */
 
 import 'package:codind/utils/utils.dart';
@@ -17,10 +17,12 @@ import '_base_preview_page.dart';
 
 // ignore: must_be_immutable
 class LearningComparePage extends BasePage {
-  LearningComparePage({Key? key, required this.left, this.right})
-      : super(key: key);
   Widget left;
   BaseMarkdownPreviewPage? right;
+
+  LearningComparePage(
+      {required String routeName, required this.left, this.right})
+      : super(routeName: routeName);
 
   @override
   BasePageState<BasePage> getState() {

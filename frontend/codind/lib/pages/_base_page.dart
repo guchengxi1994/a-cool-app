@@ -7,7 +7,8 @@ import 'package:provider/src/provider.dart';
 
 abstract class BasePage extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
-  BasePage({Key? key}) : super(key: key);
+  BasePage({Key? key, required this.routeName}) : super(key: key);
+  String routeName;
 
   @override
   BasePageState createState() {
@@ -75,6 +76,27 @@ class BasePageState<T extends BasePage> extends State<T> {
         child: baseBuild(context),
       ),
       appBar: AppBar(
+        elevation: Responsive.isRoughMobile(context) ? 4 : 0,
+        backgroundColor: Responsive.isRoughMobile(context)
+            ? Colors.blueAccent
+            : Colors.grey[300],
+
+        automaticallyImplyLeading: false,
+        leading: PlatformUtils.isWeb
+            ? null
+            : (widget.routeName == "main"
+                ? null
+                : IconButton(
+                    icon: Icon(
+                      Icons.chevron_left,
+                      color: Responsive.isRoughMobile(context)
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )),
         // automaticallyImplyLeading: false,
         // leading: Responsive.isRoughMobile(context)
         //     ? IconButton(

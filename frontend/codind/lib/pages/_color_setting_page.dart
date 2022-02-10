@@ -77,7 +77,7 @@ class ColorSettingPage extends StatefulWidget {
 }
 
 class _ColorSettingPageState extends State<ColorSettingPage>
-    with BackScreenMixin, LoadingPageMixin {
+    with LoadingPageMixin {
   final ScrollController _scrollController = ScrollController();
 
   @override

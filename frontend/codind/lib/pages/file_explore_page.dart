@@ -44,7 +44,31 @@ class _FileExplorePageState extends State<FileExplorePage>
     }
 
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: Text(currentFatherPath)),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(
+            Icons.chevron_left,
+            color:
+                Responsive.isRoughMobile(context) ? Colors.white : Colors.black,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        centerTitle: true,
+        title: Text(
+          currentFatherPath,
+          style: TextStyle(
+              color: Responsive.isRoughMobile(context)
+                  ? Colors.white
+                  : Colors.black),
+        ),
+        elevation: Responsive.isRoughMobile(context) ? 4 : 0,
+        backgroundColor: Responsive.isRoughMobile(context)
+            ? Colors.blueAccent
+            : Colors.grey[300],
+      ),
       body: FileExploreStack(
         entityFolder: _e,
         key: globalKey,
