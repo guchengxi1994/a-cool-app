@@ -80,7 +80,6 @@ class BasePageState<T extends BasePage> extends State<T> {
         backgroundColor: Responsive.isRoughMobile(context)
             ? Colors.blueAccent
             : Colors.grey[300],
-
         automaticallyImplyLeading: false,
         leading: PlatformUtils.isWeb
             ? null
@@ -97,14 +96,6 @@ class BasePageState<T extends BasePage> extends State<T> {
                       Navigator.of(context).pop();
                     },
                   )),
-        // automaticallyImplyLeading: false,
-        // leading: Responsive.isRoughMobile(context)
-        //     ? IconButton(
-        //         onPressed: () {
-        //           context.read<MenuController>().controlMenu();
-        //         },
-        //         icon: const Icon(Icons.menu))
-        //     : null,
         actions: actions,
       ),
     );
