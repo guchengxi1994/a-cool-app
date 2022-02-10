@@ -124,4 +124,9 @@ class BasePageState<T extends BasePage> extends State<T> {
   void onCreate() {}
   void onDes() {}
   baseBuild(BuildContext context) {}
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 }

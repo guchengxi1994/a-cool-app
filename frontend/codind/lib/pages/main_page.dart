@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-03 17:38:28
+ * @LastEditTime: 2022-02-10 19:46:16
  */
 import 'package:codind/pages/_test_page.dart';
 import 'package:codind/providers/my_providers.dart';
@@ -30,8 +30,6 @@ class _MainStatefulPageState extends State<MainStatefulPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Responsive.isRoughDesktop(context) ? null : Sidemenu(),
-      key: context.read<MenuController>().scaffoldKey,
       body: ConstrainedBox(
         constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height < 500
