@@ -7,8 +7,15 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-10 20:14:15
+ * @LastEditTime: 2022-02-10 21:09:05
  */
+
+/*
+  an file download example
+
+  https://www.it1352.com/2028454.html
+
+*/
 import 'dart:convert';
 
 import 'package:codind/providers/my_providers.dart';
