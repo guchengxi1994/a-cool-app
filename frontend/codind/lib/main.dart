@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-03 21:05:48
+ * @LastEditTime: 2022-02-10 19:45:43
  */
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -33,9 +33,6 @@ Future main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => ThemeController()),
-      ChangeNotifierProvider(
-        create: (_) => MenuController(),
-      ),
       ChangeNotifierProvider(
         create: (_) => EmojiController(),
       )
@@ -89,8 +86,7 @@ class _MyAppState extends State<MyApp> {
       theme: context.watch<ThemeController>().themeData,
       debugShowCheckedModeBanner: false,
       builder: FlutterI18n.rootAppBuilder(),
-      // home: const MainPage(),
-      home: FileExplorePage(),
+      home: const MainPage(),
       localizationsDelegates: [
         widget.flutterI18nDelegate,
         GlobalMaterialLocalizations.delegate,

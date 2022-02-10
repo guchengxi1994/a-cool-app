@@ -7,8 +7,15 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-05 11:08:25
+ * @LastEditTime: 2022-02-10 21:52:59
  */
+
+/*
+  an file download example
+
+  https://www.it1352.com/2028454.html
+
+*/
 import 'dart:convert';
 
 import 'package:codind/providers/my_providers.dart';
@@ -73,7 +80,7 @@ class __ChangedMdEditorState extends State<_ChangedMdEditor> {
 }
 
 class WritingPage extends BasePage {
-  WritingPage({Key? key}) : super(key: key);
+  WritingPage({required String routeName}) : super(routeName: routeName);
 
   @override
   BasePageState<BasePage> getState() {
@@ -94,10 +101,12 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
   int _currentIndex = 0;
   double fontSize = 14;
 
-  late TextEditingController? _controllerRow;
-  late TextEditingController? _controllerColumn;
+  late TextEditingController? _controllerRow = TextEditingController();
+  late TextEditingController? _controllerColumn = TextEditingController();
 
   late String markdownStr = "";
+
+  late List _lists = [];
 
   @override
   void initState() {
@@ -132,6 +141,11 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
         await DefaultAssetBundle.of(context).loadString("assets/emoji.json");
     emojiEntity.usedEmoji = await spGetEmojiData();
     await context.read<EmojiController>().setEmojis(emojiEntity.usedEmoji);
+    List<dynamic> data = json.decode(emojiEntity.jsonLikeStr.toString());
+    _lists = splitList(data, 100);
+    _tabcontroller = TabController(length: _lists.length + 1, vsync: this);
+
+    _tabcontroller!.index = _currentIndex;
     setState(() {});
   }
 
@@ -140,9 +154,12 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
     textEditingController.dispose();
     _scrollController.dispose();
     focusNode.dispose();
-    if (_tabcontroller != null) {
-      _tabcontroller!.dispose();
+
+    if (null != _tabcontroller) {
+      _tabcontroller?.dispose();
+      debugPrint("销毁成功");
     }
+
     if (_controllerRow != null) {
       _controllerRow!.dispose();
       _controllerColumn!.dispose();
@@ -247,19 +264,10 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                             builder: ((context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.done) {
-                                List<dynamic> data = json
-                                    .decode(emojiEntity.jsonLikeStr.toString());
-
-                                List _lists = splitList(data, 100);
                                 // print(_lists.length);
 
                                 List<int> _indexList = List<int>.generate(
                                     _lists.length + 1, (index) => index);
-
-                                _tabcontroller = TabController(
-                                    length: _lists.length + 1, vsync: this);
-
-                                _tabcontroller!.index = _currentIndex;
 
                                 List<Widget> _body = _lists.map((e) {
                                   return GridView.custom(
@@ -834,4 +842,25 @@ String convertTabelScaleToString(int rowNumber, int columnNumber) {
     contentStr += "\n";
   }
   return titleStr + subTitleStr + contentStr;
+}
+
+class WritingProviderPage extends StatelessWidget {
+  const WritingProviderPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => EmojiController(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => LanguageController(context),
+        ),
+      ],
+      child: WritingPage(
+        routeName: "md editor",
+      ),
+    );
+  }
 }

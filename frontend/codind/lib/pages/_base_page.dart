@@ -7,7 +7,8 @@ import 'package:provider/src/provider.dart';
 
 abstract class BasePage extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
-  BasePage({Key? key}) : super(key: key);
+  BasePage({Key? key, required this.routeName}) : super(key: key);
+  String routeName;
 
   @override
   BasePageState createState() {
@@ -70,18 +71,31 @@ class BasePageState<T extends BasePage> extends State<T> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // key: context.read<MenuController>().scaffoldKey,
       body: SafeArea(
         child: baseBuild(context),
       ),
       appBar: AppBar(
+        elevation: Responsive.isRoughMobile(context) ? 4 : 0,
+        backgroundColor: Responsive.isRoughMobile(context)
+            ? Colors.blueAccent
+            : Colors.grey[300],
         automaticallyImplyLeading: false,
-        leading: Responsive.isRoughMobile(context)
-            ? IconButton(
-                onPressed: () {
-                  context.read<MenuController>().controlMenu();
-                },
-                icon: const Icon(Icons.menu))
-            : null,
+        leading: PlatformUtils.isWeb
+            ? null
+            : (widget.routeName == "main"
+                ? null
+                : IconButton(
+                    icon: Icon(
+                      Icons.chevron_left,
+                      color: Responsive.isRoughMobile(context)
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )),
         actions: actions,
       ),
     );
@@ -123,4 +137,9 @@ class BasePageState<T extends BasePage> extends State<T> {
   void onCreate() {}
   void onDes() {}
   baseBuild(BuildContext context) {}
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 }

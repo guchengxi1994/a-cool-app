@@ -59,7 +59,6 @@
 
 // ignore_for_file: prefer_const_constructors_in_immutables
 
-import 'package:codind/pages/_back_screen_minin.dart';
 import 'package:codind/pages/_loading_page_mixin.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart';
@@ -77,7 +76,7 @@ class ColorSettingPage extends StatefulWidget {
 }
 
 class _ColorSettingPageState extends State<ColorSettingPage>
-    with BackScreenMixin, LoadingPageMixin {
+    with LoadingPageMixin {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -88,15 +87,24 @@ class _ColorSettingPageState extends State<ColorSettingPage>
   Widget buildView() {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.chevron_left,
-            size: 30,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+        elevation: Responsive.isRoughMobile(context) ? 4 : 0,
+        backgroundColor: Responsive.isRoughMobile(context)
+            ? Colors.blueAccent
+            : Colors.grey[300],
+        automaticallyImplyLeading: false,
+        leading: PlatformUtils.isWeb
+            ? null
+            : IconButton(
+                icon: Icon(
+                  Icons.chevron_left,
+                  color: Responsive.isRoughMobile(context)
+                      ? Colors.white
+                      : Colors.black,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
       ),
       body: SingleChildScrollView(
         controller: _scrollController,

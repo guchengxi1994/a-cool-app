@@ -5,26 +5,28 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-04 10:21:12
+ * @LastEditTime: 2022-02-10 22:05:43
  */
 
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-import '_back_screen_minin.dart';
+import '_base_page.dart';
 import '_color_setting_page.dart';
 
-class SettingPage extends StatefulWidget {
-  const SettingPage({Key? key}) : super(key: key);
+class SettingPage extends BasePage {
+  SettingPage({required String routeName}) : super(routeName: routeName);
 
   @override
-  State<SettingPage> createState() => _SettingPageState();
+  BasePageState<BasePage> getState() {
+    return _SettingPageState();
+  }
 }
 
-class _SettingPageState extends State<SettingPage> with BackScreenMixin {
+class _SettingPageState<T> extends BasePageState<SettingPage> {
   late ThemeData themeData;
   @override
-  backScreenBuild(BuildContext context) {
+  baseBuild(BuildContext context) {
     return buildView();
   }
 
