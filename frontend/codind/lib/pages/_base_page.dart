@@ -70,18 +70,19 @@ class BasePageState<T extends BasePage> extends State<T> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // key: context.read<MenuController>().scaffoldKey,
       body: SafeArea(
         child: baseBuild(context),
       ),
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: Responsive.isRoughMobile(context)
-            ? IconButton(
-                onPressed: () {
-                  context.read<MenuController>().controlMenu();
-                },
-                icon: const Icon(Icons.menu))
-            : null,
+        // automaticallyImplyLeading: false,
+        // leading: Responsive.isRoughMobile(context)
+        //     ? IconButton(
+        //         onPressed: () {
+        //           context.read<MenuController>().controlMenu();
+        //         },
+        //         icon: const Icon(Icons.menu))
+        //     : null,
         actions: actions,
       ),
     );

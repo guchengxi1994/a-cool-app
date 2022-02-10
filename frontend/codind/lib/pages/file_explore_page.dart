@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:codind/entity/file_entity.dart';
 import 'package:codind/pages/_loading_page_mixin.dart';
-import 'package:codind/utils/common.dart';
-import 'package:codind/utils/shared_preference_utils.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

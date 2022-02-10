@@ -87,15 +87,15 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
   final GlobalKey<__ChangedMdEditorState> _globalKey = GlobalKey();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   FocusNode focusNode = FocusNode();
-  late TabController? _tabcontroller;
+  late TabController? _tabcontroller = TabController(length: 0, vsync: this);
   var loadEmojiFuture;
   final ScrollController _scrollController = ScrollController();
   _EmojiFutureEntity emojiEntity = _EmojiFutureEntity();
   int _currentIndex = 0;
   double fontSize = 14;
 
-  late TextEditingController? _controllerRow;
-  late TextEditingController? _controllerColumn;
+  late TextEditingController? _controllerRow = TextEditingController();
+  late TextEditingController? _controllerColumn = TextEditingController();
 
   late String markdownStr = "";
 
@@ -140,9 +140,10 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
     textEditingController.dispose();
     _scrollController.dispose();
     focusNode.dispose();
-    if (_tabcontroller != null) {
-      _tabcontroller!.dispose();
-    }
+    // if (null != _tabcontroller) {
+    //   _tabcontroller?.dispose();
+    // }
+    _tabcontroller?.dispose();
     if (_controllerRow != null) {
       _controllerRow!.dispose();
       _controllerColumn!.dispose();
@@ -834,4 +835,27 @@ String convertTabelScaleToString(int rowNumber, int columnNumber) {
     contentStr += "\n";
   }
   return titleStr + subTitleStr + contentStr;
+}
+
+class WritingProviderPage extends StatelessWidget {
+  const WritingProviderPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeController()),
+        ChangeNotifierProvider(
+          create: (_) => MenuController(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => EmojiController(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => LanguageController(context),
+        ),
+      ],
+      child: WritingPage(),
+    );
+  }
 }

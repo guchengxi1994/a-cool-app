@@ -89,8 +89,7 @@ class _MyAppState extends State<MyApp> {
       theme: context.watch<ThemeController>().themeData,
       debugShowCheckedModeBanner: false,
       builder: FlutterI18n.rootAppBuilder(),
-      // home: const MainPage(),
-      home: FileExplorePage(),
+      home: const MainPage(),
       localizationsDelegates: [
         widget.flutterI18nDelegate,
         GlobalMaterialLocalizations.delegate,

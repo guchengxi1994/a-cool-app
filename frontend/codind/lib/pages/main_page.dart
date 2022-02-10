@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 
 import '_base_preview_page.dart';
 import 'learning_compare_page.dart';
+import 'main_page_body.dart';
 import 'writing_page.dart';
 
 class MainStatefulPage extends StatefulWidget {
@@ -41,7 +42,8 @@ class _MainStatefulPageState extends State<MainStatefulPage> {
           children: [
             Expanded(
               flex: 5,
-              child: WritingPage(),
+              // child: WritingPage(),
+              child: MainPageBody(),
               // child: TestPage(),
             )
           ],

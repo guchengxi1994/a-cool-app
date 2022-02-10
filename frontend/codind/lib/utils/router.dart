@@ -8,6 +8,8 @@
  * @LastEditTime: 2022-02-04 09:21:43
  */
 
+import 'dart:js';
+
 import 'package:codind/pages/pages.dart';
 import 'package:flutter/material.dart';
 
@@ -19,10 +21,12 @@ class Routers {
   static const pageSetting = 'pageSetting';
   static const pageMain = 'pageMain';
   static const pageMdEditor = 'pageMdEditor';
+  static const pageFolder = 'pageFolder';
 
   static final Map<String, WidgetBuilder> routers = {
     pageSetting: (ctx) => const SettingPage(),
     pageMain: (ctx) => const MainPage(),
-    pageMdEditor: (context) => WritingPage(),
+    pageMdEditor: (context) => const WritingProviderPage(),
+    pageFolder: (context) => FileExplorePage()
   };
 }
