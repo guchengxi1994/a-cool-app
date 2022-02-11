@@ -87,9 +87,9 @@ class BasePageState<T extends BasePage> extends State<T> {
           : LoadingOverlay(isLoading: isLoading, child: baseBuild(context)),
       appBar: AppBar(
         elevation: Responsive.isRoughMobile(context) ? 4 : 0,
-        backgroundColor: Responsive.isRoughMobile(context)
-            ? context.watch<ThemeController>().savedColor['appBarColor']
-            : Colors.grey[300],
+        // backgroundColor: Responsive.isRoughMobile(context)
+        //     ? context.watch<ThemeController>().savedColor['appBarColor']
+        //     : Colors.grey[300],
         automaticallyImplyLeading: false,
         leading: PlatformUtils.isWeb
             ? null

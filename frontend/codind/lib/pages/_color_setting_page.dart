@@ -160,7 +160,9 @@ class _ColorSettingPageState extends State<ColorSettingPage>
                       _appBarColor!.value.toString()
                     ]);
 
-                    await spSaveColorData(ls);
+                    // await spSaveColorData(ls);
+                    PersistenceStorage ps = PersistenceStorage();
+                    await ps.saveColorData(ls);
 
                     setState(() {
                       isLoading = false;

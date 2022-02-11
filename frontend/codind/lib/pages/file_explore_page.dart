@@ -223,8 +223,11 @@ class _FileExploreStackState extends State<FileExploreStack> {
   List<Object> _list = [];
   var loadFileFuture;
 
+  PersistenceStorage ps = PersistenceStorage();
+
   Future addAFolder(EntityFolder e, String fatherPath, int depth) async {
-    var s = await spGetFolderStructure();
+    // var s = await spGetFolderStructure();
+    var s = await ps.getFolderStructure();
     // EntityFolder? en = fromJsonToEntityAdd(s, fatherPath, depth, e, s);
     var res = flatten(EntityFolder.fromJson(json.decode(s)));
     var _addFile = e.fatherPath + "/" + e.name;
@@ -235,7 +238,8 @@ class _FileExploreStackState extends State<FileExploreStack> {
       setState(() {
         _list.add(e);
       });
-      await spSetFolderStructure(jsonEncode(en.toJson()));
+      // await spSetFolderStructure(jsonEncode(en.toJson()));
+      await ps.setFolderStructure(jsonEncode(en.toJson()));
     }
   }
 
@@ -244,7 +248,8 @@ class _FileExploreStackState extends State<FileExploreStack> {
   // }
 
   Future addAFile(EntityFile e, String fatherPath, int depth) async {
-    var s = await spGetFolderStructure();
+    // var s = await spGetFolderStructure();
+    var s = await ps.getFolderStructure();
     var res = flatten(EntityFolder.fromJson(json.decode(s)));
     var _addFile = e.fatherPath + "/" + e.name;
     // print(_addFile);
@@ -256,7 +261,8 @@ class _FileExploreStackState extends State<FileExploreStack> {
       setState(() {
         _list.add(e);
       });
-      await spSetFolderStructure(jsonEncode(en.toJson()));
+      // await spSetFolderStructure(jsonEncode(en.toJson()));
+      await ps.setFolderStructure(jsonEncode(en.toJson()));
     }
   }
 
@@ -269,7 +275,8 @@ class _FileExploreStackState extends State<FileExploreStack> {
   }
 
   Future<void> loadJson() async {
-    String _savedData = await spGetFolderStructure();
+    // String _savedData = await spGetFolderStructure();
+    String _savedData = await ps.getFolderStructure();
     _list.clear();
     if (_savedData == "") {
       var snapdata = await DefaultAssetBundle.of(context)
@@ -279,8 +286,10 @@ class _FileExploreStackState extends State<FileExploreStack> {
       // print(data);
       var res = flatten(entityFolder);
       _list = entityFolder.children;
-      await spSetFolderStructure(snapdata);
-      await spSetFolderFlattenStructure(res.path);
+      // await spSetFolderStructure(snapdata);
+      await ps.setFolderStructure(snapdata);
+      // await spSetFolderFlattenStructure(res.path);
+      await ps.setFolderFlattenStructure(res.path);
     } else {
       Map<String, dynamic> data = json.decode(_savedData.toString());
       EntityFolder entityFolder = EntityFolder.fromJson(data);

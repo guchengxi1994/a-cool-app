@@ -112,6 +112,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
 
   late List _lists = [];
 
+  PersistenceStorage ps = PersistenceStorage();
+
   @override
   void initState() {
     super.initState();
@@ -143,7 +145,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
   Future<void> getEmojiInfo() async {
     emojiEntity.jsonLikeStr =
         await DefaultAssetBundle.of(context).loadString("assets/emoji.json");
-    emojiEntity.usedEmoji = await spGetEmojiData();
+    emojiEntity.usedEmoji = await ps.getEmojiData();
     await context.read<EmojiController>().setEmojis(emojiEntity.usedEmoji);
     List<dynamic> data = json.decode(emojiEntity.jsonLikeStr.toString());
     _lists = splitList(data, 100);
@@ -301,7 +303,10 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                           textEditingController.text +=
                                               String.fromCharCode(
                                                   e[index]["unicode"]);
-                                          await spAppendColorData(
+                                          // await spAppendColorData(
+                                          //     e[index]["unicode"].toString());
+
+                                          await ps.appendColorData(
                                               e[index]["unicode"].toString());
 
                                           await context
