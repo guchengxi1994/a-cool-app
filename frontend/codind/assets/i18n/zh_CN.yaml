@@ -23,6 +23,7 @@ label:
   insertTable: "插入表格..."
   uploadFile: "上传文件"
   downloadFile: "下载到本地"
+  inputFileName: "输入文件名"
 
 button:
   label:
@@ -33,3 +34,6 @@ button:
     update: "修改"
     ok: "确定"
     quit: "取消"
+
+errors: 
+  invalidName: "名称不合法"

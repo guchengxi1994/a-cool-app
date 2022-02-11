@@ -834,20 +834,60 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
             ),
             IconButton(
                 tooltip: FlutterI18n.translate(context, "label.downloadFile"),
-                onPressed: () {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  try {
-                    saveMdFile(
-                        filename: "test.md", data: textEditingController.text);
-                  } catch (_, s) {
-                    debugPrint(s.toString());
-                  }
+                onPressed: () async {
+                  String res = await showCupertinoDialog(
+                      context: context,
+                      builder: (context) {
+                        String text = "";
+                        return CupertinoAlertDialog(
+                          title: Text(FlutterI18n.translate(
+                              context, "label.inputFileName")),
+                          content: Material(
+                              child: SizedBox(
+                            height: 30,
+                            width: 50,
+                            child: TextField(
+                              decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.all(10.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(3.0),
+                                  )),
+                              onChanged: (s) {
+                                text = s;
+                              },
+                            ),
+                          )),
+                          actions: [
+                            CupertinoActionSheetAction(
+                                onPressed: () {
+                                  Navigator.of(context).pop(text);
+                                },
+                                child: Text(FlutterI18n.translate(
+                                    context, "button.label.ok"))),
+                          ],
+                        );
+                      });
 
-                  setState(() {
-                    isLoading = false;
-                  });
+                  if (res != "") {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    try {
+                      saveMdFile(
+                          filename: res.endsWith(".md") ? res : res + ".md",
+                          data: textEditingController.text);
+                    } catch (_, s) {
+                      debugPrint(s.toString());
+                    }
+
+                    setState(() {
+                      isLoading = false;
+                    });
+                  } else {
+                    showToastMessage(
+                        FlutterI18n.translate(context, "errors.invalidName"),
+                        null);
+                  }
                 },
                 icon: const Icon(Icons.file_download))
           ],

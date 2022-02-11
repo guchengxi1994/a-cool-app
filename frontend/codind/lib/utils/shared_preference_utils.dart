@@ -10,6 +10,8 @@
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// this part will be removed later
+
 // Future<List<String>?> spGetColorData() async {
 //   try {
 //     SharedPreferences _preferences = await SharedPreferences.getInstance();
