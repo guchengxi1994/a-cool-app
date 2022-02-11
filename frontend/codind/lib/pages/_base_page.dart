@@ -2,13 +2,16 @@ import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
 
 abstract class BasePage extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
-  BasePage({Key? key, required this.routeName}) : super(key: key);
+  BasePage({Key? key, required this.routeName, this.needLoading})
+      : super(key: key);
   String routeName;
+  bool? needLoading;
 
   @override
   BasePageState createState() {
@@ -21,10 +24,15 @@ abstract class BasePage extends StatefulWidget {
 
 class BasePageState<T extends BasePage> extends State<T> {
   List<Widget> actions = [];
+  bool needLoading = false;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    if (widget.needLoading != null) {
+      needLoading = widget.needLoading!;
+    }
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       List<Widget> _actions = [
         PopupMenuButton<String>(
@@ -72,9 +80,11 @@ class BasePageState<T extends BasePage> extends State<T> {
   Widget build(BuildContext context) {
     return Scaffold(
       // key: context.read<MenuController>().scaffoldKey,
-      body: SafeArea(
-        child: baseBuild(context),
-      ),
+      body: !needLoading
+          ? SafeArea(
+              child: baseBuild(context),
+            )
+          : LoadingOverlay(isLoading: isLoading, child: baseBuild(context)),
       appBar: AppBar(
         elevation: Responsive.isRoughMobile(context) ? 4 : 0,
         backgroundColor: Responsive.isRoughMobile(context)

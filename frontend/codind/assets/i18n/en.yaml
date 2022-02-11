@@ -24,6 +24,8 @@ label:
   link: "Link ..."
   insertList: "Insert list ..."
   insertTable: "Insert Table ..."
+  uploadFile: "Upload file"
+  downloadFile: "Download file"
 
 # Objects can be many levels deep
 button:

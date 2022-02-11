@@ -21,6 +21,8 @@ label:
   link: "超链接..."
   insertList: "插入无序列表..."
   insertTable: "插入表格..."
+  uploadFile: "上传文件"
+  downloadFile: "下载到本地"
 
 button:
   label:

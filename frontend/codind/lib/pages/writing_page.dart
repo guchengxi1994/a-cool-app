@@ -13,12 +13,11 @@
 /*
   an file download example
 
-  https://www.it1352.com/2028454.html
+  https://ostack.cn/qa/?qa=784673/
 
 */
 import 'dart:convert';
 
-import 'package:codind/pages/_loading_page_mixin.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,6 +25,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
+import 'package:codind/utils/other_platform/mobile_utils.dart'
+    if (dart.library.html) 'package:codind/utils/web/web_utils.dart'
+    show saveMdFile;
 
 import '_base_page.dart';
 
@@ -81,7 +83,8 @@ class __ChangedMdEditorState extends State<_ChangedMdEditor> {
 }
 
 class WritingPage extends BasePage {
-  WritingPage({required String routeName}) : super(routeName: routeName);
+  WritingPage({required String routeName, required bool needLoading})
+      : super(routeName: routeName, needLoading: needLoading);
 
   @override
   BasePageState<BasePage> getState() {
@@ -193,7 +196,11 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
   }
 
   @override
-  Widget baseBuild(BuildContext context) {
+  baseBuild(BuildContext context) {
+    return buildView(context);
+  }
+
+  Widget buildView(BuildContext context) {
     Widget w = getWritingRegion();
 
     if (Responsive.isRoughMobile(context)) {
@@ -815,11 +822,26 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                   }
                 },
                 icon: const Icon(Icons.table_chart)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.upload_file)),
             IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.upload_file),
+              tooltip: FlutterI18n.translate(context, "label.uploadFile"),
+            ),
+            IconButton(
+                tooltip: FlutterI18n.translate(context, "label.downloadFile"),
                 onPressed: () {
                   setState(() {
-                    // isLoading = true;
+                    isLoading = true;
+                  });
+                  try {
+                    saveMdFile(
+                        filename: "test.md", data: textEditingController.text);
+                  } catch (_, s) {
+                    debugPrint(s.toString());
+                  }
+
+                  setState(() {
+                    isLoading = false;
                   });
                 },
                 icon: const Icon(Icons.file_download))
@@ -869,6 +891,7 @@ class WritingProviderPage extends StatelessWidget {
       ],
       child: WritingPage(
         routeName: "md editor",
+        needLoading: true,
       ),
     );
   }
