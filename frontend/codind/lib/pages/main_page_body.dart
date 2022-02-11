@@ -35,6 +35,12 @@ class _MainPageBodyState<T> extends BasePageState<MainPageBody> {
         ),
         Card(
           child: ListTile(
+            title: const Text("Saved links"),
+            onTap: () {},
+          ),
+        ),
+        Card(
+          child: ListTile(
             title: const Text("Start writing"),
             onTap: () {
               Navigator.of(context).pushNamed(Routers.pageMdEditor);
