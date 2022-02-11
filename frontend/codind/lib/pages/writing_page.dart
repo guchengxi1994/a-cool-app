@@ -18,6 +18,7 @@
 */
 import 'dart:convert';
 
+import 'package:codind/pages/_loading_page_mixin.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -814,6 +815,14 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                   }
                 },
                 icon: const Icon(Icons.table_chart)),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.upload_file)),
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    // isLoading = true;
+                  });
+                },
+                icon: const Icon(Icons.file_download))
           ],
         ));
   }

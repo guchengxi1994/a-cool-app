@@ -29,7 +29,7 @@ class _FileExplorePageState extends State<FileExplorePage>
   }
 
   @override
-  Widget baseBuild(BuildContext context) {
+  Widget baseLoadingMixinBuild(BuildContext context) {
     EntityFolder? _e =
         ModalRoute.of(context)?.settings.arguments as EntityFolder?;
     // print(_e?.toJson());

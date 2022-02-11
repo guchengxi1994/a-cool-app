@@ -78,7 +78,7 @@ class BasePageState<T extends BasePage> extends State<T> {
       appBar: AppBar(
         elevation: Responsive.isRoughMobile(context) ? 4 : 0,
         backgroundColor: Responsive.isRoughMobile(context)
-            ? Colors.blueAccent
+            ? context.watch<ThemeController>().savedColor['appBarColor']
             : Colors.grey[300],
         automaticallyImplyLeading: false,
         leading: PlatformUtils.isWeb

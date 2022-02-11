@@ -80,7 +80,7 @@ class _ColorSettingPageState extends State<ColorSettingPage>
   final ScrollController _scrollController = ScrollController();
 
   @override
-  Widget baseBuild(BuildContext context) {
+  Widget baseLoadingMixinBuild(BuildContext context) {
     return buildView();
   }
 
