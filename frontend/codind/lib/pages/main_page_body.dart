@@ -7,13 +7,18 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-02-10 21:52:32
  */
+import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/my_providers.dart';
 import '../utils/utils.dart';
 import '_base_page.dart';
 
+// ignore: must_be_immutable
 class MainPageBody extends BasePage {
-  MainPageBody({required String routeName}) : super(routeName: routeName);
+  MainPageBody({Key? key, required String routeName})
+      : super(key: key, routeName: routeName);
 
   @override
   BasePageState<BasePage> getState() {
@@ -23,9 +28,16 @@ class MainPageBody extends BasePage {
 
 class _MainPageBodyState<T> extends BasePageState<MainPageBody> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget baseBuild(BuildContext context) {
     return Scaffold(
+      key: context.read<MenuController>().scaffoldKey,
       appBar: null,
+      drawer: Responsive.isRoughMobile(context) ? Sidemenu() : null,
       body: Wrap(children: [
         Card(
           child: ListTile(

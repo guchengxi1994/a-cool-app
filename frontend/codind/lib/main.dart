@@ -35,6 +35,7 @@ Future main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => ThemeController()),
+      ChangeNotifierProvider(create: (_) => MenuController()),
       ChangeNotifierProvider(
         create: (_) => EmojiController(),
       )

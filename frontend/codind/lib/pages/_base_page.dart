@@ -8,10 +8,15 @@ import 'package:provider/provider.dart';
 // ignore: must_be_immutable
 abstract class BasePage extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
-  BasePage({Key? key, required this.routeName, this.needLoading})
+  BasePage(
+      {Key? key,
+      required this.routeName,
+      this.needLoading,
+      this.leadingWidgetClick})
       : super(key: key);
   String routeName;
   bool? needLoading;
+  VoidCallback? leadingWidgetClick;
 
   @override
   BasePageState createState() {
@@ -91,24 +96,47 @@ class BasePageState<T extends BasePage> extends State<T> {
         //     ? context.watch<ThemeController>().savedColor['appBarColor']
         //     : Colors.grey[300],
         automaticallyImplyLeading: false,
-        leading: PlatformUtils.isWeb
-            ? null
-            : (widget.routeName == "main"
-                ? null
-                : IconButton(
-                    icon: Icon(
-                      Icons.chevron_left,
-                      color: Responsive.isRoughMobile(context)
-                          ? Colors.white
-                          : Colors.black,
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )),
+        leading: getLeadingWidget(),
         actions: actions,
       ),
     );
+  }
+
+  Widget? getLeadingWidget() {
+    if (widget.routeName == "main" && Responsive.isRoughDesktop(context)) {
+      return null;
+    }
+
+    if (widget.routeName == "main" && !Responsive.isRoughDesktop(context)) {
+      // print("应该到这里了");
+      return IconButton(
+        onPressed: () {
+          context.read<MenuController>().controlMenu();
+        },
+        icon: const Icon(
+          Icons.menu,
+          color: Colors.white,
+        ),
+      );
+    }
+
+    if (PlatformUtils.isWeb) {
+      return null;
+    } else {
+      if (widget.routeName != "main") {
+        return IconButton(
+          // ignore: prefer_const_constructors
+          icon: Icon(
+            Icons.chevron_left,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        );
+      } else {
+        return null;
+      }
+    }
   }
 
   PopupMenuItem<String> buildPopupMenuItem(String key) {
