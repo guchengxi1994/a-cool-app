@@ -11,8 +11,10 @@ import 'package:codind/pages/_base_page.dart';
 import 'package:codind/pages/_base_preview_page.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class TestPage extends BasePage {
-  TestPage({required String routeName}) : super(routeName: routeName);
+  TestPage({Key? key, required String routeName})
+      : super(key: key, routeName: routeName);
 
   @override
   BasePageState<BasePage> getState() {

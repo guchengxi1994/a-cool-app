@@ -3,9 +3,9 @@ import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-// ignore: implementation_imports
-import 'package:provider/src/provider.dart';
+import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 abstract class BasePage extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
   BasePage({Key? key, required this.routeName, this.needLoading})

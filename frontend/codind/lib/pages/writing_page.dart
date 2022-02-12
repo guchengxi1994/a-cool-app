@@ -83,8 +83,8 @@ class __ChangedMdEditorState extends State<_ChangedMdEditor> {
 }
 
 class WritingPage extends BasePage {
-  WritingPage({required String routeName, required bool needLoading})
-      : super(routeName: routeName, needLoading: needLoading);
+  WritingPage({Key? key, required String routeName, required bool needLoading})
+      : super(key: key, routeName: routeName, needLoading: needLoading);
 
   @override
   BasePageState<BasePage> getState() {
@@ -199,7 +199,45 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
 
   @override
   baseBuild(BuildContext context) {
-    return buildView(context);
+    if (PlatformUtils.isIOS) {
+      return buildView(context);
+    }
+
+    return WillPopScope(
+        child: buildView(context),
+        onWillPop: () async {
+          bool res;
+          if (textEditingController.text != "") {
+            res = await showCupertinoDialog(
+                context: context,
+                builder: (context) {
+                  return CupertinoAlertDialog(
+                    title: Text(FlutterI18n.translate(
+                            context, "label.exitWarning") +
+                        "\n" +
+                        FlutterI18n.translate(context, "label.unSavedWarning")),
+                    actions: [
+                      CupertinoActionSheetAction(
+                          onPressed: () {
+                            Navigator.of(context).pop(true);
+                          },
+                          child: Text(FlutterI18n.translate(
+                              context, "button.label.ok"))),
+                      CupertinoActionSheetAction(
+                          onPressed: () {
+                            Navigator.of(context).pop(false);
+                          },
+                          child: Text(FlutterI18n.translate(
+                              context, "button.label.quit"))),
+                    ],
+                  );
+                });
+          } else {
+            return true;
+          }
+
+          return res;
+        });
   }
 
   Widget buildView(BuildContext context) {
@@ -688,7 +726,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text("插入图片链接"),
+                                  Text(FlutterI18n.translate(
+                                      context, "label.insertImageLink")),
                                   IconButton(
                                       onPressed: () {
                                         textEditingController.text += "![]()";
@@ -700,7 +739,9 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text("插入网络链接"),
+                                  // Text("插入网络链接"),
+                                  Text(FlutterI18n.translate(
+                                      context, "label.insertWebLink")),
                                   IconButton(
                                       onPressed: () {
                                         textEditingController.text += "[]()";
@@ -732,7 +773,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                       context: context,
                       builder: (context) {
                         return CupertinoAlertDialog(
-                          title: Text("选择表格尺寸"),
+                          title: Text(FlutterI18n.translate(
+                              context, "label.selectTableSize")),
                           content: Card(
                             child: Column(
                               children: [
@@ -743,7 +785,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Text("行"),
+                                    const Text("Row"),
                                     SizedBox(
                                       height: 30,
                                       width: 50,
@@ -767,7 +809,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Text("列"),
+                                    const Text("Column"),
                                     SizedBox(
                                       height: 30,
                                       width: 50,

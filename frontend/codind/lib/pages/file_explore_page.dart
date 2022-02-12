@@ -10,6 +10,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 const double iconSize = 100;
 
 class FileExplorePage extends StatefulWidget {
+  // ignore: prefer_const_constructors_in_immutables
   FileExplorePage({Key? key}) : super(key: key);
 
   @override
@@ -211,6 +212,7 @@ class _FileExplorePageState extends State<FileExplorePage>
   }
 }
 
+// ignore: must_be_immutable
 class FileExploreStack extends StatefulWidget {
   FileExploreStack({Key? key, this.entityFolder}) : super(key: key);
   EntityFolder? entityFolder;
@@ -363,6 +365,7 @@ class _FileExploreStackState extends State<FileExploreStack> {
   }
 }
 
+// ignore: must_be_immutable
 class FileWidget extends StatefulWidget {
   VoidCallback? onDoubleCilck;
   Icon appearance;
@@ -371,11 +374,13 @@ class FileWidget extends StatefulWidget {
   int index;
 
   FileWidget(
-      {required this.name,
+      {Key? key,
+      required this.name,
       required this.appearance,
       this.tooltip,
       this.onDoubleCilck,
-      required this.index});
+      required this.index})
+      : super(key: key);
 
   @override
   State<FileWidget> createState() => _FileWidgetState();
@@ -426,8 +431,8 @@ class _FileWidgetState extends State<FileWidget> {
           child: GestureDetector(
             behavior: HitTestBehavior.deferToChild,
             onDoubleTap: () => widget.onDoubleCilck!(),
-            onTap: () {
-              print("aaaaaaaa");
+            onTap: () async {
+              debugPrint("aaaaaaaa");
             },
             child: Container(
               color: Colors.transparent,
