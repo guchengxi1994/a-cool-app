@@ -8,9 +8,9 @@ mixin LoadingPageMixin<T extends StatefulWidget> on State<T> {
   Widget build(BuildContext context) {
     return LoadingOverlay(
       isLoading: isLoading,
-      child: baseBuild(context),
+      child: baseLoadingMixinBuild(context),
     );
   }
 
-  baseBuild(BuildContext context) {}
+  baseLoadingMixinBuild(BuildContext context) {}
 }

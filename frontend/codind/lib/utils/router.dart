@@ -8,8 +8,6 @@
  * @LastEditTime: 2022-02-10 22:05:59
  */
 
-import 'dart:js';
-
 import 'package:codind/pages/pages.dart';
 import 'package:flutter/material.dart';
 

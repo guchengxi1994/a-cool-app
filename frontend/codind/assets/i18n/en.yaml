@@ -24,6 +24,14 @@ label:
   link: "Link ..."
   insertList: "Insert list ..."
   insertTable: "Insert Table ..."
+  uploadFile: "Upload file"
+  downloadFile: "Download file"
+  inputFileName: "Input filename"
+  exitWarning: "Do you want to exit?"
+  unSavedWarning: "Unsaved content will not be saved."
+  insertImageLink: "Insert image link"
+  insertWebLink: "Insert web link"
+  selectTableSize: "Select table size"
 
 # Objects can be many levels deep
 button:
@@ -35,3 +43,6 @@ button:
     update: "Update"
     ok: "OK"
     quit: "Quit"
+
+errors: 
+  invalidName: "Invalid name"

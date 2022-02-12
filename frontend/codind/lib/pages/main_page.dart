@@ -8,6 +8,8 @@
  * @LastEditTime: 2022-02-10 21:52:44
  */
 import 'package:codind/providers/my_providers.dart';
+import 'package:codind/utils/utils.dart';
+import 'package:codind/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,8 +31,16 @@ class _MainStatefulPageState extends State<MainStatefulPage> {
             maxHeight: MediaQuery.of(context).size.height < 500
                 ? 700
                 : MediaQuery.of(context).size.height * 1.5),
-        child: MainPageBody(
-          routeName: "main",
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (Responsive.isRoughDesktop(context)) Sidemenu(),
+            Expanded(
+                flex: 5,
+                child: MainPageBody(
+                  routeName: "main",
+                ))
+          ],
         ),
       ),
     );

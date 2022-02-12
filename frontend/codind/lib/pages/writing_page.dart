@@ -13,7 +13,7 @@
 /*
   an file download example
 
-  https://www.it1352.com/2028454.html
+  https://ostack.cn/qa/?qa=784673/
 
 */
 import 'dart:convert';
@@ -25,6 +25,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
+import 'package:codind/utils/other_platform/mobile_utils.dart'
+    if (dart.library.html) 'package:codind/utils/web/web_utils.dart'
+    show saveMdFile;
 
 import '_base_page.dart';
 
@@ -80,7 +83,8 @@ class __ChangedMdEditorState extends State<_ChangedMdEditor> {
 }
 
 class WritingPage extends BasePage {
-  WritingPage({required String routeName}) : super(routeName: routeName);
+  WritingPage({Key? key, required String routeName, required bool needLoading})
+      : super(key: key, routeName: routeName, needLoading: needLoading);
 
   @override
   BasePageState<BasePage> getState() {
@@ -107,6 +111,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
   late String markdownStr = "";
 
   late List _lists = [];
+
+  PersistenceStorage ps = PersistenceStorage();
 
   @override
   void initState() {
@@ -139,7 +145,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
   Future<void> getEmojiInfo() async {
     emojiEntity.jsonLikeStr =
         await DefaultAssetBundle.of(context).loadString("assets/emoji.json");
-    emojiEntity.usedEmoji = await spGetEmojiData();
+    emojiEntity.usedEmoji = await ps.getEmojiData();
     await context.read<EmojiController>().setEmojis(emojiEntity.usedEmoji);
     List<dynamic> data = json.decode(emojiEntity.jsonLikeStr.toString());
     _lists = splitList(data, 100);
@@ -192,7 +198,49 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
   }
 
   @override
-  Widget baseBuild(BuildContext context) {
+  baseBuild(BuildContext context) {
+    if (PlatformUtils.isIOS) {
+      return buildView(context);
+    }
+
+    return WillPopScope(
+        child: buildView(context),
+        onWillPop: () async {
+          bool res;
+          if (textEditingController.text != "") {
+            res = await showCupertinoDialog(
+                context: context,
+                builder: (context) {
+                  return CupertinoAlertDialog(
+                    title: Text(FlutterI18n.translate(
+                            context, "label.exitWarning") +
+                        "\n" +
+                        FlutterI18n.translate(context, "label.unSavedWarning")),
+                    actions: [
+                      CupertinoActionSheetAction(
+                          onPressed: () {
+                            Navigator.of(context).pop(true);
+                          },
+                          child: Text(FlutterI18n.translate(
+                              context, "button.label.ok"))),
+                      CupertinoActionSheetAction(
+                          onPressed: () {
+                            Navigator.of(context).pop(false);
+                          },
+                          child: Text(FlutterI18n.translate(
+                              context, "button.label.quit"))),
+                    ],
+                  );
+                });
+          } else {
+            return true;
+          }
+
+          return res;
+        });
+  }
+
+  Widget buildView(BuildContext context) {
     Widget w = getWritingRegion();
 
     if (Responsive.isRoughMobile(context)) {
@@ -293,7 +341,10 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                           textEditingController.text +=
                                               String.fromCharCode(
                                                   e[index]["unicode"]);
-                                          await spAppendColorData(
+                                          // await spAppendColorData(
+                                          //     e[index]["unicode"].toString());
+
+                                          await ps.appendColorData(
                                               e[index]["unicode"].toString());
 
                                           await context
@@ -675,7 +726,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text("插入图片链接"),
+                                  Text(FlutterI18n.translate(
+                                      context, "label.insertImageLink")),
                                   IconButton(
                                       onPressed: () {
                                         textEditingController.text += "![]()";
@@ -687,7 +739,9 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text("插入网络链接"),
+                                  // Text("插入网络链接"),
+                                  Text(FlutterI18n.translate(
+                                      context, "label.insertWebLink")),
                                   IconButton(
                                       onPressed: () {
                                         textEditingController.text += "[]()";
@@ -719,7 +773,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                       context: context,
                       builder: (context) {
                         return CupertinoAlertDialog(
-                          title: Text("选择表格尺寸"),
+                          title: Text(FlutterI18n.translate(
+                              context, "label.selectTableSize")),
                           content: Card(
                             child: Column(
                               children: [
@@ -730,7 +785,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Text("行"),
+                                    const Text("Row"),
                                     SizedBox(
                                       height: 30,
                                       width: 50,
@@ -754,7 +809,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Text("列"),
+                                    const Text("Column"),
                                     SizedBox(
                                       height: 30,
                                       width: 50,
@@ -814,6 +869,69 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                   }
                 },
                 icon: const Icon(Icons.table_chart)),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.upload_file),
+              tooltip: FlutterI18n.translate(context, "label.uploadFile"),
+            ),
+            IconButton(
+                tooltip: FlutterI18n.translate(context, "label.downloadFile"),
+                onPressed: () async {
+                  String res = await showCupertinoDialog(
+                      context: context,
+                      builder: (context) {
+                        String text = "";
+                        return CupertinoAlertDialog(
+                          title: Text(FlutterI18n.translate(
+                              context, "label.inputFileName")),
+                          content: Material(
+                              child: SizedBox(
+                            height: 30,
+                            width: 50,
+                            child: TextField(
+                              decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.all(10.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(3.0),
+                                  )),
+                              onChanged: (s) {
+                                text = s;
+                              },
+                            ),
+                          )),
+                          actions: [
+                            CupertinoActionSheetAction(
+                                onPressed: () {
+                                  Navigator.of(context).pop(text);
+                                },
+                                child: Text(FlutterI18n.translate(
+                                    context, "button.label.ok"))),
+                          ],
+                        );
+                      });
+
+                  if (res != "") {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    try {
+                      saveMdFile(
+                          filename: res.endsWith(".md") ? res : res + ".md",
+                          data: textEditingController.text);
+                    } catch (_, s) {
+                      debugPrint(s.toString());
+                    }
+
+                    setState(() {
+                      isLoading = false;
+                    });
+                  } else {
+                    showToastMessage(
+                        FlutterI18n.translate(context, "errors.invalidName"),
+                        null);
+                  }
+                },
+                icon: const Icon(Icons.file_download))
           ],
         ));
   }
@@ -860,6 +978,7 @@ class WritingProviderPage extends StatelessWidget {
       ],
       child: WritingPage(
         routeName: "md editor",
+        needLoading: true,
       ),
     );
   }

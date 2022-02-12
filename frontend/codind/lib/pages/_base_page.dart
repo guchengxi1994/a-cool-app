@@ -2,13 +2,21 @@ import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-// ignore: implementation_imports
-import 'package:provider/src/provider.dart';
+import 'package:loading_overlay/loading_overlay.dart';
+import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 abstract class BasePage extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
-  BasePage({Key? key, required this.routeName}) : super(key: key);
+  BasePage(
+      {Key? key,
+      required this.routeName,
+      this.needLoading,
+      this.leadingWidgetClick})
+      : super(key: key);
   String routeName;
+  bool? needLoading;
+  VoidCallback? leadingWidgetClick;
 
   @override
   BasePageState createState() {
@@ -21,10 +29,15 @@ abstract class BasePage extends StatefulWidget {
 
 class BasePageState<T extends BasePage> extends State<T> {
   List<Widget> actions = [];
+  bool needLoading = false;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    if (widget.needLoading != null) {
+      needLoading = widget.needLoading!;
+    }
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       List<Widget> _actions = [
         PopupMenuButton<String>(
@@ -72,33 +85,58 @@ class BasePageState<T extends BasePage> extends State<T> {
   Widget build(BuildContext context) {
     return Scaffold(
       // key: context.read<MenuController>().scaffoldKey,
-      body: SafeArea(
-        child: baseBuild(context),
-      ),
+      body: !needLoading
+          ? SafeArea(
+              child: baseBuild(context),
+            )
+          : LoadingOverlay(isLoading: isLoading, child: baseBuild(context)),
       appBar: AppBar(
         elevation: Responsive.isRoughMobile(context) ? 4 : 0,
-        backgroundColor: Responsive.isRoughMobile(context)
-            ? Colors.blueAccent
-            : Colors.grey[300],
+        // backgroundColor: Responsive.isRoughMobile(context)
+        //     ? context.watch<ThemeController>().savedColor['appBarColor']
+        //     : Colors.grey[300],
         automaticallyImplyLeading: false,
-        leading: PlatformUtils.isWeb
-            ? null
-            : (widget.routeName == "main"
-                ? null
-                : IconButton(
-                    icon: Icon(
-                      Icons.chevron_left,
-                      color: Responsive.isRoughMobile(context)
-                          ? Colors.white
-                          : Colors.black,
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )),
+        leading: getLeadingWidget(),
         actions: actions,
       ),
     );
+  }
+
+  Widget? getLeadingWidget() {
+    if (widget.routeName == "main" && Responsive.isRoughDesktop(context)) {
+      return null;
+    }
+
+    if (widget.routeName == "main" && !Responsive.isRoughDesktop(context)) {
+      // print("应该到这里了");
+      return IconButton(
+        onPressed: () {
+          context.read<MenuController>().controlMenu();
+        },
+        icon: const Icon(
+          Icons.menu,
+          color: Colors.white,
+        ),
+      );
+    }
+
+    if (PlatformUtils.isWeb) {
+      return null;
+    } else {
+      if (widget.routeName != "main") {
+        return IconButton(
+          // ignore: prefer_const_constructors
+          icon: Icon(
+            Icons.chevron_left,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        );
+      } else {
+        return null;
+      }
+    }
   }
 
   PopupMenuItem<String> buildPopupMenuItem(String key) {

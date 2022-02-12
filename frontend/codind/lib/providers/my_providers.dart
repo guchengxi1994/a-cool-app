@@ -11,3 +11,4 @@
 export './language_provider.dart';
 export './theme_provider.dart';
 export './used_emoji_provider.dart';
+export './menu_provider.dart';

@@ -80,7 +80,7 @@ class _ColorSettingPageState extends State<ColorSettingPage>
   final ScrollController _scrollController = ScrollController();
 
   @override
-  Widget baseBuild(BuildContext context) {
+  Widget baseLoadingMixinBuild(BuildContext context) {
     return buildView();
   }
 
@@ -160,7 +160,9 @@ class _ColorSettingPageState extends State<ColorSettingPage>
                       _appBarColor!.value.toString()
                     ]);
 
-                    await spSaveColorData(ls);
+                    // await spSaveColorData(ls);
+                    PersistenceStorage ps = PersistenceStorage();
+                    await ps.saveColorData(ls);
 
                     setState(() {
                       isLoading = false;

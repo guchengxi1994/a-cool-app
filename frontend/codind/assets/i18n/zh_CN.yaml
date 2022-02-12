@@ -21,6 +21,14 @@ label:
   link: "超链接..."
   insertList: "插入无序列表..."
   insertTable: "插入表格..."
+  uploadFile: "上传文件"
+  downloadFile: "下载到本地"
+  inputFileName: "输入文件名"
+  exitWarning: "是否要退出？"
+  unSavedWarning: "未保存的内容将不会保存。"
+  insertImageLink: "插入图片链接"
+  insertWebLink: "插入网页链接"
+  selectTableSize: "选择表格尺寸"
 
 button:
   label:
@@ -31,3 +39,6 @@ button:
     update: "修改"
     ok: "确定"
     quit: "取消"
+
+errors: 
+  invalidName: "名称不合法"

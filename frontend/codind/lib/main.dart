@@ -29,10 +29,13 @@ Future main() async {
   // 获取 theme
 
   WidgetsFlutterBinding.ensureInitialized();
-  List<String>? ls = await spGetColorData();
+  // List<String>? ls = await spGetColorData();
+  PersistenceStorage ps = PersistenceStorage();
+  List<String>? ls = await ps.getColorData();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => ThemeController()),
+      ChangeNotifierProvider(create: (_) => MenuController()),
       ChangeNotifierProvider(
         create: (_) => EmojiController(),
       )
