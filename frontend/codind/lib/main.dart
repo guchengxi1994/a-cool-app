@@ -5,9 +5,10 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-10 19:45:43
+ * @LastEditTime: 2022-02-13 22:15:18
  */
 import 'package:codind/utils/utils.dart';
+import 'package:codind/widgets/calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
@@ -89,7 +90,8 @@ class _MyAppState extends State<MyApp> {
       theme: context.watch<ThemeController>().themeData,
       debugShowCheckedModeBanner: false,
       builder: FlutterI18n.rootAppBuilder(),
-      home: const MainPage(),
+      // home: const MainPage(),
+      home: CalendarWidget(),
       localizationsDelegates: [
         widget.flutterI18nDelegate,
         GlobalMaterialLocalizations.delegate,
