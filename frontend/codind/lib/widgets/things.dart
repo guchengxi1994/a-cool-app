@@ -1,7 +1,9 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:codind/entity/schedule.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+
+/// i need a https://pub.dev/packages/flutter_datetime_picker
 
 class ThingsWidget extends StatefulWidget {
   ThingsWidget({Key? key}) : super(key: key);
@@ -11,9 +13,10 @@ class ThingsWidget extends StatefulWidget {
 }
 
 class _ThingsWidgetState extends State<ThingsWidget> {
+  Schedule schedule = Schedule(title: "测试");
   @override
-  Widget build(BuildContext context) {
-    Schedule schedule = Schedule(title: "测试");
+  void initState() {
+    super.initState();
     schedule.subject = [
       Subject(
           subTitle: "a1",
@@ -21,6 +24,10 @@ class _ThingsWidgetState extends State<ThingsWidget> {
           to: "2022-01-03 00:00:00",
           subCompletion: 0.25)
     ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       body: ListView.builder(
@@ -62,13 +69,17 @@ class ThingItem extends StatefulWidget {
 class _ThingItemState extends State<ThingItem> {
   List<TableRow> tableRows = [];
 
+  late Schedule _schedule;
+  bool showDetails = false;
+
   @override
   void initState() {
     super.initState();
+    _schedule = widget.schedule;
     if (widget.isFirst) {
       tableRows.add(TableRow(
           //第一行样式 添加背景色
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.grey,
           ),
           children: [
@@ -92,7 +103,47 @@ class _ThingItemState extends State<ThingItem> {
             ),
           ]));
     }
+
     tableRows.add(renderSchedule());
+    if (showDetails) {
+      for (int i = 0; i < _schedule.subject!.length; i++) {
+        tableRows.add(renderSubTitles(_schedule.subject![i], i));
+      }
+    }
+  }
+
+  TableRow renderSubTitles(Subject subject, int id) {
+    return TableRow(children: [
+      _TableItemWidget(
+        title: widget.index.toString() + "-" + (id + 1).toString(),
+      ),
+      InkWell(
+        child: Container(
+          margin: const EdgeInsets.only(left: 5, top: 5),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "   " + subject.subTitle!,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      InkWell(
+        child: _TableItemWidget(
+          title: subject.from!.split(" ")[0],
+        ),
+      ),
+      InkWell(
+        child: _TableItemWidget(
+          title: subject.to!.split(" ")[0],
+        ),
+      ),
+      _TableItemWidget(
+        title: subject.duation,
+      ),
+      _TableItemWidget(
+        title: (subject.subCompletion! * 100 ~/ 1).toString() + "%",
+      ),
+    ]);
   }
 
   TableRow renderSchedule() {
@@ -100,31 +151,91 @@ class _ThingItemState extends State<ThingItem> {
       _TableItemWidget(
         title: widget.index.toString(),
       ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+              child: InkWell(
+            onTap: () async {
+              await showCupertinoDialog(
+                  context: context,
+                  builder: (context) {
+                    return CupertinoAlertDialog(
+                      title: const Text("修改内容"),
+                      content: Material(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text("修改名称"),
+                          TextField(
+                            decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.all(10.0),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(3.0),
+                                )),
+                          ),
+                          const Text("添加子项"),
+                        ],
+                      )),
+                      actions: [
+                        CupertinoActionSheetAction(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(FlutterI18n.translate(
+                                context, "button.label.ok"))),
+                        CupertinoActionSheetAction(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(FlutterI18n.translate(
+                                context, "button.label.quit"))),
+                      ],
+                    );
+                  });
+            },
+            child: Container(
+              margin: const EdgeInsets.only(left: 5, top: 5),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                _schedule.title!,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          )),
+          IconButton(
+              onPressed: () {
+                showDetails = !showDetails;
+                if (showDetails) {
+                  for (int i = 0; i < _schedule.subject!.length; i++) {
+                    tableRows.add(renderSubTitles(_schedule.subject![i], i));
+                  }
+                  setState(() {});
+                } else {
+                  for (int i = 0; i < _schedule.subject!.length; i++) {
+                    tableRows.removeLast();
+                  }
+                  setState(() {});
+                }
+              },
+              icon: const Icon(Icons.details))
+        ],
+      ),
       InkWell(
-        child: Container(
-          margin: EdgeInsets.only(left: 5, top: 5),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            widget.schedule.title!,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+        child: _TableItemWidget(
+          title: _schedule.getStartTime(),
         ),
       ),
       InkWell(
         child: _TableItemWidget(
-          title: widget.schedule.startTime,
-        ),
-      ),
-      InkWell(
-        child: _TableItemWidget(
-          title: widget.schedule.endTime,
+          title: _schedule.getEndTime(),
         ),
       ),
       _TableItemWidget(
-        title: widget.schedule.duation,
+        title: _schedule.duation,
       ),
       _TableItemWidget(
-        title: widget.schedule.comp,
+        title: _schedule.comp,
       ),
     ]);
   }
@@ -147,7 +258,7 @@ class _ThingItemState extends State<ThingItem> {
         },
         //表格边框样式
         border: TableBorder.all(
-          color: Color.fromARGB(255, 78, 92, 78),
+          color: const Color.fromARGB(255, 78, 92, 78),
           width: 2.0,
           style: BorderStyle.solid,
         ),
@@ -168,7 +279,7 @@ class _TableColumnTitle extends StatelessWidget {
       height: 30.0,
       child: Text(
         title,
-        style: TextStyle(fontWeight: FontWeight.bold),
+        style: const TextStyle(fontWeight: FontWeight.bold),
       ),
     );
   }

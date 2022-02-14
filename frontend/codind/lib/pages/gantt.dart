@@ -1,3 +1,12 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: xiaoshuyui
+ * @email: guchengxi1994@qq.com
+ * @Date: 2022-02-14 20:24:08
+ * @LastEditors: xiaoshuyui
+ * @LastEditTime: 2022-02-14 20:39:41
+ */
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -15,22 +24,22 @@ class GanttPage extends StatefulWidget {
 class _GanttPageState extends State<GanttPage> {
   @override
   Widget build(BuildContext context) {
-    if ((!PlatformUtils.isAndroid) && (!PlatformUtils.isIOS)) {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 1,
-            child: ThingsWidget(),
-          ),
-          Expanded(
-            child: CalendarWidget(),
-            flex: 1,
-          )
-        ],
-      );
-    } else {
-      return ThingsWidget();
-    }
+    return Scaffold(
+      body: ((!PlatformUtils.isAndroid) && (!PlatformUtils.isIOS))
+          ? Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: ThingsWidget(),
+                ),
+                Expanded(
+                  child: CalendarWidget(),
+                  flex: 1,
+                )
+              ],
+            )
+          : ThingsWidget(),
+    );
   }
 }

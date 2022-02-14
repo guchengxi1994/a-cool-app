@@ -2,22 +2,20 @@ class Schedule {
   String? title;
   double? completion;
   List<Subject>? subject;
+  // String? startTime = "";
+  // String? endTime = "";
+
+  String getStartTime() {
+    var _d = _getStartTime();
+    return _d.toString().split(" ")[0];
+  }
+
+  String getEndTime() {
+    var _d = _getEndTime();
+    return _d.toString().split(" ")[0];
+  }
 
   Schedule({this.title, this.completion, this.subject});
-
-  String get startTime =>
-      _getStartTime().year.toString() +
-      "-" +
-      _getStartTime().month.toString() +
-      "-" +
-      _getStartTime().day.toString();
-
-  String get endTime =>
-      _getEndTime().year.toString() +
-      "-" +
-      _getEndTime().month.toString() +
-      "-" +
-      _getEndTime().day.toString();
 
   String get duation => _getDuation();
 
@@ -94,6 +92,22 @@ class Subject {
     from = json['from'];
     to = json['to'];
     subCompletion = json['subCompletion'];
+  }
+
+  String get duation => _getDuation();
+
+  String _getDuation() {
+    return _getEndTime().difference(_getStartTime()).inDays.toString();
+  }
+
+  DateTime _getEndTime() {
+    DateTime maxDate = DateTime.parse(to!);
+    return maxDate;
+  }
+
+  DateTime _getStartTime() {
+    DateTime minDate = DateTime.parse(from!);
+    return minDate;
   }
 
   Map<String, dynamic> toJson() {
