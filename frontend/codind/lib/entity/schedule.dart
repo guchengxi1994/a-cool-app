@@ -5,6 +5,60 @@ class Schedule {
 
   Schedule({this.title, this.completion, this.subject});
 
+  String get startTime =>
+      _getStartTime().year.toString() +
+      "-" +
+      _getStartTime().month.toString() +
+      "-" +
+      _getStartTime().day.toString();
+
+  String get endTime =>
+      _getEndTime().year.toString() +
+      "-" +
+      _getEndTime().month.toString() +
+      "-" +
+      _getEndTime().day.toString();
+
+  String get duation => _getDuation();
+
+  String get comp => _getCompletion();
+
+  String _getDuation() {
+    return _getEndTime().difference(_getStartTime()).inDays.toString();
+  }
+
+  DateTime _getStartTime() {
+    DateTime minDate = DateTime.parse(subject![0].from!);
+
+    for (var s in subject!) {
+      var _date = DateTime.parse(s.from!);
+      if (_date.difference(minDate).isNegative) {
+        minDate = _date;
+      }
+    }
+    return minDate;
+  }
+
+  String _getCompletion() {
+    double sum = 0;
+    for (var s in subject!) {
+      sum += s.subCompletion!;
+    }
+    return (((sum / subject!.length) * 100) ~/ 1).toString() + "%";
+  }
+
+  DateTime _getEndTime() {
+    DateTime maxDate = DateTime.parse(subject![0].to!);
+
+    for (var s in subject!) {
+      var _date = DateTime.parse(s.to!);
+      if (maxDate.difference(_date).isNegative) {
+        maxDate = _date;
+      }
+    }
+    return maxDate;
+  }
+
   Schedule.fromJson(Map<String, dynamic> json) {
     title = json['title'];
     completion = json['completion'];
