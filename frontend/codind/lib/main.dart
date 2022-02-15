@@ -90,7 +90,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       builder: FlutterI18n.rootAppBuilder(),
       // home: const MainPage(),
-      home: GanttPage(),
+      home: GanttBlocPage(),
       localizationsDelegates: [
         widget.flutterI18nDelegate,
         GlobalMaterialLocalizations.delegate,
