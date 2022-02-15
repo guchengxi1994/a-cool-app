@@ -149,7 +149,11 @@ TableRow renderSchedule(Schedule schedule, int index) {
     IconButton(
         onPressed: () {
           Global.navigatorKey.currentState!
-              .pushNamed(Routers.pageGanttDetails, arguments: schedule);
+              .push(MaterialPageRoute(builder: (_) {
+            return ScheduleDetailPage(
+              schedule: schedule,
+            );
+          }));
         },
         icon: const Icon(Icons.navigate_next))
   ]);

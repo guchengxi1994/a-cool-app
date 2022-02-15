@@ -1,7 +1,6 @@
-import 'dart:js';
-
 import 'package:bloc/bloc.dart';
 import 'package:codind/entity/schedule.dart';
+import 'package:codind/pages/_schedule_detail_page.dart';
 import 'package:codind/utils/router.dart';
 import 'package:equatable/equatable.dart';
 // ignore: implementation_imports

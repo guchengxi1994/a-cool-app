@@ -8,7 +8,6 @@
  * @LastEditTime: 2022-02-10 22:05:59
  */
 
-import 'package:codind/pages/_schedule_detail_page.dart';
 import 'package:codind/pages/pages.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +20,6 @@ class Routers {
   static const pageMain = 'pageMain';
   static const pageMdEditor = 'pageMdEditor';
   static const pageFolder = 'pageFolder';
-  static const pageGanttDetails = 'pageGanttDetails';
 
   static final Map<String, WidgetBuilder> routers = {
     pageSetting: (ctx) => SettingPage(
@@ -30,6 +28,5 @@ class Routers {
     pageMain: (ctx) => const MainPage(),
     pageMdEditor: (context) => const WritingProviderPage(),
     pageFolder: (context) => FileExplorePage(),
-    pageGanttDetails: (context) => ScheduleDetailPage(),
   };
 }
