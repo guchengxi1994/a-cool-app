@@ -57,6 +57,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                 index: currentIndex + 1,
                 subject: null,
                 removeSelf: (index) => removeOneLine(index),
+                commitSelf: (index, subject) => commitSubject(index, subject),
               ));
               setState(() {});
             },
@@ -73,7 +74,9 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
             width: 20,
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pop(schedule);
+            },
             icon: const Icon(Icons.done),
           ),
         ],
@@ -123,6 +126,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
           subject: schedule!.subject![i],
           index: i,
           removeSelf: (index) => removeOneLine(index),
+          commitSelf: (index, subject) => commitSubject(index, subject),
         ));
         currentIndex = i;
       }
@@ -131,12 +135,29 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
 
   void removeOneLine(int index) {
     widgets.removeAt(index + startIndex);
+    schedule?.subject?.removeAt(index);
+    setState(() {});
+  }
+
+  void commitSubject(int index, Subject subject) {
+    if (index >= schedule!.subject!.length) {
+      schedule!.subject!.add(subject);
+    } else {
+      schedule?.subject?[index] = subject;
+    }
+    print(schedule!.subject!.length);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(Icons.navigate_before))),
       body: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -149,11 +170,16 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
 
 class SubRowWidget extends StatefulWidget {
   SubRowWidget(
-      {Key? key, required this.subject, required this.index, this.removeSelf})
+      {Key? key,
+      required this.subject,
+      required this.index,
+      this.removeSelf,
+      this.commitSelf})
       : super(key: key);
   Subject? subject;
   int index;
   final removeSelf;
+  final commitSelf;
 
   @override
   State<SubRowWidget> createState() => _SubRowWidgetState();
@@ -180,6 +206,7 @@ class _SubRowWidgetState extends State<SubRowWidget> {
       children: [
         Expanded(
             child: TextField(
+          onChanged: ((value) => _subject.subTitle = value),
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(10.0),
               hintText: _subject.subTitle,
@@ -201,11 +228,7 @@ class _SubRowWidgetState extends State<SubRowWidget> {
                 .then((value) {
               // print(value);
               if (value != null) {
-                _subject.from = value.year.toString() +
-                    "-" +
-                    value.month.toString() +
-                    "-" +
-                    value.day.toString();
+                _subject.from = value.toString().split(" ")[0];
                 setState(() {});
               }
             });
@@ -229,11 +252,7 @@ class _SubRowWidgetState extends State<SubRowWidget> {
                 .then((value) {
               // print(value);
               if (value != null) {
-                _subject.to = value.year.toString() +
-                    "-" +
-                    value.month.toString() +
-                    "-" +
-                    value.day.toString();
+                _subject.to = value.toString().split(" ")[0];
                 setState(() {});
               }
             });
@@ -281,7 +300,6 @@ class _SubRowWidgetState extends State<SubRowWidget> {
                       showToastMessage("完成度需大于0小于1", null);
                     }
                   } catch (_) {
-                    print(value);
                     showToastMessage("数值异常", null);
                   }
                 });
@@ -303,9 +321,22 @@ class _SubRowWidgetState extends State<SubRowWidget> {
             IconButton(
                 tooltip: "提交本条记录",
                 onPressed: () {
-                  // setState(() {
-                  //   _subject.subCompletion = 1;
-                  // });
+                  setState(() {
+                    if (_subject.subTitle == "") {
+                      showToastMessage("标题不能为空", null);
+                      return;
+                    }
+                    try {
+                      if (int.parse(_subject.duation) < 0) {
+                        showToastMessage("开始时间比结束时间晚", null);
+                      } else {
+                        widget.commitSelf(widget.index, _subject);
+                      }
+                    } catch (e) {
+                      debugPrint(e.toString());
+                      showToastMessage("录入失败", null);
+                    }
+                  });
                 },
                 icon: const Icon(Icons.done)),
           ],

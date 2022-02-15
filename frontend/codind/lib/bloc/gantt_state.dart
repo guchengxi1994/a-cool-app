@@ -1,3 +1,12 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: xiaoshuyui
+ * @email: guchengxi1994@qq.com
+ * @Date: 2022-02-15 19:55:19
+ * @LastEditors: xiaoshuyui
+ * @LastEditTime: 2022-02-15 22:04:39
+ */
 part of 'gantt_bloc.dart';
 
 enum GanttStatus {
@@ -19,47 +28,6 @@ class GanttState extends Equatable {
       {this.status = GanttStatus.initial,
       this.scheduleList = const [],
       this.operatedSchdule});
-
-  List<TableRow> getTableRows(int index) {
-    var schedule = scheduleList[index];
-    List<TableRow> result = [];
-    if (index == 0) {
-      result.add(TableRow(
-          //第一行样式 添加背景色
-          decoration: const BoxDecoration(
-            color: Colors.grey,
-          ),
-          children: [
-            _TableColumnTitle(
-              title: 'ID',
-            ),
-            _TableColumnTitle(
-              title: '项目名称',
-            ),
-            _TableColumnTitle(
-              title: '开始时间',
-            ),
-            _TableColumnTitle(
-              title: '结束时间',
-            ),
-            _TableColumnTitle(
-              title: '时长',
-            ),
-            _TableColumnTitle(
-              title: '完成度',
-            ),
-            _TableColumnTitle(title: "操作"),
-          ]));
-    }
-
-    result.add(renderSchedule(schedule, index));
-
-    for (int i = 0; i < schedule.subject!.length; i++) {
-      result.add(renderSubTitles(schedule.subject![i], index, i));
-    }
-
-    return result;
-  }
 
   @override
   List<Object> get props => [status, scheduleList];
@@ -86,104 +54,4 @@ class GanttState extends Equatable {
   @override
   // ignore: unnecessary_overrides
   int get hashCode => super.hashCode;
-}
-
-class _TableColumnTitle extends StatelessWidget {
-  _TableColumnTitle({Key? key, required this.title}) : super(key: key);
-  String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      height: 30.0,
-      child: Text(
-        title,
-        style: const TextStyle(fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-}
-
-class _TableItemWidget extends StatelessWidget {
-  _TableItemWidget({Key? key, required this.title}) : super(key: key);
-  String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      height: 30.0,
-      child: Text(
-        title,
-      ),
-    );
-  }
-}
-
-TableRow renderSchedule(Schedule schedule, int index) {
-  return TableRow(children: [
-    _TableItemWidget(
-      title: index.toString(),
-    ),
-    Container(
-      margin: const EdgeInsets.only(left: 5, top: 5),
-      alignment: Alignment.centerLeft,
-      child: Text(
-        schedule.title!,
-        style: const TextStyle(fontWeight: FontWeight.bold),
-      ),
-    ),
-    _TableItemWidget(
-      title: schedule.getStartTime(),
-    ),
-    _TableItemWidget(
-      title: schedule.getEndTime(),
-    ),
-    _TableItemWidget(
-      title: schedule.duation,
-    ),
-    _TableItemWidget(
-      title: schedule.comp,
-    ),
-    IconButton(
-        onPressed: () {
-          Global.navigatorKey.currentState!
-              .push(MaterialPageRoute(builder: (_) {
-            return ScheduleDetailPage(
-              schedule: schedule,
-            );
-          }));
-        },
-        icon: const Icon(Icons.navigate_next))
-  ]);
-}
-
-TableRow renderSubTitles(Subject subject, int index, int id) {
-  return TableRow(children: [
-    _TableItemWidget(
-      title: index.toString() + "-" + (id + 1).toString(),
-    ),
-    Container(
-      margin: const EdgeInsets.only(left: 5, top: 5),
-      alignment: Alignment.centerLeft,
-      child: Text(
-        "   " + subject.subTitle!,
-        style: const TextStyle(fontWeight: FontWeight.bold),
-      ),
-    ),
-    _TableItemWidget(
-      title: subject.from!.split(" ")[0],
-    ),
-    _TableItemWidget(
-      title: subject.to!.split(" ")[0],
-    ),
-    _TableItemWidget(
-      title: subject.duation,
-    ),
-    _TableItemWidget(
-      title: (subject.subCompletion! * 100 ~/ 1).toString() + "%",
-    ),
-    Container(),
-  ]);
 }
