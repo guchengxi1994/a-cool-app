@@ -13,9 +13,12 @@ enum GanttStatus {
 class GanttState extends Equatable {
   final GanttStatus status;
   final List<Schedule> scheduleList;
+  final Schedule? operatedSchdule;
 
   const GanttState(
-      {this.status = GanttStatus.initial, this.scheduleList = const []});
+      {this.status = GanttStatus.initial,
+      this.scheduleList = const [],
+      this.operatedSchdule});
 
   List<TableRow> getTableRows(int index) {
     var schedule = scheduleList[index];
@@ -45,6 +48,7 @@ class GanttState extends Equatable {
             _TableColumnTitle(
               title: '完成度',
             ),
+            _TableColumnTitle(title: "操作"),
           ]));
     }
 
@@ -60,10 +64,12 @@ class GanttState extends Equatable {
   @override
   List<Object> get props => [status, scheduleList];
 
-  GanttState copyWith(GanttStatus? status, List<Schedule>? scheduleList) {
+  GanttState copyWith(GanttStatus? status, List<Schedule>? scheduleList,
+      Schedule? operatedSchdule) {
     return GanttState(
         status: status ?? this.status,
-        scheduleList: scheduleList ?? this.scheduleList);
+        scheduleList: scheduleList ?? this.scheduleList,
+        operatedSchdule: operatedSchdule);
   }
 
   @override
@@ -140,6 +146,12 @@ TableRow renderSchedule(Schedule schedule, int index) {
     _TableItemWidget(
       title: schedule.comp,
     ),
+    IconButton(
+        onPressed: () {
+          Global.navigatorKey.currentState!
+              .pushNamed(Routers.pageGanttDetails, arguments: schedule);
+        },
+        icon: const Icon(Icons.navigate_next))
   ]);
 }
 
@@ -168,5 +180,6 @@ TableRow renderSubTitles(Subject subject, int index, int id) {
     _TableItemWidget(
       title: (subject.subCompletion! * 100 ~/ 1).toString() + "%",
     ),
+    Container(),
   ]);
 }

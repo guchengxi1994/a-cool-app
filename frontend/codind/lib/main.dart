@@ -96,6 +96,7 @@ class _MyAppState extends State<MyApp> {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate
       ],
+      navigatorKey: Global.navigatorKey,
     );
   }
 }

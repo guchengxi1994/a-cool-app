@@ -33,3 +33,8 @@ class RemoveSubjectEvent extends GanttEvent {
   final int subjectIndex;
   const RemoveSubjectEvent({required this.index, required this.subjectIndex});
 }
+
+class SetOperatingSchedule extends GanttEvent {
+  final Schedule schedule;
+  const SetOperatingSchedule({required this.schedule});
+}

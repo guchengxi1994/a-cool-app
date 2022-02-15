@@ -8,6 +8,7 @@
  * @LastEditTime: 2022-02-14 20:39:41
  */
 import 'package:codind/bloc/gantt_bloc.dart';
+import 'package:codind/entity/schedule.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -51,6 +52,25 @@ class _GanttPageState extends State<GanttPage> {
                 ],
               )
             : ThingsWidget(),
+        bottomSheet: Row(
+          children: [
+            IconButton(
+                onPressed: () {
+                  Schedule schedule = Schedule(title: "测试22222");
+                  schedule.subject = [
+                    Subject(
+                        subTitle: "a2",
+                        from: "2022-01-01 00:00:00",
+                        to: "2022-01-03 00:00:00",
+                        subCompletion: 0.25)
+                  ];
+                  context
+                      .read<GanttBloc>()
+                      .add(ChangeScheduleEvent(schedule: schedule, index: 0));
+                },
+                icon: Icon(Icons.ac_unit))
+          ],
+        ),
       );
     });
   }

@@ -1,5 +1,8 @@
+import 'dart:js';
+
 import 'package:bloc/bloc.dart';
 import 'package:codind/entity/schedule.dart';
+import 'package:codind/utils/router.dart';
 import 'package:equatable/equatable.dart';
 // ignore: implementation_imports
 import 'package:equatable/src/equatable_utils.dart' as qu_utils;
@@ -12,6 +15,7 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
   GanttBloc() : super(const GanttState()) {
     on<InitialGanttEvent>(_fetchToState);
     on<ChangeScheduleEvent>(_changeSchedule);
+    on<SetOperatingSchedule>(_setCurrentSchedule);
   }
 
   Future<void> _fetchToState(
@@ -27,15 +31,21 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
     List<Schedule> scheduleList = [
       schedule,
     ];
-    return emit(state.copyWith(GanttStatus.initial, scheduleList));
+    return emit(state.copyWith(GanttStatus.initial, scheduleList, null));
   }
 
   Future<void> _changeSchedule(
       ChangeScheduleEvent event, Emitter<GanttState> emit) async {
     List<Schedule> scheduleList = state.scheduleList;
     scheduleList[event.index] = event.schedule;
-    print("应该执行这个");
+    // print("应该执行这个");
     // print(scheduleList[0].title);
-    return emit(state.copyWith(GanttStatus.changeSchedule, scheduleList));
+    return emit(state.copyWith(GanttStatus.changeSchedule, scheduleList, null));
+  }
+
+  Future<void> _setCurrentSchedule(
+      SetOperatingSchedule event, Emitter<GanttState> emit) async {
+    return emit(state.copyWith(
+        GanttStatus.changeSchedule, state.scheduleList, event.schedule));
   }
 }

@@ -83,6 +83,7 @@ class _ThingItemState extends State<ThingItem> {
           3: FixedColumnWidth(100.0),
           4: FixedColumnWidth(100.0),
           5: FixedColumnWidth(100.0),
+          6: FixedColumnWidth(50.0),
         },
         //表格边框样式
         border: TableBorder.all(

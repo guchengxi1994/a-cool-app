@@ -77,6 +77,18 @@ class Schedule {
     }
     return data;
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (other.runtimeType != runtimeType) {
+      return false;
+    } else {
+      return (title == (other as Schedule).title) && subject == other.subject;
+    }
+  }
+
+  @override
+  int get hashCode => super.hashCode;
 }
 
 class Subject {
@@ -84,6 +96,18 @@ class Subject {
   String? from;
   String? to;
   double? subCompletion;
+
+  @override
+  bool operator ==(Object other) {
+    if (other.runtimeType != runtimeType) {
+      return false;
+    } else {
+      return (subTitle == (other as Subject).subTitle) &&
+          (from == other.from) &&
+          (to == other.to) &&
+          (subCompletion == other.subCompletion);
+    }
+  }
 
   Subject({this.subTitle, this.from, this.to, this.subCompletion});
 
@@ -118,4 +142,7 @@ class Subject {
     data['subCompletion'] = subCompletion;
     return data;
   }
+
+  @override
+  int get hashCode => super.hashCode;
 }
