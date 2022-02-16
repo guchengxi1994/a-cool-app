@@ -20,7 +20,6 @@ class ScheduleDetailPage extends StatefulWidget {
 }
 
 class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
-  int currentIndex = 0;
   List<Widget> widgets = [];
   late Schedule? schedule;
 
@@ -64,12 +63,16 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
           ),
           IconButton(
             onPressed: () {
+              Subject _s = Subject(
+                  subTitle: "", from: "未输入", to: "未输入", subCompletion: 0);
+              schedule!.subject!.add(_s);
               widgets.add(SubRowWidget(
-                index: currentIndex + 1,
-                subject: null,
+                index: schedule!.subject!.length - 1,
+                subject: _s,
                 removeSelf: (index) => removeOneLine(index),
                 commitSelf: (index, subject) => commitSubject(index, subject),
               ));
+
               setState(() {});
             },
             icon: const Icon(Icons.plus_one),
@@ -94,6 +97,14 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                 if (schedule!.title == "") {
                   schedule!.title = "新建日程";
                 }
+
+                for (var s in schedule!.subject!) {
+                  if (!s.validate()) {
+                    showToastMessage("子项目验证失败，请确认提交", null);
+                    return;
+                  }
+                }
+
                 Navigator.of(context).pop(schedule);
               }
             },
@@ -148,7 +159,6 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
           removeSelf: (index) => removeOneLine(index),
           commitSelf: (index, subject) => commitSubject(index, subject),
         ));
-        currentIndex = i;
       }
     }
   }
@@ -372,7 +382,7 @@ class _SubRowWidgetState extends State<SubRowWidget> {
                     children: [
                       IconButton(
                           onPressed: () {
-                            // print("点击了这里");
+                            debugPrint(widget.index.toString());
                             widget.removeSelf(widget.index);
                           },
                           icon: const Icon(Icons.delete)),
