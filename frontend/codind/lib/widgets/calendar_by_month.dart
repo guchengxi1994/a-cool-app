@@ -23,6 +23,7 @@ class _CalendarByMonthState extends State<CalendarByMonth> {
   my.DateUtils dateUtils = my.DateUtils();
   late GanttBloc _ganttBloc;
   ScrollController scrollController = ScrollController();
+  ScrollController scrollCanvasController = ScrollController();
 
   @override
   void initState() {
@@ -103,8 +104,13 @@ class _CalendarByMonthState extends State<CalendarByMonth> {
                 scheduleList:
                     _ganttBloc.state.grepSchedules(currentYear, currentMonth),
               ),
-              child: Container(
-                color: Colors.white,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                controller: scrollCanvasController,
+                key: UniqueKey(),
+                child: Container(
+                  color: Colors.white,
+                ),
               ),
             )
           ],
