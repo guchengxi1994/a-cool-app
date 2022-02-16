@@ -94,6 +94,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_dateUtils.year.toString()),
+        automaticallyImplyLeading: false,
+        elevation: 0,
         centerTitle: true,
       ),
       body: SafeArea(

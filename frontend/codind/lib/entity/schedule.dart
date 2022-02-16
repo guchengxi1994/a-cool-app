@@ -130,6 +130,9 @@ class Subject {
     subCompletion = json['subCompletion'];
   }
 
+  int get fromDay => _getStartTime().day;
+  int get toDay => _getEndTime().day;
+
   String get duation => _getDuation();
 
   String _getDuation() {

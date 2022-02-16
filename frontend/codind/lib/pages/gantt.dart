@@ -26,12 +26,16 @@ class GanttPage extends StatefulWidget {
   State<GanttPage> createState() => _GanttPageState();
 }
 
+enum CalendarType { month, year }
+
 class _GanttPageState extends State<GanttPage> {
   late GanttBloc _ganttBloc;
+  late CalendarType _calendarType;
 
   @override
   void initState() {
     super.initState();
+    _calendarType = CalendarType.year;
     _ganttBloc = context.read<GanttBloc>();
   }
 
@@ -39,6 +43,22 @@ class _GanttPageState extends State<GanttPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<GanttBloc, GanttState>(builder: (context, state) {
       return Scaffold(
+        appBar: PlatformUtils.isMobile
+            ? null
+            : AppBar(elevation: 0, actions: [
+                IconButton(
+                    onPressed: () {
+                      if (_calendarType == CalendarType.month) {
+                        _calendarType = CalendarType.year;
+                      } else {
+                        _calendarType = CalendarType.month;
+                      }
+                      setState(() {});
+                    },
+                    icon: _calendarType == CalendarType.month
+                        ? const Icon(Icons.switch_left)
+                        : const Icon(Icons.switch_right))
+              ]),
         body: ((!PlatformUtils.isAndroid) && (!PlatformUtils.isIOS))
             ? Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +68,9 @@ class _GanttPageState extends State<GanttPage> {
                     child: ThingsWidget(),
                   ),
                   Expanded(
-                    child: CalendarWidget(),
+                    child: _calendarType == CalendarType.year
+                        ? CalendarWidget()
+                        : CalendarByMonth(),
                     flex: 1,
                   )
                 ],

@@ -24,7 +24,17 @@ class _ThingsWidgetState extends State<ThingsWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: PlatformUtils.isMobile
+          ? AppBar(
+              title: const Text("你的日程"),
+              centerTitle: true,
+            )
+          : AppBar(
+              elevation: PlatformUtils.isMobile ? 4 : 0,
+              automaticallyImplyLeading: false,
+              title: const Text("你的日程"),
+              centerTitle: true,
+            ),
       body: _ganttBloc.state.scheduleList.isNotEmpty
           ? ListView.builder(
               itemCount: _ganttBloc.state.scheduleList.length,

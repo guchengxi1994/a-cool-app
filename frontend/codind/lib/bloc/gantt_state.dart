@@ -40,6 +40,70 @@ class GanttState extends Equatable {
         operatedSchdule: operatedSchdule);
   }
 
+  List<ScheduleGanttModel> grepSchedules(int currentYear, int currentMonth) {
+    List<ScheduleGanttModel> _sdList = [];
+    var today = DateTime.now();
+    for (int i = 0; i < scheduleList.length; i++) {
+      var s = scheduleList[i];
+      List<Subject> _result = [];
+      if (s.subject != null) {
+        for (var sb in s.subject!) {
+          var fromDate = sb.from!.split(" ")[0];
+          var endDate = sb.to!.split(" ")[0];
+          var fromMonth = int.parse(fromDate.split("-")[1]);
+          var toMonth = int.parse(endDate.split("-")[1]);
+          if (fromMonth != currentMonth && toMonth != currentMonth) {
+            _result.add(Subject(subTitle: "__will_not_be_paint__"));
+          } else {
+            if (fromMonth == currentMonth && toMonth == fromMonth) {
+              _result.add(sb);
+            } else {
+              var _tmp = Subject.fromJson(sb.toJson());
+              if (fromMonth < currentMonth) {
+                _tmp.from = currentYear.toString() +
+                    "-" +
+                    currentMonth.toString() +
+                    "-" +
+                    "1";
+              }
+
+              if (toMonth > currentMonth) {
+                _tmp.to = currentYear.toString() +
+                    "-" +
+                    currentMonth.toString() +
+                    "-" +
+                    my.DateUtils.getCurrentMonthDays(currentYear, currentMonth)
+                        .toString();
+              }
+
+              _result.add(_tmp);
+            }
+          }
+
+          BoxStatus status;
+          if (s.comp != "100%") {
+            var endTime = s.getEndTime();
+            var year = endTime.split("-")[0];
+            var month = endTime.split("-")[1];
+            var day = endTime.split("-")[2];
+            if (DateTime(int.parse(year), int.parse(month), int.parse(day)) <
+                today) {
+              status = BoxStatus.delayed;
+            } else {
+              status = BoxStatus.underGoing;
+            }
+          } else {
+            status = BoxStatus.done;
+          }
+          _sdList.add(
+              ScheduleGanttModel(index: i, status: status, subjects: _result));
+        }
+      }
+    }
+
+    return _sdList;
+  }
+
   List<ScheduleDates> getDates() {
     List<ScheduleDates> _sdList = [];
     var today = DateTime.now();
@@ -124,4 +188,13 @@ class ScheduleDates {
 
   ScheduleDates(
       {required this.dates, required this.index, required this.status});
+}
+
+class ScheduleGanttModel {
+  List<Subject> subjects;
+  int index;
+  BoxStatus status;
+
+  ScheduleGanttModel(
+      {required this.subjects, required this.index, required this.status});
 }
