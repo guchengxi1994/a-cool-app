@@ -19,6 +19,10 @@
 
 # 部分演示demo
 
+## 2022.2.16 一个简易的日程规划工具(bloc实现，后续会在此基础上完成甘特图)
+
+![schedule_demo](https://github.com/guchengxi1994/xiaoshuyui_docs/raw/main/code-find/schedule_demo.gif)
+
 ## 2022.2.7 一个简易的文件管理页面
 
 ![code_find_04](https://github.com/guchengxi1994/xiaoshuyui_docs/raw/main/code-find/code_find_05.gif)

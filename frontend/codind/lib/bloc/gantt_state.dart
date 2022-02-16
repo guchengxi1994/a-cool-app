@@ -40,6 +40,65 @@ class GanttState extends Equatable {
         operatedSchdule: operatedSchdule);
   }
 
+  List<ScheduleDates> getDates() {
+    List<ScheduleDates> _sdList = [];
+    var today = DateTime.now();
+    for (int i = 0; i < scheduleList.length; i++) {
+      var s = scheduleList[i];
+
+      List<DateTime> _result = [];
+      if (s.subject != null) {
+        for (var sb in s.subject!) {
+          var fromDate = sb.from!.split(" ")[0];
+          var endDate = sb.to!.split(" ")[0];
+
+          var year = fromDate.split("-")[0];
+          var fromMonth = fromDate.split("-")[1];
+          var fromDay = fromDate.split("-")[2];
+          var toMonth = endDate.split("-")[1];
+          var toDay = endDate.split("-")[2];
+
+          if (fromMonth == toMonth) {
+            _result.addAll(List.generate(
+                int.parse(sb.duation) + 1,
+                (index) => DateTime(int.parse(year), int.parse(fromMonth),
+                    index + int.parse(fromDay))));
+          } else {
+            DateTime start = DateTime(
+                int.parse(year), int.parse(fromMonth), int.parse(fromDay));
+            DateTime end =
+                DateTime(int.parse(year), int.parse(toMonth), int.parse(toDay));
+
+            do {
+              _result.add(start);
+              start = start.nextDay;
+            } while (start <= end);
+          }
+        }
+
+        BoxStatus status;
+        if (s.comp != "100%") {
+          var endTime = s.getEndTime();
+          var year = endTime.split("-")[0];
+          var month = endTime.split("-")[1];
+          var day = endTime.split("-")[2];
+          if (DateTime(int.parse(year), int.parse(month), int.parse(day)) <
+              today) {
+            status = BoxStatus.delayed;
+          } else {
+            status = BoxStatus.underGoing;
+          }
+        } else {
+          status = BoxStatus.done;
+        }
+
+        _sdList.add(ScheduleDates(dates: _result, index: i, status: status));
+      }
+    }
+
+    return _sdList;
+  }
+
   @override
   bool operator ==(Object other) {
     if (status != GanttStatus.initial) {
@@ -54,4 +113,15 @@ class GanttState extends Equatable {
   @override
   // ignore: unnecessary_overrides
   int get hashCode => super.hashCode;
+}
+
+enum BoxStatus { done, delayed, nothing, cannotSelected, underGoing }
+
+class ScheduleDates {
+  List<DateTime> dates;
+  int index;
+  BoxStatus status;
+
+  ScheduleDates(
+      {required this.dates, required this.index, required this.status});
 }

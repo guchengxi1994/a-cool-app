@@ -122,7 +122,7 @@ class _ThingItemState extends State<ThingItem> {
               title: '结束时间',
             ),
             _TableColumnTitle(
-              title: '时长',
+              title: '用时（天）',
             ),
             _TableColumnTitle(
               title: '完成度',

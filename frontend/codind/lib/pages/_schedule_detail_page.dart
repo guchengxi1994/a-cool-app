@@ -147,7 +147,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
     } else {
       schedule?.subject?[index] = subject;
     }
-    print(schedule!.subject!.length);
+    // print(schedule!.subject!.length);
     setState(() {});
   }
 

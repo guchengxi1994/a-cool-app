@@ -10,9 +10,12 @@
 
 /// diy a scroll bar  https://www.jianshu.com/p/c14c5bd649c2
 
+import 'package:codind/bloc/gantt_bloc.dart';
+import 'package:codind/utils/common.dart' as my;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dart_date/dart_date.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 class CalendarWidget extends StatefulWidget {
@@ -41,13 +44,16 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   List<ScrollController> _scrollList = [];
 
   late double dx = 0;
+  final my.DateUtils _dateUtils = my.DateUtils();
 
-  int year = 2022;
+  // int year = 2022;
   Map<String, int> data = {};
+  late GanttBloc _ganttBloc;
 
   @override
   void initState() {
     super.initState();
+    _ganttBloc = context.read<GanttBloc>();
     _scrollList = [
       scrollControllerJan,
       scrollControllerFeb,
@@ -62,21 +68,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       scrollControllerNov,
       scrollControllerDec
     ];
-    data = {
-      "title": 31,
-      "1": 31,
-      "2": ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) ? 29 : 28,
-      "3": 31,
-      "4": 30,
-      "5": 31,
-      "6": 30,
-      "7": 31,
-      "8": 31,
-      "9": 30,
-      "10": 31,
-      "11": 30,
-      "12": 31,
-    };
+    data = _dateUtils.data;
   }
 
   bool _handleScrollNotification(ScrollNotification notification) {
@@ -91,13 +83,17 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   Widget build(BuildContext context) {
     // List days = List.generate(365, (e) => e);
 
+    // print(_ganttBloc.state.getDates());
+
+    List<ScheduleDates> scheduleDates = _ganttBloc.state.getDates();
+
     List _days = data.values.toList();
     // print(_days);
     var _all = List.generate(31, (i) => i);
     // print(DateTime(2022, 1, 2).isSunday);
     return Scaffold(
       appBar: AppBar(
-        title: Text(year.toString()),
+        title: Text(_dateUtils.year.toString()),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -147,13 +143,28 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: _all.map((e) {
                             if (e < _days[key]) {
-                              var utc = DateTime(2022, key, e + 1).isSaturday ||
-                                  DateTime(2022, key, e + 1).isSunday;
+                              var utc = DateTime(_dateUtils.year, key, e + 1)
+                                      .isSaturday ||
+                                  DateTime(_dateUtils.year, key, e + 1)
+                                      .isSunday;
+                              var thisDay =
+                                  DateTime(_dateUtils.year, key, e + 1);
+                              // var hasThings = _ganttBloc.state
+                              //     .getDates()
+                              //     .contains(
+                              //         DateTime(_dateUtils.year, key, e + 1));
+                              BoxStatus status = BoxStatus.nothing;
+                              for (var sd in scheduleDates) {
+                                if (sd.dates.contains(thisDay)) {
+                                  status = sd.status;
+                                }
+                              }
+
                               return DayBox(
                                 isWeekend: utc,
                                 rowId: key,
                                 columnId: e,
-                                boxStatus: BoxStatus.nothing,
+                                boxStatus: status,
                               );
                             } else {
                               return DayBox(
@@ -175,8 +186,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     );
   }
 }
-
-enum BoxStatus { done, delayed, nothing, cannotSelected }
 
 class DayBox extends StatefulWidget {
   DayBox(
@@ -209,6 +218,8 @@ class _DayBoxState extends State<DayBox> {
       backgroundColor = Colors.red;
     } else if (widget.boxStatus == BoxStatus.done) {
       backgroundColor = Colors.green;
+    } else if (widget.boxStatus == BoxStatus.underGoing) {
+      backgroundColor = const Color.fromARGB(255, 28, 103, 189);
     } else {
       backgroundColor = Colors.yellow;
     }

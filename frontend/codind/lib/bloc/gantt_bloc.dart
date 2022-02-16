@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:codind/entity/schedule.dart';
+import 'package:dart_date/dart_date.dart';
 import 'package:equatable/equatable.dart';
 // ignore: implementation_imports
 import 'package:equatable/src/equatable_utils.dart' as qu_utils;
