@@ -1,8 +1,14 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:codind/entity/schedule.dart';
+import 'package:codind/utils/platform_utils.dart';
 import 'package:codind/utils/toast_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+
+const double textButtonHeight = 20;
+const double textButtonWidth = 30;
 
 class ScheduleDetailPage extends StatefulWidget {
   ScheduleDetailPage({Key? key, required this.schedule}) : super(key: key);
@@ -23,7 +29,11 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
   @override
   void initState() {
     super.initState();
-    schedule = widget.schedule;
+    if (widget.schedule != null) {
+      schedule = Schedule.fromJson(widget.schedule!.toJson());
+    } else {
+      schedule = Schedule(title: "新的日程", subject: []);
+    }
 
     widgets.add(const Text(
       "任务名称",
@@ -40,6 +50,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
         children: [
           Expanded(
             child: TextField(
+              onChanged: ((value) => schedule!.title = value),
               decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(10.0),
                   hintText: schedule?.title,
@@ -77,7 +88,14 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
           ),
           IconButton(
             onPressed: () {
-              Navigator.of(context).pop(schedule);
+              if (schedule!.subject == null || schedule!.subject!.isEmpty) {
+                showToastMessage("子项目为空", null);
+              } else {
+                if (schedule!.title == "") {
+                  schedule!.title = "新建日程";
+                }
+                Navigator.of(context).pop(schedule);
+              }
             },
             icon: const Icon(Icons.done),
           ),
@@ -312,37 +330,75 @@ class _SubRowWidgetState extends State<SubRowWidget> {
               )),
         ),
         Expanded(
-            child: Row(
-          children: [
-            IconButton(
-                onPressed: () {
-                  print("点击了这里");
-                  widget.removeSelf(widget.index);
-                },
-                icon: const Icon(Icons.delete)),
-            IconButton(
-                tooltip: "提交本条记录",
-                onPressed: () {
-                  setState(() {
-                    if (_subject.subTitle == "") {
-                      showToastMessage("标题不能为空", null);
-                      return;
-                    }
-                    try {
-                      if (int.parse(_subject.duation) < 0) {
-                        showToastMessage("开始时间比结束时间晚", null);
-                      } else {
-                        widget.commitSelf(widget.index, _subject);
-                      }
-                    } catch (e) {
-                      debugPrint(e.toString());
-                      showToastMessage("录入失败", null);
-                    }
-                  });
-                },
-                icon: const Icon(Icons.done)),
-          ],
-        ))
+            child: (PlatformUtils.isAndroid || PlatformUtils.isIOS)
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextButton(
+                          onPressed: () {
+                            widget.removeSelf(widget.index);
+                          },
+                          child: const SizedBox(
+                            height: textButtonHeight,
+                            width: textButtonWidth,
+                            child: Text("删除"),
+                          )),
+                      TextButton(
+                          onPressed: () {
+                            setState(() {
+                              if (_subject.subTitle == "") {
+                                showToastMessage("标题不能为空", null);
+                                return;
+                              }
+                              try {
+                                if (int.parse(_subject.duation) < 0) {
+                                  showToastMessage("开始时间比结束时间晚", null);
+                                } else {
+                                  widget.commitSelf(widget.index, _subject);
+                                }
+                              } catch (e) {
+                                debugPrint(e.toString());
+                                showToastMessage("录入失败", null);
+                              }
+                            });
+                          },
+                          child: const SizedBox(
+                              height: textButtonHeight,
+                              width: textButtonWidth,
+                              child: Text("确认")))
+                    ],
+                  )
+                : Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            // print("点击了这里");
+                            widget.removeSelf(widget.index);
+                          },
+                          icon: const Icon(Icons.delete)),
+                      IconButton(
+                          tooltip: "提交本条记录",
+                          onPressed: () {
+                            setState(() {
+                              if (_subject.subTitle == "") {
+                                showToastMessage("标题不能为空", null);
+                                return;
+                              }
+                              try {
+                                if (int.parse(_subject.duation) < 0) {
+                                  showToastMessage("开始时间比结束时间晚", null);
+                                } else {
+                                  widget.commitSelf(widget.index, _subject);
+                                }
+                              } catch (e) {
+                                debugPrint(e.toString());
+                                showToastMessage("录入失败", null);
+                              }
+                            });
+                          },
+                          icon: const Icon(Icons.done)),
+                    ],
+                  ))
       ],
     );
   }

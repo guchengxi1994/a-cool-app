@@ -43,4 +43,6 @@ class PlatformUtils {
   static bool get isFuchsia => _isFuchsia();
 
   static bool get isLinux => _isLinux();
+
+  static bool get isMobile => _isAndroid() || _isIOS();
 }

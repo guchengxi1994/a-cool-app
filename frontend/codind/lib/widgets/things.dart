@@ -5,8 +5,6 @@ import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// i need a https://pub.dev/packages/flutter_datetime_picker
-
 class ThingsWidget extends StatefulWidget {
   ThingsWidget({Key? key}) : super(key: key);
 
@@ -27,21 +25,23 @@ class _ThingsWidgetState extends State<ThingsWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: ListView.builder(
-          itemCount: _ganttBloc.state.scheduleList.length,
-          itemBuilder: ((context, index) {
-            if (index == 0) {
-              return ThingItem(
-                index: index,
-                isFirst: true,
-              );
-            } else {
-              return ThingItem(
-                index: index,
-                isFirst: false,
-              );
-            }
-          })),
+      body: _ganttBloc.state.scheduleList.isNotEmpty
+          ? ListView.builder(
+              itemCount: _ganttBloc.state.scheduleList.length,
+              itemBuilder: ((context, index) {
+                if (index == 0) {
+                  return ThingItem(
+                    index: index,
+                    isFirst: true,
+                  );
+                } else {
+                  return ThingItem(
+                    index: index,
+                    isFirst: false,
+                  );
+                }
+              }))
+          : Container(),
     );
   }
 }

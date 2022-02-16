@@ -109,6 +109,18 @@ class Subject {
     }
   }
 
+  bool validate() {
+    if (subTitle == null || subTitle == "") {
+      return false;
+    }
+
+    if (from == "未输入" || to == "未输入") {
+      return false;
+    }
+
+    return true;
+  }
+
   Subject({this.subTitle, this.from, this.to, this.subCompletion});
 
   Subject.fromJson(Map<String, dynamic> json) {
