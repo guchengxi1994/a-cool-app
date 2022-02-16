@@ -67,7 +67,9 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
             width: 20,
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pop("deleted");
+            },
             icon: const Icon(Icons.delete),
           ),
           const SizedBox(

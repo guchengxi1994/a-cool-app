@@ -177,6 +177,8 @@ class _ThingItemState extends State<ThingItem> {
               context
                   .read<GanttBloc>()
                   .add(ChangeScheduleEvent(index: index, schedule: result));
+            } else if (result.runtimeType == String && result == "deleted") {
+              context.read<GanttBloc>().add(RemoveScheduleEvent(index: index));
             }
           },
           icon: const Icon(Icons.navigate_next))

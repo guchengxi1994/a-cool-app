@@ -1,11 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:codind/entity/schedule.dart';
-import 'package:codind/pages/_schedule_detail_page.dart';
-import 'package:codind/utils/router.dart';
 import 'package:equatable/equatable.dart';
 // ignore: implementation_imports
 import 'package:equatable/src/equatable_utils.dart' as qu_utils;
-import 'package:flutter/material.dart';
 
 part 'gantt_event.dart';
 part 'gantt_state.dart';
@@ -15,6 +12,7 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
     on<InitialGanttEvent>(_fetchToState);
     on<ChangeScheduleEvent>(_changeSchedule);
     on<SetOperatingSchedule>(_setCurrentSchedule);
+    on<RemoveScheduleEvent>(_removeSchedule);
   }
 
   Future<void> _fetchToState(
@@ -39,12 +37,21 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
     scheduleList[event.index] = event.schedule;
     // print("应该执行这个");
     // print(scheduleList[0].title);
-    return emit(state.copyWith(GanttStatus.changeSchedule, scheduleList, null));
+    return emit(state.copyWith(
+        GanttStatus.changeSchedule, scheduleList, state.operatedSchdule));
   }
 
   Future<void> _setCurrentSchedule(
       SetOperatingSchedule event, Emitter<GanttState> emit) async {
     return emit(state.copyWith(
         GanttStatus.changeSchedule, state.scheduleList, event.schedule));
+  }
+
+  Future<void> _removeSchedule(
+      RemoveScheduleEvent event, Emitter<GanttState> emit) async {
+    List<Schedule> scheduleList = state.scheduleList;
+    scheduleList.removeAt(event.index);
+    return emit(state.copyWith(
+        GanttStatus.changeSchedule, state.scheduleList, state.operatedSchdule));
   }
 }
