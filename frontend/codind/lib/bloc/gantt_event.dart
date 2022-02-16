@@ -9,7 +9,10 @@ abstract class GanttEvent extends Equatable {
 
 class InitialGanttEvent extends GanttEvent {}
 
-class AddScheduleEvent extends GanttEvent {}
+class AddScheduleEvent extends GanttEvent {
+  final Schedule schedule;
+  const AddScheduleEvent({required this.schedule});
+}
 
 class ChangeScheduleEvent extends GanttEvent {
   final Schedule schedule;

@@ -15,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '_schedule_detail_page.dart';
+
 /// my gantt chart !!!
 
 class GanttPage extends StatefulWidget {
@@ -55,20 +57,21 @@ class _GanttPageState extends State<GanttPage> {
         bottomSheet: Row(
           children: [
             IconButton(
-                onPressed: () {
-                  Schedule schedule = Schedule(title: "测试22222");
-                  schedule.subject = [
-                    Subject(
-                        subTitle: "a2",
-                        from: "2022-01-01 00:00:00",
-                        to: "2022-01-03 00:00:00",
-                        subCompletion: 0.25)
-                  ];
-                  context
-                      .read<GanttBloc>()
-                      .add(ChangeScheduleEvent(schedule: schedule, index: 0));
+                onPressed: () async {
+                  var result = await Global.navigatorKey.currentState!
+                      .push(MaterialPageRoute(builder: (_) {
+                    return ScheduleDetailPage(
+                      schedule: null,
+                    );
+                  }));
+
+                  if (result.runtimeType == Schedule) {
+                    context
+                        .read<GanttBloc>()
+                        .add(AddScheduleEvent(schedule: result));
+                  }
                 },
-                icon: Icon(Icons.ac_unit))
+                icon: const Icon(Icons.add_circle))
           ],
         ),
       );

@@ -14,6 +14,7 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
     on<ChangeScheduleEvent>(_changeSchedule);
     on<SetOperatingSchedule>(_setCurrentSchedule);
     on<RemoveScheduleEvent>(_removeSchedule);
+    on<AddScheduleEvent>(_addSchedule);
   }
 
   Future<void> _fetchToState(
@@ -52,6 +53,14 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
       RemoveScheduleEvent event, Emitter<GanttState> emit) async {
     List<Schedule> scheduleList = state.scheduleList;
     scheduleList.removeAt(event.index);
+    return emit(state.copyWith(
+        GanttStatus.changeSchedule, state.scheduleList, state.operatedSchdule));
+  }
+
+  Future<void> _addSchedule(
+      AddScheduleEvent event, Emitter<GanttState> emit) async {
+    List<Schedule> scheduleList = state.scheduleList;
+    scheduleList.add(event.schedule);
     return emit(state.copyWith(
         GanttStatus.changeSchedule, state.scheduleList, state.operatedSchdule));
   }
