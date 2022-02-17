@@ -27,6 +27,6 @@ class Routers {
         ),
     pageMain: (ctx) => const MainPage(),
     pageMdEditor: (context) => const WritingProviderPage(),
-    pageFolder: (context) => FileExplorePage()
+    pageFolder: (context) => FileExplorePage(),
   };
 }

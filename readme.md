@@ -11,13 +11,15 @@
 
 ## 一个用来搜索解决方案、文档归档的个人项目。中文名暂定“书鱼”，取“读书之人，需学会有效摸鱼”之意。英文缩写“codind”.
 
-#
-
 # [前端说明](./frontend/codind/README.md)
 
 # [后端说明](./backend/README.md)
 
 # 部分演示demo
+
+## 2022.2.16 一个简易的日程规划工具(bloc实现，后续会在此基础上完成甘特图)
+
+![schedule_demo](https://github.com/guchengxi1994/xiaoshuyui_docs/raw/main/code-find/schedule_demo.gif)
 
 ## 2022.2.7 一个简易的文件管理页面
 
