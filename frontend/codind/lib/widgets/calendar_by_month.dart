@@ -18,8 +18,6 @@ class CalendarByMonth extends StatefulWidget {
 }
 
 class _CalendarByMonthState extends State<CalendarByMonth> {
-  late int currentMonth;
-  late int currentYear;
   my.DateUtils dateUtils = my.DateUtils();
   late GanttBloc _ganttBloc;
   ScrollController scrollController = ScrollController();
@@ -34,108 +32,56 @@ class _CalendarByMonthState extends State<CalendarByMonth> {
   @override
   void initState() {
     super.initState();
-    currentMonth = dateUtils.month;
-    currentYear = dateUtils.year;
     _ganttBloc = context.read<GanttBloc>();
   }
 
   @override
   Widget build(BuildContext context) {
     var _l = List.generate(
-        my.DateUtils.getCurrentMonthDays(currentYear, currentMonth), (i) => i);
-    return Scaffold(
-      appBar: AppBar(
-        elevation: my.PlatformUtils.isMobile ? 4 : 0,
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: SizedBox(
-          width: 300,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      currentMonth -= 1;
-                      if (currentMonth == 0) {
-                        currentMonth = 12;
-                        currentYear -= 1;
-                      }
-                      context.read<GanttBloc>().add(ChangeCurrentDateEvent(
-                          month: currentMonth, year: currentYear));
-
-                      // context.read<TimeController>().setMonth(currentMonth);
-                      // context.read<TimeController>().setYear(currentYear);
-                    });
-                  },
-                  icon: const Icon(Icons.navigate_before)),
-              Text(currentYear.toString() + "." + currentMonth.toString()),
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      currentMonth += 1;
-                      if (currentMonth == 13) {
-                        currentMonth = 1;
-                        currentYear += 1;
-                      }
-
-                      context.read<GanttBloc>().add(ChangeCurrentDateEvent(
-                          month: currentMonth, year: currentYear));
-
-                      // context.read<TimeController>().setMonth(currentMonth);
-                      // context.read<TimeController>().setYear(currentYear);
-                    });
-                  },
-                  icon: const Icon(Icons.navigate_next)),
-            ],
+        my.DateUtils.getCurrentMonthDays(
+            _ganttBloc.state.currentYear, _ganttBloc.state.currentMonth),
+        (i) => i);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        NotificationListener<ScrollNotification>(
+            onNotification: _handleScrollNotification,
+            child: SingleChildScrollView(
+              key: UniqueKey(),
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: _l.map((e) {
+                  return Container(
+                    margin: const EdgeInsets.all(paddingSize),
+                    height: containerSize,
+                    width: containerSize,
+                    alignment: Alignment.center,
+                    child: Text((e + 1).toString()),
+                    color: const Color.fromARGB(255, 175, 147, 145),
+                  );
+                }).toList(),
+              ),
+            )),
+        CustomPaint(
+          foregroundPainter: GanttPainter(
+            currentMonth: _ganttBloc.state.currentMonth,
+            currentYear: _ganttBloc.state.currentYear,
+            monthDay: _l.length,
+            scheduleList: _ganttBloc.state.grepSchedules(
+                _ganttBloc.state.currentYear, _ganttBloc.state.currentMonth),
           ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        controller: scrollController,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            NotificationListener<ScrollNotification>(
-                onNotification: _handleScrollNotification,
-                child: SingleChildScrollView(
-                  key: UniqueKey(),
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: _l.map((e) {
-                      return Container(
-                        margin: const EdgeInsets.all(paddingSize),
-                        height: containerSize,
-                        width: containerSize,
-                        alignment: Alignment.center,
-                        child: Text((e + 1).toString()),
-                        color: const Color.fromARGB(255, 175, 147, 145),
-                      );
-                    }).toList(),
-                  ),
-                )),
-            CustomPaint(
-              foregroundPainter: GanttPainter(
-                currentMonth: currentMonth,
-                currentYear: currentYear,
-                monthDay: _l.length,
-                scheduleList:
-                    _ganttBloc.state.grepSchedules(currentYear, currentMonth),
-              ),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                controller: scrollCanvasController,
-                key: UniqueKey(),
-                child: Container(
-                  color: Colors.white,
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            controller: scrollCanvasController,
+            key: UniqueKey(),
+            child: Container(
+              color: Colors.white,
+            ),
+          ),
+        )
+      ],
     );
   }
 }

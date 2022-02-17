@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-13 22:10:24
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-13 23:03:54
+ * @LastEditTime: 2022-02-17 20:34:13
  */
 
 /// diy a scroll bar  https://www.jianshu.com/p/c14c5bd649c2
@@ -91,100 +91,84 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     // print(_days);
     var _all = List.generate(31, (i) => i);
     // print(DateTime(2022, 1, 2).isSunday);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_dateUtils.year.toString()),
-        automaticallyImplyLeading: false,
-        elevation: 0,
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          controller: scrollController,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: _days
-                .asMap()
-                .map((key, value) {
-                  var _l = List.generate(value, (i) => i);
-                  if (key == 0) {
-                    return MapEntry(
-                        key,
-                        NotificationListener<ScrollNotification>(
-                          onNotification: _handleScrollNotification,
-                          child: SingleChildScrollView(
-                            key: UniqueKey(),
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: _l.map((e) {
-                                return Container(
-                                  margin: const EdgeInsets.all(5),
-                                  height: 20,
-                                  width: 20,
-                                  alignment: Alignment.center,
-                                  child: Text((e + 1).toString()),
-                                  color:
-                                      const Color.fromARGB(255, 175, 147, 145),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        ));
-                  }
-                  return MapEntry(
-                      key,
-                      SingleChildScrollView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        key: UniqueKey(),
-                        scrollDirection: Axis.horizontal,
-                        controller: _scrollList[key - 1],
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: _all.map((e) {
-                            if (e < _days[key]) {
-                              var utc = DateTime(_dateUtils.year, key, e + 1)
-                                      .isSaturday ||
-                                  DateTime(_dateUtils.year, key, e + 1)
-                                      .isSunday;
-                              var thisDay =
-                                  DateTime(_dateUtils.year, key, e + 1);
-                              // var hasThings = _ganttBloc.state
-                              //     .getDates()
-                              //     .contains(
-                              //         DateTime(_dateUtils.year, key, e + 1));
-                              BoxStatus status = BoxStatus.nothing;
-                              for (var sd in scheduleDates) {
-                                if (sd.dates.contains(thisDay)) {
-                                  status = sd.status;
-                                }
-                              }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: _days
+          .asMap()
+          .map((key, value) {
+            var _l = List.generate(value, (i) => i);
+            if (key == 0) {
+              return MapEntry(
+                  key,
+                  NotificationListener<ScrollNotification>(
+                    onNotification: _handleScrollNotification,
+                    child: SingleChildScrollView(
+                      key: UniqueKey(),
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: _l.map((e) {
+                          return Container(
+                            margin: const EdgeInsets.all(5),
+                            height: 20,
+                            width: 20,
+                            alignment: Alignment.center,
+                            child: Text((e + 1).toString()),
+                            color: const Color.fromARGB(255, 175, 147, 145),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ));
+            }
+            return MapEntry(
+                key,
+                SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  key: UniqueKey(),
+                  scrollDirection: Axis.horizontal,
+                  controller: _scrollList[key - 1],
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: _all.map((e) {
+                      if (e < _days[key]) {
+                        var utc =
+                            DateTime(_dateUtils.year, key, e + 1).isSaturday ||
+                                DateTime(_dateUtils.year, key, e + 1).isSunday;
+                        var thisDay = DateTime(_dateUtils.year, key, e + 1);
+                        // var hasThings = _ganttBloc.state
+                        //     .getDates()
+                        //     .contains(
+                        //         DateTime(_dateUtils.year, key, e + 1));
+                        BoxStatus status = BoxStatus.nothing;
+                        for (var sd in scheduleDates) {
+                          if (sd.dates.contains(thisDay)) {
+                            status = sd.status;
+                          }
+                        }
 
-                              return DayBox(
-                                isWeekend: utc,
-                                rowId: key,
-                                columnId: e,
-                                boxStatus: status,
-                              );
-                            } else {
-                              return DayBox(
-                                isWeekend: false,
-                                rowId: key,
-                                columnId: e,
-                                boxStatus: BoxStatus.cannotSelected,
-                              );
-                            }
-                          }).toList(),
-                        ),
-                      ));
-                })
-                .values
-                .toList(),
-          ),
-        ),
-      ),
+                        return DayBox(
+                          isWeekend: utc,
+                          rowId: key,
+                          columnId: e,
+                          boxStatus: status,
+                        );
+                      } else {
+                        return DayBox(
+                          isWeekend: false,
+                          rowId: key,
+                          columnId: e,
+                          boxStatus: BoxStatus.cannotSelected,
+                        );
+                      }
+                    }).toList(),
+                  ),
+                ));
+          })
+          .values
+          .toList(),
     );
   }
 }

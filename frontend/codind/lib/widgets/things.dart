@@ -27,37 +27,39 @@ class _ThingsWidgetState extends State<ThingsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PlatformUtils.isMobile
-          ? AppBar(
-              title: const Text("你的日程"),
-              centerTitle: true,
-            )
-          : AppBar(
-              elevation: PlatformUtils.isMobile ? 4 : 0,
-              automaticallyImplyLeading: false,
-              title: const Text("你的日程"),
-              centerTitle: true,
-            ),
-      body: _ganttBloc.state.scheduleList.isNotEmpty
-          ? ListView.builder(
-              itemCount: _ganttBloc.state.scheduleList.length,
-              itemBuilder: ((context, index) {
-                if (index == 0) {
-                  return ThingItem(
-                    index: index,
-                    isFirst: true,
-                    calendarType: widget.calendarType,
-                  );
-                } else {
-                  return ThingItem(
-                    index: index,
-                    isFirst: false,
-                    calendarType: widget.calendarType,
-                  );
-                }
-              }))
-          : Container(),
+    // return ListView.builder(
+    //     itemCount: _ganttBloc.state.scheduleList.length,
+    //     itemBuilder: ((context, index) {
+    //       if (index == 0) {
+    //         return ThingItem(
+    //           index: index,
+    //           isFirst: true,
+    //           calendarType: widget.calendarType,
+    //         );
+    //       } else {
+    //         return ThingItem(
+    //           index: index,
+    //           isFirst: false,
+    //           calendarType: widget.calendarType,
+    //         );
+    //       }
+    //     }));
+    return Column(
+      children: _ganttBloc.state.scheduleList.asMap().keys.map((index) {
+        if (index == 0) {
+          return ThingItem(
+            index: index,
+            isFirst: true,
+            calendarType: widget.calendarType,
+          );
+        } else {
+          return ThingItem(
+            index: index,
+            isFirst: false,
+            calendarType: widget.calendarType,
+          );
+        }
+      }).toList(),
     );
   }
 }
