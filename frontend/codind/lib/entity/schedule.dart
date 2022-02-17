@@ -15,6 +15,12 @@ class Schedule {
     return _d.toString().split(" ")[0];
   }
 
+  int get fromMonth => _getStartTime().month;
+  int get fromYear => _getStartTime().year;
+
+  int get toMonth => _getEndTime().month;
+  int get toYear => _getEndTime().year;
+
   Schedule({this.title, this.completion, this.subject});
 
   String get duation => _getDuation();
@@ -133,6 +139,12 @@ class Subject {
   int get fromDay => _getStartTime().day;
   int get toDay => _getEndTime().day;
 
+  int get fromMonth => _getStartTime().month;
+  int get fromYear => _getStartTime().year;
+
+  int get toMonth => _getEndTime().month;
+  int get toYear => _getEndTime().year;
+
   String get duation => _getDuation();
 
   String _getDuation() {
@@ -140,12 +152,32 @@ class Subject {
   }
 
   DateTime _getEndTime() {
-    DateTime maxDate = DateTime.parse(to!);
+    // print(to!);
+    DateTime maxDate;
+    try {
+      maxDate = DateTime.parse(to!);
+    } catch (_) {
+      int _year = int.parse(to!.split("-")[0]);
+      int _month = int.parse(to!.split("-")[1]);
+      int _day = int.parse(to!.split("-")[2]);
+      maxDate = DateTime(_year, _month, _day);
+    }
+
     return maxDate;
   }
 
   DateTime _getStartTime() {
-    DateTime minDate = DateTime.parse(from!);
+    DateTime minDate;
+
+    try {
+      minDate = DateTime.parse(from!);
+    } catch (_) {
+      // print(from);
+      int _year = int.parse(from!.split("-")[0]);
+      int _month = int.parse(from!.split("-")[1]);
+      int _day = int.parse(from!.split("-")[2]);
+      minDate = DateTime(_year, _month, _day);
+    }
     return minDate;
   }
 

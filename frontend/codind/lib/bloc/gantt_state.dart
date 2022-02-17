@@ -9,6 +9,8 @@
  */
 part of 'gantt_bloc.dart';
 
+const String notPaintingWarning = "__will_not_be_painted__";
+
 enum GanttStatus {
   initial,
   addSchedule,
@@ -16,28 +18,35 @@ enum GanttStatus {
   changeSchedule,
   changeSubject,
   removeSchedule,
-  removeSubject
+  removeSubject,
+  changeDate
 }
 
 class GanttState extends Equatable {
   final GanttStatus status;
   final List<Schedule> scheduleList;
   final Schedule? operatedSchdule;
+  final int currentYear;
+  final int currentMonth;
 
   const GanttState(
       {this.status = GanttStatus.initial,
       this.scheduleList = const [],
-      this.operatedSchdule});
+      this.operatedSchdule,
+      this.currentMonth = 2,
+      this.currentYear = 2022});
 
   @override
-  List<Object> get props => [status, scheduleList];
+  List<Object> get props => [status, scheduleList, currentMonth, currentYear];
 
   GanttState copyWith(GanttStatus? status, List<Schedule>? scheduleList,
-      Schedule? operatedSchdule) {
+      Schedule? operatedSchdule, int? currentYear, int? currentMonth) {
     return GanttState(
         status: status ?? this.status,
         scheduleList: scheduleList ?? this.scheduleList,
-        operatedSchdule: operatedSchdule);
+        operatedSchdule: operatedSchdule,
+        currentMonth: currentMonth ?? this.currentMonth,
+        currentYear: currentYear ?? this.currentYear);
   }
 
   List<ScheduleGanttModel> grepSchedules(int currentYear, int currentMonth) {
@@ -52,8 +61,8 @@ class GanttState extends Equatable {
           var endDate = sb.to!.split(" ")[0];
           var fromMonth = int.parse(fromDate.split("-")[1]);
           var toMonth = int.parse(endDate.split("-")[1]);
-          if (fromMonth != currentMonth && toMonth != currentMonth) {
-            _result.add(Subject(subTitle: "__will_not_be_paint__"));
+          if (!(fromMonth <= currentMonth && toMonth >= currentMonth)) {
+            _result.add(Subject(subTitle: notPaintingWarning));
           } else {
             if (fromMonth == currentMonth && toMonth == fromMonth) {
               _result.add(sb);
@@ -75,29 +84,27 @@ class GanttState extends Equatable {
                     my.DateUtils.getCurrentMonthDays(currentYear, currentMonth)
                         .toString();
               }
-
               _result.add(_tmp);
             }
           }
-
-          BoxStatus status;
-          if (s.comp != "100%") {
-            var endTime = s.getEndTime();
-            var year = endTime.split("-")[0];
-            var month = endTime.split("-")[1];
-            var day = endTime.split("-")[2];
-            if (DateTime(int.parse(year), int.parse(month), int.parse(day)) <
-                today) {
-              status = BoxStatus.delayed;
-            } else {
-              status = BoxStatus.underGoing;
-            }
-          } else {
-            status = BoxStatus.done;
-          }
-          _sdList.add(
-              ScheduleGanttModel(index: i, status: status, subjects: _result));
         }
+        BoxStatus status;
+        if (s.comp != "100%") {
+          var endTime = s.getEndTime();
+          var year = endTime.split("-")[0];
+          var month = endTime.split("-")[1];
+          var day = endTime.split("-")[2];
+          if (DateTime(int.parse(year), int.parse(month), int.parse(day)) <
+              today) {
+            status = BoxStatus.delayed;
+          } else {
+            status = BoxStatus.underGoing;
+          }
+        } else {
+          status = BoxStatus.done;
+        }
+        _sdList.add(
+            ScheduleGanttModel(index: i, status: status, subjects: _result));
       }
     }
 

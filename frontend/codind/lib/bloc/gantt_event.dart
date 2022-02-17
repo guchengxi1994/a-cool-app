@@ -41,3 +41,9 @@ class SetOperatingSchedule extends GanttEvent {
   final Schedule schedule;
   const SetOperatingSchedule({required this.schedule});
 }
+
+class ChangeCurrentDateEvent extends GanttEvent {
+  final int year;
+  final int month;
+  const ChangeCurrentDateEvent({required this.year, required this.month});
+}

@@ -5,8 +5,12 @@ import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+enum CalendarType { month, year }
+
 class ThingsWidget extends StatefulWidget {
-  ThingsWidget({Key? key}) : super(key: key);
+  ThingsWidget({Key? key, required this.calendarType}) : super(key: key);
+
+  CalendarType calendarType;
 
   @override
   State<ThingsWidget> createState() => _ThingsWidgetState();
@@ -43,11 +47,13 @@ class _ThingsWidgetState extends State<ThingsWidget> {
                   return ThingItem(
                     index: index,
                     isFirst: true,
+                    calendarType: widget.calendarType,
                   );
                 } else {
                   return ThingItem(
                     index: index,
                     isFirst: false,
+                    calendarType: widget.calendarType,
                   );
                 }
               }))
@@ -61,7 +67,10 @@ class ThingItem extends StatefulWidget {
     Key? key,
     required this.isFirst,
     required this.index,
+    required this.calendarType,
   }) : super(key: key);
+
+  CalendarType calendarType;
   bool isFirst;
   int index;
 
@@ -104,12 +113,12 @@ class _ThingItemState extends State<ThingItem> {
           width: 2.0,
           style: BorderStyle.solid,
         ),
-        children: getTableRows(widget.index),
+        children: getTableRows(widget.index, widget.calendarType),
       ),
     ));
   }
 
-  List<TableRow> getTableRows(int index) {
+  List<TableRow> getTableRows(int index, CalendarType calendarType) {
     var schedule = _ganttBloc.state.scheduleList[index];
     List<TableRow> result = [];
     if (index == 0) {
@@ -141,10 +150,31 @@ class _ThingItemState extends State<ThingItem> {
           ]));
     }
 
-    result.add(renderSchedule(schedule, index));
+    int currentYear = context.read<GanttBloc>().state.currentYear;
+    int currentMonth = context.read<GanttBloc>().state.currentMonth;
 
-    for (int i = 0; i < schedule.subject!.length; i++) {
-      result.add(renderSubTitles(schedule.subject![i], index, i));
+    if (currentYear <= schedule.toYear &&
+        currentYear >= schedule.fromYear &&
+        currentMonth <= schedule.toMonth &&
+        currentMonth >= schedule.fromMonth) {
+      result.add(renderSchedule(schedule, index));
+
+      for (int i = 0; i < schedule.subject!.length; i++) {
+        int j = 0;
+        if (calendarType == CalendarType.year) {
+          result.add(renderSubTitles(schedule.subject![i], index, i));
+        } else {
+          Subject subject = schedule.subject![i];
+
+          if (currentYear <= subject.toYear &&
+              currentYear >= subject.fromYear &&
+              currentMonth <= subject.toMonth &&
+              currentMonth >= subject.fromMonth) {
+            result.add(renderSubTitles(schedule.subject![i], index, j));
+            j = j + 1;
+          }
+        }
+      }
     }
 
     return result;

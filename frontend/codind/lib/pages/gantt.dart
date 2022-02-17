@@ -26,8 +26,6 @@ class GanttPage extends StatefulWidget {
   State<GanttPage> createState() => _GanttPageState();
 }
 
-enum CalendarType { month, year }
-
 class _GanttPageState extends State<GanttPage> {
   late GanttBloc _ganttBloc;
   late CalendarType _calendarType;
@@ -65,7 +63,7 @@ class _GanttPageState extends State<GanttPage> {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: ThingsWidget(),
+                    child: ThingsWidget(calendarType: _calendarType),
                   ),
                   Expanded(
                     child: _calendarType == CalendarType.year
@@ -75,7 +73,9 @@ class _GanttPageState extends State<GanttPage> {
                   )
                 ],
               )
-            : ThingsWidget(),
+            : ThingsWidget(
+                calendarType: CalendarType.year,
+              ),
         bottomSheet: Row(
           children: [
             IconButton(
