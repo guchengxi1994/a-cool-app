@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-14 20:24:08
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-17 20:36:41
+ * @LastEditTime: 2022-02-17 21:00:34
  */
 import 'package:codind/bloc/gantt_bloc.dart';
 import 'package:codind/entity/schedule.dart';
@@ -50,65 +50,62 @@ class _GanttPageState extends State<GanttPage> {
       return Scaffold(
         appBar: PlatformUtils.isMobile
             ? AppBar(
-                title: Text("你的日程"),
+                title: const Text("你的日程"),
                 centerTitle: true,
               )
             : AppBar(
                 elevation: 0,
-                title: Row(
-                  children: [
-                    Text("你的日程"),
-                    _calendarType == CalendarType.month
-                        ? SizedBox(
-                            width: 300,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        currentMonth -= 1;
-                                        if (currentMonth == 0) {
-                                          currentMonth = 12;
-                                          currentYear -= 1;
-                                        }
-                                        context.read<GanttBloc>().add(
-                                            ChangeCurrentDateEvent(
-                                                month: currentMonth,
-                                                year: currentYear));
+                title: SizedBox(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("你的日程"),
+                      _calendarType == CalendarType.month
+                          ? SizedBox(
+                              width: 300,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          currentMonth -= 1;
+                                          if (currentMonth == 0) {
+                                            currentMonth = 12;
+                                            currentYear -= 1;
+                                          }
+                                          context.read<GanttBloc>().add(
+                                              ChangeCurrentDateEvent(
+                                                  month: currentMonth,
+                                                  year: currentYear));
+                                        });
+                                      },
+                                      icon: const Icon(Icons.navigate_before)),
+                                  Text(currentYear.toString() +
+                                      "." +
+                                      currentMonth.toString()),
+                                  IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          currentMonth += 1;
+                                          if (currentMonth == 13) {
+                                            currentMonth = 1;
+                                            currentYear += 1;
+                                          }
 
-                                        // context.read<TimeController>().setMonth(currentMonth);
-                                        // context.read<TimeController>().setYear(currentYear);
-                                      });
-                                    },
-                                    icon: const Icon(Icons.navigate_before)),
-                                Text(currentYear.toString() +
-                                    "." +
-                                    currentMonth.toString()),
-                                IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        currentMonth += 1;
-                                        if (currentMonth == 13) {
-                                          currentMonth = 1;
-                                          currentYear += 1;
-                                        }
-
-                                        context.read<GanttBloc>().add(
-                                            ChangeCurrentDateEvent(
-                                                month: currentMonth,
-                                                year: currentYear));
-
-                                        // context.read<TimeController>().setMonth(currentMonth);
-                                        // context.read<TimeController>().setYear(currentYear);
-                                      });
-                                    },
-                                    icon: const Icon(Icons.navigate_next)),
-                              ],
-                            ),
-                          )
-                        : Text(_dateUtils.year.toString())
-                  ],
+                                          context.read<GanttBloc>().add(
+                                              ChangeCurrentDateEvent(
+                                                  month: currentMonth,
+                                                  year: currentYear));
+                                        });
+                                      },
+                                      icon: const Icon(Icons.navigate_next)),
+                                ],
+                              ),
+                            )
+                          : Text(_dateUtils.year.toString())
+                    ],
+                  ),
                 ),
                 actions: [
                     IconButton(

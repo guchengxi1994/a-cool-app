@@ -1,5 +1,4 @@
 import 'package:codind/bloc/gantt_bloc.dart';
-import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart' as my;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

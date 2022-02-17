@@ -27,23 +27,6 @@ class _ThingsWidgetState extends State<ThingsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // return ListView.builder(
-    //     itemCount: _ganttBloc.state.scheduleList.length,
-    //     itemBuilder: ((context, index) {
-    //       if (index == 0) {
-    //         return ThingItem(
-    //           index: index,
-    //           isFirst: true,
-    //           calendarType: widget.calendarType,
-    //         );
-    //       } else {
-    //         return ThingItem(
-    //           index: index,
-    //           isFirst: false,
-    //           calendarType: widget.calendarType,
-    //         );
-    //       }
-    //     }));
     return Column(
       children: _ganttBloc.state.scheduleList.asMap().keys.map((index) {
         if (index == 0) {

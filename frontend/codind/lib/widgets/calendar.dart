@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-13 22:10:24
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-17 20:34:13
+ * @LastEditTime: 2022-02-17 20:55:44
  */
 
 /// diy a scroll bar  https://www.jianshu.com/p/c14c5bd649c2
@@ -81,16 +81,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // List days = List.generate(365, (e) => e);
-
-    // print(_ganttBloc.state.getDates());
-
     List<ScheduleDates> scheduleDates = _ganttBloc.state.getDates();
-
     List _days = data.values.toList();
-    // print(_days);
     var _all = List.generate(31, (i) => i);
-    // print(DateTime(2022, 1, 2).isSunday);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: _days
