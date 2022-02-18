@@ -21,6 +21,14 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
 
   Future<void> _fetchToState(
       InitialGanttEvent event, Emitter<GanttState> emit) async {
+    var date = DateTime.now();
+    emit(state.copyWith(
+        GanttStatus.initial, [], null, date.year, date.month, true));
+
+    // just for test a overloading wrap,
+    // will be replaced by an api request
+    await Future.delayed(Duration(seconds: 1)).then((value) {});
+
     Schedule schedule = Schedule(title: "测试");
     schedule.subject = [
       Subject(
@@ -37,46 +45,48 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
     List<Schedule> scheduleList = [
       schedule,
     ];
-    var date = DateTime.now();
-    return emit(state.copyWith(
-        GanttStatus.initial, scheduleList, null, date.year, date.month));
+
+    emit(state.copyWith(
+        GanttStatus.initial, scheduleList, null, date.year, date.month, false));
   }
 
   Future<void> _changeSchedule(
       ChangeScheduleEvent event, Emitter<GanttState> emit) async {
+    emit(state.copyWith(GanttStatus.changeSchedule, state.scheduleList,
+        state.operatedSchdule, state.currentYear, state.currentMonth, true));
     List<Schedule> scheduleList = state.scheduleList;
     scheduleList[event.index] = event.schedule;
     // print("应该执行这个");
     // print(scheduleList[0].title);
-    return emit(state.copyWith(GanttStatus.changeSchedule, scheduleList,
-        state.operatedSchdule, state.currentYear, state.currentMonth));
+    emit(state.copyWith(GanttStatus.changeSchedule, scheduleList,
+        state.operatedSchdule, state.currentYear, state.currentMonth, false));
   }
 
   Future<void> _setCurrentSchedule(
       SetOperatingSchedule event, Emitter<GanttState> emit) async {
-    return emit(state.copyWith(GanttStatus.changeSchedule, state.scheduleList,
-        event.schedule, state.currentYear, state.currentMonth));
+    emit(state.copyWith(GanttStatus.changeSchedule, state.scheduleList,
+        event.schedule, state.currentYear, state.currentMonth, false));
   }
 
   Future<void> _removeSchedule(
       RemoveScheduleEvent event, Emitter<GanttState> emit) async {
     List<Schedule> scheduleList = state.scheduleList;
     scheduleList.removeAt(event.index);
-    return emit(state.copyWith(GanttStatus.changeSchedule, state.scheduleList,
-        state.operatedSchdule, state.currentYear, state.currentMonth));
+    emit(state.copyWith(GanttStatus.changeSchedule, state.scheduleList,
+        state.operatedSchdule, state.currentYear, state.currentMonth, false));
   }
 
   Future<void> _addSchedule(
       AddScheduleEvent event, Emitter<GanttState> emit) async {
     List<Schedule> scheduleList = state.scheduleList;
     scheduleList.add(event.schedule);
-    return emit(state.copyWith(GanttStatus.changeSchedule, state.scheduleList,
-        state.operatedSchdule, state.currentYear, state.currentMonth));
+    emit(state.copyWith(GanttStatus.changeSchedule, state.scheduleList,
+        state.operatedSchdule, state.currentYear, state.currentMonth, false));
   }
 
   Future<void> _setDate(
       ChangeCurrentDateEvent event, Emitter<GanttState> emit) async {
-    return emit(state.copyWith(GanttStatus.changeDate, state.scheduleList,
-        state.operatedSchdule, event.year, event.month));
+    emit(state.copyWith(GanttStatus.changeDate, state.scheduleList,
+        state.operatedSchdule, event.year, event.month, false));
   }
 }

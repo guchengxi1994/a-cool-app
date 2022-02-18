@@ -28,25 +28,34 @@ class GanttState extends Equatable {
   final Schedule? operatedSchdule;
   final int currentYear;
   final int currentMonth;
+  final bool isLoading;
 
   const GanttState(
       {this.status = GanttStatus.initial,
       this.scheduleList = const [],
       this.operatedSchdule,
       this.currentMonth = 2,
-      this.currentYear = 2022});
+      this.currentYear = 2022,
+      this.isLoading = false});
 
   @override
-  List<Object> get props => [status, scheduleList, currentMonth, currentYear];
+  List<Object> get props =>
+      [status, scheduleList, currentMonth, currentYear, isLoading];
 
-  GanttState copyWith(GanttStatus? status, List<Schedule>? scheduleList,
-      Schedule? operatedSchdule, int? currentYear, int? currentMonth) {
+  GanttState copyWith(
+      GanttStatus? status,
+      List<Schedule>? scheduleList,
+      Schedule? operatedSchdule,
+      int? currentYear,
+      int? currentMonth,
+      bool? isLoading) {
     return GanttState(
         status: status ?? this.status,
         scheduleList: scheduleList ?? this.scheduleList,
         operatedSchdule: operatedSchdule,
         currentMonth: currentMonth ?? this.currentMonth,
-        currentYear: currentYear ?? this.currentYear);
+        currentYear: currentYear ?? this.currentYear,
+        isLoading: isLoading ?? this.isLoading);
   }
 
   List<ScheduleGanttModel> grepSchedules(int currentYear, int currentMonth) {

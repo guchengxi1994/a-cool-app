@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:codind/utils/common.dart' as my;
+import 'package:loading_overlay/loading_overlay.dart';
 
 import '_schedule_detail_page.dart';
 
@@ -47,123 +48,130 @@ class _GanttPageState extends State<GanttPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GanttBloc, GanttState>(builder: (context, state) {
-      return Scaffold(
-        appBar: PlatformUtils.isMobile
-            ? AppBar(
-                title: const Text("你的日程"),
-                centerTitle: true,
-              )
-            : AppBar(
-                elevation: 0,
-                title: SizedBox(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text("你的日程"),
-                      _calendarType == CalendarType.month
-                          ? SizedBox(
-                              width: 300,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          currentMonth -= 1;
-                                          if (currentMonth == 0) {
-                                            currentMonth = 12;
-                                            currentYear -= 1;
-                                          }
-                                          context.read<GanttBloc>().add(
-                                              ChangeCurrentDateEvent(
-                                                  month: currentMonth,
-                                                  year: currentYear));
-                                        });
-                                      },
-                                      icon: const Icon(Icons.navigate_before)),
-                                  Text(currentYear.toString() +
-                                      "." +
-                                      currentMonth.toString()),
-                                  IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          currentMonth += 1;
-                                          if (currentMonth == 13) {
-                                            currentMonth = 1;
-                                            currentYear += 1;
-                                          }
+      return LoadingOverlay(
+          isLoading: _ganttBloc.state.isLoading,
+          child: Scaffold(
+            appBar: PlatformUtils.isMobile
+                ? AppBar(
+                    title: const Text("你的日程"),
+                    centerTitle: true,
+                  )
+                : AppBar(
+                    elevation: 0,
+                    title: SizedBox(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text("你的日程"),
+                          _calendarType == CalendarType.month
+                              ? SizedBox(
+                                  width: 300,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              currentMonth -= 1;
+                                              if (currentMonth == 0) {
+                                                currentMonth = 12;
+                                                currentYear -= 1;
+                                              }
+                                              context.read<GanttBloc>().add(
+                                                  ChangeCurrentDateEvent(
+                                                      month: currentMonth,
+                                                      year: currentYear));
+                                            });
+                                          },
+                                          icon: const Icon(
+                                              Icons.navigate_before)),
+                                      Text(currentYear.toString() +
+                                          "." +
+                                          currentMonth.toString()),
+                                      IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              currentMonth += 1;
+                                              if (currentMonth == 13) {
+                                                currentMonth = 1;
+                                                currentYear += 1;
+                                              }
 
-                                          context.read<GanttBloc>().add(
-                                              ChangeCurrentDateEvent(
-                                                  month: currentMonth,
-                                                  year: currentYear));
-                                        });
-                                      },
-                                      icon: const Icon(Icons.navigate_next)),
-                                ],
-                              ),
-                            )
-                          : Text(_dateUtils.year.toString())
-                    ],
-                  ),
-                ),
-                actions: [
-                    IconButton(
-                        onPressed: () {
-                          if (_calendarType == CalendarType.month) {
-                            _calendarType = CalendarType.year;
-                          } else {
-                            _calendarType = CalendarType.month;
-                          }
-                          setState(() {});
-                        },
-                        icon: _calendarType == CalendarType.month
-                            ? const Icon(Icons.switch_left)
-                            : const Icon(Icons.switch_right))
-                  ]),
-        body: SingleChildScrollView(
-          controller: scrollController,
-          child: ((!PlatformUtils.isAndroid) && (!PlatformUtils.isIOS))
-              ? Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: ThingsWidget(calendarType: _calendarType),
+                                              context.read<GanttBloc>().add(
+                                                  ChangeCurrentDateEvent(
+                                                      month: currentMonth,
+                                                      year: currentYear));
+                                            });
+                                          },
+                                          icon:
+                                              const Icon(Icons.navigate_next)),
+                                    ],
+                                  ),
+                                )
+                              : Container(
+                                  margin: const EdgeInsets.only(right: 100),
+                                  child: Text(_dateUtils.year.toString()),
+                                )
+                        ],
+                      ),
                     ),
-                    Expanded(
-                      child: _calendarType == CalendarType.year
-                          ? CalendarWidget()
-                          : CalendarByMonth(),
-                      flex: 1,
+                    actions: [
+                        IconButton(
+                            onPressed: () {
+                              if (_calendarType == CalendarType.month) {
+                                _calendarType = CalendarType.year;
+                              } else {
+                                _calendarType = CalendarType.month;
+                              }
+                              setState(() {});
+                            },
+                            icon: _calendarType == CalendarType.month
+                                ? const Icon(Icons.switch_left)
+                                : const Icon(Icons.switch_right))
+                      ]),
+            body: SingleChildScrollView(
+              controller: scrollController,
+              child: ((!PlatformUtils.isAndroid) && (!PlatformUtils.isIOS))
+                  ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: ThingsWidget(calendarType: _calendarType),
+                        ),
+                        Expanded(
+                          child: _calendarType == CalendarType.year
+                              ? CalendarWidget()
+                              : CalendarByMonth(),
+                          flex: 1,
+                        )
+                      ],
                     )
-                  ],
-                )
-              : ThingsWidget(
-                  calendarType: CalendarType.year,
-                ),
-        ),
-        bottomSheet: Row(
-          children: [
-            IconButton(
-                onPressed: () async {
-                  var result = await Global.navigatorKey.currentState!
-                      .push(MaterialPageRoute(builder: (_) {
-                    return ScheduleDetailPage(
-                      schedule: null,
-                    );
-                  }));
+                  : ThingsWidget(
+                      calendarType: CalendarType.year,
+                    ),
+            ),
+            bottomSheet: Row(
+              children: [
+                IconButton(
+                    onPressed: () async {
+                      var result = await Global.navigatorKey.currentState!
+                          .push(MaterialPageRoute(builder: (_) {
+                        return ScheduleDetailPage(
+                          schedule: null,
+                        );
+                      }));
 
-                  if (result.runtimeType == Schedule) {
-                    context
-                        .read<GanttBloc>()
-                        .add(AddScheduleEvent(schedule: result));
-                  }
-                },
-                icon: const Icon(Icons.add_circle))
-          ],
-        ),
-      );
+                      if (result.runtimeType == Schedule) {
+                        context
+                            .read<GanttBloc>()
+                            .add(AddScheduleEvent(schedule: result));
+                      }
+                    },
+                    icon: const Icon(Icons.add_circle))
+              ],
+            ),
+          ));
     });
   }
 }
