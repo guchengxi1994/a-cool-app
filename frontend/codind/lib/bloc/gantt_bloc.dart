@@ -44,6 +44,7 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
     ];
     List<Schedule> scheduleList = [
       schedule,
+      schedule,
     ];
 
     emit(state.copyWith(

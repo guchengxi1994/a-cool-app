@@ -77,8 +77,7 @@ class _ThingItemState extends State<ThingItem> {
   @override
   Widget build(BuildContext context) {
     // tableRows.add(renderSchedule());
-    return Card(
-        child: SingleChildScrollView(
+    return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Table(
         //所有列宽
@@ -100,7 +99,7 @@ class _ThingItemState extends State<ThingItem> {
         ),
         children: getTableRows(widget.index, widget.calendarType),
       ),
-    ));
+    );
   }
 
   List<TableRow> getTableRows(int index, CalendarType calendarType) {
@@ -171,7 +170,8 @@ class _ThingItemState extends State<ThingItem> {
         title: index.toString(),
       ),
       Container(
-        margin: const EdgeInsets.only(left: 5, top: 5),
+        height: 30,
+        // margin: const EdgeInsets.only(left: 5, top: 5),
         alignment: Alignment.centerLeft,
         child: Text(
           schedule.title!,
@@ -190,23 +190,28 @@ class _ThingItemState extends State<ThingItem> {
       _TableItemWidget(
         title: schedule.comp,
       ),
-      IconButton(
-          onPressed: () async {
-            var result = await Global.navigatorKey.currentState!
-                .push(MaterialPageRoute(builder: (_) {
-              return ScheduleDetailPage(
-                schedule: schedule,
-              );
-            }));
-            if (result.runtimeType == Schedule) {
-              context
-                  .read<GanttBloc>()
-                  .add(ChangeScheduleEvent(index: index, schedule: result));
-            } else if (result.runtimeType == String && result == "deleted") {
-              context.read<GanttBloc>().add(RemoveScheduleEvent(index: index));
-            }
-          },
-          icon: const Icon(Icons.navigate_next))
+      SizedBox(
+        height: 30,
+        child: IconButton(
+            onPressed: () async {
+              var result = await Global.navigatorKey.currentState!
+                  .push(MaterialPageRoute(builder: (_) {
+                return ScheduleDetailPage(
+                  schedule: schedule,
+                );
+              }));
+              if (result.runtimeType == Schedule) {
+                context
+                    .read<GanttBloc>()
+                    .add(ChangeScheduleEvent(index: index, schedule: result));
+              } else if (result.runtimeType == String && result == "deleted") {
+                context
+                    .read<GanttBloc>()
+                    .add(RemoveScheduleEvent(index: index));
+              }
+            },
+            icon: const Icon(Icons.navigate_next)),
+      )
     ]);
   }
 

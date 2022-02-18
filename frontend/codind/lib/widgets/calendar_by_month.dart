@@ -106,6 +106,7 @@ class GanttPainter extends CustomPainter {
 
     int _count = getChildrenNumber(scheduleList);
     if (_count > 0) {
+      _count = _count + scheduleList.length - 1;
       var paint = Paint()
         ..style = PaintingStyle.stroke //线
         ..color = const Color.fromARGB(255, 133, 135, 139)
@@ -120,6 +121,8 @@ class GanttPainter extends CustomPainter {
         double dy = height * i;
         canvas.drawLine(Offset(0, dy), Offset(width * monthDay, dy), paint);
       }
+
+      var count = 0;
 
       for (var sl in scheduleList) {
         var line;
@@ -141,9 +144,10 @@ class GanttPainter extends CustomPainter {
         }
 
         if (sl.subjects.isNotEmpty) {
+          count = count + 1;
           for (var s in sl.subjects) {
-            // var _duration = double.parse(s.duation) ;
             if (s.subTitle != notPaintingWarning) {
+              count = count + 1;
               var _fromDay = s.fromDay;
               var _endDay = s.toDay;
               // debugPrint(_fromDay.toString());
@@ -153,8 +157,9 @@ class GanttPainter extends CustomPainter {
               var _right = paddingSize +
                   (_endDay) * (paddingSize * 2 + containerSize) +
                   -2 * paddingSize;
-
-              canvas.drawLine(Offset(_left, 20), Offset(_right, 20), line);
+              // print(count);
+              canvas.drawLine(Offset(_left, count * width - 15),
+                  Offset(_right, count * width - 15), line);
             }
           }
         }
