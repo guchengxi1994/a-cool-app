@@ -1,3 +1,4 @@
+import 'package:codind/entity/schedule.dart' show Subject;
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,11 +10,13 @@ enum DataFrom { net, asset, string, file }
 
 // ignore: must_be_immutable
 class BaseMarkdownPreviewPage extends StatefulWidget {
-  BaseMarkdownPreviewPage({Key? key, this.mdData, required this.from, this.tip})
+  BaseMarkdownPreviewPage(
+      {Key? key, this.mdData, required this.from, this.tip, this.subject})
       : super(key: key);
   final DataFrom from;
   String? mdData;
   String? tip;
+  Subject? subject;
 
   @override
   State<BaseMarkdownPreviewPage> createState() =>
@@ -25,6 +28,9 @@ class _BaseMarkdownPreviewPageState extends State<BaseMarkdownPreviewPage> {
   // ignore: prefer_typing_uninitialized_variables
   var _loadDataFuture;
 
+  ScrollController scrollController = ScrollController();
+  final GlobalKey<State<Markdown>> _globalKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
@@ -35,6 +41,17 @@ class _BaseMarkdownPreviewPageState extends State<BaseMarkdownPreviewPage> {
     } else if (widget.from == DataFrom.net) {
       _loadDataFuture = justAMoment();
     } else {}
+
+    scrollController.addListener(() {
+      debugPrint("maxScrollExtent:" +
+          scrollController.position.maxScrollExtent.toString());
+      debugPrint("offset:" + scrollController.offset.toString());
+    });
+
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      print(CommonUtils.screenH());
+      print(context.size?.height);
+    });
   }
 
   justAMoment() async {
@@ -63,6 +80,12 @@ class _BaseMarkdownPreviewPageState extends State<BaseMarkdownPreviewPage> {
   }
 
   @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
@@ -73,6 +96,8 @@ class _BaseMarkdownPreviewPageState extends State<BaseMarkdownPreviewPage> {
           if (snap.connectionState == ConnectionState.done) {
             if (widget.from != DataFrom.net) {
               return Markdown(
+                key: _globalKey,
+                controller: scrollController,
                 data: markdownData,
                 onTapLink: (text, href, title) async {
                   if (await canLaunch(href!)) {

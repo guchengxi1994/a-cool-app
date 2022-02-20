@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-13 22:15:18
+ * @LastEditTime: 2022-02-19 10:55:25
  */
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +13,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'pages/_test_page.dart';
 import 'pages/pages.dart';
 import 'providers/my_providers.dart';
 import 'package:provider/provider.dart';
@@ -90,7 +91,9 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       builder: FlutterI18n.rootAppBuilder(),
       // home: const MainPage(),
-      home: GanttBlocPage(),
+      home: TestPage(
+        routeName: "_test",
+      ),
       localizationsDelegates: [
         widget.flutterI18nDelegate,
         GlobalMaterialLocalizations.delegate,
