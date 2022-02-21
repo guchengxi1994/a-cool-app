@@ -20,6 +20,7 @@ class Routers {
   static const pageMain = 'pageMain';
   static const pageMdEditor = 'pageMdEditor';
   static const pageFolder = 'pageFolder';
+  static const pageSchedule = 'pageSchedule';
 
   static final Map<String, WidgetBuilder> routers = {
     pageSetting: (ctx) => SettingPage(
@@ -28,5 +29,6 @@ class Routers {
     pageMain: (ctx) => const MainPage(),
     pageMdEditor: (context) => const WritingProviderPage(),
     pageFolder: (context) => FileExplorePage(),
+    pageSchedule: (context) => const GanttBlocPage(),
   };
 }

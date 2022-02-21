@@ -220,12 +220,19 @@ class _ThingItemState extends State<ThingItem> {
       _TableItemWidget(
         title: index.toString() + "-" + (id + 1).toString(),
       ),
-      Container(
-        margin: const EdgeInsets.only(left: 5, top: 5),
-        alignment: Alignment.centerLeft,
-        child: Text(
-          "   " + subject.subTitle!,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+      InkWell(
+        onTap: subject.subjectJob != null
+            ? () {
+                debugPrint(subject.subTitle);
+              }
+            : null,
+        child: Card(
+          color: Colors.grey[300],
+          margin: const EdgeInsets.only(left: 5, top: 5, right: 10),
+          child: Text(
+            "   " + subject.subTitle!,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
       ),
       _TableItemWidget(

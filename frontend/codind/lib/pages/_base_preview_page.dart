@@ -1,4 +1,3 @@
-import 'package:codind/entity/schedule.dart' show Subject;
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,7 +5,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-enum DataFrom { net, asset, string, file }
+import '../entity/entity.dart' show Subject, DataFrom;
 
 // ignore: must_be_immutable
 class BaseMarkdownPreviewPage extends StatefulWidget {
@@ -27,6 +26,9 @@ class _BaseMarkdownPreviewPageState extends State<BaseMarkdownPreviewPage> {
   late String markdownData;
   // ignore: prefer_typing_uninitialized_variables
   var _loadDataFuture;
+  late Subject? _subject;
+  double offset = 0;
+  double mdheight = 0;
 
   ScrollController scrollController = ScrollController();
   final GlobalKey<State<Markdown>> _globalKey = GlobalKey();
@@ -43,15 +45,16 @@ class _BaseMarkdownPreviewPageState extends State<BaseMarkdownPreviewPage> {
     } else {}
 
     scrollController.addListener(() {
-      debugPrint("maxScrollExtent:" +
-          scrollController.position.maxScrollExtent.toString());
-      debugPrint("offset:" + scrollController.offset.toString());
+      // debugPrint("maxScrollExtent:" +
+      //     scrollController.position.maxScrollExtent.toString());
+      // debugPrint("offset:" + scrollController.offset.toString());
+      mdheight = scrollController.position.maxScrollExtent;
+      offset = scrollController.offset;
     });
 
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      print(CommonUtils.screenH());
-      print(context.size?.height);
-    });
+    if (widget.subject != null) {
+      _subject = Subject.fromJson(widget.subject!.toJson());
+    }
   }
 
   justAMoment() async {

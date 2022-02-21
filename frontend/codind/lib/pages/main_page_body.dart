@@ -66,6 +66,14 @@ class _MainPageBodyState<T> extends BasePageState<MainPageBody> {
               Navigator.of(context).pushNamed(Routers.pageFolder);
             },
           ),
+        ),
+        Card(
+          child: ListTile(
+            title: const Text("Schedule"),
+            onTap: () {
+              Navigator.of(context).pushNamed(Routers.pageSchedule);
+            },
+          ),
         )
       ]),
     );
