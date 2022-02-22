@@ -1,5 +1,4 @@
 import 'package:codind/bloc/gantt_bloc.dart';
-import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart' as my;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,8 +17,6 @@ class CalendarByMonth extends StatefulWidget {
 }
 
 class _CalendarByMonthState extends State<CalendarByMonth> {
-  late int currentMonth;
-  late int currentYear;
   my.DateUtils dateUtils = my.DateUtils();
   late GanttBloc _ganttBloc;
   ScrollController scrollController = ScrollController();
@@ -34,108 +31,56 @@ class _CalendarByMonthState extends State<CalendarByMonth> {
   @override
   void initState() {
     super.initState();
-    currentMonth = dateUtils.month;
-    currentYear = dateUtils.year;
     _ganttBloc = context.read<GanttBloc>();
   }
 
   @override
   Widget build(BuildContext context) {
     var _l = List.generate(
-        my.DateUtils.getCurrentMonthDays(currentYear, currentMonth), (i) => i);
-    return Scaffold(
-      appBar: AppBar(
-        elevation: my.PlatformUtils.isMobile ? 4 : 0,
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: SizedBox(
-          width: 300,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      currentMonth -= 1;
-                      if (currentMonth == 0) {
-                        currentMonth = 12;
-                        currentYear -= 1;
-                      }
-                      context.read<GanttBloc>().add(ChangeCurrentDateEvent(
-                          month: currentMonth, year: currentYear));
-
-                      // context.read<TimeController>().setMonth(currentMonth);
-                      // context.read<TimeController>().setYear(currentYear);
-                    });
-                  },
-                  icon: const Icon(Icons.navigate_before)),
-              Text(currentYear.toString() + "." + currentMonth.toString()),
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      currentMonth += 1;
-                      if (currentMonth == 13) {
-                        currentMonth = 1;
-                        currentYear += 1;
-                      }
-
-                      context.read<GanttBloc>().add(ChangeCurrentDateEvent(
-                          month: currentMonth, year: currentYear));
-
-                      // context.read<TimeController>().setMonth(currentMonth);
-                      // context.read<TimeController>().setYear(currentYear);
-                    });
-                  },
-                  icon: const Icon(Icons.navigate_next)),
-            ],
+        my.DateUtils.getCurrentMonthDays(
+            _ganttBloc.state.currentYear, _ganttBloc.state.currentMonth),
+        (i) => i);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        NotificationListener<ScrollNotification>(
+            onNotification: _handleScrollNotification,
+            child: SingleChildScrollView(
+              key: UniqueKey(),
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: _l.map((e) {
+                  return Container(
+                    margin: const EdgeInsets.all(paddingSize),
+                    height: containerSize,
+                    width: containerSize,
+                    alignment: Alignment.center,
+                    child: Text((e + 1).toString()),
+                    color: const Color.fromARGB(255, 175, 147, 145),
+                  );
+                }).toList(),
+              ),
+            )),
+        CustomPaint(
+          foregroundPainter: GanttPainter(
+            currentMonth: _ganttBloc.state.currentMonth,
+            currentYear: _ganttBloc.state.currentYear,
+            monthDay: _l.length,
+            scheduleList: _ganttBloc.state.grepSchedules(
+                _ganttBloc.state.currentYear, _ganttBloc.state.currentMonth),
           ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        controller: scrollController,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            NotificationListener<ScrollNotification>(
-                onNotification: _handleScrollNotification,
-                child: SingleChildScrollView(
-                  key: UniqueKey(),
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: _l.map((e) {
-                      return Container(
-                        margin: const EdgeInsets.all(paddingSize),
-                        height: containerSize,
-                        width: containerSize,
-                        alignment: Alignment.center,
-                        child: Text((e + 1).toString()),
-                        color: const Color.fromARGB(255, 175, 147, 145),
-                      );
-                    }).toList(),
-                  ),
-                )),
-            CustomPaint(
-              foregroundPainter: GanttPainter(
-                currentMonth: currentMonth,
-                currentYear: currentYear,
-                monthDay: _l.length,
-                scheduleList:
-                    _ganttBloc.state.grepSchedules(currentYear, currentMonth),
-              ),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                controller: scrollCanvasController,
-                key: UniqueKey(),
-                child: Container(
-                  color: Colors.white,
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            controller: scrollCanvasController,
+            key: UniqueKey(),
+            child: Container(
+              color: Colors.white,
+            ),
+          ),
+        )
+      ],
     );
   }
 }
@@ -161,6 +106,7 @@ class GanttPainter extends CustomPainter {
 
     int _count = getChildrenNumber(scheduleList);
     if (_count > 0) {
+      _count = _count + scheduleList.length - 1;
       var paint = Paint()
         ..style = PaintingStyle.stroke //线
         ..color = const Color.fromARGB(255, 133, 135, 139)
@@ -175,6 +121,8 @@ class GanttPainter extends CustomPainter {
         double dy = height * i;
         canvas.drawLine(Offset(0, dy), Offset(width * monthDay, dy), paint);
       }
+
+      var count = 0;
 
       for (var sl in scheduleList) {
         var line;
@@ -196,9 +144,10 @@ class GanttPainter extends CustomPainter {
         }
 
         if (sl.subjects.isNotEmpty) {
+          count = count + 1;
           for (var s in sl.subjects) {
-            // var _duration = double.parse(s.duation) ;
             if (s.subTitle != notPaintingWarning) {
+              count = count + 1;
               var _fromDay = s.fromDay;
               var _endDay = s.toDay;
               // debugPrint(_fromDay.toString());
@@ -208,8 +157,9 @@ class GanttPainter extends CustomPainter {
               var _right = paddingSize +
                   (_endDay) * (paddingSize * 2 + containerSize) +
                   -2 * paddingSize;
-
-              canvas.drawLine(Offset(_left, 20), Offset(_right, 20), line);
+              // print(count);
+              canvas.drawLine(Offset(_left, count * width - 15),
+                  Offset(_right, count * width - 15), line);
             }
           }
         }

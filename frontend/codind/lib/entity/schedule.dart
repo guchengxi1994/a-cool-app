@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:codind/entity/enums.dart';
+
 class Schedule {
   String? title;
   double? completion;
@@ -102,6 +106,12 @@ class Subject {
   String? from;
   String? to;
   double? subCompletion;
+  SubjectJob? subjectJob;
+
+  @override
+  String toString() {
+    return jsonEncode(toJson());
+  }
 
   @override
   bool operator ==(Object other) {
@@ -127,7 +137,8 @@ class Subject {
     return true;
   }
 
-  Subject({this.subTitle, this.from, this.to, this.subCompletion});
+  Subject(
+      {this.subTitle, this.from, this.to, this.subCompletion, this.subjectJob});
 
   Subject.fromJson(Map<String, dynamic> json) {
     subTitle = json['subTitle'];
@@ -192,4 +203,11 @@ class Subject {
 
   @override
   int get hashCode => super.hashCode;
+}
+
+class SubjectJob {
+  String? fileLocation;
+  DataFrom? subjectMdFrom;
+
+  SubjectJob({this.fileLocation, this.subjectMdFrom});
 }

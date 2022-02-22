@@ -1,8 +1,9 @@
 import 'package:codind/bloc/gantt_bloc.dart';
-import 'package:codind/entity/schedule.dart';
+import 'package:codind/entity/entity.dart';
 import 'package:codind/pages/_schedule_detail_page.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum CalendarType { month, year }
@@ -27,37 +28,22 @@ class _ThingsWidgetState extends State<ThingsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PlatformUtils.isMobile
-          ? AppBar(
-              title: const Text("你的日程"),
-              centerTitle: true,
-            )
-          : AppBar(
-              elevation: PlatformUtils.isMobile ? 4 : 0,
-              automaticallyImplyLeading: false,
-              title: const Text("你的日程"),
-              centerTitle: true,
-            ),
-      body: _ganttBloc.state.scheduleList.isNotEmpty
-          ? ListView.builder(
-              itemCount: _ganttBloc.state.scheduleList.length,
-              itemBuilder: ((context, index) {
-                if (index == 0) {
-                  return ThingItem(
-                    index: index,
-                    isFirst: true,
-                    calendarType: widget.calendarType,
-                  );
-                } else {
-                  return ThingItem(
-                    index: index,
-                    isFirst: false,
-                    calendarType: widget.calendarType,
-                  );
-                }
-              }))
-          : Container(),
+    return Column(
+      children: _ganttBloc.state.scheduleList.asMap().keys.map((index) {
+        if (index == 0) {
+          return ThingItem(
+            index: index,
+            isFirst: true,
+            calendarType: widget.calendarType,
+          );
+        } else {
+          return ThingItem(
+            index: index,
+            isFirst: false,
+            calendarType: widget.calendarType,
+          );
+        }
+      }).toList(),
     );
   }
 }
@@ -92,8 +78,7 @@ class _ThingItemState extends State<ThingItem> {
   @override
   Widget build(BuildContext context) {
     // tableRows.add(renderSchedule());
-    return Card(
-        child: SingleChildScrollView(
+    return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Table(
         //所有列宽
@@ -115,7 +100,7 @@ class _ThingItemState extends State<ThingItem> {
         ),
         children: getTableRows(widget.index, widget.calendarType),
       ),
-    ));
+    );
   }
 
   List<TableRow> getTableRows(int index, CalendarType calendarType) {
@@ -186,7 +171,8 @@ class _ThingItemState extends State<ThingItem> {
         title: index.toString(),
       ),
       Container(
-        margin: const EdgeInsets.only(left: 5, top: 5),
+        height: 30,
+        // margin: const EdgeInsets.only(left: 5, top: 5),
         alignment: Alignment.centerLeft,
         child: Text(
           schedule.title!,
@@ -205,23 +191,28 @@ class _ThingItemState extends State<ThingItem> {
       _TableItemWidget(
         title: schedule.comp,
       ),
-      IconButton(
-          onPressed: () async {
-            var result = await Global.navigatorKey.currentState!
-                .push(MaterialPageRoute(builder: (_) {
-              return ScheduleDetailPage(
-                schedule: schedule,
-              );
-            }));
-            if (result.runtimeType == Schedule) {
-              context
-                  .read<GanttBloc>()
-                  .add(ChangeScheduleEvent(index: index, schedule: result));
-            } else if (result.runtimeType == String && result == "deleted") {
-              context.read<GanttBloc>().add(RemoveScheduleEvent(index: index));
-            }
-          },
-          icon: const Icon(Icons.navigate_next))
+      SizedBox(
+        height: 30,
+        child: IconButton(
+            onPressed: () async {
+              var result = await Global.navigatorKey.currentState!
+                  .push(MaterialPageRoute(builder: (_) {
+                return ScheduleDetailPage(
+                  schedule: schedule,
+                );
+              }));
+              if (result.runtimeType == Schedule) {
+                context
+                    .read<GanttBloc>()
+                    .add(ChangeScheduleEvent(index: index, schedule: result));
+              } else if (result.runtimeType == String && result == "deleted") {
+                context
+                    .read<GanttBloc>()
+                    .add(RemoveScheduleEvent(index: index));
+              }
+            },
+            icon: const Icon(Icons.navigate_next)),
+      )
     ]);
   }
 
@@ -230,12 +221,31 @@ class _ThingItemState extends State<ThingItem> {
       _TableItemWidget(
         title: index.toString() + "-" + (id + 1).toString(),
       ),
-      Container(
-        margin: const EdgeInsets.only(left: 5, top: 5),
-        alignment: Alignment.centerLeft,
-        child: Text(
-          "   " + subject.subTitle!,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+      InkWell(
+        onTap: subject.subjectJob != null
+            ? () async {
+                var _data = "";
+                if (subject.subjectJob!.subjectMdFrom == DataFrom.asset) {
+                  _data = await rootBundle
+                      .loadString(subject.subjectJob!.fileLocation!);
+                }
+
+                Map<String, dynamic> params = {
+                  "scheduleIndex": index,
+                  "subjectId": id,
+                  "data": _data,
+                };
+                Navigator.pushNamed(context, Routers.pageMdPreview,
+                    arguments: params);
+              }
+            : null,
+        child: Card(
+          color: Colors.grey[300],
+          margin: const EdgeInsets.only(left: 5, top: 5, right: 10),
+          child: Text(
+            "   " + subject.subTitle!,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
       ),
       _TableItemWidget(

@@ -16,10 +16,12 @@ class Global {
 }
 
 class Routers {
-  static const pageSetting = 'pageSetting';
-  static const pageMain = 'pageMain';
-  static const pageMdEditor = 'pageMdEditor';
-  static const pageFolder = 'pageFolder';
+  static const pageSetting = '/pageSetting';
+  static const pageMain = '/pageMain';
+  static const pageMdEditor = '/pageMdEditor';
+  static const pageFolder = '/pageFolder';
+  static const pageSchedule = '/pageSchedule';
+  static const pageMdPreview = "/pageMdPreview";
 
   static final Map<String, WidgetBuilder> routers = {
     pageSetting: (ctx) => SettingPage(
@@ -28,5 +30,7 @@ class Routers {
     pageMain: (ctx) => const MainPage(),
     pageMdEditor: (context) => const WritingProviderPage(),
     pageFolder: (context) => FileExplorePage(),
+    pageSchedule: (context) => GanttPage(),
+    pageMdPreview: (context) => const BaseMarkdownPreviewPage(),
   };
 }

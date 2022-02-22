@@ -5,14 +5,16 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-13 22:15:18
+ * @LastEditTime: 2022-02-19 10:55:25
  */
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'bloc/my_blocs.dart';
 import 'pages/pages.dart';
 import 'providers/my_providers.dart';
 import 'package:provider/provider.dart';
@@ -32,19 +34,22 @@ Future main() async {
   // List<String>? ls = await spGetColorData();
   PersistenceStorage ps = PersistenceStorage();
   List<String>? ls = await ps.getColorData();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => ThemeController()),
-      ChangeNotifierProvider(create: (_) => MenuController()),
-      ChangeNotifierProvider(
-        create: (_) => EmojiController(),
-      )
-    ],
-    child: MyApp(
-      flutterI18nDelegate: flutterI18nDelegate,
-      colorList: ls,
-    ),
-  ));
+
+  BlocOverrides.runZoned(
+      (() => runApp(MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (_) => ThemeController()),
+              ChangeNotifierProvider(create: (_) => MenuController()),
+              ChangeNotifierProvider(
+                create: (_) => EmojiController(),
+              )
+            ],
+            child: MyApp(
+              flutterI18nDelegate: flutterI18nDelegate,
+              colorList: ls,
+            ),
+          ))),
+      blocObserver: SimpleBlocObserver());
 }
 
 class MyApp extends StatefulWidget {
@@ -84,19 +89,24 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      routes: Routers.routers,
-      theme: context.watch<ThemeController>().themeData,
-      debugShowCheckedModeBanner: false,
-      builder: FlutterI18n.rootAppBuilder(),
-      // home: const MainPage(),
-      home: GanttBlocPage(),
-      localizationsDelegates: [
-        widget.flutterI18nDelegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
-      ],
-      navigatorKey: Global.navigatorKey,
-    );
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => GanttBloc()..add(InitialGanttEvent()),
+          )
+        ],
+        child: MaterialApp(
+          routes: Routers.routers,
+          theme: context.watch<ThemeController>().themeData,
+          debugShowCheckedModeBanner: false,
+          builder: FlutterI18n.rootAppBuilder(),
+          home: const MainPage(),
+          localizationsDelegates: [
+            widget.flutterI18nDelegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate
+          ],
+          navigatorKey: Global.navigatorKey,
+        ));
   }
 }
