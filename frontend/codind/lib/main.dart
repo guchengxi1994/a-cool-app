@@ -14,6 +14,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'bloc/gantt_bloc.dart';
 import 'pages/pages.dart';
 import 'providers/my_providers.dart';
 import 'package:provider/provider.dart';
@@ -88,18 +89,24 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      routes: Routers.routers,
-      theme: context.watch<ThemeController>().themeData,
-      debugShowCheckedModeBanner: false,
-      builder: FlutterI18n.rootAppBuilder(),
-      home: const MainPage(),
-      localizationsDelegates: [
-        widget.flutterI18nDelegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
-      ],
-      navigatorKey: Global.navigatorKey,
-    );
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => GanttBloc()..add(InitialGanttEvent()),
+          )
+        ],
+        child: MaterialApp(
+          routes: Routers.routers,
+          theme: context.watch<ThemeController>().themeData,
+          debugShowCheckedModeBanner: false,
+          builder: FlutterI18n.rootAppBuilder(),
+          home: const MainPage(),
+          localizationsDelegates: [
+            widget.flutterI18nDelegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate
+          ],
+          navigatorKey: Global.navigatorKey,
+        ));
   }
 }

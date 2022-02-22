@@ -175,15 +175,3 @@ class _GanttPageState extends State<GanttPage> {
     });
   }
 }
-
-class GanttBlocPage extends StatelessWidget {
-  const GanttBlocPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => GanttBloc()..add(InitialGanttEvent()),
-      child: GanttPage(),
-    );
-  }
-}

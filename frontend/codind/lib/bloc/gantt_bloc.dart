@@ -18,7 +18,6 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
     on<RemoveScheduleEvent>(_removeSchedule);
     on<AddScheduleEvent>(_addSchedule);
     on<ChangeCurrentDateEvent>(_setDate);
-    on<NothingEvent>(_nothing);
   }
 
   Future<void> _fetchToState(
@@ -51,7 +50,7 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
           subCompletion: 0.25,
           subjectJob: SubjectJob(
               fileLocation: "assets/reserved_md_files/markdown_guide.md",
-              subjectMdFrom: DataFrom.net))
+              subjectMdFrom: DataFrom.asset))
     ];
     List<Schedule> scheduleList = [
       schedule,
@@ -141,10 +140,5 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
       event.month,
       false,
     ));
-  }
-
-  Future<void> _nothing(NothingEvent event, Emitter<GanttState> emit) async {
-    print(state);
-    emit(state);
   }
 }

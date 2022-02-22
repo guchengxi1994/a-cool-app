@@ -208,7 +208,6 @@ class Subject {
 class SubjectJob {
   String? fileLocation;
   DataFrom? subjectMdFrom;
-  String? subjectJobData;
 
-  SubjectJob({this.fileLocation, this.subjectMdFrom, this.subjectJobData});
+  SubjectJob({this.fileLocation, this.subjectMdFrom});
 }

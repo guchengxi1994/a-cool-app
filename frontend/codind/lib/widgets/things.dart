@@ -1,8 +1,10 @@
 import 'package:codind/bloc/gantt_bloc.dart';
+import 'package:codind/entity/entity.dart';
 import 'package:codind/entity/schedule.dart';
 import 'package:codind/pages/_schedule_detail_page.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum CalendarType { month, year }
@@ -222,13 +224,17 @@ class _ThingItemState extends State<ThingItem> {
       ),
       InkWell(
         onTap: subject.subjectJob != null
-            ? () {
-                print("ddd:" + _ganttBloc.state.scheduleList.length.toString());
-                print(index);
-                print(id);
-                Map<String, int> params = {
+            ? () async {
+                var _data = "";
+                if (subject.subjectJob!.subjectMdFrom == DataFrom.asset) {
+                  _data = await rootBundle
+                      .loadString(subject.subjectJob!.fileLocation!);
+                }
+
+                Map<String, dynamic> params = {
                   "scheduleIndex": index,
-                  "subjectId": id
+                  "subjectId": id,
+                  "data": _data,
                 };
                 Navigator.pushNamed(context, Routers.pageMdPreview,
                     arguments: params);
