@@ -9,6 +9,7 @@
  */
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -32,19 +33,22 @@ Future main() async {
   // List<String>? ls = await spGetColorData();
   PersistenceStorage ps = PersistenceStorage();
   List<String>? ls = await ps.getColorData();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => ThemeController()),
-      ChangeNotifierProvider(create: (_) => MenuController()),
-      ChangeNotifierProvider(
-        create: (_) => EmojiController(),
-      )
-    ],
-    child: MyApp(
-      flutterI18nDelegate: flutterI18nDelegate,
-      colorList: ls,
-    ),
-  ));
+
+  BlocOverrides.runZoned(
+      (() => runApp(MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (_) => ThemeController()),
+              ChangeNotifierProvider(create: (_) => MenuController()),
+              ChangeNotifierProvider(
+                create: (_) => EmojiController(),
+              )
+            ],
+            child: MyApp(
+              flutterI18nDelegate: flutterI18nDelegate,
+              colorList: ls,
+            ),
+          ))),
+      blocObserver: SimpleBlocObserver());
 }
 
 class MyApp extends StatefulWidget {

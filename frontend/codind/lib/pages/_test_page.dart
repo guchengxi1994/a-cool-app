@@ -38,14 +38,14 @@ class _TestPageState<T> extends BasePageState<TestPage> {
           onPressed: () async {
             var result = await Global.navigatorKey.currentState!
                 .push(MaterialPageRoute(builder: (_) {
-              return BaseMarkdownPreviewPage(
-                from: DataFrom.asset,
-                mdData: "assets/reserved_md_files/markdown_guide.md",
-                subject: Subject(
-                    from: "2022-01-01 00:00:00",
-                    to: "2022-01-03 00:00:00",
-                    subTitle: "测试"),
-              );
+              return const BaseMarkdownPreviewPage(
+                  // from: DataFrom.asset,
+                  // mdData: "assets/reserved_md_files/markdown_guide.md",
+                  // subject: Subject(
+                  //     from: "2022-01-01 00:00:00",
+                  //     to: "2022-01-03 00:00:00",
+                  //     subTitle: "测试"),
+                  );
             }));
 
             print(result);

@@ -43,19 +43,21 @@ class GanttState extends Equatable {
       [status, scheduleList, currentMonth, currentYear, isLoading];
 
   GanttState copyWith(
-      GanttStatus? status,
-      List<Schedule>? scheduleList,
-      Schedule? operatedSchdule,
-      int? currentYear,
-      int? currentMonth,
-      bool? isLoading) {
+    GanttStatus? status,
+    List<Schedule>? scheduleList,
+    Schedule? operatedSchdule,
+    int? currentYear,
+    int? currentMonth,
+    bool? isLoading,
+  ) {
     return GanttState(
-        status: status ?? this.status,
-        scheduleList: scheduleList ?? this.scheduleList,
-        operatedSchdule: operatedSchdule,
-        currentMonth: currentMonth ?? this.currentMonth,
-        currentYear: currentYear ?? this.currentYear,
-        isLoading: isLoading ?? this.isLoading);
+      status: status ?? this.status,
+      scheduleList: scheduleList ?? this.scheduleList,
+      operatedSchdule: operatedSchdule,
+      currentMonth: currentMonth ?? this.currentMonth,
+      currentYear: currentYear ?? this.currentYear,
+      isLoading: isLoading ?? this.isLoading,
+    );
   }
 
   List<ScheduleGanttModel> grepSchedules(int currentYear, int currentMonth) {

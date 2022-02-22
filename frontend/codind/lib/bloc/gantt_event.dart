@@ -47,3 +47,5 @@ class ChangeCurrentDateEvent extends GanttEvent {
   final int month;
   const ChangeCurrentDateEvent({required this.year, required this.month});
 }
+
+class NothingEvent extends GanttEvent {}

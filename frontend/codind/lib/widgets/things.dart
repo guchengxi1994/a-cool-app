@@ -223,7 +223,15 @@ class _ThingItemState extends State<ThingItem> {
       InkWell(
         onTap: subject.subjectJob != null
             ? () {
-                debugPrint(subject.subTitle);
+                print("ddd:" + _ganttBloc.state.scheduleList.length.toString());
+                print(index);
+                print(id);
+                Map<String, int> params = {
+                  "scheduleIndex": index,
+                  "subjectId": id
+                };
+                Navigator.pushNamed(context, Routers.pageMdPreview,
+                    arguments: params);
               }
             : null,
         child: Card(
