@@ -95,7 +95,16 @@ class _BaseMarkdownPreviewPageState extends State<BaseMarkdownPreviewPage> {
     id = result['subjectId']!;
 
     return Scaffold(
-        appBar: null,
+        appBar: PlatformUtils.isWeb
+            ? null
+            : AppBar(
+                leading: IconButton(
+                  icon: const Icon(Icons.chevron_left),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
         body: (_ganttBloc.state.scheduleList[index].subject![id].subjectJob!
                     .subjectMdFrom !=
                 DataFrom.net
