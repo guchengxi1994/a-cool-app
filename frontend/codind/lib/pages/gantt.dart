@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-14 20:24:08
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-17 21:00:34
+ * @LastEditTime: 2022-02-22 20:08:30
  */
 import 'package:codind/bloc/gantt_bloc.dart';
 import 'package:codind/entity/schedule.dart';
@@ -13,6 +13,7 @@ import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'package:codind/utils/utils.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:codind/utils/common.dart' as my;
 import 'package:loading_overlay/loading_overlay.dart';
@@ -20,6 +21,8 @@ import 'package:loading_overlay/loading_overlay.dart';
 import '_schedule_detail_page.dart';
 
 /// my gantt chart !!!
+/// https://blog.csdn.net/szydwy/article/details/95047449 在手机端进行横竖屏切换
+/// https://zhuanlan.zhihu.com/p/302687896
 
 class GanttPage extends StatefulWidget {
   GanttPage({Key? key}) : super(key: key);
@@ -35,6 +38,8 @@ class _GanttPageState extends State<GanttPage> {
   late int currentYear;
   final my.DateUtils _dateUtils = my.DateUtils();
   ScrollController scrollController = ScrollController();
+  int _flexLeft = 5;
+  late int _flexRight;
 
   @override
   void initState() {
@@ -43,6 +48,7 @@ class _GanttPageState extends State<GanttPage> {
     currentMonth = _dateUtils.month;
     currentYear = _dateUtils.year;
     _ganttBloc = context.read<GanttBloc>();
+    _flexRight = 10 - _flexLeft;
   }
 
   @override
@@ -131,19 +137,21 @@ class _GanttPageState extends State<GanttPage> {
                       ]),
             body: SingleChildScrollView(
               controller: scrollController,
-              child: ((!PlatformUtils.isAndroid) && (!PlatformUtils.isIOS))
+              child: (!PlatformUtils.isMobile ||
+                      !(MediaQuery.of(context).orientation ==
+                          Orientation.landscape))
                   ? Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          flex: 1,
+                          flex: _flexLeft,
                           child: ThingsWidget(calendarType: _calendarType),
                         ),
                         Expanded(
                           child: _calendarType == CalendarType.year
                               ? CalendarWidget()
                               : CalendarByMonth(),
-                          flex: 1,
+                          flex: _flexRight,
                         )
                       ],
                     )
@@ -168,7 +176,56 @@ class _GanttPageState extends State<GanttPage> {
                             .add(AddScheduleEvent(schedule: result));
                       }
                     },
-                    icon: const Icon(Icons.add_circle))
+                    icon: const Icon(Icons.add_box)),
+                if (!PlatformUtils.isMobile)
+                  IconButton(
+                      onPressed: () {
+                        if (_flexLeft <= 7) {
+                          setState(() {
+                            _flexLeft += 1;
+                            _flexRight = 10 - _flexLeft;
+                          });
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.add_circle,
+                        color: Colors.blue,
+                      )),
+                if (!PlatformUtils.isMobile)
+                  IconButton(
+                      onPressed: () {
+                        if (_flexRight <= 7) {
+                          setState(() {
+                            _flexRight += 1;
+                            _flexLeft = 10 - _flexRight;
+                          });
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.remove_circle,
+                        color: Colors.blue,
+                      )),
+                // if (PlatformUtils.isMobile)
+                IconButton(
+                    onPressed: () {
+                      debugPrint("[debug gantt]: clicked Orientation Button");
+                      if (MediaQuery.of(context).orientation ==
+                          Orientation.landscape) {
+                        SystemChrome.setPreferredOrientations([
+                          DeviceOrientation.portraitUp,
+                          DeviceOrientation.portraitDown
+                        ]);
+                      } else {
+                        SystemChrome.setPreferredOrientations([
+                          DeviceOrientation.landscapeLeft,
+                          DeviceOrientation.landscapeRight
+                        ]);
+                      }
+                    },
+                    icon: const Icon(
+                      Icons.change_circle,
+                      color: Colors.blue,
+                    )),
               ],
             ),
           ));
