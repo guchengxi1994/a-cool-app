@@ -1,6 +1,5 @@
 import 'package:codind/bloc/gantt_bloc.dart';
 import 'package:codind/entity/entity.dart';
-import 'package:codind/entity/schedule.dart';
 import 'package:codind/pages/_schedule_detail_page.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';

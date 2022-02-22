@@ -9,14 +9,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../entity/entity.dart' show DataFrom, Schedule, Subject;
 
-class SimpleBlocObserver extends BlocObserver {
-  @override
-  void onChange(BlocBase bloc, Change change) {
-    debugPrint("[debug]:  ${bloc.runtimeType}      $change");
-    super.onChange(bloc, change);
-  }
-}
-
 // ignore: must_be_immutable
 class BaseMarkdownPreviewPage extends StatefulWidget {
   const BaseMarkdownPreviewPage({Key? key}) : super(key: key);

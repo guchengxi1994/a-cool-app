@@ -7,7 +7,7 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-02-19 22:16:06
  */
-import 'package:codind/entity/entity.dart';
+
 import 'package:codind/pages/_base_page.dart';
 import 'package:codind/pages/_base_preview_page.dart';
 import 'package:flutter/material.dart';

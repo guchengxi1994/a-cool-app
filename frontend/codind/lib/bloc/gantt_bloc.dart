@@ -5,7 +5,8 @@ import 'package:dart_date/dart_date.dart';
 import 'package:equatable/equatable.dart';
 // ignore: implementation_imports
 import 'package:equatable/src/equatable_utils.dart' as qu_utils;
-import 'package:flutter/services.dart';
+
+import '../utils/utils.dart' show toDate;
 
 part 'gantt_event.dart';
 part 'gantt_state.dart';
@@ -23,6 +24,7 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
   Future<void> _fetchToState(
       InitialGanttEvent event, Emitter<GanttState> emit) async {
     var date = DateTime.now();
+    var endDate = date.addDays(5);
     emit(state.copyWith(
       GanttStatus.initial,
       [],
@@ -36,21 +38,24 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
     // will be replaced by an api request
     // await Future.delayed(Duration(seconds: 1)).then((value) {});
 
-    Schedule schedule = Schedule(title: "测试");
+    Schedule schedule = Schedule(title: "开始你的学习之旅吧！");
     schedule.subject = [
       Subject(
-          subTitle: "a1",
-          from: "2022-01-01 00:00:00",
-          to: "2022-01-03 00:00:00",
-          subCompletion: 0.25),
-      Subject(
-          subTitle: "a2",
-          from: "2022-01-05 00:00:00",
-          to: "2022-03-03 00:00:00",
-          subCompletion: 0.25,
+          subTitle: "学习如何使用Markdown",
+          from:
+              "${date.year}-${toDate(date.month)}-${toDate(date.day)} 00:00:00",
+          to:
+              "${endDate.year}-${toDate(endDate.month)}-${toDate(endDate.day)} 00:00:00",
+          subCompletion: 0,
           subjectJob: SubjectJob(
               fileLocation: "assets/reserved_md_files/markdown_guide.md",
-              subjectMdFrom: DataFrom.asset))
+              subjectMdFrom: DataFrom.asset)),
+      Subject(
+          subTitle: "写一个Markdown试试",
+          from:
+              "${date.year}-${toDate(date.month)}-${toDate(date.day)} 00:00:00",
+          to: "${endDate.year}-${toDate(endDate.month)}-${toDate(endDate.day)} 00:00:00",
+          subCompletion: 0),
     ];
     List<Schedule> scheduleList = [
       schedule,

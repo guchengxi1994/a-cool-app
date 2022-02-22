@@ -14,7 +14,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'bloc/gantt_bloc.dart';
+import 'bloc/my_blocs.dart';
 import 'pages/pages.dart';
 import 'providers/my_providers.dart';
 import 'package:provider/provider.dart';
