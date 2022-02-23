@@ -38,9 +38,10 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
     // will be replaced by an api request
     // await Future.delayed(Duration(seconds: 1)).then((value) {});
 
-    Schedule schedule = Schedule(title: "开始你的学习之旅吧！");
+    Schedule schedule = Schedule(title: "开始你的学习之旅吧！", editable: false);
     schedule.subject = [
       Subject(
+          editable: false,
           subTitle: "学习如何使用Markdown",
           from:
               "${date.year}-${toDate(date.month)}-${toDate(date.day)} 00:00:00",
@@ -51,6 +52,7 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
               fileLocation: "assets/reserved_md_files/markdown_guide.md",
               subjectMdFrom: DataFrom.asset)),
       Subject(
+          editable: false,
           subTitle: "写一个Markdown试试",
           from:
               "${date.year}-${toDate(date.month)}-${toDate(date.day)} 00:00:00",
