@@ -52,6 +52,17 @@ class _GanttPageState extends State<GanttPage> {
   }
 
   @override
+  void dispose() {
+    scrollController.dispose();
+    if (PlatformUtils.isMobile) {
+      SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    }
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<GanttBloc, GanttState>(builder: (context, state) {
       return LoadingOverlay(
@@ -136,29 +147,7 @@ class _GanttPageState extends State<GanttPage> {
                                 : const Icon(Icons.switch_right))
                       ]),
             body: SingleChildScrollView(
-              controller: scrollController,
-              child: (!PlatformUtils.isMobile ||
-                      !(MediaQuery.of(context).orientation ==
-                          Orientation.landscape))
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: _flexLeft,
-                          child: ThingsWidget(calendarType: _calendarType),
-                        ),
-                        Expanded(
-                          child: _calendarType == CalendarType.year
-                              ? CalendarWidget()
-                              : CalendarByMonth(),
-                          flex: _flexRight,
-                        )
-                      ],
-                    )
-                  : ThingsWidget(
-                      calendarType: CalendarType.year,
-                    ),
-            ),
+                controller: scrollController, child: _build()),
             bottomSheet: Row(
               children: [
                 IconButton(
@@ -205,30 +194,72 @@ class _GanttPageState extends State<GanttPage> {
                         Icons.remove_circle,
                         color: Colors.blue,
                       )),
-                // if (PlatformUtils.isMobile)
-                IconButton(
-                    onPressed: () {
-                      debugPrint("[debug gantt]: clicked Orientation Button");
-                      if (MediaQuery.of(context).orientation ==
-                          Orientation.landscape) {
-                        SystemChrome.setPreferredOrientations([
-                          DeviceOrientation.portraitUp,
-                          DeviceOrientation.portraitDown
-                        ]);
-                      } else {
-                        SystemChrome.setPreferredOrientations([
-                          DeviceOrientation.landscapeLeft,
-                          DeviceOrientation.landscapeRight
-                        ]);
-                      }
-                    },
-                    icon: const Icon(
-                      Icons.change_circle,
-                      color: Colors.blue,
-                    )),
+                if (PlatformUtils.isMobile)
+                  IconButton(
+                      onPressed: () {
+                        debugPrint("[debug gantt]: clicked Orientation Button");
+                        if (MediaQuery.of(context).orientation ==
+                            Orientation.landscape) {
+                          SystemChrome.setPreferredOrientations([
+                            DeviceOrientation.portraitUp,
+                            DeviceOrientation.portraitDown
+                          ]);
+                        } else {
+                          SystemChrome.setPreferredOrientations([
+                            DeviceOrientation.landscapeLeft,
+                            DeviceOrientation.landscapeRight
+                          ]);
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.change_circle,
+                        color: Colors.blue,
+                      )),
               ],
             ),
           ));
     });
+  }
+
+  Widget _build() {
+    if (!PlatformUtils.isMobile) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: _flexLeft,
+            child: ThingsWidget(calendarType: _calendarType),
+          ),
+          Expanded(
+            child: _calendarType == CalendarType.year
+                ? CalendarWidget()
+                : CalendarByMonth(),
+            flex: _flexRight,
+          )
+        ],
+      );
+    } else {
+      if (MediaQuery.of(context).orientation == Orientation.portrait) {
+        return ThingsWidget(
+          calendarType: CalendarType.year,
+        );
+      } else {
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: _flexLeft,
+              child: ThingsWidget(calendarType: _calendarType),
+            ),
+            Expanded(
+              child: _calendarType == CalendarType.year
+                  ? CalendarWidget()
+                  : CalendarByMonth(),
+              flex: _flexRight,
+            )
+          ],
+        );
+      }
+    }
   }
 }
