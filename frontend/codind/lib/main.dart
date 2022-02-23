@@ -80,10 +80,6 @@ class _MyAppState extends State<MyApp> {
           context.read<ThemeController>().setThemeByMap(savedColor);
         },
       );
-
-      // Future.delayed(Duration.zero).then((value) {
-      //       context.read<ThemeController>().setThemeByMap(savedColor);
-      //     });
     }
   }
 
@@ -93,6 +89,9 @@ class _MyAppState extends State<MyApp> {
         providers: [
           BlocProvider(
             create: (_) => GanttBloc()..add(InitialGanttEvent()),
+          ),
+          BlocProvider(
+            create: (_) => SavedLinksBloc()..add(InitialSavedLinksEvent()),
           )
         ],
         child: MaterialApp(

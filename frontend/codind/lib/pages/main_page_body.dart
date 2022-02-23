@@ -48,7 +48,9 @@ class _MainPageBodyState<T> extends BasePageState<MainPageBody> {
         Card(
           child: ListTile(
             title: const Text("Saved links"),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(Routers.pageSavedLinks);
+            },
           ),
         ),
         Card(
