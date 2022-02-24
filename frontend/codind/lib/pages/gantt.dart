@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-14 20:24:08
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-22 20:08:30
+ * @LastEditTime: 2022-02-24 19:10:48
  */
 import 'package:codind/bloc/gantt_bloc.dart';
 import 'package:codind/entity/schedule.dart';
@@ -74,6 +74,7 @@ class _GanttPageState extends State<GanttPage> {
                     centerTitle: true,
                   )
                 : AppBar(
+                    automaticallyImplyLeading: !PlatformUtils.isWeb,
                     elevation: 0,
                     title: SizedBox(
                       child: Row(
