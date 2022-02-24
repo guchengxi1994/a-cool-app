@@ -15,11 +15,48 @@ class SavedLinksPage extends StatefulWidget {
 
 class _SavedLinksPageState extends State<SavedLinksPage> {
   late SavedLinksBloc _savedLinksBloc;
+  List<Widget> _widgets = [];
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _savedLinksBloc = context.read<SavedLinksBloc>();
+    _widgets.addAll([
+      getLinkWidget(Link()),
+      getLinkWidget(Link()),
+      getLinkWidget(Link()),
+      getLinkWidget(Link()),
+      getLinkWidget(Link()),
+      getLinkWidget(Link()),
+      getLinkWidget(Link()),
+      getLinkWidget(Link()),
+      getLinkWidget(Link()),
+      getLinkWidget(Link()),
+      getLinkWidget(Link()),
+      getLinkWidget(Link()),
+      getLinkWidget(Link()),
+    ]);
+
+    _scrollController.addListener(() {
+      //判断是否滑动到了页面的最底部
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        //如果不是最后一页数据，则生成新的数据添加到list里面
+        Future.delayed(Duration(seconds: 2)).then((e) {
+          for (int i = 0; i < 5; i++) {
+            _widgets.insert(_widgets.length, getLinkWidget(Link()));
+          }
+          setState(() {});
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -27,46 +64,56 @@ class _SavedLinksPageState extends State<SavedLinksPage> {
     return BlocBuilder<SavedLinksBloc, SavedLinksState>(
         builder: (context, state) {
       return Scaffold(
-        // extendBody: true,
+        extendBody: false,
         appBar: AppBar(
           automaticallyImplyLeading: !PlatformUtils.isWeb,
           elevation: PlatformUtils.isMobile ? 4 : 0,
         ),
-        body: SingleChildScrollView(
-            child: !PlatformUtils.isMobile
-                ? Wrap(alignment: WrapAlignment.start, children: [
-                    getLinkWidget(Link()),
-                    getLinkWidget(Link()),
-                    getLinkWidget(Link()),
-                    getLinkWidget(Link()),
-                    getLinkWidget(Link()),
-                    getLinkWidget(Link()),
-                    getLinkWidget(Link()),
-                    getLinkWidget(Link()),
-                    getLinkWidget(Link()),
-                    getLinkWidget(Link()),
-                    getLinkWidget(Link()),
-                    getLinkWidget(Link()),
-                    getLinkWidget(Link()),
-                  ])
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      getLinkWidget(Link()),
-                      getLinkWidget(Link()),
-                      getLinkWidget(Link()),
-                      getLinkWidget(Link()),
-                      getLinkWidget(Link()),
-                      getLinkWidget(Link()),
-                      getLinkWidget(Link()),
-                      getLinkWidget(Link()),
-                      getLinkWidget(Link()),
-                      getLinkWidget(Link()),
-                      getLinkWidget(Link()),
-                      getLinkWidget(Link()),
-                      getLinkWidget(Link()),
-                    ],
-                  )),
+        body: !PlatformUtils.isMobile
+            ? SingleChildScrollView(
+                padding: const EdgeInsets.only(bottom: 60, top: 20),
+                child: Wrap(alignment: WrapAlignment.start, children: [
+                  getLinkWidget(Link()),
+                  getLinkWidget(Link()),
+                  getLinkWidget(Link()),
+                  getLinkWidget(Link()),
+                  getLinkWidget(Link()),
+                  getLinkWidget(Link()),
+                  getLinkWidget(Link()),
+                  getLinkWidget(Link()),
+                  getLinkWidget(Link()),
+                  getLinkWidget(Link()),
+                  getLinkWidget(Link()),
+                  getLinkWidget(Link()),
+                  getLinkWidget(Link()),
+                ]))
+            : RefreshIndicator(
+                child: ListView.builder(
+                    controller: _scrollController,
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.only(bottom: 60, top: 20),
+                    itemCount: _widgets.length + 1,
+                    itemBuilder: ((context, index) {
+                      if (index == _widgets.length) {
+                        return Container(
+                          padding: EdgeInsets.all(16.0),
+                          alignment: Alignment.center,
+                          child: SizedBox(
+                            width: 24.0,
+                            height: 24.0,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.0,
+                            ),
+                          ),
+                        );
+                      }
+                      return Center(
+                        child: _widgets[index],
+                      );
+                    })),
+                onRefresh: () async {
+                  await Future.delayed(Duration(milliseconds: 110));
+                }),
         bottomSheet: Row(
           children: [
             IconButton(
@@ -83,10 +130,15 @@ class _SavedLinksPageState extends State<SavedLinksPage> {
 }
 
 const double cardHeight = 300;
-const double cardWidth = 200;
+double cardWidth = 200;
 Widget getLinkWidget(Link link) {
+  if (PlatformUtils.isMobile) {
+    cardWidth = 0.8 * CommonUtils.screenW();
+  }
+
   return Card(
-    margin: const EdgeInsets.all(5),
+    // margin: const EdgeInsets.all(5),
+
     child: Container(
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -104,7 +156,10 @@ Widget getLinkWidget(Link link) {
               child: link.thumvnailUrl != null
                   ? ExtendedImage.network(
                       link.thumvnailUrl!,
-                      height: 0.5 * cardHeight,
+                      // height: 0.5 * cardHeight,
+                      height: PlatformUtils.isMobile
+                          ? 0.7 * cardHeight
+                          : 0.5 * cardHeight,
                       width: cardWidth,
                       fit: BoxFit.cover,
                       borderRadius: const BorderRadius.only(
@@ -114,7 +169,9 @@ Widget getLinkWidget(Link link) {
                   : ExtendedImage.asset(
                       "assets/images/kl.jpg",
                       fit: BoxFit.cover,
-                      height: 0.5 * cardHeight,
+                      height: PlatformUtils.isMobile
+                          ? 0.7 * cardHeight
+                          : 0.5 * cardHeight,
                       width: cardWidth,
                       borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),
