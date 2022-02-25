@@ -138,17 +138,23 @@ class _ThingItemState extends State<ThingItem> {
     int currentYear = context.read<GanttBloc>().state.currentYear;
     int currentMonth = context.read<GanttBloc>().state.currentMonth;
 
-    if (currentYear <= schedule.toYear &&
-        currentYear >= schedule.fromYear &&
-        currentMonth <= schedule.toMonth &&
-        currentMonth >= schedule.fromMonth) {
-      result.add(renderSchedule(schedule, index));
-
-      for (int i = 0; i < schedule.subject!.length; i++) {
-        int j = 0;
-        if (calendarType == CalendarType.year) {
+    if (calendarType == CalendarType.year) {
+      if (currentYear <= schedule.toYear && currentYear >= schedule.fromYear) {
+        result.add(renderSchedule(schedule, index));
+        for (int i = 0; i < schedule.subject!.length; i++) {
           result.add(renderSubTitles(schedule.subject![i], index, i));
-        } else {
+        }
+      }
+    } else {
+      if (currentYear <= schedule.toYear &&
+          currentYear >= schedule.fromYear &&
+          currentMonth <= schedule.toMonth &&
+          currentMonth >= schedule.fromMonth) {
+        result.add(renderSchedule(schedule, index));
+
+        for (int i = 0; i < schedule.subject!.length; i++) {
+          int j = 0;
+
           Subject subject = schedule.subject![i];
 
           if (currentYear <= subject.toYear &&

@@ -208,6 +208,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
     if (index >= schedule!.subject!.length) {
       schedule!.subject!.add(subject);
     } else {
+      debugPrint("[debug schedule-detail-page]: change subject");
       schedule?.subject?[index] = subject;
     }
     // print(schedule!.subject!.length);
@@ -257,16 +258,23 @@ class _SubRowWidgetState extends State<SubRowWidget> {
   void initState() {
     super.initState();
     if (widget.subject != null) {
-      _subject = widget.subject!;
+      // _subject = widget.subject!;
+      _subject = Subject.fromJson(widget.subject!.toJson());
     } else {
-      _subject =
-          Subject(subTitle: "", from: "未输入", to: "未输入", subCompletion: 0);
+      _subject = Subject(
+          subTitle: "",
+          from: "未输入",
+          to: "未输入",
+          subCompletion: 0,
+          editable: true);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     debugPrint("[debug schedule-detail-page]: ${_subject.editable}");
+    debugPrint("[debug schedule-detail-page]: ${_subject.from}");
+    debugPrint("[debug schedule-detail-page]: ${_subject.to}");
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
