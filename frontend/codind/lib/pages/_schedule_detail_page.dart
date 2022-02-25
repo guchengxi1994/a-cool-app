@@ -11,8 +11,16 @@ const double textButtonHeight = 20;
 const double textButtonWidth = 30;
 
 class ScheduleDetailPage extends StatefulWidget {
-  ScheduleDetailPage({Key? key, required this.schedule}) : super(key: key);
-
+  ScheduleDetailPage(
+      {Key? key,
+      required this.schedule,
+      this.currentYear,
+      this.day,
+      this.month})
+      : super(key: key);
+  int? currentYear;
+  int? month;
+  int? day;
   Schedule? schedule;
 
   @override
@@ -31,7 +39,22 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
     if (widget.schedule != null) {
       schedule = Schedule.fromJson(widget.schedule!.toJson());
     } else {
-      schedule = Schedule(title: "新的日程", subject: []);
+      schedule = Schedule(title: "新的日程", subject: [], editable: true);
+      if (widget.currentYear != null) {
+        schedule!.subject!.add(
+          Subject(
+              editable: true,
+              from: DateTime(widget.currentYear!, widget.month!, widget.day!)
+                  .toString(),
+              to: DateTime(widget.currentYear!, widget.month!, widget.day!)
+                  .toString(),
+              subCompletion: 0,
+              subTitle: widget.month.toString() +
+                  "月" +
+                  (widget.day).toString() +
+                  "日的事情"),
+        );
+      }
     }
 
     widgets.add(const Text(
@@ -67,7 +90,11 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                 ? null
                 : () {
                     Subject _s = Subject(
-                        subTitle: "", from: "未输入", to: "未输入", subCompletion: 0);
+                        subTitle: "",
+                        from: "未输入",
+                        to: "未输入",
+                        subCompletion: 0,
+                        editable: true);
                     schedule!.subject!.add(_s);
                     widgets.add(SubRowWidget(
                       index: schedule!.subject!.length - 1,

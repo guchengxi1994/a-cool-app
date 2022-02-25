@@ -5,6 +5,7 @@ import 'package:dart_date/dart_date.dart';
 import 'package:equatable/equatable.dart';
 // ignore: implementation_imports
 import 'package:equatable/src/equatable_utils.dart' as qu_utils;
+import 'package:flutter/cupertino.dart';
 
 import '../utils/utils.dart' show toDate;
 
@@ -114,7 +115,7 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
     List<Schedule> scheduleList = state.scheduleList;
     scheduleList.removeAt(event.index);
     emit(state.copyWith(
-      GanttStatus.changeSchedule,
+      GanttStatus.removeSchedule,
       state.scheduleList,
       state.operatedSchdule,
       state.currentYear,
@@ -126,15 +127,18 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
   Future<void> _addSchedule(
       AddScheduleEvent event, Emitter<GanttState> emit) async {
     List<Schedule> scheduleList = state.scheduleList;
+    debugPrint("[debug gantt-bloc]:  ${scheduleList.length}");
     scheduleList.add(event.schedule);
+    debugPrint("[debug gantt-bloc]:  这里要添加一个schedule");
     emit(state.copyWith(
-      GanttStatus.changeSchedule,
+      GanttStatus.addSchedule,
       state.scheduleList,
       state.operatedSchdule,
       state.currentYear,
       state.currentMonth,
       false,
     ));
+    debugPrint("[debug gantt-bloc]:  ${scheduleList.length}");
   }
 
   Future<void> _setDate(
