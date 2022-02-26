@@ -148,7 +148,7 @@ class _FileExplorePageState extends State<FileExplorePage>
                     context: context,
                     builder: (context) {
                       return CupertinoAlertDialog(
-                        title: const Text("输入MD文件名称"),
+                        title: const Text("输入文件名称（默认以md为后缀）"),
                         content: Material(
                           child: TextField(
                             decoration: InputDecoration(
@@ -178,7 +178,7 @@ class _FileExplorePageState extends State<FileExplorePage>
                   setState(() {
                     isLoading = true;
                   });
-                  if (!(result as String).endsWith(".md")) {
+                  if (!isAFile(result as String)) {
                     result += ".md";
                   }
                   // String fath = currentFatherPath.split("/").last;

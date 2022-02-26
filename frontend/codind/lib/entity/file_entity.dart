@@ -7,7 +7,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-06 09:06:31
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-09 21:28:29
+ * @LastEditTime: 2022-02-26 19:51:24
  */
 
 import 'dart:convert';
@@ -203,7 +203,7 @@ EntityFolder? toStructured(FlattenObject object,
     object.files.add(newFile);
   }
 
-  if (newPath != null && !newPath.endsWith(".md")) {
+  if (newPath != null && !isAFile(newPath)) {
     object.path.add(newPath);
   }
 
@@ -217,7 +217,7 @@ EntityFolder? toStructured(FlattenObject object,
   // Map<String, dynamic> _json = entityFolder.toJson();
   int maxDepth = 0;
   for (var s in object.path) {
-    if (!s.endsWith(".md")) {
+    if (!isAFile(s)) {
       // print(s);
       var slist = s.split("/");
       // slist.remove("..");
@@ -350,7 +350,7 @@ class EntityFile {
 
   String fatherPath = "root";
 
-  String timestamp = "2022-02-07 9:09:10";
+  String timestamp = "2015-06-07 08:09:10";
   EntityFile(
       {required this.name,
       this.savePath = "",
@@ -472,4 +472,19 @@ EntityFolder? fromJsonToEntityAdd(String jsonStr, String fatherPath, int depth,
       return EntityFolder.fromJson(json.decode(_s));
     }
   }
+}
+
+bool isAFile(String s) {
+  if (s.length <= 2) {
+    return false;
+  } else {
+    var _tmp = s.substring(3);
+    return _tmp.contains(".");
+  }
+}
+
+class FileSystem {
+  static List<EntityFile>? getFilesFromMap(String str) {}
+
+  static EntityFolder? toStructured(List<EntityFile> files) {}
 }
