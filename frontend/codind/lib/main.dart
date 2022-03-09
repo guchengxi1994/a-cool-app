@@ -92,6 +92,9 @@ class _MyAppState extends State<MyApp> {
           ),
           BlocProvider(
             create: (_) => SavedLinksBloc()..add(InitialSavedLinksEvent()),
+          ),
+          BlocProvider(
+            create: (_) => MindMapBloc()..add(InitialMindMapEvent()),
           )
         ],
         child: MaterialApp(
