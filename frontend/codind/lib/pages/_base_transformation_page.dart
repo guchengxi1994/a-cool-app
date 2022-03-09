@@ -17,7 +17,7 @@ class BaseTransformationPageState<T extends BaseTransformationPage>
     extends State<T> with TickerProviderStateMixin {
   final GlobalKey _targetKey = GlobalKey();
 
-  final TransformationController _transformationController =
+  final TransformationController transformationController =
       TransformationController();
 
   Animation<Matrix4>? _animationReset;
@@ -38,7 +38,7 @@ class BaseTransformationPageState<T extends BaseTransformationPage>
   }
 
   void _onAnimateReset() {
-    _transformationController.value = _animationReset!.value;
+    transformationController.value = _animationReset!.value;
     if (!_controllerReset!.isAnimating) {
       _animationReset?.removeListener(_onAnimateReset);
       _animationReset = null;
@@ -98,7 +98,7 @@ class BaseTransformationPageState<T extends BaseTransformationPage>
     if (null != _controllerReset) {
       _controllerReset!.dispose();
     }
-    _transformationController.dispose();
+    transformationController.dispose();
     super.dispose();
   }
 
@@ -132,7 +132,7 @@ class BaseTransformationPageState<T extends BaseTransformationPage>
                 viewportSize.width / 2,
                 viewportSize.height / 2,
               );
-            _transformationController.value = _homeMatrix!;
+            transformationController.value = _homeMatrix!;
           }
           return ClipRect(
             child: GestureDetector(
@@ -140,7 +140,7 @@ class BaseTransformationPageState<T extends BaseTransformationPage>
               child: InteractiveViewer(
                 key: _targetKey,
                 scaleEnabled: true,
-                transformationController: _transformationController,
+                transformationController: transformationController,
                 boundaryMargin: EdgeInsets.symmetric(
                   horizontal: viewportSize.width,
                   vertical: viewportSize.height,

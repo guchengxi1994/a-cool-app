@@ -7,68 +7,28 @@ import '_base_transformation_page.dart';
 
 /// the idea is inspired by https://dartingowl.com/domind/web/#/
 
-// class MindMapPage extends BaseTransformationPage {
-//   MindMapPage({Key? key}) : super(key: key);
-
-//   @override
-//   BaseTransformationPageState<BaseTransformationPage> getState() {
-//     return _MindMapPageState();
-//   }
-// }
-
-// class _MindMapPageState<T> extends BaseTransformationPageState<MindMapPage> {
-//   late MindMapBloc _mindMapBloc;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _mindMapBloc = MindMapBloc();
-//   }
-
-//   @override
-//   baseBuild(BuildContext context) {
-//     return BlocBuilder<MindMapBloc, MindMapState>(builder: ((context, state) {
-//       print(_mindMapBloc.state.mindMapNodes.length);
-
-//       return CustomPaint(
-//         foregroundPainter:
-//             MindMapPainter(mindMapNodes: _mindMapBloc.state.mindMapNodes),
-//         child: SizedBox(
-//           width: double.infinity,
-//           height: double.infinity,
-//           child: Stack(
-//             children: _mindMapBloc.state.mindMapNodes.map((e) {
-//               return MindMapNodeWidget(
-//                 mindMapNode: e,
-//               );
-//             }).toList(),
-//           ),
-//         ),
-//       );
-//     }));
-//   }
-// }
-
-class MindMapPage extends StatefulWidget {
+class MindMapPage extends BaseTransformationPage {
   MindMapPage({Key? key}) : super(key: key);
 
   @override
-  State<MindMapPage> createState() => _MindMapPageState();
+  BaseTransformationPageState<BaseTransformationPage> getState() {
+    return _MindMapPageState();
+  }
 }
 
-class _MindMapPageState extends State<MindMapPage> {
+class _MindMapPageState<T> extends BaseTransformationPageState<MindMapPage> {
   late MindMapBloc _mindMapBloc;
+
   @override
   void initState() {
     super.initState();
-    _mindMapBloc = MindMapBloc();
+    _mindMapBloc = context.read<MindMapBloc>();
   }
 
   @override
-  Widget build(BuildContext context) {
+  baseBuild(BuildContext context) {
     return BlocBuilder<MindMapBloc, MindMapState>(builder: ((context, state) {
-      print(_mindMapBloc.state.mindMapNodes.length);
-
+      debugPrint("[debug Matrix] : ${super.transformationController.value}");
       return CustomPaint(
         foregroundPainter:
             MindMapPainter(mindMapNodes: _mindMapBloc.state.mindMapNodes),
