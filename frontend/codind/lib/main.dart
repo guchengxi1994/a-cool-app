@@ -15,7 +15,7 @@ import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'bloc/my_blocs.dart';
-import 'pages/pages.dart';
+import 'pages/pages.dart' show MainPage;
 import 'providers/my_providers.dart';
 import 'package:provider/provider.dart';
 

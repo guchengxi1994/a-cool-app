@@ -47,16 +47,19 @@ class _FileExplorePageState extends State<FileExplorePage>
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: Icon(
-            Icons.chevron_left,
-            color:
-                Responsive.isRoughMobile(context) ? Colors.white : Colors.black,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+        leading: currentFatherPath == "../root"
+            ? null
+            : IconButton(
+                icon: Icon(
+                  Icons.chevron_left,
+                  color: Responsive.isRoughMobile(context)
+                      ? Colors.white
+                      : Colors.black,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
         centerTitle: true,
         title: Text(
           currentFatherPath,

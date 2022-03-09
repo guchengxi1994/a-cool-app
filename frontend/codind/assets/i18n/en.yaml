@@ -46,3 +46,11 @@ button:
 
 errors: 
   invalidName: "Invalid name"
+
+mainPage:
+  search: "Search ..."
+  savedLinks: "Saved links"
+  startWriting: "Start writing"
+  folder: "Folder"
+  schedule: "Schedule"
+  mindMap: "Mind map"

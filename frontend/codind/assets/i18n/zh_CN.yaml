@@ -42,3 +42,11 @@ button:
 
 errors: 
   invalidName: "名称不合法"
+
+mainPage:
+  search: "搜索 ..."
+  savedLinks: "保存的链接"
+  startWriting: "开始创作吧"
+  folder: "我的文档"
+  schedule: "日程表"
+  mindMap: "脑图"

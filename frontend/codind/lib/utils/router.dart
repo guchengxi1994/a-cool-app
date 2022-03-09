@@ -23,6 +23,7 @@ class Routers {
   static const pageSchedule = '/pageSchedule';
   static const pageMdPreview = "/pageMdPreview";
   static const pageSavedLinks = "/pageSavedLinks";
+  static const pageMindMap = "/pageMindMap";
 
   static final Map<String, WidgetBuilder> routers = {
     pageSetting: (ctx) => SettingPage(
@@ -34,5 +35,6 @@ class Routers {
     pageSchedule: (context) => GanttPage(),
     pageMdPreview: (context) => const BaseMarkdownPreviewPage(),
     pageSavedLinks: (context) => SavedLinksPage(),
+    pageMindMap: (context) => MindMapPage(),
   };
 }
