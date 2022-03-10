@@ -48,6 +48,7 @@ dependencies:
   dart_date: ^1.1.1
   screenshot: ^1.2.3  # save images
   uuid: ^3.0.6 # uuid
+  graphview: ^1.1.1
 
 dev_dependencies:
   flutter_test:

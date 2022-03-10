@@ -119,29 +119,42 @@ class BaseTransformationPageState<T extends BaseTransformationPage>
           actions: actions,
         ),
       ),
-      body: Container(
-        color: Colors.grey[300],
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          child: InteractiveViewer(
-            // constrained: false,
-            clipBehavior: Clip.none,
-            key: _targetKey,
-            scaleEnabled: true,
-            transformationController: transformationController,
-            // ignore: prefer_const_constructors
-            boundaryMargin: EdgeInsets.symmetric(
-              horizontal: 300,
-              vertical: 500,
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Expanded(
+              child: Container(
+            color: Colors.grey[300],
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              child: InteractiveViewer(
+                constrained: false,
+                clipBehavior: Clip.none,
+                key: _targetKey,
+                scaleEnabled: true,
+                transformationController: transformationController,
+                // ignore: prefer_const_constructors
+                // boundaryMargin: EdgeInsets.symmetric(
+                //   horizontal: 300,
+                //   vertical: 500,
+                // ),
+                boundaryMargin: EdgeInsets.all(1000),
+                minScale: 0.05,
+                maxScale: 2,
+                onInteractionStart: _onScaleStart,
+                // child: SizedBox.expand(
+                //   child: baseBuild(context),
+                // ),
+
+                child: SizedBox(
+                  height: 1500,
+                  width: 2000,
+                  child: baseBuild(context),
+                ),
+              ),
             ),
-            minScale: 1,
-            maxScale: 2,
-            onInteractionStart: _onScaleStart,
-            child: SizedBox.expand(
-              child: baseBuild(context),
-            ),
-          ),
-        ),
+          )),
+        ],
       ),
       // body: Container(
       //   color: Colors.grey[300],
