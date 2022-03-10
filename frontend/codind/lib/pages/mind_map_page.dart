@@ -34,6 +34,7 @@ class _MindMapPageState<T> extends BaseTransformationPageState<MindMapPage> {
     mindMapNode.isRoot = true;
     GlobalKey<MindMapNodeWidgetState> globalKey = GlobalKey();
     MindMapNodeWidget widget = MindMapNodeWidget(
+      fatherWidth: 0,
       mindMapNode: mindMapNode,
       key: globalKey,
       leftAddButtonClicked: (uuid) => addLeftItem(uuid),
@@ -67,6 +68,7 @@ class _MindMapPageState<T> extends BaseTransformationPageState<MindMapPage> {
                   width: double.infinity,
                   height: double.infinity,
                   child: Stack(
+                    clipBehavior: Clip.none,
                     children: _mindMapBloc.state.widgets,
                   ),
                 ),
@@ -77,6 +79,8 @@ class _MindMapPageState<T> extends BaseTransformationPageState<MindMapPage> {
           }));
     }));
   }
+
+  void reformat() {}
 
   void addLeftItem(String uuid) {
     keys = _mindMapBloc.state.globalKeys;
@@ -99,11 +103,12 @@ class _MindMapPageState<T> extends BaseTransformationPageState<MindMapPage> {
           "[debug mind_map_page]: left add button, $currentWidgetOffset");
       MindMapNode node = MindMapNode(postion: NodePosition.left);
       node.id = UUID.v4();
-      node.name = "left";
+      node.name = "leftleftleftleftleftleftleftleft";
       node.left = (currentWidgetOffset.dx - parentOffset.dx) / factor - 100;
       node.top = (currentWidgetOffset.dy - parentOffset.dy) / factor;
       GlobalKey<MindMapNodeWidgetState> globalKey = GlobalKey();
       MindMapNodeWidget widget = MindMapNodeWidget(
+        fatherWidth: currentWidgetSize.width,
         mindMapNode: node,
         key: globalKey,
         leftAddButtonClicked: (uuid) => addLeftItem(uuid),
@@ -141,10 +146,13 @@ class _MindMapPageState<T> extends BaseTransformationPageState<MindMapPage> {
       MindMapNode node = MindMapNode(postion: NodePosition.right);
       node.id = UUID.v4();
       node.name = "right";
-      node.left = (currentWidgetOffset.dx - parentOffset.dx) / factor + 100;
+      node.left = (currentWidgetOffset.dx - parentOffset.dx) / factor +
+          currentWidgetSize.width +
+          40;
       node.top = (currentWidgetOffset.dy - parentOffset.dy) / factor;
       GlobalKey<MindMapNodeWidgetState> globalKey = GlobalKey();
       MindMapNodeWidget widget = MindMapNodeWidget(
+        fatherWidth: currentWidgetSize.width,
         mindMapNode: node,
         key: globalKey,
         leftAddButtonClicked: (uuid) => addLeftItem(uuid),

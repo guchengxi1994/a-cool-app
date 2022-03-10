@@ -11,9 +11,11 @@ class MindMapNodeWidget extends StatefulWidget {
       {Key? key,
       required this.mindMapNode,
       this.leftAddButtonClicked,
-      this.rightAddButtonClicked})
+      this.rightAddButtonClicked,
+      required this.fatherWidth})
       : super(key: key);
   MindMapNode? mindMapNode;
+  double fatherWidth;
   final leftAddButtonClicked;
   final rightAddButtonClicked;
 
@@ -27,6 +29,7 @@ class MindMapNodeWidgetState extends State<MindMapNodeWidget> {
   late String nodeName;
   late String nodeUUID;
   MindMapNodeWidgetStatus status = MindMapNodeWidgetStatus.read;
+  GlobalKey globalKey = GlobalKey();
 
   @override
   void initState() {
@@ -37,6 +40,19 @@ class MindMapNodeWidgetState extends State<MindMapNodeWidget> {
       nodeName = widget.mindMapNode!.name!;
       nodeUUID = widget.mindMapNode!.id!;
     }
+
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      debugPrint("[debug node_widget]:   ${globalKey.currentContext?.size}");
+      var size = globalKey.currentContext!.size;
+      if (widget.mindMapNode!.postion == NodePosition.left) {
+        if (size!.width > 60) {
+          setState(() {
+            dx = dx + 100 - 40 - size.width;
+            debugPrint("[debug node_widget dx]:   $dx");
+          });
+        }
+      }
+    });
   }
 
   moveTO(Offset offset_) {
@@ -50,6 +66,7 @@ class MindMapNodeWidgetState extends State<MindMapNodeWidget> {
   @override
   Widget build(BuildContext context) {
     return Positioned(
+      key: globalKey,
       left: dx,
       top: dy,
       child: Draggable(
@@ -108,15 +125,17 @@ class MindMapNodeWidgetState extends State<MindMapNodeWidget> {
     } else if (status == MindMapNodeWidgetStatus.add) {
       return Row(
         children: [
-          IconButton(
-              onPressed: () {
-                debugPrint("[debug MindMapPage]: left add button clicked");
-                widget.leftAddButtonClicked(nodeUUID);
-                setState(() {
-                  status = MindMapNodeWidgetStatus.read;
-                });
-              },
-              icon: const Icon(Icons.add)),
+          if (widget.mindMapNode!.postion == NodePosition.left ||
+              widget.mindMapNode!.postion == NodePosition.center)
+            IconButton(
+                onPressed: () {
+                  debugPrint("[debug MindMapPage]: left add button clicked");
+                  widget.leftAddButtonClicked(nodeUUID);
+                  setState(() {
+                    status = MindMapNodeWidgetStatus.read;
+                  });
+                },
+                icon: const Icon(Icons.add)),
           const SizedBox(
             width: 10,
           ),
@@ -132,15 +151,17 @@ class MindMapNodeWidgetState extends State<MindMapNodeWidget> {
           const SizedBox(
             width: 10,
           ),
-          IconButton(
-              onPressed: () {
-                debugPrint("[debug MindMapPage] : right add button clicked");
-                widget.rightAddButtonClicked(nodeUUID);
-                setState(() {
-                  status = MindMapNodeWidgetStatus.read;
-                });
-              },
-              icon: const Icon(Icons.add)),
+          if (widget.mindMapNode!.postion == NodePosition.right ||
+              widget.mindMapNode!.postion == NodePosition.center)
+            IconButton(
+                onPressed: () {
+                  debugPrint("[debug MindMapPage] : right add button clicked");
+                  widget.rightAddButtonClicked(nodeUUID);
+                  setState(() {
+                    status = MindMapNodeWidgetStatus.read;
+                  });
+                },
+                icon: const Icon(Icons.add)),
         ],
       );
     } else {
