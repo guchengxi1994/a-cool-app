@@ -20,6 +20,17 @@ class AddMindMapEvent extends MindMapEvent {
       required this.fatherNodeId});
 }
 
+class AddMindMapEventSimple extends MindMapEvent {
+  final MindMapNode mindMapNode;
+  final Widget nodeWidget;
+  final GlobalKey<MindMapNodeWidgetState> globalKey;
+
+  const AddMindMapEventSimple(
+      {required this.mindMapNode,
+      required this.nodeWidget,
+      required this.globalKey});
+}
+
 class RemoveMindMapEvent extends MindMapEvent {
   final String nodeId;
 

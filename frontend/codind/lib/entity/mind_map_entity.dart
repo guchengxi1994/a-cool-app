@@ -1,12 +1,19 @@
+enum NodePosition { left, right, center }
+
 class MindMapNode {
   String? name;
   String? id; // uuid
   Properties? properties;
   double left = 300;
   double top = 500;
-  List<MindMapNode> children = [];
+  String? fatherId;
+  bool isRoot = false;
+  NodePosition? postion;
 
-  MindMapNode({this.name, this.id, this.properties});
+  List<MindMapNode> leftChildren = [];
+  List<MindMapNode> rightChildren = [];
+
+  MindMapNode({this.name, this.id, this.properties, required this.postion});
 
   MindMapNode.fromJson(Map<String, dynamic> json) {
     name = json['name'];

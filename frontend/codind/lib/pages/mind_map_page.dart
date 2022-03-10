@@ -1,7 +1,9 @@
 import 'package:codind/bloc/my_blocs.dart';
 import 'package:codind/entity/entity.dart';
+import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 import '_base_transformation_page.dart';
 
@@ -18,33 +20,141 @@ class MindMapPage extends BaseTransformationPage {
 
 class _MindMapPageState<T> extends BaseTransformationPageState<MindMapPage> {
   late MindMapBloc _mindMapBloc;
+  List<GlobalKey<MindMapNodeWidgetState>> keys = [];
+  GlobalKey pageKey = GlobalKey();
+  var UUID = const Uuid();
+  var loadInfoFuture;
+
+  Future<void> loadInfo() async {
+    MindMapNode mindMapNode = MindMapNode(
+        name: "root",
+        id: UUID.v4(),
+        properties: null,
+        postion: NodePosition.center);
+    mindMapNode.isRoot = true;
+    GlobalKey<MindMapNodeWidgetState> globalKey = GlobalKey();
+    MindMapNodeWidget widget = MindMapNodeWidget(
+      mindMapNode: mindMapNode,
+      key: globalKey,
+      leftAddButtonClicked: (uuid) => addLeftItem(uuid),
+      rightAddButtonClicked: (uuid) => addRightItem(uuid),
+    );
+
+    _mindMapBloc.add(AddMindMapEventSimple(
+        globalKey: globalKey, nodeWidget: widget, mindMapNode: mindMapNode));
+  }
 
   @override
   void initState() {
     super.initState();
     _mindMapBloc = context.read<MindMapBloc>();
+    loadInfoFuture = loadInfo();
   }
 
   @override
   baseBuild(BuildContext context) {
     return BlocBuilder<MindMapBloc, MindMapState>(builder: ((context, state) {
       debugPrint("[debug Matrix] : ${super.transformationController.value}");
-      return CustomPaint(
-        foregroundPainter:
-            MindMapPainter(mindMapNodes: _mindMapBloc.state.mindMapNodes),
-        child: SizedBox(
-          width: double.infinity,
-          height: double.infinity,
-          child: Stack(
-            children: _mindMapBloc.state.mindMapNodes.map((e) {
-              return MindMapNodeWidget(
-                mindMapNode: e,
+      return FutureBuilder(
+          future: loadInfoFuture,
+          builder: ((context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return CustomPaint(
+                key: pageKey,
+                foregroundPainter: MindMapPainter(
+                    mindMapNodes: _mindMapBloc.state.mindMapNodes),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: Stack(
+                    children: _mindMapBloc.state.widgets,
+                  ),
+                ),
               );
-            }).toList(),
-          ),
-        ),
-      );
+            } else {
+              return const CircularProgressIndicator();
+            }
+          }));
     }));
+  }
+
+  void addLeftItem(String uuid) {
+    keys = _mindMapBloc.state.globalKeys;
+    var currentKey = keys.firstWhere((element) {
+      return element.currentState!.nodeUUID == uuid;
+    });
+    var renderObject = currentKey.currentContext?.findRenderObject();
+    if (null != renderObject) {
+      // print(super.transformationController.value.row0[0]);
+      double factor = super.transformationController.value.row0[0];
+
+      var currentWidgetSize = renderObject.paintBounds.size;
+      var currentWidgetOffset =
+          (renderObject as RenderBox).localToGlobal(Offset.zero);
+      var parentOffset =
+          (pageKey.currentContext!.findRenderObject() as RenderBox)
+              .localToGlobal(Offset.zero);
+      debugPrint("[debug mind_map_page]: left add button, $currentWidgetSize");
+      debugPrint(
+          "[debug mind_map_page]: left add button, $currentWidgetOffset");
+      MindMapNode node = MindMapNode(postion: NodePosition.left);
+      node.id = UUID.v4();
+      node.name = "left";
+      node.left = (currentWidgetOffset.dx - parentOffset.dx) / factor - 100;
+      node.top = (currentWidgetOffset.dy - parentOffset.dy) / factor;
+      GlobalKey<MindMapNodeWidgetState> globalKey = GlobalKey();
+      MindMapNodeWidget widget = MindMapNodeWidget(
+        mindMapNode: node,
+        key: globalKey,
+        leftAddButtonClicked: (uuid) => addLeftItem(uuid),
+        rightAddButtonClicked: (uuid) => addRightItem(uuid),
+      );
+
+      debugPrint(
+          "[debug mind_map_page]: left item ${globalKey.currentContext?.size}");
+
+      _mindMapBloc.add(AddMindMapEventSimple(
+          mindMapNode: node, globalKey: globalKey, nodeWidget: widget));
+      debugPrint("[debug mind_map_page]: use bloc to add a widget");
+    }
+  }
+
+  void addRightItem(String uuid) {
+    keys = _mindMapBloc.state.globalKeys;
+    var currentKey = keys.firstWhere((element) {
+      return element.currentState!.nodeUUID == uuid;
+    });
+    var renderObject = currentKey.currentContext?.findRenderObject();
+    if (null != renderObject) {
+      // print(super.transformationController.value.row0[0]);
+      double factor = super.transformationController.value.row0[0];
+
+      var currentWidgetSize = renderObject.paintBounds.size;
+      var currentWidgetOffset =
+          (renderObject as RenderBox).localToGlobal(Offset.zero);
+      var parentOffset =
+          (pageKey.currentContext!.findRenderObject() as RenderBox)
+              .localToGlobal(Offset.zero);
+      debugPrint("[debug mind_map_page]: right add button, $currentWidgetSize");
+      debugPrint(
+          "[debug mind_map_page]: right add button, $currentWidgetOffset");
+      MindMapNode node = MindMapNode(postion: NodePosition.right);
+      node.id = UUID.v4();
+      node.name = "right";
+      node.left = (currentWidgetOffset.dx - parentOffset.dx) / factor + 100;
+      node.top = (currentWidgetOffset.dy - parentOffset.dy) / factor;
+      GlobalKey<MindMapNodeWidgetState> globalKey = GlobalKey();
+      MindMapNodeWidget widget = MindMapNodeWidget(
+        mindMapNode: node,
+        key: globalKey,
+        leftAddButtonClicked: (uuid) => addLeftItem(uuid),
+        rightAddButtonClicked: (uuid) => addRightItem(uuid),
+      );
+
+      _mindMapBloc.add(AddMindMapEventSimple(
+          mindMapNode: node, globalKey: globalKey, nodeWidget: widget));
+      debugPrint("[debug mind_map_page]: use bloc to add a widget");
+    }
   }
 }
 
@@ -59,79 +169,12 @@ class MindMapPainter extends CustomPainter {
     _myPaint.color = Colors.blue;
 
     //canvas.drawPaint(_myPaint);
-    canvas.drawCircle(Offset(100, 100), 100, _myPaint);
-    canvas.drawLine(Offset(300, 300), Offset(400, 400), _myPaint);
+    // canvas.drawCircle(Offset(100, 100), 100, _myPaint);
+    // canvas.drawLine(Offset(300, 300), Offset(400, 400), _myPaint);
   }
 
   @override
   bool shouldRepaint(covariant MindMapPainter oldDelegate) {
     return oldDelegate.mindMapNodes == mindMapNodes;
-  }
-}
-
-class MindMapNodeWidget extends StatefulWidget {
-  MindMapNodeWidget({Key? key, required this.mindMapNode}) : super(key: key);
-  MindMapNode? mindMapNode;
-
-  @override
-  State<MindMapNodeWidget> createState() => _MindMapNodeWidgetState();
-}
-
-class _MindMapNodeWidgetState extends State<MindMapNodeWidget> {
-  late double dx;
-  late double dy;
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.mindMapNode != null) {
-      dx = widget.mindMapNode!.left;
-      dy = widget.mindMapNode!.top;
-    }
-  }
-
-  moveTO(Offset offset_) {
-    setState(() {
-      // offset = offset_;
-      dx = offset_.dx;
-      dy = offset_.dy;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      left: dx,
-      top: dy,
-      child: Draggable(
-        onDraggableCanceled: (velocity, offset) {
-          moveTO(offset);
-        },
-        feedback: Container(
-            // height: iconSize,
-            // width: iconSize,
-            decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Colors.blueAccent, width: 0.5))),
-        child: GestureDetector(
-          behavior: HitTestBehavior.deferToChild,
-          onTap: () async {
-            debugPrint("aaaaaaaa");
-          },
-          child: Container(
-            color: Colors.transparent,
-            // height: iconSize,
-            // width: iconSize,
-            child: Container(
-              child: Text(widget.mindMapNode!.name!),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular((20.0)),
-                  border: Border.all(color: Colors.blue, width: 0.5)),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }
