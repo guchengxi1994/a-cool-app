@@ -8,29 +8,47 @@ enum MindMapStatus {
 
 class MindMapState extends Equatable {
   final MindMapStatus status;
-  final List<MindMapNode> mindMapNodes;
-  final List<Widget> widgets;
-  final List<GlobalKey<MindMapNodeWidgetState>> globalKeys;
+  final List<MindMapNodeV2> mindMapNodes;
+  final List<MindMapEdge> edges;
+  final Map<String, dynamic> data;
 
-  const MindMapState(
-      {this.status = MindMapStatus.initial,
-      this.mindMapNodes = const [],
-      this.globalKeys = const [],
-      this.widgets = const []});
+  const MindMapState({
+    this.status = MindMapStatus.initial,
+    this.mindMapNodes = const [],
+    this.edges = const [],
+    this.data = const {"nodes": [], "edges": []},
+  });
+
+  // void getJson() {
+  //   var res = <String, dynamic>{};
+
+  //   res["nodes"] = [];
+  //   res["edges"] = [];
+
+  //   for (var i in edges) {
+  //     res["edges"].add(i.toJson());
+  //   }
+
+  //   for (var i in mindMapNodes) {
+  //     res["nodes"].add(i.toJson());
+  //   }
+
+  //   data = res;
+  // }
 
   @override
-  List<Object> get props => [status, mindMapNodes, widgets, globalKeys];
+  List<Object> get props => [status, mindMapNodes, edges, data];
 
   MindMapState copyWith(
       MindMapStatus? status,
-      List<MindMapNode>? mindMapNodes,
-      List<Widget>? widgets,
-      List<GlobalKey<MindMapNodeWidgetState>>? globalKeys) {
+      List<MindMapNodeV2>? mindMapNodes,
+      List<MindMapEdge>? edges,
+      Map<String, dynamic>? data) {
     return MindMapState(
         status: status ?? this.status,
         mindMapNodes: mindMapNodes ?? this.mindMapNodes,
-        widgets: widgets ?? this.widgets,
-        globalKeys: globalKeys ?? this.globalKeys);
+        edges: edges ?? this.edges,
+        data: data ?? this.data);
   }
 
   @override

@@ -52,3 +52,47 @@ class Properties {
     return data;
   }
 }
+
+class MindMapNodeV2 {
+  String? id;
+  String? label;
+  bool? isRoot;
+  String? position;
+
+  MindMapNodeV2({this.id, this.label, this.isRoot, this.position});
+
+  MindMapNodeV2.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    label = json['label'];
+    isRoot = json['isRoot'];
+    position = json['position'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['label'] = label;
+    data['isRoot'] = isRoot;
+    data['position'] = position;
+    return data;
+  }
+}
+
+class MindMapEdge {
+  String? from;
+  String? to;
+
+  MindMapEdge({this.from, this.to});
+
+  MindMapEdge.fromJson(Map<String, dynamic> json) {
+    from = json['from'];
+    to = json['to'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['from'] = from;
+    data['to'] = to;
+    return data;
+  }
+}

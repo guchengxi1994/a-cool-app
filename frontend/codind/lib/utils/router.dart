@@ -35,6 +35,6 @@ class Routers {
     pageSchedule: (context) => GanttPage(),
     pageMdPreview: (context) => const BaseMarkdownPreviewPage(),
     pageSavedLinks: (context) => SavedLinksPage(),
-    pageMindMap: (context) => MindMapPage(),
+    pageMindMap: (context) => MindMapPageV2(),
   };
 }

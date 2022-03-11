@@ -1,3 +1,5 @@
+```dart
+
 import 'package:codind/bloc/my_blocs.dart';
 import 'package:codind/entity/entity.dart';
 import 'package:codind/widgets/widgets.dart';
@@ -5,10 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
-import '_base_transformation_page.dart';
+import '../lib/pages/_base_transformation_page.dart';
 
 /// the idea is inspired by https://dartingowl.com/domind/web/#/
 
+@Deprecated("should not be used")
 class MindMapPage extends BaseTransformationPage {
   MindMapPage({Key? key}) : super(key: key);
 
@@ -186,3 +189,4 @@ class MindMapPainter extends CustomPainter {
     return oldDelegate.mindMapNodes == mindMapNodes;
   }
 }
+```

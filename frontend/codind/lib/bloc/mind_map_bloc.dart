@@ -9,7 +9,6 @@
  */
 import 'package:bloc/bloc.dart';
 import 'package:codind/entity/entity.dart';
-import 'package:codind/widgets/widgets.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 // ignore: implementation_imports
@@ -26,18 +25,40 @@ class MindMapBloc extends Bloc<MindMapEvent, MindMapState> {
 
   Future<void> _fetchToState(
       InitialMindMapEvent event, Emitter<MindMapState> emit) async {
-    emit(state.copyWith(MindMapStatus.initial, [], [], []));
+    emit(state.copyWith(MindMapStatus.initial, [], [], state.data));
     debugPrint(
         "[debug MindMapBloc]: mindMapNodes length ${state.mindMapNodes.length}");
   }
 
   Future<void> _addNodeSimple(
       AddMindMapEventSimple event, Emitter<MindMapState> emit) async {
-    List<MindMapNode> nodes = state.mindMapNodes..add(event.mindMapNode);
-    var widgets = state.widgets..add(event.nodeWidget);
-    var globalkeys = state.globalKeys..add(event.globalKey);
-    emit(state.copyWith(MindMapStatus.addNode, nodes, widgets, globalkeys));
+    List<MindMapNodeV2> nodes;
+    if (event.mindMapNode != null) {
+      nodes = state.mindMapNodes..add(event.mindMapNode!);
+    } else {
+      nodes = state.mindMapNodes;
+    }
+    List<MindMapEdge> edges;
+    if (event.edge != null) {
+      edges = state.edges..add(event.edge!);
+    } else {
+      edges = state.edges;
+    }
+
+    var res = <String, dynamic>{};
+
+    res["nodes"] = [];
+    res["edges"] = [];
+
+    for (var i in edges) {
+      res["edges"].add(i.toJson());
+    }
+
+    for (var i in nodes) {
+      res["nodes"].add(i.toJson());
+    }
+    emit(state.copyWith(MindMapStatus.addNode, nodes, edges, res));
     debugPrint(
-        "[debug MindMapBloc]: mindMapNodes length ${state.widgets.length}");
+        "[debug MindMapBloc]: mindMapNodes length ${state.mindMapNodes.length}");
   }
 }

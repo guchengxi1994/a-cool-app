@@ -1,3 +1,5 @@
+```dart
+
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'package:codind/entity/entity.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/material.dart';
 enum MindMapNodeWidgetStatus { modify, add, read }
 
 // ignore: must_be_immutable
+@Deprecated("should not be used")
 class MindMapNodeWidget extends StatefulWidget {
   MindMapNodeWidget(
       {Key? key,
@@ -213,3 +216,4 @@ class MindMapNodeWidgetState extends State<MindMapNodeWidget> {
     }
   }
 }
+```

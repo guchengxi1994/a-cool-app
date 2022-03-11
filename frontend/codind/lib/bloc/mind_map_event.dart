@@ -21,14 +21,13 @@ class AddMindMapEvent extends MindMapEvent {
 }
 
 class AddMindMapEventSimple extends MindMapEvent {
-  final MindMapNode mindMapNode;
-  final Widget nodeWidget;
-  final GlobalKey<MindMapNodeWidgetState> globalKey;
+  final MindMapNodeV2? mindMapNode;
+  final MindMapEdge? edge;
 
-  const AddMindMapEventSimple(
-      {required this.mindMapNode,
-      required this.nodeWidget,
-      required this.globalKey});
+  const AddMindMapEventSimple({
+    required this.mindMapNode,
+    required this.edge,
+  });
 }
 
 class RemoveMindMapEvent extends MindMapEvent {

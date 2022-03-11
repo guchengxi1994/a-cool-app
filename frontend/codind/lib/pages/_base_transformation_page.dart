@@ -105,96 +105,38 @@ class BaseTransformationPageState<T extends BaseTransformationPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50),
-        child: AppBar(
-          leading: PlatformUtils.isWeb
-              ? null
-              : IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.chevron_left)),
-          automaticallyImplyLeading: false,
-          actions: actions,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(50),
+          child: AppBar(
+            leading: PlatformUtils.isWeb
+                ? null
+                : IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(Icons.chevron_left)),
+            automaticallyImplyLeading: false,
+            actions: actions,
+          ),
         ),
-      ),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Expanded(
-              child: Container(
-            color: Colors.grey[300],
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
               child: InteractiveViewer(
                 constrained: false,
                 clipBehavior: Clip.none,
                 key: _targetKey,
                 scaleEnabled: true,
                 transformationController: transformationController,
-                // ignore: prefer_const_constructors
-                // boundaryMargin: EdgeInsets.symmetric(
-                //   horizontal: 300,
-                //   vertical: 500,
-                // ),
-                boundaryMargin: EdgeInsets.all(1000),
+                boundaryMargin: const EdgeInsets.all(1000),
                 minScale: 0.05,
                 maxScale: 2,
-                onInteractionStart: _onScaleStart,
-                // child: SizedBox.expand(
-                //   child: baseBuild(context),
-                // ),
-
-                child: SizedBox(
-                  height: 1500,
-                  width: 2000,
-                  child: baseBuild(context),
-                ),
+                // onInteractionStart: _onScaleStart,
+                child: baseBuild(context),
               ),
             ),
-          )),
-        ],
-      ),
-      // body: Container(
-      //   color: Colors.grey[300],
-      //   child: LayoutBuilder(builder: ((context, constraints) {
-      //     // ignore: prefer_const_constructors
-      //     final viewportSize = Size(
-      //       constraints.maxWidth,
-      //       constraints.maxHeight,
-      //     );
-      //     debugPrint("[debug transformation size ]: $viewportSize ");
-      //     if (_homeMatrix == null) {
-      //       _homeMatrix = Matrix4.identity()
-      //         ..translate(
-      //           viewportSize.width / 2,
-      //           viewportSize.height / 2,
-      //         );
-      //       transformationController.value = _homeMatrix!;
-      //     }
-      //     return GestureDetector(
-      //       behavior: HitTestBehavior.opaque,
-      //       child: InteractiveViewer(
-      //         // constrained: false,
-      //         clipBehavior: Clip.none,
-      //         key: _targetKey,
-      //         scaleEnabled: true,
-      //         transformationController: transformationController,
-      //         boundaryMargin: EdgeInsets.symmetric(
-      //           horizontal: viewportSize.width,
-      //           vertical: viewportSize.height,
-      //         ),
-      //         minScale: 1,
-      //         maxScale: 2,
-      //         onInteractionStart: _onScaleStart,
-      //         child: SizedBox.expand(
-      //           child: baseBuild(context),
-      //         ),
-      //       ),
-      //     );
-      //   })),
-      // ),
-    );
+          ],
+        ));
   }
 }

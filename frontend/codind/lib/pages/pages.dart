@@ -14,4 +14,4 @@ export './file_explore_page.dart';
 export './gantt.dart';
 export './_base_preview_page.dart';
 export './saved_links_page.dart';
-export './mind_map_page.dart';
+export './mind_map_page_v2.dart';
