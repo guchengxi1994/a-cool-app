@@ -60,6 +60,20 @@ class _MindMapPageStateV2<T>
     addEdge(previousConnection, newId);
   }
 
+  void changeNode(String content) {
+    print(content);
+    var currentNode = (json['nodes'] as List)
+        .firstWhere((element) => element['id'] == selectedNode.value);
+
+    // json['nodes'].removeWhere((node) => node['id'] == selectedNode.value);
+    var currentNodeIndex = (json['nodes'] as List)
+        .indexWhere((element) => element['id'] == selectedNode.value);
+
+    currentNode['label'] = content;
+    json['nodes'][currentNodeIndex] = currentNode;
+    // setState(() {});
+  }
+
   void deleteNode() {
     var edges = json['edges'];
     var nodes = json['nodes'];
@@ -78,11 +92,11 @@ class _MindMapPageStateV2<T>
     print(nodeIdArray);
 
     setState(() {
-      nodeIdArray.forEach((element) {
+      for (var element in nodeIdArray) {
         json['nodes'].removeWhere((node) => node['id'] == element);
         json['edges'].removeWhere(
             (node) => node['from'] == element || node['to'] == element);
-      });
+      }
       graph.removeNode(Node.Id(nodeIdArray[0]));
     });
     print(json);
@@ -91,12 +105,13 @@ class _MindMapPageStateV2<T>
   setSelectedNode(newNodeId) {
     selectedNode.value = newNodeId;
     print(selectedNode.value);
+    print(json);
   }
 
   initializeGraph() {
     json = {
       "nodes": [
-        {"id": 1, "label": 'Início'}
+        {"id": 1, "label": 'root'}
       ],
       "edges": []
     };
@@ -144,8 +159,8 @@ class _MindMapPageStateV2<T>
   }
 
   Widget rectangleWidget(int? id, String? title) {
-    return Nodulo(id, title, selectedNode, setSelectedNode, createSon,
-        createBro, controller);
+    return MindMapNodeWidgetV2(id, title, selectedNode, setSelectedNode,
+        createSon, createBro, controller, deleteNode, changeNode);
   }
 
   Graph graph = Graph()..isTree = true;
