@@ -29,16 +29,7 @@ class MindMapNodeWidgetV2 extends StatefulWidget {
       this.isFirst);
 
   @override
-  State<MindMapNodeWidgetV2> createState() => _MindMapNodeWidgetV2State(
-      nodeId,
-      title,
-      selectedNode,
-      setSelectedNode,
-      createSon,
-      createBro,
-      controller,
-      deleteNode,
-      changeNode);
+  State<MindMapNodeWidgetV2> createState() => _MindMapNodeWidgetV2State();
 }
 
 class _MindMapNodeWidgetV2State extends State<MindMapNodeWidgetV2> {
@@ -47,58 +38,26 @@ class _MindMapNodeWidgetV2State extends State<MindMapNodeWidgetV2> {
   late FocusNode myFocusNode = FocusNode();
 
   void handleFocus(value) {
-    if (value == nodeId && isSelected == false) {
+    if (value == widget.nodeId && isSelected == false) {
       isSelected = true;
     } else {
       isSelected = false;
     }
   }
 
-  String? nodeId;
-  String? title;
-  ValueNotifier<String> selectedNode;
-  final Function setSelectedNode;
-  final createSon;
-  final createBro;
-  final deleteNode;
-  final controller;
-  final changeNode;
-  _MindMapNodeWidgetV2State(
-      this.nodeId,
-      this.title,
-      this.selectedNode,
-      this.setSelectedNode,
-      this.createSon,
-      this.createBro,
-      this.controller,
-      this.deleteNode,
-      this.changeNode);
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setSelectedNode(nodeId);
+        widget.setSelectedNode(widget.nodeId);
       },
       onLongPress: () {
-        setSelectedNode(nodeId);
+        widget.setSelectedNode(widget.nodeId);
       },
       child: ValueListenableBuilder(
-        valueListenable: selectedNode,
+        valueListenable: widget.selectedNode,
         builder: (context, value, child) {
           handleFocus(value);
-          // return Row(children: [
-          //   isFirst
-          //       ? StartingNode(isSelected, selectedNode, setSelectedNode,
-          //           nodeId, myFocusNode)
-          //       : CommonNode(isSelected, selectedNode, setSelectedNode, nodeId,
-          //           myFocusNode),
-          //   isSelected
-          //       ? isFirst
-          //           ? NodeOptions(createSon, createBro, true)
-          //           : NodeOptions(createSon, createBro, false)
-          //       : Column(),
-          // ]);
           return buildView();
         },
       ),
@@ -112,7 +71,7 @@ class _MindMapNodeWidgetV2State extends State<MindMapNodeWidgetV2> {
     //   isFirst = true;
     // }
     isFirst = widget.isFirst;
-    setSelectedNode(nodeId);
+    widget.setSelectedNode(widget.nodeId);
     myFocusNode.requestFocus();
     //controller.value = Matrix4.identity();
   }
@@ -131,7 +90,7 @@ class _MindMapNodeWidgetV2State extends State<MindMapNodeWidgetV2> {
           constraints: const BoxConstraints(minHeight: 20, minWidth: 40),
           padding:
               const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-          child: Text(title ?? "new node"),
+          child: Text(widget.title ?? "new node"),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular((20.0)),
               border: Border.all(color: Colors.blue, width: 0.5)),
@@ -139,9 +98,15 @@ class _MindMapNodeWidgetV2State extends State<MindMapNodeWidgetV2> {
       } else {
         return Row(
           children: [
-            StartingNode(isSelected, selectedNode, setSelectedNode, nodeId,
-                myFocusNode, changeNode),
-            NodeOptions(createSon, createBro, true, deleteNode)
+            StartingNode(
+                isSelected,
+                widget.selectedNode,
+                widget.setSelectedNode,
+                widget.nodeId,
+                myFocusNode,
+                widget.changeNode),
+            NodeOptions(
+                widget.createSon, widget.createBro, true, widget.deleteNode)
           ],
         );
       }
@@ -151,7 +116,7 @@ class _MindMapNodeWidgetV2State extends State<MindMapNodeWidgetV2> {
           constraints: const BoxConstraints(minHeight: 20, minWidth: 40),
           padding:
               const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-          child: Text(title ?? "new node"),
+          child: Text(widget.title ?? "new node"),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular((20.0)),
               border: Border.all(color: Colors.blue, width: 0.5)),
@@ -159,9 +124,10 @@ class _MindMapNodeWidgetV2State extends State<MindMapNodeWidgetV2> {
       } else {
         return Row(
           children: [
-            CommonNode(
-                isSelected, selectedNode, setSelectedNode, nodeId, myFocusNode),
-            NodeOptions(createSon, createBro, false, deleteNode)
+            CommonNode(isSelected, widget.selectedNode, widget.setSelectedNode,
+                widget.nodeId, myFocusNode),
+            NodeOptions(
+                widget.createSon, widget.createBro, false, widget.deleteNode)
           ],
         );
       }

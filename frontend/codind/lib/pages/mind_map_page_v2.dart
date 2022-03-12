@@ -1,5 +1,4 @@
 import 'package:codind/bloc/my_blocs.dart';
-import 'package:codind/entity/entity.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -173,6 +172,7 @@ class _MindMapPageStateV2<T>
 
   @override
   void initState() {
+    super.initState();
     initializeGraph();
   }
 }
