@@ -24,12 +24,14 @@ class _MindMapPageStateV2<T>
     extends BaseTransformationPageState<MindMapPageV2> {
   late MindMapBloc _mindMapBloc;
   var json;
-  var selectedNode = ValueNotifier<int>(0);
+  var selectedNode = ValueNotifier<String>("");
   final controller = TransformationController();
+  var UUID = Uuid();
 
   addNode() {
-    int newId = json["nodes"].length + 1;
-    json['nodes'].add({"id": newId, "label": 'NEW NODE'});
+    // String newId = json["nodes"].length + 1;
+    String newId = UUID.v4();
+    json['nodes'].add({"id": newId, "label": 'NEW NODE', "isFirst": false});
     return newId;
   }
 
@@ -43,17 +45,17 @@ class _MindMapPageStateV2<T>
   }
 
   void createSon() {
-    int newId = addNode();
+    String newId = addNode();
     setState(() {});
     json['edges'].add({"from": selectedNode.value, "to": newId});
     addEdge(selectedNode.value, newId);
   }
 
   void createBro() {
-    int newId = addNode();
+    String newId = addNode();
     var previousNode = json['edges']
         .firstWhere((element) => element["to"] == selectedNode.value);
-    int previousConnection = previousNode['from'];
+    String previousConnection = previousNode['from'];
     //roda até a linha acima
     json['edges']!.add({"from": previousConnection, "to": newId}) as Map?;
     setState(() {});
@@ -109,14 +111,16 @@ class _MindMapPageStateV2<T>
   }
 
   initializeGraph() {
+    var _uuid = UUID.v4();
+
     json = {
       "nodes": [
-        {"id": 1, "label": 'root'}
+        {"id": _uuid, "label": 'root', "isFirst": true}
       ],
       "edges": []
     };
     var nodes = json['nodes']!;
-    graph.addNode(Node.Id(1));
+    graph.addNode(Node.Id(_uuid));
 
     builder
       ..siblingSeparation = (20)
@@ -150,17 +154,18 @@ class _MindMapPageStateV2<T>
         ..style = PaintingStyle.stroke,
       builder: (Node node) {
         // I can decide what widget should be shown here based on the id
-        var a = node.key!.value as int?;
+        var a = node.key!.value as String?;
         var nodes = json['nodes']!;
         var nodeValue = nodes.firstWhere((element) => element['id'] == a);
-        return rectangleWidget(nodeValue['id'], nodeValue['label']);
+        return rectangleWidget(
+            nodeValue['id'], nodeValue['label'], nodeValue['isFirst']);
       },
     );
   }
 
-  Widget rectangleWidget(int? id, String? title) {
+  Widget rectangleWidget(String? id, String? title, bool? isFirst) {
     return MindMapNodeWidgetV2(id, title, selectedNode, setSelectedNode,
-        createSon, createBro, controller, deleteNode, changeNode);
+        createSon, createBro, controller, deleteNode, changeNode, isFirst);
   }
 
   Graph graph = Graph()..isTree = true;

@@ -1,4 +1,3 @@
-import 'package:codind/entity/entity.dart';
 import 'package:flutter/material.dart';
 
 import '_subs.dart';
@@ -7,14 +6,15 @@ enum MindMapNodeWidgetStatus { modify, add, read }
 
 class MindMapNodeWidgetV2 extends StatefulWidget {
   String? title;
-  int? nodeId;
-  ValueNotifier<int> selectedNode;
+  String? nodeId;
+  ValueNotifier<String> selectedNode;
   final Function setSelectedNode;
   final createSon;
   final createBro;
   final controller;
   final deleteNode;
   final changeNode;
+  final isFirst;
 
   MindMapNodeWidgetV2(
       this.nodeId,
@@ -25,7 +25,8 @@ class MindMapNodeWidgetV2 extends StatefulWidget {
       this.createBro,
       this.controller,
       this.deleteNode,
-      this.changeNode);
+      this.changeNode,
+      this.isFirst);
 
   @override
   State<MindMapNodeWidgetV2> createState() => _MindMapNodeWidgetV2State(
@@ -53,9 +54,9 @@ class _MindMapNodeWidgetV2State extends State<MindMapNodeWidgetV2> {
     }
   }
 
-  int? nodeId;
+  String? nodeId;
   String? title;
-  ValueNotifier<int> selectedNode;
+  ValueNotifier<String> selectedNode;
   final Function setSelectedNode;
   final createSon;
   final createBro;
@@ -107,9 +108,10 @@ class _MindMapNodeWidgetV2State extends State<MindMapNodeWidgetV2> {
   @override
   void initState() {
     super.initState();
-    if (nodeId == 1) {
-      isFirst = true;
-    }
+    // if (nodeId == 1) {
+    //   isFirst = true;
+    // }
+    isFirst = widget.isFirst;
     setSelectedNode(nodeId);
     myFocusNode.requestFocus();
     //controller.value = Matrix4.identity();

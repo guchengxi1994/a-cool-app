@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class StartingNode extends StatelessWidget {
   bool isSelected;
-  ValueNotifier<int?> selectedNode;
+  ValueNotifier<String?> selectedNode;
   Function setSelectedNode;
   final changeNode;
-  int? nodeId;
+  String? nodeId;
   var myFocusNode;
 
   StartingNode(this.isSelected, this.selectedNode, this.setSelectedNode,
@@ -113,9 +113,9 @@ class StartingNode extends StatelessWidget {
 
 class CommonNode extends StatelessWidget {
   bool isSelected;
-  ValueNotifier<int?> selectedNode;
+  ValueNotifier<String?> selectedNode;
   Function setSelectedNode;
-  int? nodeId;
+  String? nodeId;
   var myFocusNode;
 
   CommonNode(this.isSelected, this.selectedNode, this.setSelectedNode,
