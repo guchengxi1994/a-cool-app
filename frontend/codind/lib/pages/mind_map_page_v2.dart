@@ -69,9 +69,10 @@ class _MindMapPageStateV2<T>
     // json['nodes'].removeWhere((node) => node['id'] == selectedNode.value);
     var currentNodeIndex = (json['nodes'] as List)
         .indexWhere((element) => element['id'] == selectedNode.value);
-
+    debugPrint("[debug mind-map-page] currentNodeIndex : $currentNodeIndex");
     currentNode['label'] = content;
     json['nodes'][currentNodeIndex] = currentNode;
+    debugPrint("[debug mind-map-page] json : $json");
     // setState(() {});
   }
 
@@ -90,7 +91,7 @@ class _MindMapPageStateV2<T>
         }
       }
     }
-    print(nodeIdArray);
+    // print(nodeIdArray);
 
     setState(() {
       for (var element in nodeIdArray) {
@@ -100,13 +101,13 @@ class _MindMapPageStateV2<T>
       }
       graph.removeNode(Node.Id(nodeIdArray[0]));
     });
-    print(json);
+    // print(json);
   }
 
   setSelectedNode(newNodeId) {
     selectedNode.value = newNodeId;
-    print(selectedNode.value);
-    print(json);
+    // print(selectedNode.value);
+    // print(json);
   }
 
   initializeGraph() {
@@ -139,7 +140,7 @@ class _MindMapPageStateV2<T>
       graph.addEdge(Node.Id(fromNodeId), Node.Id(toNodeId));
     });
 
-    print('json modificado');
+    // print('json modificado');
   }
 
   @override

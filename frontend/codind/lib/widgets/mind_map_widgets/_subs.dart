@@ -7,9 +7,10 @@ class StartingNode extends StatelessWidget {
   final changeNode;
   String? nodeId;
   var myFocusNode;
+  String? title;
 
   StartingNode(this.isSelected, this.selectedNode, this.setSelectedNode,
-      this.nodeId, this.myFocusNode, this.changeNode,
+      this.nodeId, this.myFocusNode, this.changeNode, this.title,
       {Key? key})
       : super(key: key);
 
@@ -70,7 +71,7 @@ class StartingNode extends StatelessWidget {
                         decoration: InputDecoration(
                           focusColor: Colors.amber,
                           contentPadding: EdgeInsets.all(0),
-                          hintText: 'Mensagem de boas-vindas',
+                          hintText: title,
                           border: InputBorder.none,
                         ),
                         style: TextStyle(fontWeight: FontWeight.bold)),
@@ -116,9 +117,10 @@ class CommonNode extends StatelessWidget {
   Function setSelectedNode;
   String? nodeId;
   var myFocusNode;
+  String? title;
 
   CommonNode(this.isSelected, this.selectedNode, this.setSelectedNode,
-      this.nodeId, this.myFocusNode);
+      this.nodeId, this.myFocusNode, this.title);
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +170,7 @@ class CommonNode extends StatelessWidget {
                 decoration: InputDecoration(
                   focusColor: Colors.amber,
                   contentPadding: EdgeInsets.all(0),
-                  hintText: 'Escreva algo!',
+                  hintText: title! + "(${nodeId!.substring(0, 3)})",
                   border: InputBorder.none,
                 ),
                 style: TextStyle(fontWeight: FontWeight.bold)),

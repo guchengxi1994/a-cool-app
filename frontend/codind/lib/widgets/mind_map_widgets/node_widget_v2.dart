@@ -4,6 +4,7 @@ import '_subs.dart';
 
 enum MindMapNodeWidgetStatus { modify, add, read }
 
+// ignore: must_be_immutable
 class MindMapNodeWidgetV2 extends StatefulWidget {
   String? title;
   String? nodeId;
@@ -26,7 +27,9 @@ class MindMapNodeWidgetV2 extends StatefulWidget {
       this.controller,
       this.deleteNode,
       this.changeNode,
-      this.isFirst);
+      this.isFirst,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<MindMapNodeWidgetV2> createState() => _MindMapNodeWidgetV2State();
@@ -104,7 +107,8 @@ class _MindMapNodeWidgetV2State extends State<MindMapNodeWidgetV2> {
                 widget.setSelectedNode,
                 widget.nodeId,
                 myFocusNode,
-                widget.changeNode),
+                widget.changeNode,
+                widget.title),
             NodeOptions(
                 widget.createSon, widget.createBro, true, widget.deleteNode)
           ],
@@ -124,8 +128,14 @@ class _MindMapNodeWidgetV2State extends State<MindMapNodeWidgetV2> {
       } else {
         return Row(
           children: [
-            CommonNode(isSelected, widget.selectedNode, widget.setSelectedNode,
-                widget.nodeId, myFocusNode),
+            CommonNode(
+              isSelected,
+              widget.selectedNode,
+              widget.setSelectedNode,
+              widget.nodeId,
+              myFocusNode,
+              widget.title,
+            ),
             NodeOptions(
                 widget.createSon, widget.createBro, false, widget.deleteNode)
           ],
