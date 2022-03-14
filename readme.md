@@ -13,6 +13,8 @@
 
 # [后端说明](./backend/README.md)
 
+# [多端适配说明](./frontend/multi_platform_support.md)
+
 # 部分演示demo
 
 ## 2022.2.16 一个简易的日程规划工具(bloc实现，后续会在此基础上完成甘特图)
