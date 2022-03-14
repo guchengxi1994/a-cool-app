@@ -7,9 +7,7 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-02-07 20:19:07
 -->
-# code-find
-
-## 一个用来搜索解决方案、文档归档的个人项目。中文名暂定“书鱼”，取“读书之人，需学会有效摸鱼”之意。英文缩写“codind”.
+# a-cool-flutter-app
 
 # [前端说明](./frontend/codind/README.md)
 
