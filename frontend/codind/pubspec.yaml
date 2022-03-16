@@ -80,6 +80,7 @@ flutter:
     - assets/reserved_md_files/
     - assets/emoji.json
     - assets/_json_test.json
+    - assets/images/background/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

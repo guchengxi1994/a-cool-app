@@ -15,3 +15,4 @@ export './gantt.dart';
 export './_base_preview_page.dart';
 export './saved_links_page.dart';
 export './mind_map_page_v2.dart';
+export './your_abilities_page.dart';

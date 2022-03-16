@@ -87,6 +87,14 @@ class _MainPageBodyState<T> extends BasePageState<MainPageBody> {
             },
           ),
         ),
+        Card(
+          child: ListTile(
+            title: Text(FlutterI18n.translate(context, "mainPage.ability")),
+            onTap: () {
+              Navigator.of(context).pushNamed(Routers.pageYourAbilities);
+            },
+          ),
+        ),
       ]),
     );
   }

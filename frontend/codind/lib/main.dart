@@ -42,7 +42,10 @@ Future main() async {
               ChangeNotifierProvider(create: (_) => MenuController()),
               ChangeNotifierProvider(
                 create: (_) => EmojiController(),
-              )
+              ),
+              ChangeNotifierProvider(
+                create: (_) => ChangeBackgroundProvider(),
+              ),
             ],
             child: MyApp(
               flutterI18nDelegate: flutterI18nDelegate,

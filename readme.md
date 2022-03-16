@@ -17,6 +17,12 @@
 
 # 部分演示demo
 
+## 2022.3.16
+
+![image1](https://github.com/guchengxi1994/xiaoshuyui_docs/blob/main/code-find/gantt_demo.gif)
+
+![image2](https://github.com/guchengxi1994/xiaoshuyui_docs/raw/main/code-find/a-small-demo-of-provider.gif)
+
 ## 2022.2.16 一个简易的日程规划工具(bloc实现，后续会在此基础上完成甘特图)
 
 ![schedule_demo](https://github.com/guchengxi1994/xiaoshuyui_docs/raw/main/code-find/schedule_demo.gif)
