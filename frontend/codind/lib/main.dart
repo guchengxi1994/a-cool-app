@@ -8,6 +8,7 @@
  * @LastEditTime: 2022-02-19 10:55:25
  */
 import 'package:codind/utils/utils.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -18,6 +19,16 @@ import 'bloc/my_blocs.dart';
 import 'pages/pages.dart' show MainPage;
 import 'providers/my_providers.dart';
 import 'package:provider/provider.dart';
+
+/// https://stackoverflow.com/questions/69154468/horizontal-listview-not-scrolling-on-web-but-scrolling-on-mobile
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  // Override behavior methods and getters like dragDevices
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
+}
 
 Future main() async {
   final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
@@ -45,6 +56,9 @@ Future main() async {
               ),
               ChangeNotifierProvider(
                 create: (_) => ChangeBackgroundProvider(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => RadioProvider(),
               ),
             ],
             child: MyApp(
@@ -101,6 +115,9 @@ class _MyAppState extends State<MyApp> {
           )
         ],
         child: MaterialApp(
+          scrollBehavior: !PlatformUtils.isMobile
+              ? MyCustomScrollBehavior()
+              : const MaterialScrollBehavior(),
           routes: Routers.routers,
           theme: context.watch<ThemeController>().themeData,
           debugShowCheckedModeBanner: false,

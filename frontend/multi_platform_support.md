@@ -126,7 +126,29 @@ vscode不支持插入 emoji吧，但是我可以，而且还有很多。
 
 ![image-20220314124249497](./doc_images/android1.gif)
 
-web以及windows上，横向的滚动条都不能正常运作，我不确定这是不是bug，只有移动端可以这样滚动。
+web以及windows上，横向的滚动条都不能正常运作，~~我不确定这是不是bug，只有移动端可以这样滚动~~ （2022.3.7） 更正一下，并不是只有移动端支持水平滚动，原因是flutter 2.5以后增加了滚动的配置，具体可以看[https://stackoverflow.com/questions/69154468/horizontal-listview-not-scrolling-on-web-but-scrolling-on-mobile](https://stackoverflow.com/questions/69154468/horizontal-listview-not-scrolling-on-web-but-scrolling-on-mobile)。要让滚动在非移动端生效需要添加以下代码：
+
+```dart
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  // Override behavior methods and getters like dragDevices
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
+}
+
+// Set ScrollBehavior for an entire application.
+MaterialApp(
+  scrollBehavior: MyCustomScrollBehavior(),
+  // ...
+);
+
+```
+
 
 ![image-20220314124249497](./doc_images/android2.gif)
 

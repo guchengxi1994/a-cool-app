@@ -98,6 +98,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                   NotificationListener<ScrollNotification>(
                     onNotification: _handleScrollNotification,
                     child: SingleChildScrollView(
+                      physics: PlatformUtils.isWeb
+                          ? const NeverScrollableScrollPhysics()
+                          : const ScrollPhysics(),
                       key: UniqueKey(),
                       scrollDirection: Axis.horizontal,
                       child: Row(

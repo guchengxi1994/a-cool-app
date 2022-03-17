@@ -20,6 +20,7 @@ import 'dart:convert';
 
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart';
+import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -120,6 +121,107 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       FocusScope.of(context).requestFocus(focusNode);
     });
+
+    super.addAction(IconButton(
+        onPressed: () async {
+          List<int> li = [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+          ];
+
+          if (!PlatformUtils.isMobile) {
+            await showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    actions: [
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("取消")),
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("确定")),
+                    ],
+                    title:
+                        Text(FlutterI18n.translate(context, "label.preview")),
+                    content: Material(
+                      child: SizedBox(
+                        width: 500,
+                        height: 100,
+                        child: ListView.builder(
+                            key: UniqueKey(),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: li.length,
+                            itemBuilder: ((context, index) {
+                              return SelectableIconButton(
+                                  radioValue: li[index]);
+                            })),
+                      ),
+
+                      // child: Column(
+                      // children: [
+                      //   // InteractiveViewer(
+                      //   //   boundaryMargin:
+                      //   //       const EdgeInsets.only(left: 200, right: 200),
+                      //   //   child: Row(
+                      //   //     children: li
+                      //   //         .map((e) => SelectableIconButton(
+                      //   //               radioValue: e,
+                      //   //             ))
+                      //   //         .toList(),
+                      //   //   ),
+                      //   // ),
+                      //   ListView.builder(
+                      //       key: UniqueKey(),
+                      //       scrollDirection: Axis.horizontal,
+                      //       itemCount: li.length,
+                      //       itemBuilder: ((context, index) {
+                      //         return SelectableIconButton(
+                      //             radioValue: li[index]);
+                      //       })),
+                      //   Container(
+                      //     // height: 500,
+                      //     width: 500,
+                      //   )
+                      // ],
+                      // ),
+                      // child: Row(
+                      //   children: [
+                      //     Expanded(
+                      //         flex: 1,
+                      //         child: Container(
+                      //             height: 500,
+                      //             padding: const EdgeInsets.all(20),
+                      //             child: Wrap(
+                      //                 alignment: WrapAlignment.spaceBetween,
+                      //                 spacing: 15,
+                      //                 runSpacing: 15,
+                      //                 children: li
+                      //                     .map((e) => SelectableIconButton(
+                      //                           radioValue: e,
+                      //                         ))
+                      //                     .toList()))),
+                      //     Expanded(
+                      //         flex: 1,
+                      //         child: Container(
+                      //           height: 500,
+                      //         ))
+                      //   ],
+                      // ),
+                    ),
+                  );
+                });
+          }
+        },
+        icon: const Icon(Icons.file_present)));
 
     super.addAction(IconButton(
       onPressed: () {
