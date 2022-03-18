@@ -23,6 +23,7 @@ import 'package:codind/utils/utils.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
@@ -113,6 +114,11 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
 
   late List _lists = [];
 
+  late String? mdData = "";
+  late String? currentMdTemplatePath = "";
+
+  List<int> li = [];
+
   PersistenceStorage ps = PersistenceStorage();
 
   @override
@@ -120,19 +126,13 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       FocusScope.of(context).requestFocus(focusNode);
+      li = List<int>.generate(
+          (context.read<RadioProvider>().mds.keys.toList().length),
+          (index) => index);
     });
 
     super.addAction(IconButton(
         onPressed: () async {
-          List<int> li = [
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-          ];
-
           if (!PlatformUtils.isMobile) {
             await showDialog(
                 context: context,
@@ -146,76 +146,59 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                           child: const Text("取消")),
                       ElevatedButton(
                           onPressed: () {
+                            textEditingController.text += mdData ?? "";
+                            textEditingController.text += "\n";
+                            textEditingController.text += "# ";
+
+                            _globalKey.currentState!
+                                .changeData(textEditingController.text);
+
                             Navigator.of(context).pop();
                           },
                           child: const Text("确定")),
                     ],
                     title:
                         Text(FlutterI18n.translate(context, "label.preview")),
-                    content: Material(
+                    content: SingleChildScrollView(
                       child: SizedBox(
-                        width: 500,
-                        height: 100,
-                        child: ListView.builder(
-                            key: UniqueKey(),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: li.length,
-                            itemBuilder: ((context, index) {
-                              return SelectableIconButton(
-                                  radioValue: li[index]);
-                            })),
+                        height: 450,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              width: 500,
+                              height: 100,
+                              child: ListView.builder(
+                                  key: UniqueKey(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: li.length,
+                                  itemBuilder: ((context, index) {
+                                    return SelectableIconButton(
+                                        radioValue: li[index]);
+                                  })),
+                            ),
+                            SizedBox(
+                              height: 300,
+                              width: 500,
+                              child: FutureBuilder(
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    return Markdown(
+                                        data: snapshot.data as String);
+                                  } else {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                },
+                                future: loadMdFile(context
+                                    .watch<RadioProvider>()
+                                    .mdTemplatePath),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-
-                      // child: Column(
-                      // children: [
-                      //   // InteractiveViewer(
-                      //   //   boundaryMargin:
-                      //   //       const EdgeInsets.only(left: 200, right: 200),
-                      //   //   child: Row(
-                      //   //     children: li
-                      //   //         .map((e) => SelectableIconButton(
-                      //   //               radioValue: e,
-                      //   //             ))
-                      //   //         .toList(),
-                      //   //   ),
-                      //   // ),
-                      //   ListView.builder(
-                      //       key: UniqueKey(),
-                      //       scrollDirection: Axis.horizontal,
-                      //       itemCount: li.length,
-                      //       itemBuilder: ((context, index) {
-                      //         return SelectableIconButton(
-                      //             radioValue: li[index]);
-                      //       })),
-                      //   Container(
-                      //     // height: 500,
-                      //     width: 500,
-                      //   )
-                      // ],
-                      // ),
-                      // child: Row(
-                      //   children: [
-                      //     Expanded(
-                      //         flex: 1,
-                      //         child: Container(
-                      //             height: 500,
-                      //             padding: const EdgeInsets.all(20),
-                      //             child: Wrap(
-                      //                 alignment: WrapAlignment.spaceBetween,
-                      //                 spacing: 15,
-                      //                 runSpacing: 15,
-                      //                 children: li
-                      //                     .map((e) => SelectableIconButton(
-                      //                           radioValue: e,
-                      //                         ))
-                      //                     .toList()))),
-                      //     Expanded(
-                      //         flex: 1,
-                      //         child: Container(
-                      //           height: 500,
-                      //         ))
-                      //   ],
-                      // ),
                     ),
                   );
                 });
@@ -242,6 +225,15 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
     ));
 
     loadEmojiFuture = getEmojiInfo();
+  }
+
+  Future<String?> loadMdFile(String? path) async {
+    if (currentMdTemplatePath != path && path != null) {
+      mdData = await rootBundle.loadString(path);
+      currentMdTemplatePath = path;
+    }
+
+    return mdData;
   }
 
   Future<void> getEmojiInfo() async {
@@ -347,6 +339,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
 
     if (Responsive.isRoughMobile(context)) {
       return Scaffold(
+        extendBody: false,
         key: _scaffoldKey,
         endDrawer: SizedBox(
           child: Scaffold(
@@ -361,6 +354,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
       );
     } else {
       return Scaffold(
+        extendBody: false,
         bottomSheet: bottomSheet(),
         body: Row(
           crossAxisAlignment: CrossAxisAlignment.start,

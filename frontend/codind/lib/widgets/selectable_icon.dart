@@ -21,8 +21,9 @@ class _SelectableIconButtonState extends State<SelectableIconButton> {
       },
       child: Container(
         margin: const EdgeInsets.all(15),
+        // padding: const EdgeInsets.only(left: 20, right: 20),
         height: 100,
-        width: 75,
+        // width: 75,
         decoration: BoxDecoration(
           //背景
           color: Colors.white,
@@ -34,6 +35,12 @@ class _SelectableIconButtonState extends State<SelectableIconButton> {
               : Border.all(width: 1, color: Colors.grey[300]!),
         ),
         child: Stack(children: [
+          Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.only(left: 40, right: 20),
+            child: Text(
+                context.read<RadioProvider>().mdNames[widget.radioValue] ?? ""),
+          ),
           Positioned(
               left: 5,
               top: 5,

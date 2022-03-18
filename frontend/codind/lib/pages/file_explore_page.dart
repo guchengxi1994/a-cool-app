@@ -48,13 +48,19 @@ class _FileExplorePageState extends State<FileExplorePage>
       appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: currentFatherPath == "../root"
-            ? null
-            : IconButton(
-                icon: Icon(
+            ? IconButton(
+                icon: const Icon(
                   Icons.chevron_left,
-                  color: Responsive.isRoughMobile(context)
-                      ? Colors.white
-                      : Colors.black,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            : IconButton(
+                icon: const Icon(
+                  Icons.chevron_left,
+                  color: Colors.black,
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
