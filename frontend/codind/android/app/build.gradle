@@ -29,9 +29,9 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('D:\\github_repo\\mobile-apps\\x_beauty\\key0.jks')
+            storeFile file('D:\\jdk8\\bin\\xiaoshuyui.keystore')
             storePassword '123456'
-            keyAlias 'key0'
+            keyAlias 'xiaoshuyui'
             keyPassword '123456'
         }
     }

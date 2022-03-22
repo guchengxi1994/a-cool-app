@@ -16,6 +16,7 @@ import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'bloc/my_blocs.dart';
+import 'pages/main_page_v2.dart';
 import 'pages/pages.dart' show MainPage;
 import 'providers/my_providers.dart';
 import 'package:provider/provider.dart';
@@ -122,7 +123,8 @@ class _MyAppState extends State<MyApp> {
           theme: context.watch<ThemeController>().themeData,
           debugShowCheckedModeBanner: false,
           builder: FlutterI18n.rootAppBuilder(),
-          home: const MainPage(),
+          // home: const MainPage(),
+          home: MainPageV2(),
           localizationsDelegates: [
             widget.flutterI18nDelegate,
             GlobalMaterialLocalizations.delegate,
