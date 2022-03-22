@@ -1,4 +1,5 @@
 label:
+  signin: "每日打卡"
   main: "你好，{ user }!"
   localization: "本地化"
   personalCenter: "个人中心"
@@ -11,6 +12,7 @@ label:
   click: "点击修改"
   leaveYourCommit: "写下你的评论"
   settings: "设置"
+  settings1: "偏好设置"
   typeHere: "请在这里输入 ..."
   showEmoji: "选择表情"
   nPage: "第{n}页"
@@ -29,6 +31,7 @@ label:
   insertImageLink: "插入图片链接"
   insertWebLink: "插入网页链接"
   selectTableSize: "选择表格尺寸"
+  nothingtodo: "今日无事"
 
 button:
   label:

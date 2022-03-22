@@ -5,3 +5,4 @@ export './things.dart';
 export './calendar_by_month.dart';
 export './mind_map_widgets/node_widget_v2.dart';
 export './selectable_icon.dart';
+export './main_page_widgets/mobile.dart';

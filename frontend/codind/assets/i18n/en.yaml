@@ -2,6 +2,7 @@ title: "flutter-admin-template for zxx-h5"
 
 # With yaml, you can also comment your translations
 label:
+  signin: "Sign in"
   main: "Hello {user}!"
   localization: "Localization"
   personalCenter: "Personal Center"
@@ -14,6 +15,7 @@ label:
   click: "Click"
   leaveYourCommit: "Leave your comment"
   settings: "Settings"
+  settings1: "Settings"
   typeHere: "Type here ..."
   showEmoji: "Choose emoji"
   nPage: "Page {n}"
@@ -32,6 +34,7 @@ label:
   insertImageLink: "Insert image link"
   insertWebLink: "Insert web link"
   selectTableSize: "Select table size"
+  nothingtodo: "Nothing to do"
 
 # Objects can be many levels deep
 button:

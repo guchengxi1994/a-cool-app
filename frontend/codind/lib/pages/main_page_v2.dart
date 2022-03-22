@@ -1,3 +1,4 @@
+import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -35,7 +36,8 @@ class _MainPageV2State extends State<MainPageV2> {
         itemCount: 10,
         itemBuilder: (context, index) {
           return Card(
-            margin: const EdgeInsets.all(20),
+            margin:
+                const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
             child: Container(
               color: Colors.red,
               height: 80,
@@ -51,36 +53,41 @@ class _MainPageV2State extends State<MainPageV2> {
       automaticallyImplyLeading: false,
       leading: null,
       title: null,
-      expandedHeight: 230,
+      expandedHeight: 250,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
-          color: Colors.white,
+          // color: Colors.white,
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
           child: StaggeredGrid.count(
             crossAxisCount: 4,
             mainAxisSpacing: 4,
             crossAxisSpacing: 4,
-            children: const [
+            children: [
               StaggeredGridTile.count(
                 crossAxisCellCount: 2,
                 mainAxisCellCount: 2,
-                child: Text("0"),
+                child: UserAvatarWidget(
+                  imgUrl: null,
+                  userInfo: null,
+                ),
               ),
               StaggeredGridTile.count(
                 crossAxisCellCount: 2,
                 mainAxisCellCount: 1,
-                child: Text("1"),
+                child: TodoListWidget(
+                  todos: ["aaa", "bbb", "ccc"],
+                ),
               ),
-              StaggeredGridTile.count(
+              const StaggeredGridTile.count(
                 crossAxisCellCount: 1,
                 mainAxisCellCount: 1,
-                child: Text("2"),
+                child: SignupButton(),
               ),
-              StaggeredGridTile.count(
+              const StaggeredGridTile.count(
                 crossAxisCellCount: 1,
                 mainAxisCellCount: 1,
-                child: Text("3"),
+                child: SettingButton(),
               ),
             ],
           ),
