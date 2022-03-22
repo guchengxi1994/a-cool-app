@@ -1,3 +1,12 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: xiaoshuyui
+ * @email: guchengxi1994@qq.com
+ * @Date: 2022-01-30 21:46:56
+ * @LastEditors: xiaoshuyui
+ * @LastEditTime: 2022-03-22 22:09:39
+ */
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -18,6 +27,7 @@ class LanguageController extends ChangeNotifier {
   }
 }
 
+@Deprecated("should not be used")
 class LanguageCubit extends Cubit {
   BuildContext _context;
   LanguageCubit(this._context) : super(null);

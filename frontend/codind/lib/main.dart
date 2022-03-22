@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-19 10:55:25
+ * @LastEditTime: 2022-03-22 22:05:49
  */
 import 'package:codind/pages/login_page.dart';
 import 'package:codind/utils/utils.dart';
@@ -13,10 +13,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'bloc/my_blocs.dart';
+import 'globals.dart';
 import 'pages/main_page_v2.dart';
 import 'pages/pages.dart' show MainPage;
 import 'providers/my_providers.dart';
@@ -33,16 +33,7 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
 }
 
 Future main() async {
-  final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
-    translationLoader: FileTranslationLoader(
-        decodeStrategies: [YamlDecodeStrategy()],
-        useCountryCode: false,
-        fallbackFile: 'zh_CN',
-        basePath: 'assets/i18n',
-        forcedLocale: const Locale('zh_CN')),
-  );
   // 获取 theme
-
   WidgetsFlutterBinding.ensureInitialized();
   // List<String>? ls = await spGetColorData();
   PersistenceStorage ps = PersistenceStorage();
@@ -64,7 +55,6 @@ Future main() async {
               ),
             ],
             child: MyApp(
-              flutterI18nDelegate: flutterI18nDelegate,
               colorList: ls,
             ),
           ))),
@@ -72,9 +62,8 @@ Future main() async {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key, required this.flutterI18nDelegate, this.colorList})
-      : super(key: key);
-  final FlutterI18nDelegate flutterI18nDelegate;
+  const MyApp({Key? key, this.colorList}) : super(key: key);
+  // final FlutterI18nDelegate flutterI18nDelegate;
   final List<String>? colorList;
 
   @override
@@ -126,9 +115,9 @@ class _MyAppState extends State<MyApp> {
           builder: FlutterI18n.rootAppBuilder(),
           // home: const MainPage(),
           // home: MainPageV2(),
-          home: LoginScreen(),
+          home: LoginPage(),
           localizationsDelegates: [
-            widget.flutterI18nDelegate,
+            flutterI18nDelegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate
           ],
