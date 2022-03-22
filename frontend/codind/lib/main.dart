@@ -7,6 +7,7 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-02-19 10:55:25
  */
+import 'package:codind/pages/login_page.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -124,7 +125,8 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           builder: FlutterI18n.rootAppBuilder(),
           // home: const MainPage(),
-          home: MainPageV2(),
+          // home: MainPageV2(),
+          home: LoginScreen(),
           localizationsDelegates: [
             widget.flutterI18nDelegate,
             GlobalMaterialLocalizations.delegate,

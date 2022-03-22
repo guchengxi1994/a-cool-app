@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xiaoshuyui.codind">
    <application
-        android:label="codind"
+        android:label="随身助手(暂定)"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"
