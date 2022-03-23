@@ -2,16 +2,23 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/avatar_angle_provider.dart';
 
 class UserAvatarWidget extends StatelessWidget {
-  UserAvatarWidget({Key? key, required this.imgUrl, required this.userInfo})
-      : super(key: key);
+  UserAvatarWidget({
+    Key? key,
+    required this.imgUrl,
+    required this.userInfo,
+  }) : super(key: key);
   String? imgUrl;
   String? userInfo;
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: const Color.fromARGB(255, 199, 177, 152),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -19,10 +26,13 @@ class UserAvatarWidget extends StatelessWidget {
           SizedBox(
             height: 100,
             width: 100,
-            child: CircleAvatar(
-              backgroundImage: imgUrl == null
-                  ? const AssetImage("assets/images/bg.jpg")
-                  : ExtendedNetworkImageProvider(imgUrl!) as ImageProvider,
+            child: Transform.rotate(
+              angle: context.watch<AngleController>().angle,
+              child: CircleAvatar(
+                backgroundImage: imgUrl == null
+                    ? const AssetImage("assets/images/bg.jpg")
+                    : ExtendedNetworkImageProvider(imgUrl!) as ImageProvider,
+              ),
             ),
           ),
           const SizedBox(
@@ -41,6 +51,7 @@ class SignupButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: const Color.fromARGB(150, 199, 177, 152),
       child: InkWell(
         onTap: () {},
         child: Column(
@@ -66,6 +77,7 @@ class SettingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: const Color.fromARGB(150, 199, 177, 152),
       child: InkWell(
         onTap: () {},
         child: Column(
@@ -92,6 +104,7 @@ class TodoListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (todos.isNotEmpty) {
       return Card(
+        color: const Color.fromARGB(200, 199, 177, 152),
         child: Swiper(
           autoplayDelay: 2000,
           viewportFraction: 0.8,
@@ -112,6 +125,7 @@ class TodoListWidget extends StatelessWidget {
     }
 
     return Card(
+      color: const Color.fromARGB(200, 199, 177, 152),
       child: Center(
         child: Text(FlutterI18n.translate(context, "label.nothingtodo")),
       ),

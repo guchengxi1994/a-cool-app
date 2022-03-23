@@ -57,7 +57,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint(
-        "[i18n-state ]: ${context.read<LanguageController>().currentLang}");
+        "[debug-i18n-state ]: ${context.read<LanguageController>().currentLang}");
 
     LoginMessages messages = LoginMessages(
       passwordHint: FlutterI18n.translate(context, "login-labels.PasswordHint"),
@@ -124,7 +124,7 @@ class LoginScreen extends StatelessWidget {
       messages: messages,
       // titleTag: "aaa",
       title: '随身助手',
-      theme: LoginTheme(primaryColor: const Color.fromARGB(255, 211, 198, 86)),
+      theme: LoginTheme(primaryColor: const Color.fromARGB(255, 223, 211, 195)),
       logo: const AssetImage('assets/icon_no_background.png'),
       onLogin: _authUser,
       onSignup: _signupUser,

@@ -9,6 +9,9 @@
  */
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/my_providers.dart';
 
 /// this is for mobile
 /// test on web first
@@ -21,17 +24,48 @@ class MainPageV2 extends StatefulWidget {
 }
 
 class _MainPageV2State extends State<MainPageV2> {
+  final ScrollController _controller = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      context.read<AngleController>().changeAngle(_controller.offset);
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: buildBody(),
+        child: Container(
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  stops: [
+                0.0,
+                1.0
+              ],
+                  colors: [
+                Color.fromARGB(255, 223, 211, 195),
+                Color.fromARGB(200, 240, 236, 227)
+              ])),
+          child: buildBody(),
+        ),
       ),
     );
   }
 
   Widget buildBody() {
     return NestedScrollView(
+        controller: _controller,
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [buildSliverGrid()];
         },
@@ -85,7 +119,7 @@ class _MainPageV2State extends State<MainPageV2> {
                     SizedBox(
                       height: 120,
                       child: TodoListWidget(
-                        todos: ["aaa", "bbb", "ccc"],
+                        todos: ["当前共有X未完成事项", "当前已完成X事项", "当前有X逾期事项"],
                       ),
                     ),
                     const SizedBox(
@@ -109,38 +143,6 @@ class _MainPageV2State extends State<MainPageV2> {
               )
             ],
           ),
-          // child: StaggeredGrid.count(
-          //   crossAxisCount: 4,
-          //   mainAxisSpacing: 4,
-          //   crossAxisSpacing: 4,
-          //   children: [
-          //     StaggeredGridTile.count(
-          //       crossAxisCellCount: 2,
-          //       mainAxisCellCount: 2,
-          // child: UserAvatarWidget(
-          //   imgUrl: null,
-          //   userInfo: null,
-          // ),
-          //     ),
-          //     StaggeredGridTile.count(
-          //       crossAxisCellCount: 2,
-          //       mainAxisCellCount: 1,
-          //       child: TodoListWidget(
-          //         todos: ["aaa", "bbb", "ccc"],
-          //       ),
-          //     ),
-          //     const StaggeredGridTile.count(
-          //       crossAxisCellCount: 1,
-          //       mainAxisCellCount: 1,
-          //       child: SignupButton(),
-          //     ),
-          //     const StaggeredGridTile.count(
-          //       crossAxisCellCount: 1,
-          //       mainAxisCellCount: 1,
-          //       child: SettingButton(),
-          //     ),
-          //   ],
-          // ),
         ),
       ),
     );

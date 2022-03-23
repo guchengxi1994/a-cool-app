@@ -53,6 +53,9 @@ Future main() async {
               ChangeNotifierProvider(
                 create: (_) => RadioProvider(),
               ),
+              ChangeNotifierProvider(
+                create: (_) => AngleController(),
+              ),
             ],
             child: MyApp(
               colorList: ls,
@@ -114,8 +117,8 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           builder: FlutterI18n.rootAppBuilder(),
           // home: const MainPage(),
-          // home: MainPageV2(),
-          home: LoginPage(),
+          home: MainPageV2(),
+          // home: LoginPage(),
           localizationsDelegates: [
             flutterI18nDelegate,
             GlobalMaterialLocalizations.delegate,

@@ -14,3 +14,4 @@ export './used_emoji_provider.dart';
 export './menu_provider.dart';
 export 'change_background_provider.dart';
 export './radio_provider.dart';
+export './avatar_angle_provider.dart';
