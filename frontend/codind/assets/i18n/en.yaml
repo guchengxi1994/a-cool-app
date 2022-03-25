@@ -58,6 +58,13 @@ mainPage:
   schedule: "Schedule"
   mindMap: "Mind map"
   ability: "Your abilities"
+  COLLAPSE: "COLLAPSE"
+  EXPAND: "EXPAND"
+
+radar:
+  learningHours: "Learning Hours"
+  mds: "Docs"
+  power: "Power"
 
 
 login-labels:

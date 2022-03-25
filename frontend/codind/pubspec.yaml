@@ -49,8 +49,10 @@ dependencies:
   screenshot: ^1.2.3  # save images
   uuid: ^3.0.6 # uuid
   graphview: ^1.1.1
-  card_swiper: ^2.0.3
+  card_swiper: ^2.0.3  # null-safety swiper
   flutter_login: ^3.2.0
+  expandable: ^5.0.1
+  fl_chart: ^0.46.0
   
 
 dev_dependencies:

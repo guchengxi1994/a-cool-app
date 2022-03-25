@@ -7,6 +7,7 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-03-22 21:21:19
  */
+import 'package:codind/widgets/main_page_widgets/radar_chart.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -72,11 +73,30 @@ class _MainPageV2State extends State<MainPageV2> {
         body: buildBodyCards());
   }
 
+  /// for test
+  buildImg(Color color, double height) {
+    return SizedBox(
+        height: height,
+        child: Container(
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.rectangle,
+          ),
+        ));
+  }
+
   Widget buildBodyCards() {
     return ListView.builder(
         physics: const BouncingScrollPhysics(),
         itemCount: 10,
         itemBuilder: (context, index) {
+          if (index == 0) {
+            return MainPageCard(
+              collapsedWidget: buildImg(Colors.lightGreenAccent, 150),
+              expanedWidget: const RadarAbilityChart(),
+            );
+          }
+
           return Card(
             margin:
                 const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),

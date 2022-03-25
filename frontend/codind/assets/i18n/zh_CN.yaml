@@ -54,6 +54,13 @@ mainPage:
   schedule: "日程表"
   mindMap: "脑图"
   ability: "能力图"
+  COLLAPSE: "收起"
+  EXPAND: "展开"
+
+radar:
+  learningHours: "学习时间"
+  mds: "积累的文档数"
+  power: "能力评估"
 
 login-labels:
   PasswordHint: "密码"
