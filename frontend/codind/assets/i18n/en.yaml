@@ -35,6 +35,7 @@ label:
   insertWebLink: "Insert web link"
   selectTableSize: "Select table size"
   nothingtodo: "Nothing to do"
+  qrcodescan: "Qr Code Scanner"
 
 # Objects can be many levels deep
 button:
@@ -46,6 +47,7 @@ button:
     update: "Update"
     ok: "OK"
     quit: "Quit"
+    retry: "Retry"
 
 errors: 
   invalidName: "Invalid name"

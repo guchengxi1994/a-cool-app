@@ -38,7 +38,8 @@ dependencies:
   flutter_bloc: ^8.0.1
   loading_overlay: ^0.3.0
   flutter_i18n: ^0.31.1
-  fluttertoast: ^8.0.8
+  # fluttertoast: ^8.0.9
+  flutter_smart_dialog: ^3.4.0+2
   dio: ^4.0.4
   extended_image: ^6.0.1
   flutter_markdown: ^0.6.9
@@ -52,7 +53,9 @@ dependencies:
   card_swiper: ^2.0.3  # null-safety swiper
   flutter_login: ^3.2.0
   expandable: ^5.0.1
-  fl_chart: ^0.46.0
+  fl_chart: ^0.46.0    # different chart
+  # qr_code_scanner: ^0.7.0  # qr code
+  scan: ^1.6.0
   
 
 dev_dependencies:

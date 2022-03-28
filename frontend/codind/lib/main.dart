@@ -22,6 +22,8 @@ import 'pages/pages.dart' show MainPage;
 import 'providers/my_providers.dart';
 import 'package:provider/provider.dart';
 
+import 'widgets/mobile_widgets/qr_scanner_widget.dart';
+
 /// https://stackoverflow.com/questions/69154468/horizontal-listview-not-scrolling-on-web-but-scrolling-on-mobile
 class MyCustomScrollBehavior extends MaterialScrollBehavior {
   // Override behavior methods and getters like dragDevices
@@ -118,7 +120,7 @@ class _MyAppState extends State<MyApp> {
           builder: FlutterI18n.rootAppBuilder(),
           // home: const MainPage(),
           home: MainPageV2(),
-          // home: LoginPage(),
+          // home: QRViewExample(),
           localizationsDelegates: [
             flutterI18nDelegate,
             GlobalMaterialLocalizations.delegate,

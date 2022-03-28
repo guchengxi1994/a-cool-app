@@ -32,6 +32,7 @@ label:
   insertWebLink: "插入网页链接"
   selectTableSize: "选择表格尺寸"
   nothingtodo: "今日无事"
+  qrcodescan: "扫描二维码"
 
 button:
   label:
@@ -42,6 +43,7 @@ button:
     update: "修改"
     ok: "确定"
     quit: "取消"
+    retry: "重试"
 
 errors: 
   invalidName: "名称不合法"

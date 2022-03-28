@@ -1,4 +1,6 @@
 import 'package:card_swiper/card_swiper.dart';
+import 'package:codind/utils/utils.dart';
+import 'package:codind/widgets/mobile_widgets/qr_scanner_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -55,7 +57,13 @@ class SignupButton extends StatelessWidget {
     return Card(
       color: const Color.fromARGB(150, 199, 177, 152),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          if (PlatformUtils.isMobile) {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return const ScanMainPage();
+            }));
+          }
+        },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
