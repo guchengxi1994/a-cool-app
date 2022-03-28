@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 import 'bloc/my_blocs.dart';
 import 'globals.dart';
@@ -98,6 +99,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    // final FlutterI18nBuilder = FlutterI18n.rootAppBuilder();
+    // final FlutterSmartDialog = FlutterSmartDialog.init();
+
     return MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -117,10 +121,13 @@ class _MyAppState extends State<MyApp> {
           routes: Routers.routers,
           theme: context.watch<ThemeController>().themeData,
           debugShowCheckedModeBanner: false,
-          builder: FlutterI18n.rootAppBuilder(),
-          // home: const MainPage(),
-          home: MainPageV2(),
-          // home: QRViewExample(),
+          builder: (context, child) {
+            return FlutterSmartDialog(
+                child: FlutterI18n.rootAppBuilder().call(context, child));
+          },
+          home: const MainPage(),
+          navigatorObservers: [FlutterSmartDialog.observer],
+          // home: MainPageV2(),
           localizationsDelegates: [
             flutterI18nDelegate,
             GlobalMaterialLocalizations.delegate,
