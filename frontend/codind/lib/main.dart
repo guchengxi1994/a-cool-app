@@ -8,6 +8,7 @@
  * @LastEditTime: 2022-03-22 22:05:49
  */
 import 'package:codind/pages/login_page.dart';
+import 'package:codind/pages/resume_page.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -125,9 +126,9 @@ class _MyAppState extends State<MyApp> {
             return FlutterSmartDialog(
                 child: FlutterI18n.rootAppBuilder().call(context, child));
           },
-          home: const MainPage(),
+          // home: const MainPage(),
           navigatorObservers: [FlutterSmartDialog.observer],
-          // home: MainPageV2(),
+          home: ResumePage(),
           localizationsDelegates: [
             flutterI18nDelegate,
             GlobalMaterialLocalizations.delegate,
