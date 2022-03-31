@@ -7,9 +7,12 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-03-22 21:21:19
  */
+
+import 'package:codind/router.dart';
 import 'package:codind/widgets/main_page_widgets/radar_chart.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/my_providers.dart';
@@ -26,6 +29,7 @@ class MainPageV2 extends StatefulWidget {
 
 class _MainPageV2State extends State<MainPageV2> {
   final ScrollController _controller = ScrollController();
+  static const double fontSize = 25.0;
 
   @override
   void initState() {
@@ -92,9 +96,48 @@ class _MainPageV2State extends State<MainPageV2> {
         itemBuilder: (context, index) {
           if (index == 0) {
             return MainPageCard(
-              collapsedWidget: buildImg(Colors.lightGreenAccent, 150),
+              collapsedWidget: Container(
+                height: 100,
+                color: const Color.fromARGB(149, 156, 122, 84),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 30),
+                    child: Text(
+                      FlutterI18n.translate(context, "resume.abi"),
+                      style: const TextStyle(
+                          fontSize: fontSize, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ),
               expanedWidget: const RadarAbilityChart(),
+              closeIconColor: Colors.black,
             );
+          }
+
+          if (index == 1) {
+            return InkWell(
+                onTap: () =>
+                    Navigator.of(context).pushNamed(Routers.pageResumePage),
+                child: Container(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    height: 100,
+                    child: Card(
+                      color: const Color.fromARGB(150, 199, 177, 152),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: Text(
+                            FlutterI18n.translate(context, "resume.title"),
+                            style: const TextStyle(
+                                fontSize: fontSize,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    )));
           }
 
           return Card(

@@ -9,6 +9,7 @@
  */
 import 'package:codind/bloc/gantt_bloc.dart';
 import 'package:codind/entity/schedule.dart';
+import 'package:codind/router.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 

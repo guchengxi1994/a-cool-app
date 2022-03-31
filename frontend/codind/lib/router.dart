@@ -25,6 +25,7 @@ class Routers {
   static const pageSavedLinks = "/pageSavedLinks";
   static const pageMindMap = "/pageMindMap";
   static const pageYourAbilities = "/pageAbilities";
+  static const pageResumePage = "/resume";
 
   static final Map<String, WidgetBuilder> routers = {
     pageSetting: (ctx) => SettingPage(
@@ -38,5 +39,6 @@ class Routers {
     pageSavedLinks: (context) => SavedLinksPage(),
     pageMindMap: (context) => MindMapPageV2(),
     pageYourAbilities: (context) => YourAbilitiesPage(),
+    pageResumePage: (context) => ResumePage(),
   };
 }

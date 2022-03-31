@@ -101,3 +101,13 @@ login-labels:
   ResendCodeSuccess: "A new email has been sent."
   ConfirmSignupButton: "CONFIRM"
   ConfirmSignupSuccess: "Account confirmed."
+
+resume:
+  title: "Your Resume"
+  name: "Name"
+  gender: "Gender"
+  mobile: "Mobile"
+  email: "E-mail"
+  edu: "Education"
+  work: "Work experiences"
+  abi: "Skills" 

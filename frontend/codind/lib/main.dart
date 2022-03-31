@@ -8,7 +8,8 @@
  * @LastEditTime: 2022-03-22 22:05:49
  */
 import 'package:codind/pages/login_page.dart';
-import 'package:codind/pages/resume_page.dart';
+
+import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +24,6 @@ import 'pages/main_page_v2.dart';
 import 'pages/pages.dart' show MainPage;
 import 'providers/my_providers.dart';
 import 'package:provider/provider.dart';
-
-import 'widgets/mobile_widgets/qr_scanner_widget.dart';
 
 /// https://stackoverflow.com/questions/69154468/horizontal-listview-not-scrolling-on-web-but-scrolling-on-mobile
 class MyCustomScrollBehavior extends MaterialScrollBehavior {
@@ -59,6 +58,9 @@ Future main() async {
               ),
               ChangeNotifierProvider(
                 create: (_) => AngleController(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => ExperienceController(),
               ),
             ],
             child: MyApp(
@@ -126,9 +128,9 @@ class _MyAppState extends State<MyApp> {
             return FlutterSmartDialog(
                 child: FlutterI18n.rootAppBuilder().call(context, child));
           },
-          // home: const MainPage(),
+          home: MainPageV2(),
           navigatorObservers: [FlutterSmartDialog.observer],
-          home: ResumePage(),
+          // home: ResumePage(),
           localizationsDelegates: [
             flutterI18nDelegate,
             GlobalMaterialLocalizations.delegate,

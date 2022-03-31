@@ -96,3 +96,13 @@ login-labels:
   ResendCodeSuccess: "已发送新邮件"
   ConfirmSignupButton: "确认"
   ConfirmSignupSuccess: "账号已注册成功。"
+
+resume:
+  title: "我的简历"
+  name: "姓名"
+  gender: "性别"
+  mobile: "手机号码"
+  email: "邮箱地址"
+  edu: "教育经历"
+  work: "工作经历"
+  abi: "能力" 

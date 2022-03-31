@@ -7,6 +7,7 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-02-10 21:52:32
  */
+import 'package:codind/router.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';

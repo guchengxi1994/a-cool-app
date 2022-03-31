@@ -209,9 +209,13 @@ class SummaryCardDemo extends StatelessWidget {
 class MainPageCard extends StatelessWidget {
   Widget collapsedWidget;
   Widget expanedWidget;
+  Color? closeIconColor;
 
   MainPageCard(
-      {Key? key, required this.collapsedWidget, required this.expanedWidget})
+      {Key? key,
+      required this.collapsedWidget,
+      required this.expanedWidget,
+      required this.closeIconColor})
       : super(key: key);
 
   @override
@@ -242,9 +246,10 @@ class MainPageCard extends StatelessWidget {
                         onPressed: () {
                           controller.toggle();
                         },
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.close,
                           size: 30,
+                          color: closeIconColor ?? Colors.black,
                         ),
                       ))
                 ]),
