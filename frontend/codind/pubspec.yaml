@@ -56,7 +56,9 @@ dependencies:
   fl_chart: ^0.46.0    # different chart
   # qr_code_scanner: ^0.7.0  # qr code
   scan: ^1.6.0
-  tuple: ^2.0.0
+  tuple: ^2.0.0 # 2 parameter tuple
+  # flutter_svg: 0.22.0  # higher version has `unhandled element metadata` issue
+  find_dropdown: ^1.0.0
   
 
 dev_dependencies:

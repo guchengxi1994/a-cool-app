@@ -8,7 +8,7 @@
  * @LastEditTime: 2022-02-02 10:00:01
  */
 export './main_page.dart';
-export './setting_page.dart';
+export 'setting_pages/setting_page.dart';
 export './writing_page.dart';
 export './file_explore_page.dart';
 export './gantt.dart';

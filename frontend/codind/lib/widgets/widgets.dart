@@ -7,3 +7,4 @@ export './mind_map_widgets/node_widget_v2.dart';
 export './selectable_icon.dart';
 export './main_page_widgets/mobile.dart';
 export './expanded_column_widget.dart';
+export './combo_widget.dart';

@@ -14,3 +14,4 @@ export './toast_utils.dart';
 export './shared_preference_utils.dart';
 export './list_split.dart';
 export './date_formatter.dart';
+export './dio_utils.dart';

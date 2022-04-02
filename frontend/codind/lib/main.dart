@@ -8,6 +8,7 @@
  * @LastEditTime: 2022-03-22 22:05:49
  */
 import 'package:codind/pages/login_page.dart';
+import 'package:codind/pages/setting_pages/generate_avatar_page.dart';
 
 import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
@@ -128,9 +129,9 @@ class _MyAppState extends State<MyApp> {
             return FlutterSmartDialog(
                 child: FlutterI18n.rootAppBuilder().call(context, child));
           },
-          home: MainPageV2(),
+          // home: MainPageV2(),
           navigatorObservers: [FlutterSmartDialog.observer],
-          // home: ResumePage(),
+          home: GenerateAvatarPage(),
           localizationsDelegates: [
             flutterI18nDelegate,
             GlobalMaterialLocalizations.delegate,
