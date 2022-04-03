@@ -59,6 +59,8 @@ dependencies:
   tuple: ^2.0.0 # 2 parameter tuple
   # flutter_svg: 0.22.0  # higher version has `unhandled element metadata` issue
   find_dropdown: ^1.0.0
+  flutter_svg: ^1.0.3
+  xml: 5.3.1  # 高版本暂时不适配 flutter_test 这个模块
   
 
 dev_dependencies:
@@ -94,6 +96,8 @@ flutter:
     - assets/images/background/
     - assets/icon.png   # app icon
     - assets/icon_no_background.png   # app icon no background
+    - assets/_test_svg.svg  # for svg test
+    - assets/_test_svg_01.svg  # for svg test
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

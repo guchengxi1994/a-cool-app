@@ -7,6 +7,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 /// thanks to "dicebear" and
@@ -66,6 +67,8 @@ class _GenerateAvatarPageState extends State<GenerateAvatarPage> {
   DioUtils dioUtils = DioUtils();
 
   var remoteImageUrl = "";
+
+  String svgData = "";
 
   @override
   void dispose() {
@@ -188,7 +191,36 @@ class _GenerateAvatarPageState extends State<GenerateAvatarPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("background color"),
+                  // Text("background color"),
+                  ComboWidget(
+                    size: 150,
+                    w1: Text("background color"),
+                    w2: Image.asset(
+                      "assets/icons/quiz.png",
+                      width: 20,
+                      height: 20,
+                    ),
+                    tapOnW2: () {
+                      showCupertinoDialog(
+                          context: context,
+                          builder: (context) {
+                            return CupertinoAlertDialog(
+                              content: Material(
+                                  child: Text(
+                                "开源的flutter_svg (1.0.3版本)库存在一些问题，所以本人会对svg的xml先进行一次解析，如果遇到显示问题请切换关键词重试。",
+                                maxLines: 5,
+                              )),
+                              actions: [
+                                CupertinoActionSheetAction(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("Got it"))
+                              ],
+                            );
+                          });
+                    },
+                  ),
                   InkWell(
                     child: Container(
                       // color: defaultBackgroundColor,
@@ -264,9 +296,18 @@ class _GenerateAvatarPageState extends State<GenerateAvatarPage> {
                 height: 20,
               ),
               if (remoteImageUrl != "")
+                //   SvgPicture.asset("assets/_test_svg.svg"),
                 Container(
+                  height: 300,
+                  width: 300,
                   color: defaultBackgroundColor,
                   child: ExtendedImage.network(remoteImageUrl),
+                ),
+              if (svgData != "")
+                SizedBox(
+                  height: 300,
+                  width: 300,
+                  child: SvgPicture.string(svgData),
                 ),
               const SizedBox(
                 height: 20,
@@ -305,6 +346,8 @@ class _GenerateAvatarPageState extends State<GenerateAvatarPage> {
 
                       setState(() {
                         isLoading = true;
+                        svgData = "";
+                        remoteImageUrl = "";
                       });
 
                       Response? result = await dioUtils.get(url);
@@ -312,7 +355,14 @@ class _GenerateAvatarPageState extends State<GenerateAvatarPage> {
                       // print(result.runtimeType);
                       setState(() {
                         if (result != null) {
-                          remoteImageUrl = url;
+                          if (selectedImgType == "png") {
+                            remoteImageUrl = url;
+                          } else {
+                            svgData =
+                                svgConvert(result.data).replaceAll("&lt;", "<");
+
+                            debugPrint("[svg-data] : $svgData");
+                          }
                         }
 
                         isLoading = false;
