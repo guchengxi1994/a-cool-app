@@ -16,3 +16,4 @@ export 'change_background_provider.dart';
 export './radio_provider.dart';
 export './avatar_angle_provider.dart';
 export './experience_provider.dart';
+export './avatar_provider.dart';

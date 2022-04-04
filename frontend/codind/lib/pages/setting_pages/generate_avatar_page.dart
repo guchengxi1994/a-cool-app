@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:codind/entity/entity.dart';
+import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:dio/dio.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:provider/provider.dart';
 
 /// thanks to "dicebear" and
 /// this uses https://avatars.dicebear.com/docs/http-api
@@ -361,7 +364,7 @@ class _GenerateAvatarPageState extends State<GenerateAvatarPage> {
                             svgData =
                                 svgConvert(result.data).replaceAll("&lt;", "<");
 
-                            debugPrint("[svg-data] : $svgData");
+                            // debugPrint("[svg-data] : $svgData");
                           }
                         }
 
@@ -370,6 +373,18 @@ class _GenerateAvatarPageState extends State<GenerateAvatarPage> {
                     }
                   },
                   child: Text("Generate")),
+              if (remoteImageUrl != "" || svgData != "")
+                ElevatedButton(
+                    onPressed: () {
+                      context.read<AvatarController>().changeImg(
+                          selectedImgType == "png"
+                              ? AvatarType.png
+                              : AvatarType.svg,
+                          remoteImageUrl,
+                          svgData,
+                          defaultBackgroundColor);
+                    },
+                    child: Text("Submit"))
             ],
           ),
         ),

@@ -63,6 +63,9 @@ Future main() async {
               ChangeNotifierProvider(
                 create: (_) => ExperienceController(),
               ),
+              ChangeNotifierProvider(
+                create: (_) => AvatarController(),
+              ),
             ],
             child: MyApp(
               colorList: ls,
@@ -129,9 +132,9 @@ class _MyAppState extends State<MyApp> {
             return FlutterSmartDialog(
                 child: FlutterI18n.rootAppBuilder().call(context, child));
           },
-          // home: MainPageV2(),
+          home: MainPageV2(),
           navigatorObservers: [FlutterSmartDialog.observer],
-          home: GenerateAvatarPage(),
+          // home: GenerateAvatarPage(),
           localizationsDelegates: [
             flutterI18nDelegate,
             GlobalMaterialLocalizations.delegate,

@@ -1,26 +1,53 @@
 import 'package:card_swiper/card_swiper.dart';
+import 'package:codind/entity/avatar_img_entity.dart';
+import 'package:codind/providers/my_providers.dart';
+import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:codind/widgets/mobile_widgets/qr_scanner_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:expandable/expandable.dart';
 
-import '../../providers/avatar_angle_provider.dart';
+import '../../entity/entity.dart';
 import 'radar_chart.dart';
 
 class UserAvatarWidget extends StatelessWidget {
   UserAvatarWidget({
     Key? key,
-    required this.imgUrl,
+    required this.avatarImg,
     required this.userInfo,
   }) : super(key: key);
-  String? imgUrl;
+
   String? userInfo;
+  AvatarImg? avatarImg;
+
+  Widget buildAvatar() {
+    if (avatarImg == null || avatarImg!.type == AvatarType.undefined) {
+      return const CircleAvatar(
+        backgroundImage: AssetImage("assets/images/bg.jpg"),
+      );
+    } else {
+      if (avatarImg!.type == AvatarType.png) {
+        return CircleAvatar(
+          backgroundColor: avatarImg!.background,
+          backgroundImage: ExtendedNetworkImageProvider(avatarImg!.imgPath!),
+        );
+      } else {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(100),
+          child: SvgPicture.string(avatarImg!.imgData!),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    // debugPrint("[debug avatarImg]: ${avatarImg.toString()}");
+
     return Card(
       color: const Color.fromARGB(255, 199, 177, 152),
       child: Column(
@@ -32,11 +59,7 @@ class UserAvatarWidget extends StatelessWidget {
             width: 100,
             child: Transform.rotate(
               angle: context.watch<AngleController>().angle,
-              child: CircleAvatar(
-                backgroundImage: imgUrl == null
-                    ? const AssetImage("assets/images/bg.jpg")
-                    : ExtendedNetworkImageProvider(imgUrl!) as ImageProvider,
-              ),
+              child: buildAvatar(),
             ),
           ),
           const SizedBox(
@@ -89,7 +112,9 @@ class SettingButton extends StatelessWidget {
     return Card(
       color: const Color.fromARGB(150, 199, 177, 152),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.of(context).pushNamed(Routers.pageMobileSettingsPage);
+        },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

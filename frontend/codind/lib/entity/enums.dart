@@ -10,3 +10,5 @@
 enum DataFrom { net, asset, string, file }
 
 enum FileExploreType { tree, icon }
+
+enum AvatarType { undefined, png, svg }

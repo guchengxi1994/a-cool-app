@@ -17,3 +17,5 @@ export './saved_links_page.dart';
 export './mind_map_page_v2.dart';
 export './your_abilities_page.dart';
 export './resume_page.dart';
+export './setting_pages/generate_avatar_page.dart';
+export './setting_pages/mobile_main_setting_page.dart';
