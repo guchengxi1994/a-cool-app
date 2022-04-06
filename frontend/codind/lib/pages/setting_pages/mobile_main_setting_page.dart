@@ -1,3 +1,4 @@
+import 'package:codind/pages/setting_pages/account_safety_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
@@ -20,7 +21,7 @@ class _MobileMainSettingPageState extends State<MobileMainSettingPage>
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
           FlutterI18n.translate(context, "label.settings"),
@@ -35,7 +36,7 @@ class _MobileMainSettingPageState extends State<MobileMainSettingPage>
             icon: const Icon(
               Icons.chevron_left,
               size: 35,
-              color: Color.fromARGB(255, 44, 41, 41),
+              color: Color.fromARGB(255, 78, 63, 63),
             )),
       ),
       body: SingleChildScrollView(
@@ -45,6 +46,12 @@ class _MobileMainSettingPageState extends State<MobileMainSettingPage>
             Container(
               color: Colors.white,
               child: ListTile(
+                onTap: () {
+                  // Navigator.of(context).pushNamed(Routers.pageAccountSafty);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return AccountSafetyPage();
+                  }));
+                },
                 title: Text(
                   "账号与安全",
                   style: _style,

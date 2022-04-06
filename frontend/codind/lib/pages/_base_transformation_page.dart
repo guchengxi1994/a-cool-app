@@ -1,6 +1,8 @@
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
 
+import '../globals.dart';
+
 abstract class BaseTransformationPage extends StatefulWidget {
   BaseTransformationPage({Key? key}) : super(key: key);
 
@@ -114,7 +116,10 @@ class BaseTransformationPageState<T extends BaseTransformationPage>
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    icon: const Icon(Icons.chevron_left)),
+                    icon: const Icon(
+                      Icons.chevron_left,
+                      size: leftBackIconSize,
+                    )),
             automaticallyImplyLeading: false,
             actions: actions,
           ),

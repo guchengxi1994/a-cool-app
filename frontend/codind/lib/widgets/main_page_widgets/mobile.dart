@@ -24,26 +24,6 @@ class UserAvatarWidget extends StatelessWidget {
   String? userInfo;
   AvatarImg? avatarImg;
 
-  Widget buildAvatar() {
-    if (avatarImg == null || avatarImg!.type == AvatarType.undefined) {
-      return const CircleAvatar(
-        backgroundImage: AssetImage("assets/images/bg.jpg"),
-      );
-    } else {
-      if (avatarImg!.type == AvatarType.png) {
-        return CircleAvatar(
-          backgroundColor: avatarImg!.background,
-          backgroundImage: ExtendedNetworkImageProvider(avatarImg!.imgPath!),
-        );
-      } else {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(100),
-          child: SvgPicture.string(avatarImg!.imgData!),
-        );
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     // debugPrint("[debug avatarImg]: ${avatarImg.toString()}");
@@ -59,16 +39,36 @@ class UserAvatarWidget extends StatelessWidget {
             width: 100,
             child: Transform.rotate(
               angle: context.watch<AngleController>().angle,
-              child: buildAvatar(),
+              child: buildAvatar(avatarImg),
             ),
           ),
           const SizedBox(
             height: 5,
           ),
-          Text(userInfo ?? "用户A")
+          if (userInfo != null) Text(userInfo ?? "用户A"),
         ],
       ),
     );
+  }
+}
+
+Widget buildAvatar(AvatarImg? avatarImg) {
+  if (avatarImg == null || avatarImg.type == AvatarType.undefined) {
+    return const CircleAvatar(
+      backgroundImage: AssetImage("assets/images/bg.jpg"),
+    );
+  } else {
+    if (avatarImg.type == AvatarType.png) {
+      return CircleAvatar(
+        backgroundColor: avatarImg.background,
+        backgroundImage: ExtendedNetworkImageProvider(avatarImg.imgPath!),
+      );
+    } else {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(100),
+        child: SvgPicture.string(avatarImg.imgData!),
+      );
+    }
   }
 }
 

@@ -19,3 +19,5 @@ final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
       basePath: 'assets/i18n',
       forcedLocale: const Locale('zh_CN')),
 );
+
+const leftBackIconSize = 35.0;

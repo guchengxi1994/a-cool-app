@@ -132,9 +132,9 @@ class _MyAppState extends State<MyApp> {
             return FlutterSmartDialog(
                 child: FlutterI18n.rootAppBuilder().call(context, child));
           },
-          home: MainPageV2(),
+          // home: MainPageV2(),
+          home: const LoginPage(),
           navigatorObservers: [FlutterSmartDialog.observer],
-          // home: GenerateAvatarPage(),
           localizationsDelegates: [
             flutterI18nDelegate,
             GlobalMaterialLocalizations.delegate,

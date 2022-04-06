@@ -172,7 +172,7 @@ class _MainPageV2State extends State<MainPageV2> {
                 flex: 1,
                 child: UserAvatarWidget(
                   avatarImg: context.watch<AvatarController>().img,
-                  userInfo: null,
+                  userInfo: "用户A",
                 ),
               ),
               Expanded(

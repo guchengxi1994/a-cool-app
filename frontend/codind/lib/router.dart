@@ -26,8 +26,9 @@ class Routers {
   static const pageMindMap = "/pageMindMap";
   static const pageYourAbilities = "/pageAbilities";
   static const pageResumePage = "/resume";
-  static const pageAvatarSettingPage = "pageAvatarSettingPage";
-  static const pageMobileSettingsPage = "pageMobileSettingsPage";
+  // static const pageAvatarSettingPage = "/pageAvatarSettingPage";
+  static const pageMobileSettingsPage = "/pageMobileSettingsPage";
+  // static const pageAccountSafty = "/pageAccountSafety";
 
   static final Map<String, WidgetBuilder> routers = {
     pageSetting: (ctx) => SettingPage(
@@ -42,7 +43,8 @@ class Routers {
     pageMindMap: (context) => MindMapPageV2(),
     pageYourAbilities: (context) => YourAbilitiesPage(),
     pageResumePage: (context) => ResumePage(),
-    pageAvatarSettingPage: (context) => GenerateAvatarPage(),
+    // pageAvatarSettingPage: (context) => GenerateAvatarPage(),
     pageMobileSettingsPage: (context) => MobileMainSettingPage(),
+    // pageAccountSafty: (context) => AccountSafetyPage(),
   };
 }
