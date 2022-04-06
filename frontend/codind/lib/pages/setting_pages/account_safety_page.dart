@@ -18,7 +18,8 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
     with BackgroundColorMixin {
   @override
   baseBackgroundBuild(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+        child: Scaffold(
       backgroundColor: Colors.transparent,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(200),
@@ -142,6 +143,6 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
           ),
         ],
       )),
-    );
+    ));
   }
 }
