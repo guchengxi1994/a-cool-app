@@ -51,6 +51,8 @@ class ThemeController extends ChangeNotifier {
       appBarTheme: AppBarTheme(color: m['appBarColor']),
     );
 
+    debugPrint("[current theme-data] : $themeData ");
+
     _initialColorTheme = m;
     _themeData = themeData;
     notifyListeners();

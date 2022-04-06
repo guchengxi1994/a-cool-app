@@ -14,7 +14,7 @@ mixin BackgroundColorMixin<T extends StatefulWidget> on State<T> {
           ],
               colors: [
             Color.fromARGB(255, 223, 211, 195),
-            Color.fromARGB(200, 240, 236, 227)
+            Color.fromARGB(255, 240, 236, 227)
           ])),
       child: baseBackgroundBuild(context),
     );

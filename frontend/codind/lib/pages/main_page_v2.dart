@@ -92,13 +92,14 @@ class _MainPageV2State extends State<MainPageV2> {
   Widget buildBodyCards() {
     return ListView.builder(
         physics: const BouncingScrollPhysics(),
-        itemCount: 10,
+        itemCount: 3,
         itemBuilder: (context, index) {
-          if (index == 0) {
+          if (index == 1) {
             return MainPageCard(
               collapsedWidget: Container(
                 height: 100,
-                color: const Color.fromARGB(149, 156, 122, 84),
+                color: const Color.fromARGB(255, 199, 177, 152),
+                // color: Colors.white,
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
@@ -116,21 +117,53 @@ class _MainPageV2State extends State<MainPageV2> {
             );
           }
 
-          if (index == 1) {
+          if (index == 2) {
             return InkWell(
                 onTap: () =>
                     Navigator.of(context).pushNamed(Routers.pageResumePage),
                 child: Container(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
+                    padding: const EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                    ),
                     height: 100,
                     child: Card(
-                      color: const Color.fromARGB(150, 199, 177, 152),
+                      color: const Color.fromARGB(255, 199, 177, 152),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
                           padding: const EdgeInsets.only(left: 30),
                           child: Text(
                             FlutterI18n.translate(context, "resume.title"),
+                            style: const TextStyle(
+                                fontSize: fontSize,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    )));
+          }
+
+          if (index == 0) {
+            return InkWell(
+                onTap: () {},
+                child: Container(
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
+                    padding: const EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                    ),
+                    height: 100,
+                    child: Card(
+                      color: const Color.fromARGB(255, 199, 177, 152),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: Text(
+                            // FlutterI18n.translate(context, "resume.title"),
+                            "Todo list",
                             style: const TextStyle(
                                 fontSize: fontSize,
                                 fontWeight: FontWeight.bold),

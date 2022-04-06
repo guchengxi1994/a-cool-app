@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:codind/entity/entity.dart';
+import 'package:codind/pages/_background_color_mixin.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:codind/widgets/widgets.dart';
@@ -9,9 +10,12 @@ import 'package:extended_image/extended_image.dart';
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
+
+import '../../globals.dart';
 
 /// thanks to "dicebear" and
 /// this uses https://avatars.dicebear.com/docs/http-api
@@ -25,7 +29,8 @@ class GenerateAvatarPage extends StatefulWidget {
   State<GenerateAvatarPage> createState() => _GenerateAvatarPageState();
 }
 
-class _GenerateAvatarPageState extends State<GenerateAvatarPage> {
+class _GenerateAvatarPageState extends State<GenerateAvatarPage>
+    with BackgroundColorMixin {
   List<String> types = [
     "male",
     "adventurer",
@@ -86,214 +91,266 @@ class _GenerateAvatarPageState extends State<GenerateAvatarPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget baseBackgroundBuild(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.chevron_left,
+            size: leftBackIconSize,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: LoadingOverlay(
         isLoading: isLoading,
         child: SingleChildScrollView(
-          padding:
-              const EdgeInsets.only(top: 20, bottom: 20, left: 20, right: 20),
+          padding: const EdgeInsets.only(top: 20, bottom: 20),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("choose an image type"),
-                  FindDropdown(
-                    items: supportedImgTypes,
-                    selectedItem: selectedImgType,
-                    onChanged: (item) {
-                      setState(() {
-                        selectedImgType = item as String;
-                      });
-                    },
-                  ),
-                ],
+              Container(
+                padding: const EdgeInsets.only(
+                    top: 10, bottom: 10, left: 20, right: 20),
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(FlutterI18n.translate(
+                        context, "avatarPage.chooseImgType")),
+                    FindDropdown(
+                      items: supportedImgTypes,
+                      selectedItem: selectedImgType,
+                      onChanged: (item) {
+                        setState(() {
+                          selectedImgType = item as String;
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("choose a type"),
-                  FindDropdown(
-                    items: types,
-                    selectedItem: defaultType,
-                    onChanged: (item) {
-                      setState(() {
-                        defaultType = item as String;
-                      });
-                    },
-                  ),
-                ],
+              Container(
+                padding: const EdgeInsets.only(
+                    top: 10, bottom: 10, left: 20, right: 20),
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(FlutterI18n.translate(
+                        context, "avatarPage.chooseAvatarType")),
+                    FindDropdown(
+                      items: types,
+                      selectedItem: defaultType,
+                      onChanged: (item) {
+                        setState(() {
+                          defaultType = item as String;
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Text("input a keyword"),
-                  ComboWidget(
-                    size: 150,
-                    w1: const Text("input a keyword"),
-                    w2: Image.asset(
-                      "assets/icons/quiz.png",
-                      width: 20,
-                      height: 20,
-                    ),
-                    tapOnW2: () {
-                      showCupertinoDialog(
-                          context: context,
-                          builder: (context) {
-                            return CupertinoAlertDialog(
-                              content: Material(
-                                  child: Text(
-                                "1. The keyword can be anything you like - but don't use any sensitive or personal data here. \n"
-                                "2. Max length of the keyword is 15.",
-                                maxLines: 5,
-                              )),
-                              actions: [
-                                CupertinoActionSheetAction(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text("Got it"))
-                              ],
-                            );
-                          });
-                    },
-                  ),
-
-                  SizedBox(
-                    height: 50,
-                    width: 150,
-                    child: TextField(
-                      maxLength: 15,
-                      controller: _controller,
-                      decoration: const InputDecoration(
-                          counterText: "",
-                          labelText: 'keyword',
-                          labelStyle: TextStyle(
-                            color: Color.fromARGB(255, 205, 169, 181),
-                            fontSize: 12,
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.pink,
-                            ),
-                          )),
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Text("background color"),
-                  ComboWidget(
-                    size: 150,
-                    w1: Text("background color"),
-                    w2: Image.asset(
-                      "assets/icons/quiz.png",
-                      width: 20,
-                      height: 20,
-                    ),
-                    tapOnW2: () {
-                      showCupertinoDialog(
-                          context: context,
-                          builder: (context) {
-                            return CupertinoAlertDialog(
-                              content: Material(
-                                  child: Text(
-                                "开源的flutter_svg (1.0.3版本)库存在一些问题，所以本人会对svg的xml先进行一次解析，如果遇到显示问题请切换关键词重试。",
-                                maxLines: 5,
-                              )),
-                              actions: [
-                                CupertinoActionSheetAction(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text("Got it"))
-                              ],
-                            );
-                          });
-                    },
-                  ),
-                  InkWell(
-                    child: Container(
-                      // color: defaultBackgroundColor,
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.red),
-                          borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                          color: defaultBackgroundColor),
-                      height: 40,
-                      width: 80,
-                      child: InkWell(
-                        child: Center(
-                          child: Text(
-                            "Select",
-                            style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        onTap: () async {
-                          Color? selectedColor = await showDialog(
-                              context: context,
-                              builder: (context) {
-                                return ColorPickerWidget(
-                                  currentColor: defaultBackgroundColor,
-                                );
-                              });
-                          if (null != selectedColor) {
-                            setState(() {
-                              debugPrint(selectedColor.value.toRadixString(16));
-                              defaultBackgroundColor = selectedColor;
+              Container(
+                padding: const EdgeInsets.only(
+                    top: 10, bottom: 10, left: 20, right: 20),
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Text("input a keyword"),
+                    ComboWidget(
+                      size: 150,
+                      w1: Text(FlutterI18n.translate(
+                          context, "avatarPage.inputKeyword")),
+                      w2: Image.asset(
+                        "assets/icons/quiz.png",
+                        width: 20,
+                        height: 20,
+                      ),
+                      tapOnW2: () {
+                        showCupertinoDialog(
+                            context: context,
+                            builder: (context) {
+                              return CupertinoAlertDialog(
+                                content: Material(
+                                    child: Text(
+                                  FlutterI18n.translate(
+                                      context, "avatarPage.warning1"),
+                                  maxLines: 5,
+                                )),
+                                actions: [
+                                  CupertinoActionSheetAction(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text("Got it"))
+                                ],
+                              );
                             });
-                          }
-                        },
+                      },
+                    ),
+
+                    SizedBox(
+                      height: 50,
+                      width: 150,
+                      child: TextField(
+                        maxLength: 15,
+                        controller: _controller,
+                        decoration: InputDecoration(
+                            counterText: "",
+                            labelText: FlutterI18n.translate(
+                                context, "avatarPage.keyword"),
+                            labelStyle: TextStyle(
+                              color: Color.fromARGB(255, 205, 169, 181),
+                              fontSize: 12,
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.pink,
+                              ),
+                            )),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                padding: const EdgeInsets.only(
+                    top: 10, bottom: 10, left: 20, right: 20),
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Text("background color"),
+                    ComboWidget(
+                      size: 150,
+                      w1: Text(
+                          FlutterI18n.translate(context, "avatarPage.bgColor")),
+                      w2: Image.asset(
+                        "assets/icons/quiz.png",
+                        width: 20,
+                        height: 20,
+                      ),
+                      tapOnW2: () {
+                        showCupertinoDialog(
+                            context: context,
+                            builder: (context) {
+                              return CupertinoAlertDialog(
+                                content: Material(
+                                    child: Text(
+                                  FlutterI18n.translate(
+                                      context, "avatarPage.warning2"),
+                                  maxLines: 10,
+                                )),
+                                actions: [
+                                  CupertinoActionSheetAction(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text("Got it"))
+                                ],
+                              );
+                            });
+                      },
+                    ),
+                    InkWell(
+                      child: Container(
+                        // color: defaultBackgroundColor,
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: Colors.red),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(4.0)),
+                            color: defaultBackgroundColor),
+                        height: 40,
+                        width: 80,
+                        child: InkWell(
+                          child: Center(
+                            child: Text(
+                              FlutterI18n.translate(
+                                  context, "avatarPage.select"),
+                              style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          onTap: () async {
+                            Color? selectedColor = await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return ColorPickerWidget(
+                                    currentColor: defaultBackgroundColor,
+                                  );
+                                });
+                            if (null != selectedColor) {
+                              setState(() {
+                                debugPrint(
+                                    selectedColor.value.toRadixString(16));
+                                defaultBackgroundColor = selectedColor;
+                              });
+                            }
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ComboWidget(
-                    size: 150,
-                    w1: Text("choose a mood"),
-                    w2: Image.asset(
-                      "assets/icons/quiz.png",
-                      width: 20,
-                      height: 20,
+              Container(
+                padding: const EdgeInsets.only(
+                    top: 10, bottom: 10, left: 20, right: 20),
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ComboWidget(
+                      size: 150,
+                      w1: Text(FlutterI18n.translate(
+                          context, "avatarPage.chooseMood")),
+                      w2: Image.asset(
+                        "assets/icons/quiz.png",
+                        width: 20,
+                        height: 20,
+                      ),
+                      tapOnW2: () {
+                        showToastMessage(
+                            FlutterI18n.translate(
+                                context, "avatarPage.warning4"),
+                            context);
+                      },
                     ),
-                    tapOnW2: () {
-                      showToastMessage("value can be blank", context);
-                    },
-                  ),
-                  FindDropdown(
-                    items: moods,
-                    selectedItem: currentMood,
-                    onChanged: (item) {
-                      setState(() {
-                        if (item as String == "null") {
-                          currentMood = "";
-                          return;
-                        }
-                        currentMood = item;
-                      });
-                    },
-                  ),
-                ],
+                    FindDropdown(
+                      items: moods,
+                      selectedItem: currentMood,
+                      onChanged: (item) {
+                        setState(() {
+                          if (item as String == "null") {
+                            currentMood = "";
+                            return;
+                          }
+                          currentMood = item;
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 20,
@@ -318,7 +375,9 @@ class _GenerateAvatarPageState extends State<GenerateAvatarPage> {
               ElevatedButton(
                   onPressed: () async {
                     if (_controller.text == "") {
-                      showToastMessage("keyword cannot be blank", context);
+                      showToastMessage(
+                          FlutterI18n.translate(context, "avatarPage.warning3"),
+                          context);
                     } else {
                       String url = quertStr +
                           defaultType +
@@ -372,7 +431,8 @@ class _GenerateAvatarPageState extends State<GenerateAvatarPage> {
                       });
                     }
                   },
-                  child: Text("Generate")),
+                  child: Text(
+                      FlutterI18n.translate(context, "avatarPage.generate"))),
               if (remoteImageUrl != "" || svgData != "")
                 ElevatedButton(
                     onPressed: () {
@@ -384,7 +444,8 @@ class _GenerateAvatarPageState extends State<GenerateAvatarPage> {
                           svgData,
                           defaultBackgroundColor);
                     },
-                    child: Text("Submit"))
+                    child: Text(
+                        FlutterI18n.translate(context, "avatarPage.submit")))
             ],
           ),
         ),

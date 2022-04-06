@@ -124,14 +124,34 @@ class PersistenceStorage {
     } else {
       imgType = "";
     }
-    _storage!.setString("avatarImgType", imgType);
+    await _storage!.setString("avatarImgType", imgType);
 
-    _storage!.setString("avatarImgPath", avatarImg.imgPath ?? "");
+    await _storage!.setString("avatarImgPath", avatarImg.imgPath ?? "");
 
-    _storage!.setString(
+    await _storage!.setString(
         "avatarBColor",
         avatarImg.background != null
             ? avatarImg.background!.value.toRadixString(16)
             : Colors.white.value.toRadixString(16));
+  }
+
+  Future<void> setUserEmail(String email) async {
+    await _initStorage();
+    await _storage!.setString("userAccount", email);
+  }
+
+  Future<void> setUserPassword(String ps) async {
+    await _initStorage();
+    await _storage!.setString("userPassword", ps);
+  }
+
+  Future<String> getUserEmail() async {
+    await _initStorage();
+    return _storage!.getString("userAccount") ?? "";
+  }
+
+  Future<String> getUserPassword() async {
+    await _initStorage();
+    return _storage!.getString("userPassword") ?? "";
   }
 }

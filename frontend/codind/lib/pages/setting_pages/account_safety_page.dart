@@ -112,6 +112,16 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
               trailing: Text("这里写ID"),
             ),
           ),
+          Container(
+            color: Colors.white,
+            child: ListTile(
+              title: Text(
+                "账户",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              trailing: Text("这里是email"),
+            ),
+          ),
 
           const SizedBox(
             height: 20,

@@ -106,3 +106,18 @@ resume:
   edu: "教育经历"
   work: "工作经历"
   abi: "能力" 
+
+avatarPage:
+  chooseImgType: "选择图片类型"
+  chooseAvatarType: "选择头像类型"
+  inputKeyword: "输入关键字"
+  bgColor: "选择背景色"
+  chooseMood: "选择神情"
+  warning1: "1. 可以输入任意关键字，但请不要输入隐私信息。\n2. 关键字最大长度为15。"
+  warning2: "开源的flutter_svg (1.0.3版本)库在web端渲染存在一些问题(https://github.com/dnfield/flutter_svg/issues/690)，所以本人会对svg的xml先进行一次解析，如果遇到显示问题请切换关键词重试。"
+  warning3: "关键字不可为空"
+  warning4: "可不填"
+  select: "选择"
+  keyword: "关键字"
+  generate: "生成"
+  submit: "提交"

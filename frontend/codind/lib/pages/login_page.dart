@@ -11,6 +11,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_login/flutter_login.dart';
+import '../utils/shared_preference_utils.dart';
 import './main_page_v2.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:provider/provider.dart';
@@ -21,18 +22,47 @@ const users = {
   'hunter@gmail.com': 'hunter',
 };
 
-class LoginScreen extends StatelessWidget {
-  Duration get loginTime => const Duration(milliseconds: 2250);
+class LoginScreen extends StatefulWidget {
+  LoginScreen({Key? key}) : super(key: key);
 
-  Future<String?> _authUser(LoginData data) {
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  Duration get loginTime => const Duration(milliseconds: 2250);
+  PersistenceStorage ps = PersistenceStorage();
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+      var logdata = LoginData(
+          name: await ps.getUserEmail(), password: await ps.getUserPassword());
+
+      if (logdata.name != "" && logdata.password != "") {
+        var res = await _authUser(logdata);
+        if (res == null) {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => MainPageV2(),
+          ));
+        }
+      }
+    });
+  }
+
+  Future<String?> _authUser(LoginData data) async {
     debugPrint('Name: ${data.name}, Password: ${data.password}');
-    return Future.delayed(loginTime).then((_) {
+    return Future.delayed(loginTime).then((_) async {
       if (!users.containsKey(data.name)) {
         return 'User not exists';
       }
       if (users[data.name] != data.password) {
         return 'Password does not match';
       }
+
+      await ps.setUserEmail(data.name);
+      await ps.setUserPassword(data.password);
+
       return null;
     });
   }
@@ -57,7 +87,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint(
-        "[debug-i18n-state ]: ${context.read<LanguageController>().currentLang}");
+        "[debug-i18n-state ]: ${context.read<LanguageControllerV2>().currentLang}");
 
     LoginMessages messages = LoginMessages(
       passwordHint: FlutterI18n.translate(context, "login-labels.PasswordHint"),
@@ -124,7 +154,10 @@ class LoginScreen extends StatelessWidget {
       messages: messages,
       // titleTag: "aaa",
       title: '随身助手',
-      theme: LoginTheme(primaryColor: const Color.fromARGB(255, 223, 211, 195)),
+      theme: LoginTheme(
+          primaryColor: const Color.fromARGB(255, 223, 211, 195),
+          buttonStyle: const TextStyle(color: Colors.black),
+          switchAuthTextColor: const Color.fromARGB(255, 223, 211, 195)),
       logo: const AssetImage('assets/icon_no_background.png'),
       onLogin: _authUser,
       onSignup: _signupUser,
@@ -134,24 +167,6 @@ class LoginScreen extends StatelessWidget {
         ));
       },
       onRecoverPassword: _recoverPassword,
-    );
-  }
-}
-
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (_) => LanguageController(context),
-          ),
-        ],
-        child: LoginScreen(),
-      ),
     );
   }
 }

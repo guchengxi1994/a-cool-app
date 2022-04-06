@@ -10,7 +10,6 @@
 import 'dart:io';
 
 import 'package:codind/pages/login_page.dart';
-import 'package:codind/pages/setting_pages/generate_avatar_page.dart';
 
 import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
@@ -24,8 +23,6 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 import 'bloc/my_blocs.dart';
 import 'globals.dart';
-import 'pages/main_page_v2.dart';
-import 'pages/pages.dart' show MainPage;
 import 'providers/my_providers.dart';
 import 'package:provider/provider.dart';
 
@@ -42,14 +39,17 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
 Future main() async {
   // 获取 theme
   WidgetsFlutterBinding.ensureInitialized();
-  // List<String>? ls = await spGetColorData();
   PersistenceStorage ps = PersistenceStorage();
   List<String>? ls = await ps.getColorData();
-  HttpOverrides.global = MyHttpOverrides();
-  ByteData data =
-      await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
-  SecurityContext.defaultContext
-      .setTrustedCertificatesBytes(data.buffer.asUint8List());
+
+  // somehow on mobiles cannot access the avatar-generate-server
+  if (PlatformUtils.isMobile) {
+    HttpOverrides.global = MyHttpOverrides();
+    ByteData data =
+        await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
+    SecurityContext.defaultContext
+        .setTrustedCertificatesBytes(data.buffer.asUint8List());
+  }
 
   BlocOverrides.runZoned(
       (() => runApp(MultiProvider(
@@ -74,18 +74,23 @@ Future main() async {
               ChangeNotifierProvider(
                 create: (_) => AvatarController(),
               ),
+              ChangeNotifierProvider(
+                create: (_) => LanguageControllerV2(),
+              ),
             ],
             child: MyApp(
               colorList: ls,
+              lang: "zh_CN",
             ),
           ))),
       blocObserver: SimpleBlocObserver());
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key, this.colorList}) : super(key: key);
-  // final FlutterI18nDelegate flutterI18nDelegate;
+  const MyApp({Key? key, this.colorList, this.lang}) : super(key: key);
+  // final getI18n flutterI18nDelegate;
   final List<String>? colorList;
+  final String? lang;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -95,21 +100,31 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    if (widget.colorList != null) {
-      Map<String, Color> savedColor = {
-        "primaryColor": Color(int.parse(widget.colorList![0])),
-        "primaryColorLight": Color(int.parse(widget.colorList![1])),
-        "primaryColorDark": Color(int.parse(widget.colorList![2])),
-        "bottomAppBarColor": Color(int.parse(widget.colorList![3])),
-        "appBarColor": Color(int.parse(widget.colorList![4])),
-      };
 
-      WidgetsBinding.instance!.addPostFrameCallback(
-        (timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback(
+      (timeStamp) async {
+        if (widget.colorList != null) {
+          Map<String, Color> savedColor = {
+            "primaryColor": Color(int.parse(widget.colorList![0])),
+            "primaryColorLight": Color(int.parse(widget.colorList![1])),
+            "primaryColorDark": Color(int.parse(widget.colorList![2])),
+            "bottomAppBarColor": Color(int.parse(widget.colorList![3])),
+            "appBarColor": Color(int.parse(widget.colorList![4])),
+          };
           context.read<ThemeController>().setThemeByMap(savedColor);
-        },
-      );
-    }
+        }
+
+        // somehow on web there is a null-value excepthon when using flutter_i18n,
+        // so i add one second duration
+        if (!PlatformUtils.isWeb) {
+          context.read<LanguageControllerV2>().changeLanguage(widget.lang!);
+        } else {
+          Future.delayed(const Duration(seconds: 1)).then((value) => context
+              .read<LanguageControllerV2>()
+              .changeLanguage(widget.lang!));
+        }
+      },
+    );
   }
 
   @override
@@ -141,10 +156,10 @@ class _MyAppState extends State<MyApp> {
                 child: FlutterI18n.rootAppBuilder().call(context, child));
           },
           // home: MainPageV2(),
-          home: const LoginPage(),
+          home: LoginScreen(),
           navigatorObservers: [FlutterSmartDialog.observer],
           localizationsDelegates: [
-            flutterI18nDelegate,
+            getI18n(context.watch<LanguageControllerV2>().currentLang),
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate
           ],

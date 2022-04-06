@@ -11,12 +11,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
+@Deprecated("should not be used")
 class LanguageController extends ChangeNotifier {
   BuildContext _context;
   LanguageController(this._context);
 
   String _currentlang = "zh_CN";
   String get currentLang => _currentlang;
+
+  List<String> langList = ["zh_CN", "en"];
 
   getContext() => _context;
   setContext(BuildContext context) => _context = context;
@@ -41,5 +44,19 @@ class LanguageCubit extends Cubit {
     _currentlang = lang;
     await FlutterI18n.refresh(_context, Locale(lang));
     emit(state);
+  }
+}
+
+class LanguageControllerV2 extends ChangeNotifier {
+  String _currentlang = "zh_CN";
+  String get currentLang => _currentlang;
+  List<String> langList = ["zh_CN", "en"];
+
+  changeLanguage(String lang) {
+    debugPrint("[current lang] : $lang ");
+    if (_currentlang != lang) {
+      _currentlang = lang;
+      notifyListeners();
+    }
   }
 }

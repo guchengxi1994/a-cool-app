@@ -111,3 +111,19 @@ resume:
   edu: "Education"
   work: "Work experiences"
   abi: "Skills" 
+
+
+avatarPage:
+  chooseImgType: "Choose an image type"
+  chooseAvatarType: "Choose avatar type"
+  inputKeyword: "Input a keyword"
+  bgColor: "Background color"
+  chooseMood: "Choose a mood"
+  warning1: "1. The keyword can be anything you like - but don't use any sensitive or personal data here. \n2. Max length of the keyword is 15."
+  warning2: "The open source flutter_svg (version 1.0.3) library has some problems when rendering on the web (https://github.com/dnfield/flutter_svg/issues/690), so I will parse the xml of the svg first, if I encounter If there is a problem, please switch keywords and try again."
+  warning3: "Keyword cannot be blank"
+  warning4: "Value can be blank"
+  select: "Select"
+  keyword: "Keyword"
+  generate: "Generate"
+  submit: "Submit"
