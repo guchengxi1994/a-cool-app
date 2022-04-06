@@ -7,6 +7,8 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-03-22 22:05:49
  */
+import 'dart:io';
+
 import 'package:codind/pages/login_page.dart';
 import 'package:codind/pages/setting_pages/generate_avatar_page.dart';
 
@@ -14,6 +16,7 @@ import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -42,6 +45,11 @@ Future main() async {
   // List<String>? ls = await spGetColorData();
   PersistenceStorage ps = PersistenceStorage();
   List<String>? ls = await ps.getColorData();
+  HttpOverrides.global = MyHttpOverrides();
+  ByteData data =
+      await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
+  SecurityContext.defaultContext
+      .setTrustedCertificatesBytes(data.buffer.asUint8List());
 
   BlocOverrides.runZoned(
       (() => runApp(MultiProvider(

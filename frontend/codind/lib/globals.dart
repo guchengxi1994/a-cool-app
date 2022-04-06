@@ -7,6 +7,8 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-03-22 21:47:48
  */
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
@@ -21,3 +23,12 @@ final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
 );
 
 const leftBackIconSize = 35.0;
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}

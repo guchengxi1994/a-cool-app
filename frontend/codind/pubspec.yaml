@@ -97,6 +97,7 @@ flutter:
     - assets/icon_no_background.png   # app icon no background
     - assets/_test_svg.svg  # for svg test
     - assets/_test_svg_01.svg  # for svg test
+    - assets/ca/lets-encrypt-r3.pem # ca
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
