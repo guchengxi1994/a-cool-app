@@ -45,7 +45,8 @@ button:
     language: "Change language"
     delete: "Delete"
     update: "Update"
-    ok: "OK"
+    ok: "Ok"
+    cancel: "Cancel"
     quit: "Quit"
     retry: "Retry"
 

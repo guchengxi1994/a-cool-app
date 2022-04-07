@@ -9,6 +9,7 @@
  */
 import 'dart:io';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:codind/pages/login_page.dart';
 
 import 'package:codind/router.dart';
@@ -49,6 +50,27 @@ Future main() async {
         await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
     SecurityContext.defaultContext
         .setTrustedCertificatesBytes(data.buffer.asUint8List());
+  }
+
+  if (PlatformUtils.isMobile) {
+    AwesomeNotifications().initialize(
+        'resource://drawable/icon',
+        [
+          NotificationChannel(
+              channelKey: 'basic_channel',
+              channelName: 'Basic notifications',
+              channelDescription: 'Notification channel for basic tests',
+              defaultColor: const Color(0xFF9D50DD),
+              ledColor: Colors.white),
+          NotificationChannel(
+              channelKey: 'scheduled_channel',
+              channelName: 'Scheduled notifications',
+              defaultColor: Colors.teal,
+              locked: true,
+              importance: NotificationImportance.High,
+              ledColor: Colors.white),
+        ],
+        debug: true);
   }
 
   BlocOverrides.runZoned(
@@ -100,6 +122,18 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
+    AwesomeNotifications().actionStream.listen((receivedNotification) {
+      Global.navigatorKey.currentState!.pushNamedAndRemoveUntil(
+          Routers.pageMain,
+          (route) =>
+              (route.settings.name != Routers.pageMain || route.isFirst));
+    });
+
+    AwesomeNotifications().createdStream.listen((event) {
+      ScaffoldMessenger.of(Global.navigatorKey.currentContext!)
+          .showSnackBar(SnackBar(content: Text("A notification created")));
+    });
 
     WidgetsBinding.instance!.addPostFrameCallback(
       (timeStamp) async {

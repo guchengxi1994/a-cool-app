@@ -13,15 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
 
-// final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
-//   translationLoader: FileTranslationLoader(
-//       decodeStrategies: [YamlDecodeStrategy()],
-//       useCountryCode: false,
-//       fallbackFile: 'zh_CN',
-//       basePath: 'assets/i18n',
-//       forcedLocale: const Locale('zh_CN')),
-// );
-
 FlutterI18nDelegate getI18n(String lang) {
   FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
     translationLoader: FileTranslationLoader(

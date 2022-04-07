@@ -16,6 +16,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/my_providers.dart';
+import 'setting_pages/new_todos_page.dart';
 
 /// this is for mobile
 /// test on web first
@@ -147,7 +148,14 @@ class _MainPageV2State extends State<MainPageV2> {
 
           if (index == 0) {
             return InkWell(
-                onTap: () {},
+                onTap: () async {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return NewTodosPage(
+                      time: null,
+                      pageName: null,
+                    );
+                  }));
+                },
                 child: Container(
                     margin: const EdgeInsets.only(top: 10, bottom: 10),
                     padding: const EdgeInsets.only(
@@ -205,7 +213,7 @@ class _MainPageV2State extends State<MainPageV2> {
                 flex: 1,
                 child: UserAvatarWidget(
                   avatarImg: context.watch<AvatarController>().img,
-                  userInfo: "用户A",
+                  userInfo: "测试用户",
                 ),
               ),
               Expanded(

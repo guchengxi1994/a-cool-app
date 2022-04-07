@@ -108,6 +108,7 @@ class _FileExplorePageState extends State<FileExplorePage>
                       return CupertinoAlertDialog(
                         title: const Text("输入文件夹名称"),
                         content: Material(
+                          color: Colors.transparent,
                           child: TextField(
                             decoration: InputDecoration(
                                 errorText: validateString(text)),

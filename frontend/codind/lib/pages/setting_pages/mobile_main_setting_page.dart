@@ -3,158 +3,124 @@ import 'package:codind/providers/my_providers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
-import '../_background_color_mixin.dart';
+import '../_mobile_base_page.dart';
 
-class MobileMainSettingPage extends StatefulWidget {
-  MobileMainSettingPage({Key? key}) : super(key: key);
+class MobileMainSettingPage extends MobileBasePage {
+  MobileMainSettingPage({Key? key, required String pageName})
+      : super(key: key, pageName: pageName);
 
   @override
-  State<MobileMainSettingPage> createState() => _MobileMainSettingPageState();
+  MobileBasePageState<MobileBasePage> getState() {
+    return _MobileMainSettingPageState();
+  }
 }
 
-class _MobileMainSettingPageState extends State<MobileMainSettingPage>
-    with BackgroundColorMixin {
+class _MobileMainSettingPageState<T>
+    extends MobileBasePageState<MobileMainSettingPage> {
   final TextStyle _style =
       const TextStyle(fontWeight: FontWeight.bold, color: Colors.black);
 
   final langList = ["zh_CN", "en"];
 
   @override
-  baseBackgroundBuild(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Text(
-          FlutterI18n.translate(context, "label.settings"),
-          style: const TextStyle(
-              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(
-              Icons.chevron_left,
-              size: 35,
-              color: Color.fromARGB(255, 78, 63, 63),
-            )),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.only(top: 10, bottom: 10),
-        child: Column(
-          children: [
-            Container(
-              color: Colors.white,
-              child: ListTile(
-                onTap: () {
-                  // Navigator.of(context).pushNamed(Routers.pageAccountSafty);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return AccountSafetyPage();
-                  }));
-                },
-                title: Text(
-                  "账号与安全",
-                  style: _style,
-                ),
-                trailing: Icon(
-                  Icons.chevron_right,
-                  size: 25,
-                ),
+  baseBuild(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      child: Column(
+        children: [
+          Container(
+            color: Colors.white,
+            child: ListTile(
+              onTap: () {
+                // Navigator.of(context).pushNamed(Routers.pageAccountSafty);
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return AccountSafetyPage();
+                }));
+              },
+              title: Text(
+                "账号与安全",
+                style: _style,
+              ),
+              trailing: Icon(
+                Icons.chevron_right,
+                size: 25,
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              color: Colors.white,
-              child: ListTile(
-                title: Text(
-                  "隐私政策",
-                  style: _style,
-                ),
-                trailing: Icon(
-                  Icons.chevron_right,
-                  size: 25,
-                ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            color: Colors.white,
+            child: ListTile(
+              title: Text(
+                "隐私政策",
+                style: _style,
+              ),
+              trailing: Icon(
+                Icons.chevron_right,
+                size: 25,
               ),
             ),
-            Container(
-              color: Colors.white,
-              child: ListTile(
-                title: Text(
-                  "服务协议",
-                  style: _style,
-                ),
-                trailing: Icon(
-                  Icons.chevron_right,
-                  size: 25,
-                ),
+          ),
+          Container(
+            color: Colors.white,
+            child: ListTile(
+              title: Text(
+                "服务协议",
+                style: _style,
+              ),
+              trailing: Icon(
+                Icons.chevron_right,
+                size: 25,
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              color: Colors.white,
-              child: ListTile(
-                onTap: () async {
-                  var res = await showCupertinoDialog(
-                      context: context,
-                      builder: (context) {
-                        return ChooseLangDialog();
-                      });
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            color: Colors.white,
+            child: ListTile(
+              onTap: () async {
+                var res = await showCupertinoDialog(
+                    context: context,
+                    builder: (context) {
+                      return ChooseLangDialog();
+                    });
 
-                  var _lang = langList[res];
+                var _lang = langList[res];
 
-                  context.read<LanguageControllerV2>().changeLanguage(_lang);
-
-                  // final currentLang = FlutterI18n.currentLocale(context)!;
-                  // final nextLang = Locale(_lang);
-                  // if (currentLang != nextLang) {
-                  //   await FlutterI18n.refresh(context, nextLang);
-                  //   setState(() {});
-                  // }
-
-                  // if (_lang != context.read<LanguageController>().currentLang) {
-                  //   await context
-                  //       .read<LanguageController>()
-                  //       .changeLanguage(_lang);
-                  //   setState(() {});
-                  // }
-                },
-                title: Text(
-                  "选择语言",
-                  style: _style,
-                ),
-                trailing: Icon(
-                  Icons.chevron_right,
-                  size: 25,
-                ),
+                context.read<LanguageControllerV2>().changeLanguage(_lang);
+              },
+              title: Text(
+                "选择语言",
+                style: _style,
+              ),
+              trailing: Icon(
+                Icons.chevron_right,
+                size: 25,
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            InkWell(
-              child: Container(
-                  height: 50,
-                  color: Colors.white,
-                  child: Center(
-                    child: Text(
-                      "退出登录",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red),
-                    ),
-                  )),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          InkWell(
+            child: Container(
+                height: 50,
+                color: Colors.white,
+                child: Center(
+                  child: Text(
+                    "退出登录",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red),
+                  ),
+                )),
+          ),
+        ],
       ),
     );
   }
@@ -175,6 +141,7 @@ class _ChooseLangDialogState extends State<ChooseLangDialog> {
     return CupertinoAlertDialog(
       title: Text("选择语言"),
       content: Material(
+        color: Colors.transparent,
         child: Column(
           children: [
             Row(

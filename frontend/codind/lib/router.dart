@@ -10,6 +10,7 @@
 
 import 'package:codind/pages/pages.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 class Global {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey();
@@ -44,7 +45,9 @@ class Routers {
     pageYourAbilities: (context) => YourAbilitiesPage(),
     pageResumePage: (context) => ResumePage(),
     // pageAvatarSettingPage: (context) => GenerateAvatarPage(),
-    pageMobileSettingsPage: (context) => MobileMainSettingPage(),
+    pageMobileSettingsPage: (context) => MobileMainSettingPage(
+          pageName: FlutterI18n.translate(context, "label.settings"),
+        ),
     // pageAccountSafty: (context) => AccountSafetyPage(),
   };
 }
