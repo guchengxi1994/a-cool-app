@@ -36,6 +36,7 @@ label:
   selectTableSize: "Select table size"
   nothingtodo: "Nothing to do"
   qrcodescan: "Qr Code Scanner"
+  todos: "Todo list"
 
 # Objects can be many levels deep
 button:
@@ -49,6 +50,7 @@ button:
     cancel: "Cancel"
     quit: "Quit"
     retry: "Retry"
+    
 
 errors: 
   invalidName: "Invalid name"

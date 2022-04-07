@@ -33,6 +33,7 @@ label:
   selectTableSize: "选择表格尺寸"
   nothingtodo: "今日无事"
   qrcodescan: "扫描二维码"
+  todos: "计划一览"
 
 button:
   label:
@@ -45,6 +46,7 @@ button:
     cancel: "取消"
     quit: "取消"
     retry: "重试"
+    
 
 errors: 
   invalidName: "名称不合法"

@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 19:54:23
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-03-22 21:21:19
+ * @LastEditTime: 2022-04-07 22:40:58
  */
 
 import 'package:codind/router.dart';
@@ -152,7 +152,7 @@ class _MainPageV2State extends State<MainPageV2> {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return NewTodosPage(
                       time: null,
-                      pageName: null,
+                      pageName: FlutterI18n.translate(context, "label.todos"),
                     );
                   }));
                 },
@@ -170,8 +170,7 @@ class _MainPageV2State extends State<MainPageV2> {
                         child: Container(
                           padding: const EdgeInsets.only(left: 30),
                           child: Text(
-                            // FlutterI18n.translate(context, "resume.title"),
-                            "Todo list",
+                            FlutterI18n.translate(context, "label.todos"),
                             style: const TextStyle(
                                 fontSize: fontSize,
                                 fontWeight: FontWeight.bold),

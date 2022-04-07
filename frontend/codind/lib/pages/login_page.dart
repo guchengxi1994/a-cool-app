@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 19:54:23
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-03-22 22:38:07
+ * @LastEditTime: 2022-04-07 22:43:03
  */
 
 import 'package:flutter/material.dart';
@@ -18,8 +18,7 @@ import 'package:provider/provider.dart';
 
 // for test
 const users = {
-  'test@qq.com': '123456',
-  'hunter@gmail.com': 'hunter',
+  'test@xiaoshuyui.org': '123456',
 };
 
 class LoginScreen extends StatefulWidget {

@@ -3,6 +3,7 @@ import 'package:codind/providers/my_providers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../widgets/widgets.dart' show CustomListTile;
 import '../_mobile_base_page.dart';
 
 class MobileMainSettingPage extends MobileBasePage {
@@ -28,79 +29,52 @@ class _MobileMainSettingPageState<T>
       padding: const EdgeInsets.only(top: 10, bottom: 10),
       child: Column(
         children: [
-          Container(
-            color: Colors.white,
-            child: ListTile(
-              onTap: () {
-                // Navigator.of(context).pushNamed(Routers.pageAccountSafty);
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return AccountSafetyPage();
-                }));
-              },
-              title: Text(
-                "账号与安全",
-                style: _style,
-              ),
-              trailing: Icon(
-                Icons.chevron_right,
-                size: 25,
-              ),
+          CustomListTile(
+            nextPage: AccountSafetyPage(),
+            style: _style,
+            title: "账号与安全",
+            trailing: const Icon(
+              Icons.chevron_right,
+              size: 25,
             ),
           ),
           const SizedBox(
             height: 10,
           ),
-          Container(
-            color: Colors.white,
-            child: ListTile(
-              title: Text(
-                "隐私政策",
-                style: _style,
-              ),
-              trailing: Icon(
-                Icons.chevron_right,
-                size: 25,
-              ),
+          CustomListTile(
+            style: _style,
+            title: "隐私政策",
+            trailing: const Icon(
+              Icons.chevron_right,
+              size: 25,
             ),
           ),
-          Container(
-            color: Colors.white,
-            child: ListTile(
-              title: Text(
-                "服务协议",
-                style: _style,
-              ),
-              trailing: Icon(
-                Icons.chevron_right,
-                size: 25,
-              ),
+          CustomListTile(
+            style: _style,
+            title: "服务协议",
+            trailing: const Icon(
+              Icons.chevron_right,
+              size: 25,
             ),
           ),
           const SizedBox(
             height: 10,
           ),
-          Container(
-            color: Colors.white,
-            child: ListTile(
-              onTap: () async {
-                var res = await showCupertinoDialog(
-                    context: context,
-                    builder: (context) {
-                      return ChooseLangDialog();
-                    });
-
-                var _lang = langList[res];
-
-                context.read<LanguageControllerV2>().changeLanguage(_lang);
-              },
-              title: Text(
-                "选择语言",
-                style: _style,
-              ),
-              trailing: Icon(
-                Icons.chevron_right,
-                size: 25,
-              ),
+          CustomListTile(
+            style: _style,
+            title: "选择语言",
+            onTap: () async {
+              var res = await showCupertinoDialog(
+                  context: context,
+                  builder: (context) {
+                    return ChooseLangDialog();
+                  });
+              var _lang = langList[res];
+              context.read<LanguageControllerV2>().changeLanguage(_lang);
+            },
+            trailing: const Icon(
+              Icons.chevron_right,
+              size: 25,
             ),
           ),
           const SizedBox(

@@ -1,9 +1,12 @@
 import 'package:codind/notifications/notification_utils.dart';
 import 'package:codind/notifications/notifications.dart';
 import 'package:codind/pages/_mobile_base_page.dart';
+import 'package:codind/utils/utils.dart';
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+
+import '../../widgets/widgets.dart' show CustomListTile;
 
 class NewTodosPage extends MobileBasePage {
   NewTodosPage({Key? key, required pageName, this.time})
@@ -46,51 +49,45 @@ class _NewTodosPageState<T> extends MobileBasePageState<NewTodosPage> {
           const SizedBox(
             height: 20,
           ),
-          Container(
-            color: Colors.white,
-            child: ListTile(
-              onTap: () async {
-                var res = await Navigator.of(context).push(
-                  showPicker(
-                      context: context,
-                      value: _time,
-                      onChange: onTimeChanged,
-                      cancelText:
-                          FlutterI18n.translate(context, "button.label.cancel"),
-                      okText:
-                          FlutterI18n.translate(context, "button.label.ok")),
-                );
+          CustomListTile(
+            style: _style,
+            onTap: () async {
+              if (!PlatformUtils.isMobile) {
+                showToastMessage("当前平台不支持", context);
+                return;
+              }
 
-                if (res != null) {
-                  NotificationWeekAndTime _w =
-                      NotificationWeekAndTime(dayOfTheWeek: 4, timeOfDay: res);
-                  await createReminderNotivication(_w);
-                }
-              },
-              title: Text(
-                "Create new todos",
-                style: _style,
-              ),
-              trailing: Icon(
-                Icons.chevron_right,
-                size: 25,
-              ),
+              var res = await Navigator.of(context).push(
+                showPicker(
+                    context: context,
+                    value: _time,
+                    onChange: onTimeChanged,
+                    cancelText:
+                        FlutterI18n.translate(context, "button.label.cancel"),
+                    okText: FlutterI18n.translate(context, "button.label.ok")),
+              );
+
+              if (res != null) {
+                NotificationWeekAndTime _w =
+                    NotificationWeekAndTime(dayOfTheWeek: 4, timeOfDay: res);
+                await createReminderNotivication(_w);
+              }
+            },
+            title: "Create new todos",
+            trailing: const Icon(
+              Icons.chevron_right,
+              size: 25,
             ),
           ),
           const SizedBox(
             height: 10,
           ),
-          Container(
-            color: Colors.white,
-            child: ListTile(
-              title: Text(
-                "Check todos",
-                style: _style,
-              ),
-              trailing: Icon(
-                Icons.chevron_right,
-                size: 25,
-              ),
+          CustomListTile(
+            style: _style,
+            title: "Check todos",
+            trailing: const Icon(
+              Icons.chevron_right,
+              size: 25,
             ),
           ),
         ],
