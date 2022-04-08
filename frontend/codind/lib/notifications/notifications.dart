@@ -1,5 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:codind/notifications/notification_utils.dart';
+
+import '../entity/entity.dart' show ScheduleNotificationEntity;
 
 Future<void> createBasicNotification() async {
   await AwesomeNotifications().createNotification(
@@ -12,27 +13,28 @@ Future<void> createBasicNotification() async {
 }
 
 Future<void> createReminderNotivication(
-    NotificationWeekAndTime notification) async {
+    ScheduleNotificationEntity notification) async {
   await AwesomeNotifications().createNotification(
       content: NotificationContent(
-          id: 21,
+          id: notification.notificationId,
           channelKey: "scheduled_channel",
-          title: "scheduled notification",
-          body: "see~",
+          title: notification.title,
+          body: notification.subTitle,
           notificationLayout: NotificationLayout.Default),
-      actionButtons: [
-        NotificationActionButton(key: "Mark_done", label: "Mark Done")
-      ],
+      actionButtons: [NotificationActionButton(key: "OK", label: "OK")],
       schedule: NotificationCalendar(
-        weekday: notification.dayOfTheWeek,
         hour: notification.timeOfDay.hour,
         minute: notification.timeOfDay.minute,
         second: 0,
         millisecond: 0,
-        repeats: true,
+        repeats: notification.isRepeat,
       ));
 }
 
-Future<void> cancelScheduleNotifications() async {
+Future<void> cancelAllScheduleNotifications() async {
   await AwesomeNotifications().cancelAllSchedules();
+}
+
+Future<void> cancelScheduleNotifications(int id) async {
+  await AwesomeNotifications().cancel(id);
 }

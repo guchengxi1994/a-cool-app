@@ -16,7 +16,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/my_providers.dart';
-import 'setting_pages/new_todos_page.dart';
+import 'new_todos_page.dart';
 
 /// this is for mobile
 /// test on web first
@@ -151,7 +151,6 @@ class _MainPageV2State extends State<MainPageV2> {
                 onTap: () async {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return NewTodosPage(
-                      time: null,
                       pageName: FlutterI18n.translate(context, "label.todos"),
                     );
                   }));
