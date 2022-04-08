@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 19:54:23
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-07 22:40:58
+ * @LastEditTime: 2022-04-08 21:14:44
  */
 
 import 'package:codind/router.dart';
@@ -30,7 +30,6 @@ class MainPageV2 extends StatefulWidget {
 
 class _MainPageV2State extends State<MainPageV2> {
   final ScrollController _controller = ScrollController();
-  static const double fontSize = 25.0;
 
   @override
   void initState() {
@@ -97,21 +96,9 @@ class _MainPageV2State extends State<MainPageV2> {
         itemBuilder: (context, index) {
           if (index == 1) {
             return MainPageCard(
-              collapsedWidget: Container(
-                height: 100,
-                color: const Color.fromARGB(255, 199, 177, 152),
-                // color: Colors.white,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 30),
-                    child: Text(
-                      FlutterI18n.translate(context, "resume.abi"),
-                      style: const TextStyle(
-                          fontSize: fontSize, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
+              collapsedWidget: MainPageCustomListTile(
+                icon: Icon(Icons.pan_tool),
+                title: FlutterI18n.translate(context, "resume.abi"),
               ),
               expanedWidget: const RadarAbilityChart(),
               closeIconColor: Colors.black,
@@ -122,28 +109,10 @@ class _MainPageV2State extends State<MainPageV2> {
             return InkWell(
                 onTap: () =>
                     Navigator.of(context).pushNamed(Routers.pageResumePage),
-                child: Container(
-                    margin: const EdgeInsets.only(top: 10, bottom: 10),
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                    ),
-                    height: 100,
-                    child: Card(
-                      color: const Color.fromARGB(255, 199, 177, 152),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: Text(
-                            FlutterI18n.translate(context, "resume.title"),
-                            style: const TextStyle(
-                                fontSize: fontSize,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    )));
+                child: MainPageCustomListTile(
+                  icon: Icon(Icons.work),
+                  title: FlutterI18n.translate(context, "resume.title"),
+                ));
           }
 
           if (index == 0) {
@@ -155,28 +124,10 @@ class _MainPageV2State extends State<MainPageV2> {
                     );
                   }));
                 },
-                child: Container(
-                    margin: const EdgeInsets.only(top: 10, bottom: 10),
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                    ),
-                    height: 100,
-                    child: Card(
-                      color: const Color.fromARGB(255, 199, 177, 152),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: Text(
-                            FlutterI18n.translate(context, "label.todos"),
-                            style: const TextStyle(
-                                fontSize: fontSize,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    )));
+                child: MainPageCustomListTile(
+                  icon: Icon(Icons.schedule),
+                  title: FlutterI18n.translate(context, "label.todos"),
+                ));
           }
 
           return Card(

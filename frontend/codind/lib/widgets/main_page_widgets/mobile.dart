@@ -245,44 +245,84 @@ class MainPageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExpandableNotifier(
-        child: Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-      child: ScrollOnExpand(
-        child: Card(
-          clipBehavior: Clip.antiAlias,
-          child: Builder(
-            builder: (context) {
-              var controller =
-                  ExpandableController.of(context, required: true)!;
-              return Expandable(
-                collapsed: InkWell(
-                  onTap: () {
-                    controller.toggle();
-                  },
-                  child: collapsedWidget,
-                ),
-                expanded: Stack(children: [
-                  expanedWidget,
-                  Positioned(
-                      right: 15,
-                      top: 5,
-                      child: IconButton(
-                        onPressed: () {
-                          controller.toggle();
-                        },
-                        icon: Icon(
-                          Icons.close,
-                          size: 30,
-                          color: closeIconColor ?? Colors.black,
-                        ),
-                      ))
-                ]),
-              );
-            },
-          ),
-        ),
+    return ExpandableNotifier(child: ScrollOnExpand(
+      child: Builder(
+        builder: (context) {
+          var controller = ExpandableController.of(context, required: true)!;
+          return Expandable(
+            collapsed: InkWell(
+              onTap: () {
+                controller.toggle();
+              },
+              child: collapsedWidget,
+            ),
+            expanded: Stack(children: [
+              expanedWidget,
+              Positioned(
+                  right: 15,
+                  top: 5,
+                  child: IconButton(
+                    onPressed: () {
+                      controller.toggle();
+                    },
+                    icon: Icon(
+                      Icons.close,
+                      size: 30,
+                      color: closeIconColor ?? Colors.black,
+                    ),
+                  ))
+            ]),
+          );
+        },
       ),
     ));
+  }
+}
+
+class MainPageCustomListTile extends StatelessWidget {
+  MainPageCustomListTile({Key? key, required this.icon, required this.title})
+      : super(key: key);
+  static const double fontSize = 25.0;
+
+  String title;
+  Widget icon;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: const EdgeInsets.only(top: 10, bottom: 10),
+        padding: const EdgeInsets.only(
+          left: 20,
+          right: 20,
+        ),
+        height: 100,
+        child: Card(
+          color: const Color.fromARGB(255, 199, 177, 152),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              padding: const EdgeInsets.only(left: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  // icon,
+                  SizedBox(
+                    height: 60,
+                    width: 60,
+                    child: icon,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    // FlutterI18n.translate(context, "resume.title"),
+                    title,
+                    style: const TextStyle(
+                        fontSize: fontSize, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ));
   }
 }
