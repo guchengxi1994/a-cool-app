@@ -7,15 +7,37 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-02-07 20:19:07
 -->
-# code-find
-
-## 一个用来搜索解决方案、文档归档的个人项目。中文名暂定“书鱼”，取“读书之人，需学会有效摸鱼”之意。英文缩写“codind”.
+# a-cool-flutter-app
 
 # [前端说明](./frontend/codind/README.md)
 
 # [后端说明](./backend/README.md)
 
+# [多端适配说明](./frontend/multi_platform_support.md)
+
+# 开发平台 
+
+Windows 10
+
+# 详细配置
+
+```
+设备名称	MSI
+处理器	Intel(R) Core(TM) i7-10750H CPU @ 2.60GHz   2.59 GHz
+机带 RAM	16.0 GB (15.8 GB 可用)
+设备 ID	********
+产品 ID	********
+系统类型	64 位操作系统, 基于 x64 的处理器
+笔和触控	没有可用于此显示器的笔或触控输入
+```
+
 # 部分演示demo
+
+## 2022.3.16
+
+![image1](https://github.com/guchengxi1994/xiaoshuyui_docs/blob/main/code-find/gantt_demo.gif)
+
+![image2](https://github.com/guchengxi1994/xiaoshuyui_docs/raw/main/code-find/a-small-demo-of-provider.gif)
 
 ## 2022.2.16 一个简易的日程规划工具(bloc实现，后续会在此基础上完成甘特图)
 

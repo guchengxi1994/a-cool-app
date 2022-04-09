@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.0.0+1
+version: 1.0.0-frontend-alpha+2
 
 environment:
   sdk: ">=2.15.1 <3.0.0"
@@ -38,7 +38,8 @@ dependencies:
   flutter_bloc: ^8.0.1
   loading_overlay: ^0.3.0
   flutter_i18n: ^0.31.1
-  fluttertoast: ^8.0.8
+  # fluttertoast: ^8.0.9
+  flutter_smart_dialog: ^3.4.0+2
   dio: ^4.0.4
   extended_image: ^6.0.1
   flutter_markdown: ^0.6.9
@@ -46,6 +47,25 @@ dependencies:
   flutter_colorpicker: ^1.0.3
   shared_preferences: ^2.0.12
   dart_date: ^1.1.1
+  screenshot: ^1.2.3  # save images
+  uuid: ^3.0.6 # uuid
+  graphview: ^1.1.1
+  card_swiper: ^2.0.3  # null-safety swiper
+  flutter_login: ^3.2.0
+  expandable: ^5.0.1
+  fl_chart: ^0.46.0    # different chart
+  # qr_code_scanner: ^0.7.0  # qr code
+  scan: ^1.6.0
+  tuple: ^2.0.0 
+  find_dropdown: ^1.0.0
+  flutter_svg: ^1.0.3  # web端有渲染问题，需自己改xml格式
+  xml: 5.3.1  # 高版本暂时不适配 flutter_test 这个模块
+  # awesome_notifications: 0.7.0-beta.2 这个包 0.6.21和0.7.0暂时有问题
+  awesome_notifications: ^0.0.6+12
+  day_night_time_picker: ^1.0.5
+  package_info_plus: ^1.4.2
+  dropdown_button2: ^1.4.0
+  
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +97,12 @@ flutter:
     - assets/reserved_md_files/
     - assets/emoji.json
     - assets/_json_test.json
+    - assets/images/background/
+    - assets/icon.png   # app icon
+    - assets/icon_no_background.png   # app icon no background
+    - assets/_test_svg.svg  # for svg test
+    - assets/_test_svg_01.svg  # for svg test
+    - assets/ca/lets-encrypt-r3.pem # ca
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -8,11 +8,10 @@
  * @LastEditTime: 2022-02-10 22:05:43
  */
 
+import 'package:codind/pages/_base_page.dart';
+import 'package:codind/pages/setting_pages/_color_setting_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-
-import '_base_page.dart';
-import '_color_setting_page.dart';
 
 class SettingPage extends BasePage {
   SettingPage({required String routeName}) : super(routeName: routeName);

@@ -8,6 +8,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../entity/entity.dart' show DataFrom, Schedule, Subject;
+import '../globals.dart';
 
 // ignore: must_be_immutable
 class BaseMarkdownPreviewPage extends StatefulWidget {
@@ -95,7 +96,19 @@ class _BaseMarkdownPreviewPageState extends State<BaseMarkdownPreviewPage> {
     id = result['subjectId']!;
 
     return Scaffold(
-        appBar: null,
+        appBar: PlatformUtils.isWeb
+            ? null
+            : AppBar(
+                leading: IconButton(
+                  icon: const Icon(
+                    Icons.chevron_left,
+                    size: leftBackIconSize,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
         body: (_ganttBloc.state.scheduleList[index].subject![id].subjectJob!
                     .subjectMdFrom !=
                 DataFrom.net

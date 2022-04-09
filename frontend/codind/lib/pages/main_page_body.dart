@@ -7,8 +7,10 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-02-10 21:52:32
  */
+import 'package:codind/router.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/my_providers.dart';
@@ -41,19 +43,22 @@ class _MainPageBodyState<T> extends BasePageState<MainPageBody> {
       body: Wrap(children: [
         Card(
           child: ListTile(
-            title: const Text("Search ..."),
+            title: Text(FlutterI18n.translate(context, "mainPage.search")),
             onTap: () {},
           ),
         ),
         Card(
           child: ListTile(
-            title: const Text("Saved links"),
-            onTap: () {},
+            title: Text(FlutterI18n.translate(context, "mainPage.savedLinks")),
+            onTap: () {
+              Navigator.of(context).pushNamed(Routers.pageSavedLinks);
+            },
           ),
         ),
         Card(
           child: ListTile(
-            title: const Text("Start writing"),
+            title:
+                Text(FlutterI18n.translate(context, "mainPage.startWriting")),
             onTap: () {
               Navigator.of(context).pushNamed(Routers.pageMdEditor);
             },
@@ -61,7 +66,7 @@ class _MainPageBodyState<T> extends BasePageState<MainPageBody> {
         ),
         Card(
           child: ListTile(
-            title: const Text("Folder"),
+            title: Text(FlutterI18n.translate(context, "mainPage.folder")),
             onTap: () {
               Navigator.of(context).pushNamed(Routers.pageFolder);
             },
@@ -69,12 +74,28 @@ class _MainPageBodyState<T> extends BasePageState<MainPageBody> {
         ),
         Card(
           child: ListTile(
-            title: const Text("Schedule"),
+            title: Text(FlutterI18n.translate(context, "mainPage.schedule")),
             onTap: () {
               Navigator.of(context).pushNamed(Routers.pageSchedule);
             },
           ),
-        )
+        ),
+        Card(
+          child: ListTile(
+            title: Text(FlutterI18n.translate(context, "mainPage.mindMap")),
+            onTap: () {
+              Navigator.of(context).pushNamed(Routers.pageMindMap);
+            },
+          ),
+        ),
+        Card(
+          child: ListTile(
+            title: Text(FlutterI18n.translate(context, "mainPage.ability")),
+            onTap: () {
+              Navigator.of(context).pushNamed(Routers.pageYourAbilities);
+            },
+          ),
+        ),
       ]),
     );
   }

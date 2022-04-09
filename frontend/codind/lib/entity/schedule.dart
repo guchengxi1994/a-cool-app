@@ -6,6 +6,7 @@ class Schedule {
   String? title;
   double? completion;
   List<Subject>? subject;
+  bool? editable = true;
   // String? startTime = "";
   // String? endTime = "";
 
@@ -25,7 +26,7 @@ class Schedule {
   int get toMonth => _getEndTime().month;
   int get toYear => _getEndTime().year;
 
-  Schedule({this.title, this.completion, this.subject});
+  Schedule({this.title, this.completion, this.subject, this.editable});
 
   String get duation => _getDuation();
 
@@ -76,6 +77,7 @@ class Schedule {
         subject!.add(Subject.fromJson(v));
       });
     }
+    editable = json['editable'] ?? true;
   }
 
   Map<String, dynamic> toJson() {
@@ -85,6 +87,7 @@ class Schedule {
     if (subject != null) {
       data['subject'] = subject!.map((v) => v.toJson()).toList();
     }
+    data['editable'] = editable ?? true;
     return data;
   }
 
@@ -107,6 +110,7 @@ class Subject {
   String? to;
   double? subCompletion;
   SubjectJob? subjectJob;
+  bool? editable = true;
 
   @override
   String toString() {
@@ -138,13 +142,37 @@ class Subject {
   }
 
   Subject(
-      {this.subTitle, this.from, this.to, this.subCompletion, this.subjectJob});
+      {this.subTitle,
+      this.from,
+      this.to,
+      this.subCompletion,
+      this.subjectJob,
+      this.editable});
 
   Subject.fromJson(Map<String, dynamic> json) {
     subTitle = json['subTitle'];
     from = json['from'];
     to = json['to'];
     subCompletion = json['subCompletion'];
+    editable = json['editable'] ?? true;
+
+    try {
+      String job = json['job'];
+      String type = job.split("__split__")[0];
+      String content = job.split("__split__")[1];
+      SubjectJob _subjectJob = SubjectJob();
+      if (type == "string") {
+        _subjectJob.subjectMdFrom = DataFrom.string;
+      } else if (type == "net") {
+        _subjectJob.subjectMdFrom = DataFrom.net;
+      } else if (type == "asset") {
+        _subjectJob.subjectMdFrom = DataFrom.asset;
+      } else {
+        _subjectJob.subjectMdFrom = DataFrom.file;
+      }
+      _subjectJob.fileLocation = content;
+      subjectJob = _subjectJob;
+    } catch (_) {}
   }
 
   int get fromDay => _getStartTime().day;
@@ -198,6 +226,20 @@ class Subject {
     data['from'] = from;
     data['to'] = to;
     data['subCompletion'] = subCompletion;
+    data['editable'] = editable ?? true;
+    if (subjectJob != null) {
+      var s = "";
+      if (subjectJob!.subjectMdFrom == DataFrom.asset) {
+        s = "asset";
+      } else if (subjectJob!.subjectMdFrom == DataFrom.net) {
+        s = "net";
+      } else if (subjectJob!.subjectMdFrom == DataFrom.file) {
+        s = "file";
+      } else {
+        s = "string";
+      }
+      data['job'] = s + "__split__" + (subjectJob!.fileLocation ?? "");
+    }
     return data;
   }
 

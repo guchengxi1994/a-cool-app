@@ -8,83 +8,10 @@
  * @LastEditTime: 2022-02-09 19:40:34
  */
 
+import 'package:codind/entity/avatar_img_entity.dart';
+import 'package:codind/entity/enums.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-/// this part will be removed later
-
-// Future<List<String>?> spGetColorData() async {
-//   try {
-//     SharedPreferences _preferences = await SharedPreferences.getInstance();
-//     return _preferences.getStringList("colorData");
-//   } catch (e, s) {
-//     debugPrint(e.toString());
-//     debugPrint(s.toString());
-//     return null;
-//   }
-// }
-
-// Future<void> spSaveColorData(List<String> ls) async {
-//   SharedPreferences _preferences = await SharedPreferences.getInstance();
-//   await _preferences.setStringList("colorData", ls);
-// }
-
-// Future<List<String>?> spGetEmojiData() async {
-//   try {
-//     SharedPreferences _preferences = await SharedPreferences.getInstance();
-//     return _preferences.getStringList("emoji");
-//   } catch (e, s) {
-//     debugPrint(e.toString());
-//     debugPrint(s.toString());
-//     return null;
-//   }
-// }
-
-// Future<void> spAppendColorData(String emoji) async {
-//   SharedPreferences _preferences = await SharedPreferences.getInstance();
-//   var res = await spGetEmojiData();
-//   if (null == res) {
-//     await _preferences.setStringList("emoji", []);
-//     res = [];
-//   }
-//   if (!res.contains(emoji)) {
-//     if (res.length == 30) {
-//       res.removeAt(0);
-//     }
-//     res.add(emoji);
-//   }
-
-//   _preferences.setStringList("emoji", res);
-// }
-
-// Future<String> spGetFolderStructure() async {
-//   SharedPreferences _preferences = await SharedPreferences.getInstance();
-//   var res = _preferences.getString("fileStructure");
-//   if (res == null) {
-//     return "";
-//   } else {
-//     return res;
-//   }
-// }
-
-// Future<List<String>> spGetFolderFlattenStructure() async {
-//   SharedPreferences _preferences = await SharedPreferences.getInstance();
-//   var res = _preferences.getStringList("flatten");
-//   if (res == null) {
-//     return [];
-//   } else {
-//     return res;
-//   }
-// }
-
-// Future<void> spSetFolderStructure(String s) async {
-//   SharedPreferences _preferences = await SharedPreferences.getInstance();
-//   await _preferences.setString("fileStructure", s);
-// }
-
-// Future<void> spSetFolderFlattenStructure(List<String> s) async {
-//   SharedPreferences _preferences = await SharedPreferences.getInstance();
-//   await _preferences.setStringList("flatten", s);
-// }
 
 class PersistenceStorage {
   static final _instance = PersistenceStorage._init();
@@ -162,5 +89,69 @@ class PersistenceStorage {
   Future<void> setFolderFlattenStructure(List<String> s) async {
     await _initStorage();
     await _storage!.setStringList("flatten", s);
+  }
+
+  Future<AvatarImg> getAvatarData() async {
+    await _initStorage();
+    var imgData = _storage!.getString("avatarData");
+    var color = _storage!.getString("avatarBColor");
+    var imgPath = _storage!.getString("avatarImgPath");
+    var imgType = _storage!.getString("avatarImgType");
+    AvatarType avatarType = imgType == null || imgType == ""
+        ? AvatarType.undefined
+        : imgType == "png"
+            ? AvatarType.png
+            : AvatarType.svg;
+
+    AvatarImg _ava = AvatarImg(
+        type: avatarType,
+        imgData: imgData,
+        imgPath: imgPath,
+        background: color == null || color == ""
+            ? Colors.white
+            : Color(int.parse("0x" + color)));
+    return _ava;
+  }
+
+  Future<void> setAvatarData(AvatarImg avatarImg) async {
+    await _initStorage();
+    _storage!.setString("avatarData", avatarImg.imgData ?? "");
+    String imgType;
+    if (avatarImg.type == AvatarType.png) {
+      imgType = "png";
+    } else if (avatarImg.type == AvatarType.svg) {
+      imgType = "svg";
+    } else {
+      imgType = "";
+    }
+    await _storage!.setString("avatarImgType", imgType);
+
+    await _storage!.setString("avatarImgPath", avatarImg.imgPath ?? "");
+
+    await _storage!.setString(
+        "avatarBColor",
+        avatarImg.background != null
+            ? avatarImg.background!.value.toRadixString(16)
+            : Colors.white.value.toRadixString(16));
+  }
+
+  Future<void> setUserEmail(String email) async {
+    await _initStorage();
+    await _storage!.setString("userAccount", email);
+  }
+
+  Future<void> setUserPassword(String ps) async {
+    await _initStorage();
+    await _storage!.setString("userPassword", ps);
+  }
+
+  Future<String> getUserEmail() async {
+    await _initStorage();
+    return _storage!.getString("userAccount") ?? "";
+  }
+
+  Future<String> getUserPassword() async {
+    await _initStorage();
+    return _storage!.getString("userPassword") ?? "";
   }
 }

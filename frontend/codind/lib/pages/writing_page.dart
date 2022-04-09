@@ -20,8 +20,10 @@ import 'dart:convert';
 
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart';
+import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
@@ -112,6 +114,11 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
 
   late List _lists = [];
 
+  late String? mdData = "";
+  late String? currentMdTemplatePath = "";
+
+  List<int> li = [];
+
   PersistenceStorage ps = PersistenceStorage();
 
   @override
@@ -119,7 +126,85 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       FocusScope.of(context).requestFocus(focusNode);
+      li = List<int>.generate(
+          (context.read<RadioProvider>().mds.keys.toList().length),
+          (index) => index);
     });
+
+    super.addAction(IconButton(
+        onPressed: () async {
+          if (!PlatformUtils.isMobile) {
+            await showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    actions: [
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("取消")),
+                      ElevatedButton(
+                          onPressed: () {
+                            textEditingController.text += mdData ?? "";
+                            textEditingController.text += "\n";
+                            textEditingController.text += "# ";
+
+                            _globalKey.currentState!
+                                .changeData(textEditingController.text);
+
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("确定")),
+                    ],
+                    title:
+                        Text(FlutterI18n.translate(context, "label.preview")),
+                    content: SingleChildScrollView(
+                      child: SizedBox(
+                        height: 450,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              width: 500,
+                              height: 100,
+                              child: ListView.builder(
+                                  key: UniqueKey(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: li.length,
+                                  itemBuilder: ((context, index) {
+                                    return SelectableIconButton(
+                                        radioValue: li[index]);
+                                  })),
+                            ),
+                            SizedBox(
+                              height: 300,
+                              width: 500,
+                              child: FutureBuilder(
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    return Markdown(
+                                        data: snapshot.data as String);
+                                  } else {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                },
+                                future: loadMdFile(context
+                                    .watch<RadioProvider>()
+                                    .mdTemplatePath),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                });
+          }
+        },
+        icon: const Icon(Icons.file_present)));
 
     super.addAction(IconButton(
       onPressed: () {
@@ -140,6 +225,15 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
     ));
 
     loadEmojiFuture = getEmojiInfo();
+  }
+
+  Future<String?> loadMdFile(String? path) async {
+    if (currentMdTemplatePath != path && path != null) {
+      mdData = await rootBundle.loadString(path);
+      currentMdTemplatePath = path;
+    }
+
+    return mdData;
   }
 
   Future<void> getEmojiInfo() async {
@@ -178,21 +272,26 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
       onTap: () {
         FocusScope.of(context).requestFocus(focusNode);
       },
-      child: TextField(
-        focusNode: focusNode,
-        style: TextStyle(fontSize: fontSize),
-        key: const ValueKey<String>("md_editor"),
-        maxLines: null,
-        controller: textEditingController,
-        onChanged: (s) {
-          if (Responsive.isRoughDesktop(context)) {
-            _globalKey.currentState!.changeData(textEditingController.text);
-          }
-        },
-        toolbarOptions: const ToolbarOptions(
-            copy: true, paste: true, cut: true, selectAll: true),
-        decoration: InputDecoration.collapsed(
-            hintText: FlutterI18n.translate(context, "label.typeHere")),
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        padding:
+            const EdgeInsets.only(bottom: 100, left: 10, right: 10, top: 20),
+        child: TextField(
+          focusNode: focusNode,
+          style: TextStyle(fontSize: fontSize),
+          key: const ValueKey<String>("md_editor"),
+          maxLines: null,
+          controller: textEditingController,
+          onChanged: (s) {
+            if (Responsive.isRoughDesktop(context)) {
+              _globalKey.currentState!.changeData(textEditingController.text);
+            }
+          },
+          toolbarOptions: const ToolbarOptions(
+              copy: true, paste: true, cut: true, selectAll: true),
+          decoration: InputDecoration.collapsed(
+              hintText: FlutterI18n.translate(context, "label.typeHere")),
+        ),
       ),
     );
   }
@@ -245,10 +344,12 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
 
     if (Responsive.isRoughMobile(context)) {
       return Scaffold(
+        extendBody: false,
         key: _scaffoldKey,
         endDrawer: SizedBox(
           child: Scaffold(
             body: Markdown(
+              padding: const EdgeInsets.only(bottom: 100),
               data: markdownStr,
             ),
           ),
@@ -259,6 +360,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
       );
     } else {
       return Scaffold(
+        extendBody: false,
         bottomSheet: bottomSheet(),
         body: Row(
           crossAxisAlignment: CrossAxisAlignment.start,

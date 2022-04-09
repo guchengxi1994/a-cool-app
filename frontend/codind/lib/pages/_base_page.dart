@@ -1,4 +1,5 @@
 import 'package:codind/providers/my_providers.dart';
+import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';

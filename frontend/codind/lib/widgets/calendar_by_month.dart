@@ -40,48 +40,84 @@ class _CalendarByMonthState extends State<CalendarByMonth> {
         my.DateUtils.getCurrentMonthDays(
             _ganttBloc.state.currentYear, _ganttBloc.state.currentMonth),
         (i) => i);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        NotificationListener<ScrollNotification>(
-            onNotification: _handleScrollNotification,
-            child: SingleChildScrollView(
-              key: UniqueKey(),
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: _l.map((e) {
-                  return Container(
-                    margin: const EdgeInsets.all(paddingSize),
-                    height: containerSize,
-                    width: containerSize,
-                    alignment: Alignment.center,
-                    child: Text((e + 1).toString()),
-                    color: const Color.fromARGB(255, 175, 147, 145),
-                  );
-                }).toList(),
-              ),
-            )),
-        CustomPaint(
-          foregroundPainter: GanttPainter(
-            currentMonth: _ganttBloc.state.currentMonth,
-            currentYear: _ganttBloc.state.currentYear,
-            monthDay: _l.length,
-            scheduleList: _ganttBloc.state.grepSchedules(
-                _ganttBloc.state.currentYear, _ganttBloc.state.currentMonth),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: _l.map((e) {
+              return Container(
+                margin: const EdgeInsets.all(paddingSize),
+                height: containerSize,
+                width: containerSize,
+                alignment: Alignment.center,
+                child: Text((e + 1).toString()),
+                color: const Color.fromARGB(255, 175, 147, 145),
+              );
+            }).toList(),
           ),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            controller: scrollCanvasController,
-            key: UniqueKey(),
+          CustomPaint(
+            foregroundPainter: GanttPainter(
+              currentMonth: _ganttBloc.state.currentMonth,
+              currentYear: _ganttBloc.state.currentYear,
+              monthDay: _l.length,
+              scheduleList: _ganttBloc.state.grepSchedules(
+                  _ganttBloc.state.currentYear, _ganttBloc.state.currentMonth),
+            ),
             child: Container(
-              color: Colors.white,
+              height: 200,
+              color: Colors.red,
             ),
           ),
-        )
-      ],
+        ],
+      ),
     );
+
+    // return Column(
+    //   crossAxisAlignment: CrossAxisAlignment.start,
+    //   children: [
+    //     NotificationListener<ScrollNotification>(
+    //         onNotification: _handleScrollNotification,
+    //         child: SingleChildScrollView(
+    //           key: UniqueKey(),
+    //           scrollDirection: Axis.horizontal,
+    //           child: Row(
+    //             crossAxisAlignment: CrossAxisAlignment.start,
+    //             mainAxisAlignment: MainAxisAlignment.start,
+    //             children: _l.map((e) {
+    //               return Container(
+    //                 margin: const EdgeInsets.all(paddingSize),
+    //                 height: containerSize,
+    //                 width: containerSize,
+    //                 alignment: Alignment.center,
+    //                 child: Text((e + 1).toString()),
+    //                 color: const Color.fromARGB(255, 175, 147, 145),
+    //               );
+    //             }).toList(),
+    //           ),
+    //         )),
+    //     CustomPaint(
+    //       foregroundPainter: GanttPainter(
+    //         currentMonth: _ganttBloc.state.currentMonth,
+    //         currentYear: _ganttBloc.state.currentYear,
+    //         monthDay: _l.length,
+    //         scheduleList: _ganttBloc.state.grepSchedules(
+    //             _ganttBloc.state.currentYear, _ganttBloc.state.currentMonth),
+    //       ),
+    //       child: SingleChildScrollView(
+    //         scrollDirection: Axis.horizontal,
+    //         controller: scrollCanvasController,
+    //         key: UniqueKey(),
+    //         child: Container(
+    //           color: Colors.white,
+    //         ),
+    //       ),
+    //     )
+    //   ],
+    // );
   }
 }
 

@@ -5,18 +5,21 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-13 22:10:24
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-17 20:55:44
+ * @LastEditTime: 2022-02-24 20:11:31
  */
 
 /// diy a scroll bar  https://www.jianshu.com/p/c14c5bd649c2
 
 import 'package:codind/bloc/gantt_bloc.dart';
+import 'package:codind/pages/_schedule_detail_page.dart';
+import 'package:codind/router.dart';
 import 'package:codind/utils/common.dart' as my;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
+
+import '../entity/entity.dart';
+import '../utils/utils.dart';
 
 class CalendarWidget extends StatefulWidget {
   CalendarWidget({Key? key}) : super(key: key);
@@ -96,6 +99,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                   NotificationListener<ScrollNotification>(
                     onNotification: _handleScrollNotification,
                     child: SingleChildScrollView(
+                      physics: PlatformUtils.isWeb
+                          ? const NeverScrollableScrollPhysics()
+                          : const ScrollPhysics(),
                       key: UniqueKey(),
                       scrollDirection: Axis.horizontal,
                       child: Row(
@@ -147,6 +153,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                           rowId: key,
                           columnId: e,
                           boxStatus: status,
+                          year: _dateUtils.year,
                         );
                       } else {
                         return DayBox(
@@ -154,6 +161,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                           rowId: key,
                           columnId: e,
                           boxStatus: BoxStatus.cannotSelected,
+                          year: _dateUtils.year,
                         );
                       }
                     }).toList(),
@@ -169,6 +177,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 class DayBox extends StatefulWidget {
   DayBox(
       {Key? key,
+      required this.year,
       required this.rowId,
       required this.columnId,
       this.boxStatus,
@@ -178,6 +187,7 @@ class DayBox extends StatefulWidget {
   int columnId;
   BoxStatus? boxStatus;
   bool isWeekend;
+  int year;
 
   @override
   State<DayBox> createState() => _DayBoxState();
@@ -229,52 +239,66 @@ class _DayBoxState extends State<DayBox> {
                   width: isSelected ? 2 : 1)
               : Border.all(color: Colors.grey[500]!, width: isSelected ? 2 : 1),
           borderRadius: BorderRadius.circular(5)),
-      child: Tooltip(
-        message:
-            widget.boxStatus != BoxStatus.cannotSelected ? tootipMessage : "",
-        child: InkWell(
-          onTap: widget.boxStatus == BoxStatus.cannotSelected
-              ? null
-              : () {
-                  // debugPrint(tootipMessage);
-                  setState(() {
-                    isSelected = !isSelected;
-                  });
+      child: !PlatformUtils.isWeb
+          ? Tooltip(
+              message: widget.boxStatus != BoxStatus.cannotSelected
+                  ? tootipMessage
+                  : "",
+              child: InkWell(
+                onTap: widget.boxStatus == BoxStatus.cannotSelected
+                    ? null
+                    : () {
+                        // debugPrint(tootipMessage);
+                        setState(() {
+                          isSelected = !isSelected;
+                        });
+                      },
+                onDoubleTap: () async {
+                  var result = await Global.navigatorKey.currentState!
+                      .push(MaterialPageRoute(builder: (_) {
+                    return ScheduleDetailPage(
+                      schedule: null,
+                    );
+                  }));
+
+                  if (result.runtimeType == Schedule) {
+                    context
+                        .read<GanttBloc>()
+                        .add(AddScheduleEvent(schedule: result));
+                  }
                 },
-          onDoubleTap: () async {
-            String res = await showCupertinoDialog(
-                context: context,
-                builder: (context) {
-                  var s = "";
-                  return CupertinoAlertDialog(
-                    title: const Text("输入日程"),
-                    content: Material(
-                      child: TextField(
-                        onChanged: ((value) => s = value),
-                        maxLines: null,
-                      ),
-                    ),
-                    actions: [
-                      CupertinoActionSheetAction(
-                        onPressed: () {
-                          Navigator.of(context).pop(s);
-                        },
-                        child: Text(
-                            FlutterI18n.translate(context, "button.label.ok")),
-                      ),
-                      CupertinoActionSheetAction(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text(FlutterI18n.translate(
-                            context, "button.label.quit")),
-                      )
-                    ],
+              ),
+            )
+          : InkWell(
+              onTap: widget.boxStatus == BoxStatus.cannotSelected
+                  ? null
+                  : () {
+                      // debugPrint(tootipMessage);
+                      setState(() {
+                        isSelected = !isSelected;
+                      });
+                    },
+              onDoubleTap: () async {
+                var result = await Global.navigatorKey.currentState!
+                    .push(MaterialPageRoute(builder: (_) {
+                  return ScheduleDetailPage(
+                    schedule: null,
+                    currentYear: widget.year,
+                    month: widget.rowId,
+                    day: widget.columnId + 1,
                   );
-                });
-          },
-        ),
-      ),
+                }));
+
+                if (result.runtimeType == Schedule) {
+                  debugPrint(
+                      "[debug calender-add-schedule]: ${result.toJson()}");
+
+                  context
+                      .read<GanttBloc>()
+                      .add(AddScheduleEvent(schedule: result));
+                }
+              },
+            ),
     );
   }
 }

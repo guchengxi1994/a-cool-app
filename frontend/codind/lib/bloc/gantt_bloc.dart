@@ -5,6 +5,7 @@ import 'package:dart_date/dart_date.dart';
 import 'package:equatable/equatable.dart';
 // ignore: implementation_imports
 import 'package:equatable/src/equatable_utils.dart' as qu_utils;
+import 'package:flutter/cupertino.dart';
 
 import '../utils/utils.dart' show toDate;
 
@@ -38,9 +39,10 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
     // will be replaced by an api request
     // await Future.delayed(Duration(seconds: 1)).then((value) {});
 
-    Schedule schedule = Schedule(title: "开始你的学习之旅吧！");
+    Schedule schedule = Schedule(title: "开始你的学习之旅吧！", editable: false);
     schedule.subject = [
       Subject(
+          editable: false,
           subTitle: "学习如何使用Markdown",
           from:
               "${date.year}-${toDate(date.month)}-${toDate(date.day)} 00:00:00",
@@ -51,6 +53,7 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
               fileLocation: "assets/reserved_md_files/markdown_guide.md",
               subjectMdFrom: DataFrom.asset)),
       Subject(
+          editable: false,
           subTitle: "写一个Markdown试试",
           from:
               "${date.year}-${toDate(date.month)}-${toDate(date.day)} 00:00:00",
@@ -112,7 +115,7 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
     List<Schedule> scheduleList = state.scheduleList;
     scheduleList.removeAt(event.index);
     emit(state.copyWith(
-      GanttStatus.changeSchedule,
+      GanttStatus.removeSchedule,
       state.scheduleList,
       state.operatedSchdule,
       state.currentYear,
@@ -124,15 +127,18 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
   Future<void> _addSchedule(
       AddScheduleEvent event, Emitter<GanttState> emit) async {
     List<Schedule> scheduleList = state.scheduleList;
+    debugPrint("[debug gantt-bloc]:  ${scheduleList.length}");
     scheduleList.add(event.schedule);
+    debugPrint("[debug gantt-bloc]:  这里要添加一个schedule");
     emit(state.copyWith(
-      GanttStatus.changeSchedule,
+      GanttStatus.addSchedule,
       state.scheduleList,
       state.operatedSchdule,
       state.currentYear,
       state.currentMonth,
       false,
     ));
+    debugPrint("[debug gantt-bloc]:  ${scheduleList.length}");
   }
 
   Future<void> _setDate(

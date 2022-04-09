@@ -11,8 +11,16 @@ const double textButtonHeight = 20;
 const double textButtonWidth = 30;
 
 class ScheduleDetailPage extends StatefulWidget {
-  ScheduleDetailPage({Key? key, required this.schedule}) : super(key: key);
-
+  ScheduleDetailPage(
+      {Key? key,
+      required this.schedule,
+      this.currentYear,
+      this.day,
+      this.month})
+      : super(key: key);
+  int? currentYear;
+  int? month;
+  int? day;
   Schedule? schedule;
 
   @override
@@ -31,7 +39,22 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
     if (widget.schedule != null) {
       schedule = Schedule.fromJson(widget.schedule!.toJson());
     } else {
-      schedule = Schedule(title: "新的日程", subject: []);
+      schedule = Schedule(title: "新的日程", subject: [], editable: true);
+      if (widget.currentYear != null) {
+        schedule!.subject!.add(
+          Subject(
+              editable: true,
+              from: DateTime(widget.currentYear!, widget.month!, widget.day!)
+                  .toString(),
+              to: DateTime(widget.currentYear!, widget.month!, widget.day!)
+                  .toString(),
+              subCompletion: 0,
+              subTitle: widget.month.toString() +
+                  "月" +
+                  (widget.day).toString() +
+                  "日的事情"),
+        );
+      }
     }
 
     widgets.add(const Text(
@@ -49,6 +72,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
         children: [
           Expanded(
             child: TextField(
+              enabled: schedule?.editable,
               onChanged: ((value) => schedule!.title = value),
               decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(10.0),
@@ -62,28 +86,37 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
             width: 20,
           ),
           IconButton(
-            onPressed: () {
-              Subject _s = Subject(
-                  subTitle: "", from: "未输入", to: "未输入", subCompletion: 0);
-              schedule!.subject!.add(_s);
-              widgets.add(SubRowWidget(
-                index: schedule!.subject!.length - 1,
-                subject: _s,
-                removeSelf: (index) => removeOneLine(index),
-                commitSelf: (index, subject) => commitSubject(index, subject),
-              ));
+            onPressed: !schedule!.editable!
+                ? null
+                : () {
+                    Subject _s = Subject(
+                        subTitle: "",
+                        from: "未输入",
+                        to: "未输入",
+                        subCompletion: 0,
+                        editable: true);
+                    schedule!.subject!.add(_s);
+                    widgets.add(SubRowWidget(
+                      index: schedule!.subject!.length - 1,
+                      subject: _s,
+                      removeSelf: (index) => removeOneLine(index),
+                      commitSelf: (index, subject) =>
+                          commitSubject(index, subject),
+                    ));
 
-              setState(() {});
-            },
+                    setState(() {});
+                  },
             icon: const Icon(Icons.plus_one),
           ),
           const SizedBox(
             width: 20,
           ),
           IconButton(
-            onPressed: () {
-              Navigator.of(context).pop("deleted");
-            },
+            onPressed: !schedule!.editable!
+                ? null
+                : () {
+                    Navigator.of(context).pop("deleted");
+                  },
             icon: const Icon(Icons.delete),
           ),
           const SizedBox(
@@ -152,6 +185,8 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
 
     if (schedule != null) {
       for (int i = 0; i < schedule!.subject!.length; i++) {
+        debugPrint(
+            "[debug schedule-detail-page-2]:  ${schedule!.subject![i].editable}");
         widgets.add(SubRowWidget(
           key: UniqueKey(),
           subject: schedule!.subject![i],
@@ -173,6 +208,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
     if (index >= schedule!.subject!.length) {
       schedule!.subject!.add(subject);
     } else {
+      debugPrint("[debug schedule-detail-page]: change subject");
       schedule?.subject?[index] = subject;
     }
     // print(schedule!.subject!.length);
@@ -222,20 +258,29 @@ class _SubRowWidgetState extends State<SubRowWidget> {
   void initState() {
     super.initState();
     if (widget.subject != null) {
-      _subject = widget.subject!;
+      // _subject = widget.subject!;
+      _subject = Subject.fromJson(widget.subject!.toJson());
     } else {
-      _subject =
-          Subject(subTitle: "", from: "未输入", to: "未输入", subCompletion: 0);
+      _subject = Subject(
+          subTitle: "",
+          from: "未输入",
+          to: "未输入",
+          subCompletion: 0,
+          editable: true);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("[debug schedule-detail-page]: ${_subject.editable}");
+    debugPrint("[debug schedule-detail-page]: ${_subject.from}");
+    debugPrint("[debug schedule-detail-page]: ${_subject.to}");
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
             child: TextField(
+          enabled: _subject.editable,
           onChanged: ((value) => _subject.subTitle = value),
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(10.0),
@@ -336,7 +381,7 @@ class _SubRowWidgetState extends State<SubRowWidget> {
               },
               child: Container(
                 alignment: Alignment.centerLeft,
-                child: Text(_subject.subCompletion.toString()),
+                child: Text(_subject.subCompletion?.toStringAsFixed(2) ?? "0"),
               )),
         ),
         Expanded(
@@ -381,10 +426,12 @@ class _SubRowWidgetState extends State<SubRowWidget> {
                 : Row(
                     children: [
                       IconButton(
-                          onPressed: () {
-                            debugPrint(widget.index.toString());
-                            widget.removeSelf(widget.index);
-                          },
+                          onPressed: !_subject.editable!
+                              ? null
+                              : () {
+                                  debugPrint(widget.index.toString());
+                                  widget.removeSelf(widget.index);
+                                },
                           icon: const Icon(Icons.delete)),
                       IconButton(
                           tooltip: "提交本条记录",

@@ -47,16 +47,25 @@ class _FileExplorePageState extends State<FileExplorePage>
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: Icon(
-            Icons.chevron_left,
-            color:
-                Responsive.isRoughMobile(context) ? Colors.white : Colors.black,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+        leading: currentFatherPath == "../root"
+            ? IconButton(
+                icon: const Icon(
+                  Icons.chevron_left,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            : IconButton(
+                icon: const Icon(
+                  Icons.chevron_left,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
         centerTitle: true,
         title: Text(
           currentFatherPath,
@@ -99,6 +108,7 @@ class _FileExplorePageState extends State<FileExplorePage>
                       return CupertinoAlertDialog(
                         title: const Text("输入文件夹名称"),
                         content: Material(
+                          color: Colors.transparent,
                           child: TextField(
                             decoration: InputDecoration(
                                 errorText: validateString(text)),
@@ -148,7 +158,7 @@ class _FileExplorePageState extends State<FileExplorePage>
                     context: context,
                     builder: (context) {
                       return CupertinoAlertDialog(
-                        title: const Text("输入MD文件名称"),
+                        title: const Text("输入文件名称（默认以md为后缀）"),
                         content: Material(
                           child: TextField(
                             decoration: InputDecoration(
@@ -178,7 +188,7 @@ class _FileExplorePageState extends State<FileExplorePage>
                   setState(() {
                     isLoading = true;
                   });
-                  if (!(result as String).endsWith(".md")) {
+                  if (!isAFile(result as String)) {
                     result += ".md";
                   }
                   // String fath = currentFatherPath.split("/").last;

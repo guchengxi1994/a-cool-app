@@ -9,6 +9,8 @@
  */
 import 'package:flutter/material.dart';
 
+import '../globals.dart';
+
 mixin BackScreenMixin<T extends StatefulWidget> on State<T> {
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ mixin BackScreenMixin<T extends StatefulWidget> on State<T> {
           leading: IconButton(
             icon: const Icon(
               Icons.chevron_left,
-              size: 30,
+              size: leftBackIconSize,
             ),
             onPressed: () {
               Navigator.of(context).pop();

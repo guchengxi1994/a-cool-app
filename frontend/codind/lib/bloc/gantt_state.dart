@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-15 19:55:19
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-17 20:48:25
+ * @LastEditTime: 2022-02-24 19:54:32
  */
 part of 'gantt_bloc.dart';
 
@@ -72,7 +72,11 @@ class GanttState extends Equatable {
           var endDate = sb.to!.split(" ")[0];
           var fromMonth = int.parse(fromDate.split("-")[1]);
           var toMonth = int.parse(endDate.split("-")[1]);
-          if (!(fromMonth <= currentMonth && toMonth >= currentMonth)) {
+          var fromYear = int.parse(fromDate.split("-")[0]);
+          var toYear = int.parse(endDate.split("-")[0]);
+
+          if (!(fromMonth <= currentMonth && toMonth >= currentMonth) ||
+              !(currentYear <= fromYear && currentYear >= toYear)) {
             _result.add(Subject(subTitle: notPaintingWarning));
           } else {
             if (fromMonth == currentMonth && toMonth == fromMonth) {

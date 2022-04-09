@@ -10,6 +10,7 @@
 
 import 'package:codind/pages/pages.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 class Global {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey();
@@ -22,6 +23,13 @@ class Routers {
   static const pageFolder = '/pageFolder';
   static const pageSchedule = '/pageSchedule';
   static const pageMdPreview = "/pageMdPreview";
+  static const pageSavedLinks = "/pageSavedLinks";
+  static const pageMindMap = "/pageMindMap";
+  static const pageYourAbilities = "/pageAbilities";
+  static const pageResumePage = "/resume";
+  // static const pageAvatarSettingPage = "/pageAvatarSettingPage";
+  static const pageMobileSettingsPage = "/pageMobileSettingsPage";
+  // static const pageAccountSafty = "/pageAccountSafety";
 
   static final Map<String, WidgetBuilder> routers = {
     pageSetting: (ctx) => SettingPage(
@@ -32,5 +40,14 @@ class Routers {
     pageFolder: (context) => FileExplorePage(),
     pageSchedule: (context) => GanttPage(),
     pageMdPreview: (context) => const BaseMarkdownPreviewPage(),
+    pageSavedLinks: (context) => SavedLinksPage(),
+    pageMindMap: (context) => MindMapPageV2(),
+    pageYourAbilities: (context) => YourAbilitiesPage(),
+    pageResumePage: (context) => ResumePage(),
+    // pageAvatarSettingPage: (context) => GenerateAvatarPage(),
+    pageMobileSettingsPage: (context) => MobileMainSettingPage(
+          pageName: FlutterI18n.translate(context, "label.settings"),
+        ),
+    // pageAccountSafty: (context) => AccountSafetyPage(),
   };
 }

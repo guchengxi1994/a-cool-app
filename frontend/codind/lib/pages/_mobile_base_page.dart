@@ -1,0 +1,94 @@
+import 'package:flutter/material.dart';
+
+import '../globals.dart';
+
+abstract class MobileBasePage extends StatefulWidget {
+  MobileBasePage({Key? key, required this.pageName}) : super(key: key);
+  String? pageName;
+
+  @override
+  MobileBasePageState createState() {
+    // ignore: no_logic_in_create_state
+    return getState();
+  }
+
+  MobileBasePageState getState();
+}
+
+class MobileBasePageState<T extends MobileBasePage> extends State<T> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Container(
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: [
+              0.0,
+              1.0
+            ],
+                colors: [
+              Color.fromARGB(255, 223, 211, 195),
+              Color.fromARGB(255, 240, 236, 227)
+            ])),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            title: widget.pageName != null
+                ? Text(
+                    widget.pageName!,
+                    style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  )
+                : null,
+            centerTitle: true,
+            leading: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(
+                  Icons.chevron_left,
+                  size: leftBackIconSize,
+                  color: Color.fromARGB(255, 78, 63, 63),
+                )),
+          ),
+          body: baseBuild(context),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didUpdateWidget(T oldWidget) {
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void reassemble() {
+    super.reassemble();
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+  }
+
+  void onCreate() {}
+  void onDes() {}
+  baseBuild(BuildContext context) {}
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+}

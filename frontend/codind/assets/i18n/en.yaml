@@ -2,6 +2,7 @@ title: "flutter-admin-template for zxx-h5"
 
 # With yaml, you can also comment your translations
 label:
+  signin: "Sign in"
   main: "Hello {user}!"
   localization: "Localization"
   personalCenter: "Personal Center"
@@ -14,6 +15,7 @@ label:
   click: "Click"
   leaveYourCommit: "Leave your comment"
   settings: "Settings"
+  settings1: "Settings"
   typeHere: "Type here ..."
   showEmoji: "Choose emoji"
   nPage: "Page {n}"
@@ -32,6 +34,9 @@ label:
   insertImageLink: "Insert image link"
   insertWebLink: "Insert web link"
   selectTableSize: "Select table size"
+  nothingtodo: "Nothing to do"
+  qrcodescan: "Qr Code Scanner"
+  todos: "Todo list"
 
 # Objects can be many levels deep
 button:
@@ -41,8 +46,98 @@ button:
     language: "Change language"
     delete: "Delete"
     update: "Update"
-    ok: "OK"
+    ok: "Ok"
+    cancel: "Cancel"
     quit: "Quit"
+    retry: "Retry"
+    
 
 errors: 
   invalidName: "Invalid name"
+
+mainPage:
+  search: "Search ..."
+  savedLinks: "Saved links"
+  startWriting: "Start writing"
+  folder: "Folder"
+  schedule: "Schedule"
+  mindMap: "Mind map"
+  ability: "Your abilities"
+  COLLAPSE: "COLLAPSE"
+  EXPAND: "EXPAND"
+
+radar:
+  learningHours: "Learning Hours"
+  mds: "Docs"
+  power: "Power"
+
+
+login-labels:
+  PasswordHint: "Password"
+  ConfirmPasswordHint: "Confirm Password"
+  ForgotPasswordButton: "Forgot Password?"
+  LoginButton: "LOGIN"
+  SignupButton: "SIGNUP"
+  RecoverPasswordButton: "RECOVER"
+  RecoverPasswordIntro: "Reset your password here"
+  RecoverPasswordDescription: "We will send your plain-text password to this email account."
+  RecoverCodePasswordDescription: "We will send a password recovery code to your email."
+  GoBackButton: "BACK"
+  ConfirmPasswordError: "Password do not match!"
+  RecoverPasswordSuccess: "An email has been sent"
+  flushbarTitleSuccess: "Success"
+  flushbarTitleError: "Error"
+  SignUpSuccess: "An activation link has been sent"
+  ProvidersTitleFirst: "or login with"
+  ProvidersTitleSecond: "or"
+  AdditionalSignUpSubmitButton: "SUBMIT"
+  AdditionalSignUpFormDescription: "Please fill in this form to complete the signup"
+  ConfirmRecoverIntro: "The recovery code to set a new password was sent to your email."
+  RecoveryCodeHint: "Recovery Code"
+  RecoveryCodeValidationError: "Recovery code is empty"
+  SetPasswordButton: "SET PASSWORD"
+  ConfirmRecoverSuccess: "Password recovered."
+  ConfirmSignupIntro: "A confirmation code was sent to your email.\nPlease enter the code to confirm your account."
+  ConfirmationCodeHint: "Confirmation Code"
+  ConfirmationCodeValidationError: "Confirmation code is empty"
+  ResendCodeButton: "Resend Code"
+  ResendCodeSuccess: "A new email has been sent."
+  ConfirmSignupButton: "CONFIRM"
+  ConfirmSignupSuccess: "Account confirmed."
+
+resume:
+  title: "Your Resume"
+  name: "Name"
+  gender: "Gender"
+  mobile: "Mobile"
+  email: "E-mail"
+  edu: "Education"
+  work: "Work experiences"
+  abi: "Skills" 
+
+
+avatarPage:
+  chooseImgType: "Choose an image type"
+  chooseAvatarType: "Choose avatar type"
+  inputKeyword: "Input a keyword"
+  bgColor: "Background color"
+  chooseMood: "Choose a mood"
+  warning1: "1. The keyword can be anything you like - but don't use any sensitive or personal data here. \n2. Max length of the keyword is 15."
+  warning2: "The open source flutter_svg (version 1.0.3) library has some problems when rendering on the web (https://github.com/dnfield/flutter_svg/issues/690), so I will parse the xml of the svg first, if I encounter If there is a problem, please switch keywords and try again."
+  warning3: "Keyword cannot be blank"
+  warning4: "Value can be blank"
+  select: "Select"
+  keyword: "Keyword"
+  generate: "Generate"
+  submit: "Submit"
+
+todo:
+  create: "  Create a \n  new todo"
+  selectType: "Select a type"
+  item: "Type"
+  input1: "Input notification title"
+  input2: "Input notification content"
+  select1: "Select  start time"
+  select2: "Select finish time"
+  create2: "Create new todos"
+  check: "Check todos"
