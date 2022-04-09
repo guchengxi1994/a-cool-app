@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 19:54:23
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-07 22:43:03
+ * @LastEditTime: 2022-04-09 20:59:59
  */
 
 import 'package:flutter/material.dart';
@@ -46,6 +46,8 @@ class _LoginScreenState extends State<LoginScreen> {
           ));
         }
       }
+
+      debugPrint("[size]: ${MediaQuery.of(context).size}");
     });
   }
 

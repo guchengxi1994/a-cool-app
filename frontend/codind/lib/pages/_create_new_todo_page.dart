@@ -160,6 +160,8 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
 
   @override
   Widget baseLoadingMixinBuild(BuildContext context) {
+    double _fixedBoundry = MediaQuery.of(context).size.width * 0.4;
+
     return SafeArea(
         child: Scaffold(
       body: NestedScrollView(
@@ -177,9 +179,15 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      FlutterI18n.translate(context, "todo.selectType"),
-                      style: TextStyle(color: Colors.blue[700]!, fontSize: 20),
+                    Container(
+                      constraints: BoxConstraints(
+                          maxWidth: 200 > _fixedBoundry ? _fixedBoundry : 200),
+                      child: Text(
+                        FlutterI18n.translate(context, "todo.selectType"),
+                        maxLines: 2,
+                        style:
+                            TextStyle(color: Colors.blue[700]!, fontSize: 20),
+                      ),
                     ),
                     DropdownButtonHideUnderline(
                         child: DropdownButton2(
@@ -235,7 +243,7 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
                       iconEnabledColor: Colors.yellow,
                       iconDisabledColor: Colors.grey,
                       buttonHeight: 50,
-                      buttonWidth: 200,
+                      buttonWidth: 200 > _fixedBoundry ? _fixedBoundry : 200,
                       buttonPadding: const EdgeInsets.only(left: 14, right: 14),
                       buttonDecoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14),

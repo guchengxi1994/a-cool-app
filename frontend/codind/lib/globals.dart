@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 21:47:48
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-03-22 21:47:48
+ * @LastEditTime: 2022-04-09 20:43:27
  */
 import 'dart:io';
 
@@ -25,6 +25,9 @@ FlutterI18nDelegate getI18n(String lang) {
   );
   return flutterI18nDelegate;
 }
+
+// ignore: constant_identifier_names
+const AppVersion = "1.0.0-frontend-alpha+2";
 
 const leftBackIconSize = 35.0;
 

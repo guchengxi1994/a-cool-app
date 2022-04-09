@@ -63,7 +63,6 @@ dependencies:
   # awesome_notifications: 0.7.0-beta.2 这个包 0.6.21和0.7.0暂时有问题
   awesome_notifications: ^0.0.6+12
   day_night_time_picker: ^1.0.5
-  package_info_plus: ^1.4.2
   dropdown_button2: ^1.4.0
   
 
