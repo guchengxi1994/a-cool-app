@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: change dir
-        run: cd frontend/codind
+        run: cd ../frontend/codind
       - uses: actions/checkout@v3
 
       # Note: This workflow uses the latest stable version of the Dart SDK.
