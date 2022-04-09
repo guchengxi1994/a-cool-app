@@ -10,6 +10,10 @@ on:
     branches: [ dev ]
   pull_request:
     branches: [ dev ]
+    
+env:
+  flutter_channel: 'stable' # or: 'dev' or 'beta'
+  flutter_version: '2.10.4'
 
 jobs:
   build:
