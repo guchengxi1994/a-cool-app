@@ -89,20 +89,22 @@ class _ExpandedColumnWidgetState extends State<ExpandedColumnWidget> {
       height: 100,
       margin: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
       // width: MediaQuery.of(context).size.width,
-      child: Center(
-          child: IconButton(
-        icon: const Icon(
-          Icons.add,
-          size: 40,
-          color: Colors.black,
+      child: Container(
+        color: Colors.white,
+        child: IconButton(
+          icon: const Icon(
+            Icons.add,
+            size: 40,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            addWidget(TextWidget(
+              name: widget.name,
+              index: children.length - 1,
+            ));
+          },
         ),
-        onPressed: () {
-          addWidget(TextWidget(
-            name: widget.name,
-            index: children.length - 1,
-          ));
-        },
-      )),
+      ),
     ));
   }
 

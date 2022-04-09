@@ -108,7 +108,7 @@ resume:
   email: "邮箱地址"
   edu: "教育经历"
   work: "工作经历"
-  abi: "能力" 
+  abi: "专业能力" 
 
 avatarPage:
   chooseImgType: "选择图片类型"
@@ -124,3 +124,14 @@ avatarPage:
   keyword: "关键字"
   generate: "生成"
   submit: "提交"
+
+todo:
+  create: "  创建新\n  日程"
+  selectType: "选择日程类型"
+  item: "日程"
+  input1: "输入标题"
+  input2: "输入内容"
+  select1: "选择开始时间"
+  select2: "选择结束时间"
+  create2: "创建日程"
+  check: "查看"

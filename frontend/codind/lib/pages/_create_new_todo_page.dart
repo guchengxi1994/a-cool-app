@@ -4,8 +4,11 @@ import 'package:codind/notifications/notifications.dart';
 import 'package:codind/pages/_loading_page_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:provider/provider.dart';
 
 import '../entity/entity.dart' show ScheduleNotificationEntity;
+import '../providers/my_providers.dart' show TodoPageScrollController;
 import '../utils/utils.dart';
 import '../widgets/widgets.dart'
     show TodoTimepickerWidget, TodoTimepickerWidgetState;
@@ -26,7 +29,18 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
   GlobalKey<TodoTimepickerWidgetState> globalKey1 = GlobalKey();
   GlobalKey<TodoTimepickerWidgetState> globalKey2 = GlobalKey();
 
-  bool showBack = false;
+  // bool showBack = false;
+
+  static const List<String> types_CN = ["就一次", "我是一个严于律己的人", "往日不再，我只想纪念失去的青春"];
+
+  static const List<String> types_en = [
+    "Just once",
+    "I am a man of self-discipline",
+    "Days gone, I just want to commemorate the past"
+  ];
+
+  // int selectTypeIndex = 0;
+  String? selectedValue;
 
   String validate() {
     if (titleController.text == "") {
@@ -58,13 +72,9 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
     super.initState();
     scrollController.addListener(() {
       // print(scrollController.offset);
-      if (scrollController.offset > 150) {
-        setState(() {
-          showBack = true;
-        });
-      } else {
-        showBack = false;
-      }
+      context
+          .read<TodoPageScrollController>()
+          .changeOffset(scrollController.offset);
     });
   }
 
@@ -82,7 +92,7 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
       bottom: AppBar(
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
-        leading: showBack
+        leading: context.watch<TodoPageScrollController>().showbar
             ? IconButton(
                 icon: const Icon(
                   Icons.chevron_left,
@@ -99,7 +109,7 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
           "测试",
           style: TextStyle(color: Colors.black),
         ),
-        centerTitle: showBack,
+        centerTitle: context.watch<TodoPageScrollController>().showbar,
       ),
       pinned: true,
       automaticallyImplyLeading: false,
@@ -130,8 +140,8 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "  Create a \n  new todo",
-                  style: TextStyle(
+                  FlutterI18n.translate(context, "todo.create"),
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 36,
                       fontWeight: FontWeight.bold),
@@ -164,6 +174,105 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
             children: [
               Container(
                 padding: EdgeInsets.only(left: paddingSize, right: paddingSize),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      FlutterI18n.translate(context, "todo.selectType"),
+                      style: TextStyle(color: Colors.blue[700]!, fontSize: 20),
+                    ),
+                    DropdownButtonHideUnderline(
+                        child: DropdownButton2(
+                      isExpanded: true,
+                      hint: Row(
+                        children: [
+                          const Icon(
+                            Icons.list,
+                            size: 16,
+                            color: Colors.yellow,
+                          ),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Expanded(
+                            child: Text(
+                              FlutterI18n.translate(context, "todo.item"),
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.yellow,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                      items: types_CN
+                          .map((item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  maxLines: 3,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ))
+                          .toList(),
+                      value: selectedValue,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedValue = value as String;
+                        });
+                      },
+                      icon: const Icon(
+                        Icons.arrow_forward_ios_outlined,
+                      ),
+                      iconSize: 14,
+                      iconEnabledColor: Colors.yellow,
+                      iconDisabledColor: Colors.grey,
+                      buttonHeight: 50,
+                      buttonWidth: 200,
+                      buttonPadding: const EdgeInsets.only(left: 14, right: 14),
+                      buttonDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: Colors.black26,
+                        ),
+                        // color: Colors.redAccent,
+                        gradient: LinearGradient(
+                            colors: [Colors.purple[700]!, Colors.blue[700]!]),
+                      ),
+                      buttonElevation: 2,
+                      itemHeight: 40,
+                      itemPadding: const EdgeInsets.only(left: 14, right: 14),
+                      dropdownMaxHeight: 200,
+                      dropdownWidth: 280,
+                      dropdownPadding: null,
+                      dropdownDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        // color: Colors.redAccent,
+                        gradient: LinearGradient(
+                            colors: [Colors.purple[700]!, Colors.blue[700]!]),
+                      ),
+                      dropdownElevation: 8,
+                      scrollbarRadius: const Radius.circular(40),
+                      scrollbarThickness: 6,
+                      scrollbarAlwaysShow: true,
+                      offset: const Offset(-20, 0),
+                    )),
+                  ],
+                ),
+              ),
+
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                padding: EdgeInsets.only(left: paddingSize, right: paddingSize),
                 child: Column(
                   children: [
                     ShaderMask(
@@ -175,7 +284,8 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
                         controller: titleController,
                         maxLength: 20,
                         decoration: InputDecoration(
-                          hintText: "Input notification title",
+                          hintText:
+                              FlutterI18n.translate(context, "todo.input1"),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(50),
                             borderSide: BorderSide(width: 2),
@@ -206,7 +316,8 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
                         maxLength: 30,
                         controller: bodyController,
                         decoration: InputDecoration(
-                          hintText: "Input notification content",
+                          hintText:
+                              FlutterI18n.translate(context, "todo.input2"),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(50),
                             borderSide: BorderSide(width: 2),
@@ -228,7 +339,7 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
               // start time
               TodoTimepickerWidget(
                 key: globalKey1,
-                buttonStr: "Select start time",
+                buttonStr: FlutterI18n.translate(context, "todo.select1"),
               ),
 
               const SizedBox(
@@ -237,11 +348,11 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
 
               TodoTimepickerWidget(
                 key: globalKey2,
-                buttonStr: "Select end time",
+                buttonStr: FlutterI18n.translate(context, "todo.select2"),
               ),
 
               const SizedBox(
-                height: 20,
+                height: 40,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

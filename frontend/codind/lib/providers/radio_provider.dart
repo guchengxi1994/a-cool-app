@@ -12,10 +12,6 @@ class RadioProvider extends ChangeNotifier {
   final Map<int, String> mdNames = {
     0: "github template",
     1: "resume template",
-    2: "bbb",
-    3: "ccc",
-    4: "ddd",
-    5: "eee",
   };
 
   String? get mdTemplatePath => mds[_initialValue];

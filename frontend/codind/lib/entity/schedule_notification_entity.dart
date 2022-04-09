@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+enum NotificationType { once, schedule }
+
 class ScheduleNotificationEntity {
   int notificationId;
   String title;

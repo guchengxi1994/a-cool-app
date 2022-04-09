@@ -256,22 +256,28 @@ class MainPageCard extends StatelessWidget {
               },
               child: collapsedWidget,
             ),
-            expanded: Stack(children: [
-              expanedWidget,
-              Positioned(
-                  right: 15,
-                  top: 5,
-                  child: IconButton(
-                    onPressed: () {
-                      controller.toggle();
-                    },
-                    icon: Icon(
-                      Icons.close,
-                      size: 30,
-                      color: closeIconColor ?? Colors.black,
-                    ),
-                  ))
-            ]),
+            expanded: Container(
+              padding: EdgeInsets.only(
+                left: 25,
+                right: 25,
+              ),
+              child: Stack(children: [
+                expanedWidget,
+                Positioned(
+                    right: 15,
+                    top: 5,
+                    child: IconButton(
+                      onPressed: () {
+                        controller.toggle();
+                      },
+                      icon: Icon(
+                        Icons.close,
+                        size: 30,
+                        color: closeIconColor ?? Colors.black,
+                      ),
+                    ))
+              ]),
+            ),
           );
         },
       ),

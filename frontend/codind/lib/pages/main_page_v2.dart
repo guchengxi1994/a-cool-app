@@ -47,9 +47,43 @@ class _MainPageV2State extends State<MainPageV2> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
+    return SafeArea(
+      child: Scaffold(
+        appBar: context.watch<AngleController>().showbar
+            ? AppBar(
+                backgroundColor: Colors.transparent,
+                automaticallyImplyLeading: false,
+                leading: null,
+                elevation: 0,
+                // title: Text(
+                //   "测试用户",
+                //   style: TextStyle(
+                //       color: Colors.black, fontWeight: FontWeight.bold),
+                // ),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      height: 45,
+                      width: 45,
+                      child: buildAvatar(context.watch<AvatarController>().img),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "测试用户",
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
+              )
+            : null,
+        body: Container(
           decoration: const BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -92,20 +126,22 @@ class _MainPageV2State extends State<MainPageV2> {
   Widget buildBodyCards() {
     return ListView.builder(
         physics: const BouncingScrollPhysics(),
-        itemCount: 3,
+        itemCount: context.watch<MainPageCardController>().selectedCards.length,
         itemBuilder: (context, index) {
-          if (index == 1) {
+          if (context.watch<MainPageCardController>().selectedCards[index] ==
+              "resume.abi") {
             return MainPageCard(
               collapsedWidget: MainPageCustomListTile(
                 icon: Icon(Icons.pan_tool),
                 title: FlutterI18n.translate(context, "resume.abi"),
               ),
-              expanedWidget: const RadarAbilityChart(),
+              expanedWidget: RadarAbilityChart(),
               closeIconColor: Colors.black,
             );
           }
 
-          if (index == 2) {
+          if (context.watch<MainPageCardController>().selectedCards[index] ==
+              "resume.title") {
             return InkWell(
                 onTap: () =>
                     Navigator.of(context).pushNamed(Routers.pageResumePage),
@@ -115,7 +151,8 @@ class _MainPageV2State extends State<MainPageV2> {
                 ));
           }
 
-          if (index == 0) {
+          if (context.watch<MainPageCardController>().selectedCards[index] ==
+              "label.todos") {
             return InkWell(
                 onTap: () async {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -147,6 +184,8 @@ class _MainPageV2State extends State<MainPageV2> {
       backgroundColor: Colors.transparent,
       automaticallyImplyLeading: false,
       leading: null,
+      pinned: false,
+      floating: false,
       title: null,
       expandedHeight: 250,
       flexibleSpace: FlexibleSpaceBar(

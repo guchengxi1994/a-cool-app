@@ -1,5 +1,6 @@
 import 'package:codind/pages/_mobile_base_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../widgets/widgets.dart' show CustomListTile;
 import '_create_new_todo_page.dart';
@@ -37,14 +38,8 @@ class _NewTodosPageState<T> extends MobileBasePageState<NewTodosPage> {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return const CreateNewTodo();
               }));
-
-              // if (res != null) {
-              //   NotificationWeekAndTime _w =
-              //       NotificationWeekAndTime(dayOfTheWeek: 4, timeOfDay: res);
-              //   await createReminderNotivication(_w);
-              // }
             },
-            title: "Create new todos",
+            title: FlutterI18n.translate(context, "todo.create2"),
             trailing: const Icon(
               Icons.chevron_right,
               size: 25,
@@ -55,7 +50,7 @@ class _NewTodosPageState<T> extends MobileBasePageState<NewTodosPage> {
           ),
           CustomListTile(
             style: _style,
-            title: "Check todos",
+            title: FlutterI18n.translate(context, "todo.check"),
             trailing: const Icon(
               Icons.chevron_right,
               size: 25,

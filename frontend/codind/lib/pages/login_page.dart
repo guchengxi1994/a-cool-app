@@ -18,7 +18,7 @@ import 'package:provider/provider.dart';
 
 // for test
 const users = {
-  'test@xiaoshuyui.org': '123456',
+  'test@xiaoshuyui.org.cn': '123456',
 };
 
 class LoginScreen extends StatefulWidget {

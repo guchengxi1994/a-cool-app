@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/widgets.dart' show CustomListTile;
 import '../_mobile_base_page.dart';
+import '_custom_mainpage_cards_page.dart';
 
 class MobileMainSettingPage extends MobileBasePage {
   MobileMainSettingPage({Key? key, required String pageName})
@@ -72,6 +73,18 @@ class _MobileMainSettingPageState<T>
               var _lang = langList[res];
               context.read<LanguageControllerV2>().changeLanguage(_lang);
             },
+            trailing: const Icon(
+              Icons.chevron_right,
+              size: 25,
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          CustomListTile(
+            nextPage: CustomMainpageCardsPage(),
+            style: _style,
+            title: "管理首页内容",
             trailing: const Icon(
               Icons.chevron_right,
               size: 25,

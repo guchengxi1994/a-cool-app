@@ -69,7 +69,7 @@ class TodoTimepickerWidgetState extends State<TodoTimepickerWidget> {
           decoration: BoxDecoration(
             gradient:
                 LinearGradient(colors: [Colors.blue[500]!, Colors.blue[700]!]),
-            borderRadius: BorderRadius.circular(50),
+            borderRadius: BorderRadius.circular(15),
           ),
           child: InkWell(
             onTap: () async {

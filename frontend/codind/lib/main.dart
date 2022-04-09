@@ -38,7 +38,8 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
 }
 
 Future main() async {
-  debugPrint("use test@xiaoshuyui.org to test");
+  debugPrint(
+      "use username= `test@xiaoshuyui.org.cn` &  password= `123456` to test");
 
   // 获取 theme
   WidgetsFlutterBinding.ensureInitialized();
@@ -100,6 +101,12 @@ Future main() async {
               ),
               ChangeNotifierProvider(
                 create: (_) => LanguageControllerV2(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => TodoPageScrollController(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => MainPageCardController(),
               ),
             ],
             child: MyApp(

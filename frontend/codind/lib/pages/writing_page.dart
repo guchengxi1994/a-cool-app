@@ -272,21 +272,26 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
       onTap: () {
         FocusScope.of(context).requestFocus(focusNode);
       },
-      child: TextField(
-        focusNode: focusNode,
-        style: TextStyle(fontSize: fontSize),
-        key: const ValueKey<String>("md_editor"),
-        maxLines: null,
-        controller: textEditingController,
-        onChanged: (s) {
-          if (Responsive.isRoughDesktop(context)) {
-            _globalKey.currentState!.changeData(textEditingController.text);
-          }
-        },
-        toolbarOptions: const ToolbarOptions(
-            copy: true, paste: true, cut: true, selectAll: true),
-        decoration: InputDecoration.collapsed(
-            hintText: FlutterI18n.translate(context, "label.typeHere")),
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        padding:
+            const EdgeInsets.only(bottom: 100, left: 10, right: 10, top: 20),
+        child: TextField(
+          focusNode: focusNode,
+          style: TextStyle(fontSize: fontSize),
+          key: const ValueKey<String>("md_editor"),
+          maxLines: null,
+          controller: textEditingController,
+          onChanged: (s) {
+            if (Responsive.isRoughDesktop(context)) {
+              _globalKey.currentState!.changeData(textEditingController.text);
+            }
+          },
+          toolbarOptions: const ToolbarOptions(
+              copy: true, paste: true, cut: true, selectAll: true),
+          decoration: InputDecoration.collapsed(
+              hintText: FlutterI18n.translate(context, "label.typeHere")),
+        ),
       ),
     );
   }
@@ -344,6 +349,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
         endDrawer: SizedBox(
           child: Scaffold(
             body: Markdown(
+              padding: const EdgeInsets.only(bottom: 100),
               data: markdownStr,
             ),
           ),

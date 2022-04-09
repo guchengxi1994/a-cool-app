@@ -130,3 +130,14 @@ avatarPage:
   keyword: "Keyword"
   generate: "Generate"
   submit: "Submit"
+
+todo:
+  create: "  Create a \n  new todo"
+  selectType: "Select a type"
+  item: "Type"
+  input1: "Input notification title"
+  input2: "Input notification content"
+  select1: "Select  start time"
+  select2: "Select finish time"
+  create2: "Create new todos"
+  check: "Check todos"

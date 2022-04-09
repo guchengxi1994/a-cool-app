@@ -17,3 +17,5 @@ export './radio_provider.dart';
 export './avatar_angle_provider.dart';
 export './experience_provider.dart';
 export './avatar_provider.dart';
+export './todo_page_scroll_provider.dart';
+export './main_page_card_provider.dart';
