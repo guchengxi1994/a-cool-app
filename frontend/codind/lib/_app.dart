@@ -8,6 +8,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:codind/pages/login_page.dart';
 import 'bloc/my_blocs.dart';
 import 'globals.dart';
+import 'pages/_test_page.dart';
 import 'providers/my_providers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -99,7 +100,9 @@ class _MyAppState extends State<MyApp> {
             return FlutterSmartDialog(
                 child: FlutterI18n.rootAppBuilder().call(context, child));
           },
-          // home: MainPageV2(),
+          // home: TestPage(
+          //   routeName: "test page",
+          // ),
           home: LoginScreen(),
           navigatorObservers: [FlutterSmartDialog.observer],
           localizationsDelegates: [

@@ -39,7 +39,7 @@ jobs:
         working-directory: frontend/codind
       
       - name: build apk
-        run: flutter build apk
+        run: flutter build apk --profile
         working-directory: frontend/codind
 
       - name: Analyze project source

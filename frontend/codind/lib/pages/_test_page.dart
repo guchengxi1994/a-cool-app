@@ -5,15 +5,13 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-19 22:16:06
+ * @LastEditTime: 2022-04-10 11:53:31
  */
 
 import 'package:codind/pages/_base_page.dart';
-import 'package:codind/pages/_base_preview_page.dart';
-import 'package:codind/router.dart';
+import 'package:codind/widgets/selectable_icon.dart';
 import 'package:flutter/material.dart';
-
-import '../utils/utils.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 // ignore: must_be_immutable
 class TestPage extends BasePage {
@@ -34,24 +32,18 @@ class _TestPageState<T> extends BasePageState<TestPage> {
     //   mdData: "assets/reserved_md_files/markdown_guide.md",
     // );
 
-    return Container(
-      child: ElevatedButton(
-          onPressed: () async {
-            var result = await Global.navigatorKey.currentState!
-                .push(MaterialPageRoute(builder: (_) {
-              return const BaseMarkdownPreviewPage(
-                  // from: DataFrom.asset,
-                  // mdData: "assets/reserved_md_files/markdown_guide.md",
-                  // subject: Subject(
-                  //     from: "2022-01-01 00:00:00",
-                  //     to: "2022-01-03 00:00:00",
-                  //     subTitle: "测试"),
-                  );
-            }));
+    String c1 = Color.fromARGB(255, 185, 194, 66).value.toRadixString(16);
+    String c2 = Color.fromARGB(255, 85, 185, 65).value.toRadixString(16);
 
-            print(result);
-          },
-          child: Text("click")),
+    print(c1);
+    print(c2);
+
+    return Container(
+      child: CoolSelectableIcon(
+        mainPageCardData: MainPageCardData(
+            endColor: c2, startColor: c1, titleTxt: "label.todos"),
+        iconStr: "label.todos",
+      ),
     );
   }
 }

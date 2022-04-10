@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:codind/entity/entity.dart';
-import 'package:codind/pages/_background_color_mixin.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:codind/widgets/widgets.dart';
@@ -15,7 +14,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
-import '../../globals.dart';
 import '../_mobile_base_page.dart';
 
 /// thanks to "dicebear" and
