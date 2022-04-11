@@ -1,3 +1,13 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: xiaoshuyui
+ * @email: guchengxi1994@qq.com
+ * @Date: 2022-04-11 20:11:27
+ * @LastEditors: xiaoshuyui
+ * @LastEditTime: 2022-04-11 21:42:05
+ */
+import 'package:codind/providers/experience_provider.dart';
 import 'package:codind/providers/language_provider.dart';
 import 'package:codind/utils/extensions/datetime_extension.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +15,10 @@ import 'package:provider/provider.dart';
 
 /// used in ../pages/resume_page.dart
 class CreateEventWidget extends StatefulWidget {
-  CreateEventWidget({Key? key}) : super(key: key);
+  CreateEventWidget({Key? key, required this.index, required this.name})
+      : super(key: key);
+  String name;
+  int index;
 
   @override
   State<CreateEventWidget> createState() => _CreateEventWidgetState();
@@ -15,6 +28,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   DateTime? startTime;
   DateTime? endTime;
   DatetimeSeparator sep = DatetimeSeparator.chinese;
+  String result = "";
 
   @override
   void initState() {
@@ -85,9 +99,39 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                       }
                     });
                   },
-                  child: Text(endTime!.toDateString(sep)))
+                  child: Text(endTime!.toDateString(sep))),
             ],
           ),
+          const SizedBox(
+            height: 10,
+          ),
+          TextField(
+            maxLength: 100,
+            maxLines: 3,
+            decoration: InputDecoration(
+              disabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Color.fromARGB(255, 39, 50, 100), width: 3)),
+              enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.amber, width: 2),
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
+              focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.green, width: 3)),
+              suffix: IconButton(
+                icon: const Icon(Icons.done),
+                onPressed: () {
+                  setState(() {
+                    context
+                        .read<ExperienceController>()
+                        .addValue(widget.name, widget.index, result);
+                  });
+                },
+              ),
+            ),
+            onChanged: (v) {
+              result = v;
+            },
+          )
         ],
       ),
     );

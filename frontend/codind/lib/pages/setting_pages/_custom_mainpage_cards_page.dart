@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-04-09 19:03:08
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-10 12:35:13
+ * @LastEditTime: 2022-04-11 21:34:41
  */
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +33,10 @@ class _CustomMainpageCardsPageState<T>
   @override
   baseBuild(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.only(bottom: 60, top: 20, left: 20, right: 20),
+      padding: EdgeInsets.only(
+        bottom: 60,
+        top: 20,
+      ),
       child: Wrap(
         alignment: WrapAlignment.start,
         children:

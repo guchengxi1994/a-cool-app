@@ -1,3 +1,4 @@
+import 'package:codind/widgets/create_event_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -98,7 +99,7 @@ class _ExpandedColumnWidgetState extends State<ExpandedColumnWidget> {
             color: Colors.black,
           ),
           onPressed: () {
-            addWidget(TextWidget(
+            addWidget(TextWidgetV2(
               name: widget.name,
               index: children.length - 1,
             ));
@@ -163,6 +164,7 @@ class DeletableWidget extends StatelessWidget {
   }
 }
 
+@Deprecated("dont be used")
 class TextWidget extends StatefulWidget {
   TextWidget({Key? key, required this.name, required this.index})
       : super(key: key);
@@ -214,6 +216,38 @@ class _TextWidgetState extends State<TextWidget> {
       onChanged: (v) {
         result = v;
       },
+    );
+  }
+}
+
+class TextWidgetV2 extends StatefulWidget {
+  TextWidgetV2({Key? key, required this.name, required this.index})
+      : super(key: key);
+  String name;
+  int index;
+
+  @override
+  State<TextWidgetV2> createState() => _TextWidgetV2State();
+}
+
+class _TextWidgetV2State extends State<TextWidgetV2> {
+  String result = "";
+  bool enable = true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 3,
+      color: Colors.grey[100],
+      child: CreateEventWidget(
+        name: widget.name,
+        index: widget.index,
+      ),
     );
   }
 }
