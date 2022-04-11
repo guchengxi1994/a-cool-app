@@ -4,7 +4,7 @@ mixin BackgroundColorMixin<T extends StatefulWidget> on State<T> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
           gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -13,8 +13,8 @@ mixin BackgroundColorMixin<T extends StatefulWidget> on State<T> {
             1.0
           ],
               colors: [
-            Color.fromARGB(255, 223, 211, 195),
-            Color.fromARGB(255, 240, 236, 227)
+            Colors.grey[300]!,
+            Colors.grey[100]!,
           ])),
       child: baseBackgroundBuild(context),
     );

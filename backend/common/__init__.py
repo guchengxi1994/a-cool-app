@@ -10,4 +10,4 @@ LastEditTime: 2022-04-10 12:52:00
 
 __backend_version__ = "1.0.0-backend-alpha"
 
-__frontend_version__ = "1.0.0-frontend-alpha+2"
+__frontend_version__ = "1.0.0-frontend-alpha+3"

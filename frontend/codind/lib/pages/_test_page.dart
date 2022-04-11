@@ -14,7 +14,9 @@ import 'package:codind/widgets/selectable_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
+import '../widgets/create_event_widget.dart';
 import '../widgets/main_page_widgets/main_page_collaps_widget.dart';
+import '../widgets/main_page_widgets/radar_chart.dart';
 
 // ignore: must_be_immutable
 class TestPage extends BasePage {
@@ -49,11 +51,12 @@ class _TestPageState<T> extends BasePageState<TestPage> {
     //   ),
     // );
 
-    // return Container(
-    //   child: MediterranesnDietView(),
+    // return CoolExpandedWidget(
+    //   child: RadarAbilityChart(),
     // );
-    return CoolCollapsWidget(
-      cardName: "label.todos",
-    );
+
+    return CreateEventWidget();
   }
 }
+
+/// The hove page which hosts the calendar

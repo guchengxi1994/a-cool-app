@@ -10,6 +10,7 @@
 
 import 'package:codind/router.dart';
 import 'package:codind/widgets/main_page_widgets/main_page_collaps_widget.dart';
+import 'package:codind/widgets/main_page_widgets/main_page_expanded_widget.dart';
 import 'package:codind/widgets/main_page_widgets/radar_chart.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -129,10 +130,13 @@ class _MainPageV2State extends State<MainPageV2> {
           if (context.watch<MainPageCardController>().selectedCards[index] ==
               "resume.abi") {
             return MainPageCard(
-              collapsedWidget: const CoolCollapsWidget(
+              collapsedWidget: CoolCollapsWidget(
                 cardName: "resume.abi",
               ),
-              expanedWidget: RadarAbilityChart(),
+              expanedWidget: Padding(
+                padding: EdgeInsets.all(5),
+                child: RadarAbilityChart(),
+              ),
               closeIconColor: Colors.black,
             );
           }
@@ -142,7 +146,7 @@ class _MainPageV2State extends State<MainPageV2> {
             return InkWell(
                 onTap: () =>
                     Navigator.of(context).pushNamed(Routers.pageResumePage),
-                child: const CoolCollapsWidget(
+                child: CoolCollapsWidget(
                   cardName: "resume.title",
                 ));
           }
@@ -157,7 +161,7 @@ class _MainPageV2State extends State<MainPageV2> {
                     );
                   }));
                 },
-                child: const CoolCollapsWidget(
+                child: CoolCollapsWidget(
                   cardName: "label.todos",
                 ));
           }

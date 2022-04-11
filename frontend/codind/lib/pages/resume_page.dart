@@ -1,4 +1,5 @@
 import 'package:codind/pages/_background_color_mixin.dart';
+import 'package:codind/widgets/main_page_widgets/main_page_collaps_widget.dart';
 import 'package:codind/widgets/mobile_widgets/upload_file_widget.dart'
     if (dart.library.html) 'package:codind/widgets/web_widgets/upload_file_widget_web.dart';
 import 'package:codind/widgets/widgets.dart';
@@ -79,8 +80,12 @@ class _ResumePageState extends State<ResumePage> with BackgroundColorMixin {
                 height: 20,
               ),
               MainPageCard(
-                collapsedWidget: _collapsdWidget(
-                    context, FlutterI18n.translate(context, "resume.edu")),
+                expandedMainColor: Colors.grey[100],
+                collapsedWidget: CoolCollapsWidgetWithoutProvider(
+                  backImgPath: "assets/images/resume.png",
+                  frontImgPath: "assets/images/my_edu.png",
+                  cardName: FlutterI18n.translate(context, "resume.edu"),
+                ),
                 expanedWidget: _expandedWidget(context, educationColumnWidget),
                 closeIconColor: Colors.red,
               ),
@@ -88,8 +93,12 @@ class _ResumePageState extends State<ResumePage> with BackgroundColorMixin {
                 height: 20,
               ),
               MainPageCard(
-                collapsedWidget: _collapsdWidget(
-                    context, FlutterI18n.translate(context, "resume.work")),
+                expandedMainColor: Colors.grey[100],
+                collapsedWidget: CoolCollapsWidgetWithoutProvider(
+                  backImgPath: "assets/images/resume.png",
+                  frontImgPath: "assets/images/my_exp.png",
+                  cardName: FlutterI18n.translate(context, "resume.work"),
+                ),
                 expanedWidget: _expandedWidget(context, workColumnWidget),
                 closeIconColor: Colors.red,
               ),
@@ -97,8 +106,12 @@ class _ResumePageState extends State<ResumePage> with BackgroundColorMixin {
                 height: 20,
               ),
               MainPageCard(
-                collapsedWidget: _collapsdWidget(
-                    context, FlutterI18n.translate(context, "resume.abi")),
+                expandedMainColor: Colors.grey[100],
+                collapsedWidget: CoolCollapsWidgetWithoutProvider(
+                  backImgPath: "assets/images/resume.png",
+                  frontImgPath: "assets/images/my_abi.png",
+                  cardName: FlutterI18n.translate(context, "resume.abi"),
+                ),
                 expanedWidget: _expandedWidget(context, skillsColumnWidget),
                 closeIconColor: Colors.red,
               ),
@@ -106,21 +119,6 @@ class _ResumePageState extends State<ResumePage> with BackgroundColorMixin {
           )),
     ));
   }
-}
-
-Widget _collapsdWidget(BuildContext context, String title) {
-  return Container(
-      margin: const EdgeInsets.only(left: 20, right: 20),
-      height: 100,
-      width: MediaQuery.of(context).size.width,
-      child: Card(
-        child: Center(
-          child: Text(
-            title,
-            style: const TextStyle(fontSize: smallSize),
-          ),
-        ),
-      ));
 }
 
 Widget _expandedWidget(BuildContext context, ExpandedColumnWidget w) {

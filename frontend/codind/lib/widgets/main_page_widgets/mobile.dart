@@ -3,6 +3,7 @@ import 'package:codind/entity/avatar_img_entity.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
+import 'package:codind/widgets/main_page_widgets/main_page_expanded_widget.dart';
 import 'package:codind/widgets/mobile_widgets/qr_scanner_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -239,12 +240,14 @@ class MainPageCard extends StatelessWidget {
   Widget collapsedWidget;
   Widget expanedWidget;
   Color? closeIconColor;
+  Color? expandedMainColor;
 
   MainPageCard(
       {Key? key,
       required this.collapsedWidget,
       required this.expanedWidget,
-      required this.closeIconColor})
+      required this.closeIconColor,
+      this.expandedMainColor})
       : super(key: key);
 
   @override
@@ -260,28 +263,25 @@ class MainPageCard extends StatelessWidget {
               },
               child: collapsedWidget,
             ),
-            expanded: Container(
-              padding: EdgeInsets.only(
-                left: 25,
-                right: 25,
+            expanded: Stack(children: [
+              CoolExpandedWidget(
+                mainColor: expandedMainColor,
+                child: expanedWidget,
               ),
-              child: Stack(children: [
-                expanedWidget,
-                Positioned(
-                    right: 15,
-                    top: 5,
-                    child: IconButton(
-                      onPressed: () {
-                        controller.toggle();
-                      },
-                      icon: Icon(
-                        Icons.close,
-                        size: 30,
-                        color: closeIconColor ?? Colors.black,
-                      ),
-                    ))
-              ]),
-            ),
+              Positioned(
+                  right: 35,
+                  top: 15,
+                  child: IconButton(
+                    onPressed: () {
+                      controller.toggle();
+                    },
+                    icon: Icon(
+                      Icons.close,
+                      size: 30,
+                      color: closeIconColor ?? Colors.black,
+                    ),
+                  ))
+            ]),
           );
         },
       ),

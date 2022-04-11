@@ -158,6 +158,6 @@ class PersistenceStorage {
   Future<List<String>> getMainpageCardTitles() async {
     await _initStorage();
 
-    return ["label.todos"];
+    return ["resume.abi", "resume.title", "label.todos"];
   }
 }
