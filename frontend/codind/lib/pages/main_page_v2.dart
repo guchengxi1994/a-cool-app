@@ -9,6 +9,7 @@
  */
 
 import 'package:codind/router.dart';
+import 'package:codind/widgets/main_page_widgets/main_page_collaps_widget.dart';
 import 'package:codind/widgets/main_page_widgets/radar_chart.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -55,11 +56,6 @@ class _MainPageV2State extends State<MainPageV2> {
                 automaticallyImplyLeading: false,
                 leading: null,
                 elevation: 0,
-                // title: Text(
-                //   "测试用户",
-                //   style: TextStyle(
-                //       color: Colors.black, fontWeight: FontWeight.bold),
-                // ),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -84,7 +80,7 @@ class _MainPageV2State extends State<MainPageV2> {
               )
             : null,
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -93,8 +89,10 @@ class _MainPageV2State extends State<MainPageV2> {
                 1.0
               ],
                   colors: [
-                Color.fromARGB(255, 223, 211, 195),
-                Color.fromARGB(200, 240, 236, 227)
+                // Color.fromARGB(255, 223, 211, 195),
+                // Color.fromARGB(200, 240, 236, 227)
+                Colors.grey[300]!,
+                Colors.grey[100]!,
               ])),
           child: buildBody(),
         ),
@@ -131,9 +129,8 @@ class _MainPageV2State extends State<MainPageV2> {
           if (context.watch<MainPageCardController>().selectedCards[index] ==
               "resume.abi") {
             return MainPageCard(
-              collapsedWidget: MainPageCustomListTile(
-                icon: Icon(Icons.pan_tool),
-                title: FlutterI18n.translate(context, "resume.abi"),
+              collapsedWidget: const CoolCollapsWidget(
+                cardName: "resume.abi",
               ),
               expanedWidget: RadarAbilityChart(),
               closeIconColor: Colors.black,
@@ -145,9 +142,8 @@ class _MainPageV2State extends State<MainPageV2> {
             return InkWell(
                 onTap: () =>
                     Navigator.of(context).pushNamed(Routers.pageResumePage),
-                child: MainPageCustomListTile(
-                  icon: Icon(Icons.work),
-                  title: FlutterI18n.translate(context, "resume.title"),
+                child: const CoolCollapsWidget(
+                  cardName: "resume.title",
                 ));
           }
 
@@ -161,9 +157,8 @@ class _MainPageV2State extends State<MainPageV2> {
                     );
                   }));
                 },
-                child: MainPageCustomListTile(
-                  icon: Icon(Icons.schedule),
-                  title: FlutterI18n.translate(context, "label.todos"),
+                child: const CoolCollapsWidget(
+                  cardName: "label.todos",
                 ));
           }
 

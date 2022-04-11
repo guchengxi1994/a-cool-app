@@ -34,16 +34,18 @@ class MobileBasePageState<T extends MobileBasePage> extends State<T> {
         decoration: BoxDecoration(
             color: widget.backgroundColor,
             gradient: widget.backgroundColor == null
-                ? const LinearGradient(
+                ? LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    stops: [
+                    stops: const [
                         0.0,
                         1.0
                       ],
                     colors: [
-                        Color.fromARGB(255, 223, 211, 195),
-                        Color.fromARGB(255, 240, 236, 227)
+                        // Color.fromARGB(255, 223, 211, 195),
+                        // Color.fromARGB(255, 240, 236, 227)
+                        Colors.grey[300]!,
+                        Colors.grey[100]!,
                       ])
                 : null),
         child: Scaffold(

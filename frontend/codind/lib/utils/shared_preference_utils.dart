@@ -154,4 +154,10 @@ class PersistenceStorage {
     await _initStorage();
     return _storage!.getString("userPassword") ?? "";
   }
+
+  Future<List<String>> getMainpageCardTitles() async {
+    await _initStorage();
+
+    return ["label.todos"];
+  }
 }

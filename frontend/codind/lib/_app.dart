@@ -144,7 +144,7 @@ List<SingleChildWidget> getProviders() {
       create: (_) => TodoPageScrollController(),
     ),
     ChangeNotifierProvider(
-      create: (_) => MainPageCardController(),
+      create: (_) => MainPageCardController()..init(),
     ),
   ];
 }

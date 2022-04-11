@@ -9,9 +9,12 @@
  */
 
 import 'package:codind/pages/_base_page.dart';
+import 'package:codind/widgets/main_page_widgets/main_page_expanded_widget.dart';
 import 'package:codind/widgets/selectable_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+
+import '../widgets/main_page_widgets/main_page_collaps_widget.dart';
 
 // ignore: must_be_immutable
 class TestPage extends BasePage {
@@ -38,12 +41,19 @@ class _TestPageState<T> extends BasePageState<TestPage> {
     print(c1);
     print(c2);
 
-    return Container(
-      child: CoolSelectableIcon(
-        mainPageCardData: MainPageCardData(
-            endColor: c2, startColor: c1, titleTxt: "label.todos"),
-        iconStr: "label.todos",
-      ),
+    // return Container(
+    //   child: CoolSelectableIcon(
+    //     mainPageCardData: MainPageCardData(
+    //         endColor: c2, startColor: c1, titleTxt: "label.todos"),
+    //     iconStr: "label.todos",
+    //   ),
+    // );
+
+    // return Container(
+    //   child: MediterranesnDietView(),
+    // );
+    return CoolCollapsWidget(
+      cardName: "label.todos",
     );
   }
 }

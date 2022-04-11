@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils/shared_preference_utils.dart';
+
 class MainPageCardController extends ChangeNotifier {
   /// i18n key and selected
   // ignore: prefer_final_fields
@@ -8,6 +10,26 @@ class MainPageCardController extends ChangeNotifier {
     "resume.abi": false,
     "resume.title": false,
   };
+
+  Map<String, String> _titleNameMap = {
+    "label.todos": "assets/images/my_todos.png",
+    "resume.abi": "assets/images/my_study.png",
+    "resume.title": "assets/images/my_resume.png",
+  };
+
+  Map<String, String> _titleContentMap = {
+    "label.todos": "早睡早起\n规律作息",
+    "resume.abi": "好好学习\n实力提升",
+    "resume.title": "只有自己才了解自己",
+  };
+
+  String? getImgPath(String key) {
+    return _titleNameMap[key];
+  }
+
+  String getContent(String key) {
+    return _titleContentMap[key] ?? "";
+  }
 
   List<String> get selectedCards => getSelectedTitles();
 
@@ -26,5 +48,19 @@ class MainPageCardController extends ChangeNotifier {
       selectedCard[key] = !selectedCard[key]!;
       notifyListeners();
     }
+  }
+
+  Future init() async {
+    PersistenceStorage ps = PersistenceStorage();
+
+    List<String> l = await ps.getMainpageCardTitles();
+
+    for (var i in l) {
+      if (selectedCard.containsKey(i)) {
+        selectedCard[i] = true;
+      }
+    }
+
+    notifyListeners();
   }
 }

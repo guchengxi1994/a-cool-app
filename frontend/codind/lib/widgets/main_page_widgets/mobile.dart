@@ -45,7 +45,11 @@ class UserAvatarWidget extends StatelessWidget {
           const SizedBox(
             height: 5,
           ),
-          if (userInfo != null) Text(userInfo ?? "用户A"),
+          if (userInfo != null)
+            Text(
+              userInfo ?? "用户A",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
         ],
       ),
     );
@@ -285,6 +289,7 @@ class MainPageCard extends StatelessWidget {
   }
 }
 
+@Deprecated("not beautiful as expected")
 class MainPageCustomListTile extends StatelessWidget {
   MainPageCustomListTile({Key? key, required this.icon, required this.title})
       : super(key: key);
