@@ -141,11 +141,15 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
       {Key? key,
       required this.frontImgPath,
       this.backImgPath,
-      required this.cardName})
+      required this.cardName,
+      this.fontSize,
+      this.imgSize})
       : super(key: key);
-  final String frontImgPath;
+  String? frontImgPath;
   final String cardName;
   String? backImgPath;
+  double? fontSize;
+  double? imgSize;
 
   @override
   Widget build(BuildContext context) {
@@ -200,16 +204,17 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.only(
                                   left: 120,
-                                  right: 16,
+                                  // right: 16,
                                   top: 25,
                                 ),
                                 child: Text(
                                   cardName,
+                                  maxLines: 2,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     fontFamily: ReservedAppTheme.fontName,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 18.5,
+                                    fontSize: fontSize ?? 18.5,
                                     letterSpacing: 0.0,
                                     color: ReservedAppTheme.nearlyDarkBlue,
                                   ),
@@ -223,17 +228,18 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(
-                top: -16,
-                right: 20,
-                child: SizedBox(
-                  width: 80,
-                  height: 80,
-                  child: Image.asset(
-                    frontImgPath,
+              if (frontImgPath != null)
+                Positioned(
+                  top: -16,
+                  right: 20,
+                  child: SizedBox(
+                    width: imgSize ?? 80,
+                    height: imgSize ?? 80,
+                    child: Image.asset(
+                      frontImgPath!,
+                    ),
                   ),
-                ),
-              )
+                )
             ],
           ),
         ),

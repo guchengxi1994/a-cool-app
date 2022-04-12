@@ -146,5 +146,8 @@ List<SingleChildWidget> getProviders() {
     ChangeNotifierProvider(
       create: (_) => MainPageCardController()..init(),
     ),
+    ChangeNotifierProvider(
+      create: (_) => TopicController()..init(),
+    ),
   ];
 }

@@ -15,7 +15,7 @@ class AngleController extends ChangeNotifier {
   double _angle = 0;
   double get angle => _angle / (pi * 60);
 
-  bool get showbar => _angle > 200;
+  bool get showbar => _angle > 300;
 
   void changeAngle(double i) {
     _angle = i;

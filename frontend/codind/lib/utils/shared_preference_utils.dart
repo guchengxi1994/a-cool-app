@@ -160,4 +160,59 @@ class PersistenceStorage {
 
     return ["resume.abi", "resume.title", "label.todos"];
   }
+
+  Future<DateTime?> _getLastTime() async {
+    await _initStorage();
+    return _storage!.getString("lastTopicTime") == null
+        ? null
+        : DateTime.parse(_storage!.getString("lastTopicTime")!);
+  }
+
+  Future<String> _getTopic() async {
+    await _initStorage();
+    return _storage!.getString("lastTopic") ?? "点击填写今日topic";
+  }
+
+  Future<void> setTopic(String s) async {
+    await _initStorage();
+    _storage!.setString("lastTopic", s);
+  }
+
+  Future<void> setLastTopicTime(DateTime d) async {
+    await _initStorage();
+    _storage!.setString("lastTopicTime", d.toString());
+  }
+
+  Future<String> getTopic() async {
+    await _initStorage();
+
+    DateTime? d = await _getLastTime();
+
+    if (d != null) {
+      if (_compareDatetime(d, DateTime.now())) {
+        return "点击填写今日topic";
+      } else {
+        return await _getTopic();
+      }
+    }
+    return "点击填写今日topic";
+  }
+}
+
+bool _compareDatetime(DateTime t1, DateTime t2) {
+  if (t1.year < t2.year) {
+    return true;
+  }
+
+  if (t1.year == t2.year) {
+    if (t1.month < t2.month) {
+      return true;
+    } else if (t1.month == t2.month) {
+      return t1.day < t2.day;
+    } else {
+      return false;
+    }
+  }
+
+  return false;
 }

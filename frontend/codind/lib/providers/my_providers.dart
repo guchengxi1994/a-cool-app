@@ -19,3 +19,4 @@ export './experience_provider.dart';
 export './avatar_provider.dart';
 export './todo_page_scroll_provider.dart';
 export './main_page_card_provider.dart';
+export './main_page_topic_provider.dart';
