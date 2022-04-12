@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 19:54:23
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-08 21:14:44
+ * @LastEditTime: 2022-04-12 21:36:51
  */
 
 import 'package:codind/router.dart';
@@ -159,6 +159,16 @@ class _MainPageV2State extends State<MainPageV2> {
                     Navigator.of(context).pushNamed(Routers.pageFriend),
                 child: CoolCollapsWidget(
                   cardName: "label.friend",
+                ));
+          }
+
+          if (context.watch<MainPageCardController>().selectedCards[index] ==
+              "label.md") {
+            return InkWell(
+                onTap: () =>
+                    Navigator.of(context).pushNamed(Routers.pageMdEditor),
+                child: CoolCollapsWidget(
+                  cardName: "label.md",
                 ));
           }
 

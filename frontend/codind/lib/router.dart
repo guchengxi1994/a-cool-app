@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-10 22:05:59
+ * @LastEditTime: 2022-04-12 22:03:15
  */
 
 import 'package:codind/pages/card_page.dart';
@@ -38,7 +38,10 @@ class Routers {
           routeName: "setting",
         ),
     pageMain: (ctx) => const MainPage(),
-    pageMdEditor: (context) => const WritingProviderPage(),
+    pageMdEditor: (context) => WritingPage(
+          routeName: FlutterI18n.translate(context, "label.md"),
+          needLoading: true,
+        ),
     pageFolder: (context) => FileExplorePage(),
     pageSchedule: (context) => GanttPage(),
     pageMdPreview: (context) => const BaseMarkdownPreviewPage(),

@@ -1,8 +1,22 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: xiaoshuyui
+ * @email: guchengxi1994@qq.com
+ * @Date: 2022-04-09 19:03:08
+ * @LastEditors: xiaoshuyui
+ * @LastEditTime: 2022-04-12 21:45:53
+ */
 import 'package:flutter/material.dart';
 
 import '../utils/shared_preference_utils.dart';
 
+/// 需要同时在 main_page_v2 添加listtile
+/// 在 selectable_icon 添加button样式以及
+/// 定义label 和 tip
 class MainPageCardController extends ChangeNotifier {
+  PersistenceStorage ps = PersistenceStorage();
+
   /// i18n key and selected
   // ignore: prefer_final_fields
   Map<String, bool> selectedCard = {
@@ -10,20 +24,25 @@ class MainPageCardController extends ChangeNotifier {
     "resume.abi": false,
     "resume.title": false,
     "label.friend": false,
+    "label.md": false,
   };
+
+  List<String> _recorded = [];
 
   Map<String, String> _titleNameMap = {
     "label.todos": "assets/images/my_todos.png",
     "resume.abi": "assets/images/my_study.png",
     "resume.title": "assets/images/my_resume.png",
-    "label.friend": "assets/images/friend.png"
+    "label.friend": "assets/images/friend.png",
+    "label.md": "assets/images/writing.png"
   };
 
   Map<String, String> _titleContentMap = {
     "label.todos": "早睡早起\n规律作息",
     "resume.abi": "好好学习\n实力提升",
     "resume.title": "只有自己才了解自己",
-    "label.friend": "桃花潭水深千尺"
+    "label.friend": "桃花潭水深千尺",
+    "label.md": "Writing"
   };
 
   String? getImgPath(String key) {
@@ -49,8 +68,17 @@ class MainPageCardController extends ChangeNotifier {
   void changeSelected(String key) {
     if (selectedCard.containsKey(key)) {
       selectedCard[key] = !selectedCard[key]!;
+      if (selectedCard[key]! && !_recorded.contains(key)) {
+        _recorded.add(key);
+      } else {
+        _recorded.remove(key);
+      }
       notifyListeners();
     }
+  }
+
+  Future<void> record() async {
+    ps.setTitles(_recorded);
   }
 
   Future init() async {

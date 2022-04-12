@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-09 19:40:34
+ * @LastEditTime: 2022-04-12 21:05:18
  */
 
 import 'package:codind/entity/avatar_img_entity.dart';
@@ -158,7 +158,7 @@ class PersistenceStorage {
   Future<List<String>> getMainpageCardTitles() async {
     await _initStorage();
 
-    return ["resume.abi", "resume.title", "label.todos"];
+    return _storage!.getStringList("titleList") ?? [];
   }
 
   Future<DateTime?> _getLastTime() async {
@@ -196,6 +196,12 @@ class PersistenceStorage {
       }
     }
     return "点击填写今日topic";
+  }
+
+  Future<void> setTitles(List<String> titles) async {
+    await _initStorage();
+
+    await _storage!.setStringList("titleList", titles);
   }
 }
 

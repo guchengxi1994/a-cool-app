@@ -229,7 +229,7 @@ class _CoolSelectableIconState extends State<CoolSelectableIcon> {
                 ),
               ),
               child: InkWell(
-                onTap: () {
+                onTap: () async {
                   setState(() {
                     isSelected = !isSelected;
                   });
@@ -237,6 +237,7 @@ class _CoolSelectableIconState extends State<CoolSelectableIcon> {
                   context
                       .read<MainPageCardController>()
                       .changeSelected(widget.iconStr);
+                  await context.read<MainPageCardController>().record();
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(
@@ -362,6 +363,10 @@ class MainPageCardData {
           endColor: Color.fromARGB(255, 128, 141, 29).value.toRadixString(16),
           startColor:
               Color.fromARGB(255, 170, 212, 52).value.toRadixString(16)),
+      MainPageCardData(
+          titleTxt: "label.md",
+          endColor: Color.fromARGB(255, 41, 179, 29).value.toRadixString(16),
+          startColor: Color.fromARGB(255, 42, 105, 34).value.toRadixString(16)),
     ];
   }
 
@@ -379,6 +384,9 @@ class MainPageCardData {
         break;
       case "label.friend":
         l = ["同门曰朋", "同志曰友", "..."];
+        break;
+      case "label.md":
+        l = ["Write here", "Write there", "..."];
         break;
       default:
         l = [];
@@ -403,6 +411,9 @@ class MainPageCardData {
         break;
       case "label.friend":
         l = "朋友聚居";
+        break;
+      case "label.md":
+        l = "Enjoy writing";
         break;
       default:
         l = "";
