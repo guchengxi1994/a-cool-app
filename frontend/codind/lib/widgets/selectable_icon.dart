@@ -357,6 +357,11 @@ class MainPageCardData {
           endColor: Color.fromARGB(255, 23, 110, 106).value.toRadixString(16),
           startColor:
               Color.fromARGB(255, 59, 122, 216).value.toRadixString(16)),
+      MainPageCardData(
+          titleTxt: "label.friend",
+          endColor: Color.fromARGB(255, 128, 141, 29).value.toRadixString(16),
+          startColor:
+              Color.fromARGB(255, 170, 212, 52).value.toRadixString(16)),
     ];
   }
 
@@ -371,6 +376,9 @@ class MainPageCardData {
         break;
       case "resume.title":
         l = ["只有你了解你自己", "..."];
+        break;
+      case "label.friend":
+        l = ["同门曰朋", "同志曰友", "..."];
         break;
       default:
         l = [];
@@ -392,6 +400,9 @@ class MainPageCardData {
         break;
       case "resume.title":
         l = "Wonderful";
+        break;
+      case "label.friend":
+        l = "朋友聚居";
         break;
       default:
         l = "";

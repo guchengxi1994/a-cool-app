@@ -8,6 +8,7 @@
  * @LastEditTime: 2022-02-10 22:05:59
  */
 
+import 'package:codind/pages/card_page.dart';
 import 'package:codind/pages/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -30,6 +31,7 @@ class Routers {
   // static const pageAvatarSettingPage = "/pageAvatarSettingPage";
   static const pageMobileSettingsPage = "/pageMobileSettingsPage";
   // static const pageAccountSafty = "/pageAccountSafety";
+  static const pageFriend = "/pageFriend";
 
   static final Map<String, WidgetBuilder> routers = {
     pageSetting: (ctx) => SettingPage(
@@ -49,5 +51,6 @@ class Routers {
           pageName: FlutterI18n.translate(context, "label.settings"),
         ),
     // pageAccountSafty: (context) => AccountSafetyPage(),
+    pageFriend: (context) => CardPage(),
   };
 }

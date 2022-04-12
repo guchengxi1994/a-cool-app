@@ -9,11 +9,13 @@
  */
 
 import 'package:codind/pages/_base_page.dart';
+import 'package:codind/pages/card_page.dart';
 import 'package:codind/widgets/main_page_widgets/main_page_expanded_widget.dart';
 import 'package:codind/widgets/selectable_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
+import '../widgets/card_widget.dart';
 import '../widgets/create_event_widget.dart';
 import '../widgets/main_page_widgets/main_page_collaps_widget.dart';
 import '../widgets/main_page_widgets/radar_chart.dart';
@@ -51,9 +53,11 @@ class _TestPageState<T> extends BasePageState<TestPage> {
     //   ),
     // );
 
-    return CoolExpandedWidget(
-      child: RadarAbilityChart(),
-    );
+    // return CoolExpandedWidget(
+    //   child: RadarAbilityChart(),
+    // );
+
+    return CardPage();
 
     // return CreateEventWidget();
   }

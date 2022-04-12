@@ -8,6 +8,7 @@
  * @LastEditTime: 2022-04-09 20:43:27
  */
 import 'dart:io';
+import "dart:ui" as _ui;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -48,4 +49,18 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
         PointerDeviceKind.touch,
         PointerDeviceKind.mouse,
       };
+}
+
+class CommonUtil {
+  /// 获取屏幕大小
+  static MediaQueryData mediaQuery = MediaQueryData.fromWindow(_ui.window);
+  static double _width = mediaQuery.size.width;
+  static double _height = mediaQuery.size.height;
+  static screenW() {
+    return _width;
+  }
+
+  static screenH() {
+    return _height;
+  }
 }

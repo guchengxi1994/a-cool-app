@@ -37,6 +37,7 @@ label:
   nothingtodo: "Nothing to do"
   qrcodescan: "Qr Code Scanner"
   todos: "Todo list"
+  friend: "Friends"
 
 # Objects can be many levels deep
 button:

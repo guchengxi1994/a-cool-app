@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import '../_styles.dart';
 
 class CoolExpandedWidget extends StatelessWidget {
-  CoolExpandedWidget({Key? key, required this.child, this.mainColor})
+  CoolExpandedWidget(
+      {Key? key, required this.child, this.mainColor, this.reversed = false})
       : super(key: key);
   Widget child;
   Color? mainColor;
+  bool? reversed;
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +18,17 @@ class CoolExpandedWidget extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: mainColor ?? ReservedAppTheme.white,
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(8.0),
-                bottomLeft: Radius.circular(8.0),
-                bottomRight: Radius.circular(8.0),
-                topLeft: Radius.circular(68.0)),
+            borderRadius: !reversed!
+                ? BorderRadius.only(
+                    topRight: Radius.circular(8.0),
+                    bottomLeft: Radius.circular(8.0),
+                    bottomRight: Radius.circular(8.0),
+                    topLeft: Radius.circular(68.0))
+                : BorderRadius.only(
+                    topLeft: Radius.circular(8.0),
+                    bottomLeft: Radius.circular(8.0),
+                    bottomRight: Radius.circular(8.0),
+                    topRight: Radius.circular(68.0)),
             boxShadow: <BoxShadow>[
               BoxShadow(
                   color: ReservedAppTheme.grey.withOpacity(0.2),

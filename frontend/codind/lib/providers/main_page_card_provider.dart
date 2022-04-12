@@ -9,18 +9,21 @@ class MainPageCardController extends ChangeNotifier {
     "label.todos": false,
     "resume.abi": false,
     "resume.title": false,
+    "label.friend": false,
   };
 
   Map<String, String> _titleNameMap = {
     "label.todos": "assets/images/my_todos.png",
     "resume.abi": "assets/images/my_study.png",
     "resume.title": "assets/images/my_resume.png",
+    "label.friend": "assets/images/friend.png"
   };
 
   Map<String, String> _titleContentMap = {
     "label.todos": "早睡早起\n规律作息",
     "resume.abi": "好好学习\n实力提升",
     "resume.title": "只有自己才了解自己",
+    "label.friend": "桃花潭水深千尺"
   };
 
   String? getImgPath(String key) {

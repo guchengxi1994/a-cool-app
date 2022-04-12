@@ -19,17 +19,21 @@ if __name__ == "__main__":
         print("nothing to do")
 
     if args.frontend is not None:
-        with open(frontend_version_file_path, "r+") as f:
+        with open(frontend_version_file_path, "r") as f:
             line_list = [line for line in f]
-            with open("./frontend/codind/pubspec.yaml.bak",
-                      "w",
-                      encoding="utf-8") as fw:
-                for i in line_list:
-                    # print(i)
-                    fw.write(i)
+        # with open("./frontend/codind/pubspec.yaml.bak",
+        #             "w",
+        #             encoding="utf-8") as fw:
+        #     for i in line_list:
+        #         # print(i)
+        #         fw.write(i)
 
-                for index in range(0, len(line_list)):
-                    if line_list[index].startswith("version: "):
-                        line_list[index] = "version: " + args.frontend
+        with open("./frontend/codind/pubspec.yaml",
+                    "w",
+                    encoding="utf-8") as f:
+            for index in range(0, len(line_list)):
+                if line_list[index].startswith("version: "):
+                    line_list[index] = "version: " + args.frontend
+                f.write(line_list[index])
                 
-            f.writelines(line_list)
+            # f.writelines(line_list)
