@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 
 import 'main_page_body.dart';
 
+@Deprecated("will be removed")
 class MainStatefulPage extends StatefulWidget {
   const MainStatefulPage({Key? key}) : super(key: key);
 
@@ -47,6 +48,7 @@ class _MainStatefulPageState extends State<MainStatefulPage> {
   }
 }
 
+@Deprecated("will be removed")
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
 

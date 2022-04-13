@@ -19,6 +19,7 @@ import '../widgets/card_widget.dart';
 import '../widgets/create_event_widget.dart';
 import '../widgets/main_page_widgets/main_page_collaps_widget.dart';
 import '../widgets/main_page_widgets/radar_chart.dart';
+import '../widgets/widgets.dart';
 
 // ignore: must_be_immutable
 class TestPage extends BasePage {
@@ -57,7 +58,7 @@ class _TestPageState<T> extends BasePageState<TestPage> {
     //   child: RadarAbilityChart(),
     // );
 
-    return CardPage();
+    return CreateKnowledgeWidget();
 
     // return CreateEventWidget();
   }

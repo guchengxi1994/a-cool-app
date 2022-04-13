@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:codind/pages/login_page.dart';
 import 'bloc/my_blocs.dart';
 import 'globals.dart';
 import 'pages/_test_page.dart';
@@ -53,13 +52,6 @@ class _MyAppState extends State<MyApp> {
 
         // somehow on web there is a null-value excepthon when using flutter_i18n,
         // so i add one second duration
-        // if (!PlatformUtils.isWeb) {
-        //   context.read<LanguageControllerV2>().changeLanguage(widget.lang!);
-        // } else {
-        //   Future.delayed(const Duration(seconds: 1)).then((value) => context
-        //       .read<LanguageControllerV2>()
-        //       .changeLanguage(widget.lang!));
-        // }
         Future.delayed(const Duration(seconds: 1))
             .then((value) => context
                 .read<LanguageControllerV2>()
@@ -94,16 +86,15 @@ class _MyAppState extends State<MyApp> {
               ? MyCustomScrollBehavior()
               : const MaterialScrollBehavior(),
           routes: Routers.routers,
-          theme: context.watch<ThemeController>().themeData,
           debugShowCheckedModeBanner: false,
           builder: (context, child) {
             return FlutterSmartDialog(
                 child: FlutterI18n.rootAppBuilder().call(context, child));
           },
-          // home: TestPage(
-          //   routeName: "test page",
-          // ),
-          home: LoginScreen(),
+          home: TestPage(
+            routeName: "test page",
+          ),
+          // initialRoute: Routers.pageLogin,
           navigatorObservers: [FlutterSmartDialog.observer],
           localizationsDelegates: [
             getI18n(context.watch<LanguageControllerV2>().currentLang),
@@ -117,8 +108,6 @@ class _MyAppState extends State<MyApp> {
 
 List<SingleChildWidget> getProviders() {
   return [
-    ChangeNotifierProvider(create: (_) => ThemeController()),
-    ChangeNotifierProvider(create: (_) => MenuController()),
     ChangeNotifierProvider(
       create: (_) => EmojiController(),
     ),
@@ -148,6 +137,9 @@ List<SingleChildWidget> getProviders() {
     ),
     ChangeNotifierProvider(
       create: (_) => TopicController()..init(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => MultiImageUploadController()..init(),
     ),
   ];
 }

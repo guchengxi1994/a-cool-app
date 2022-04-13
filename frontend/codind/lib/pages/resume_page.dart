@@ -1,7 +1,6 @@
 import 'package:codind/pages/_background_color_mixin.dart';
 import 'package:codind/widgets/main_page_widgets/main_page_collaps_widget.dart';
-import 'package:codind/widgets/mobile_widgets/upload_file_widget.dart'
-    if (dart.library.html) 'package:codind/widgets/web_widgets/upload_file_widget_web.dart';
+import 'package:codind/widgets/mobile_widgets/upload_file_widget.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';

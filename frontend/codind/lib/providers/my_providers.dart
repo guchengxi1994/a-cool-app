@@ -20,3 +20,4 @@ export './avatar_provider.dart';
 export './todo_page_scroll_provider.dart';
 export './main_page_card_provider.dart';
 export './main_page_topic_provider.dart';
+export './multi_image_upload_provider.dart';

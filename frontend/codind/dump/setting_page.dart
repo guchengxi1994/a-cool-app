@@ -13,6 +13,7 @@ import 'package:codind/pages/setting_pages/_color_setting_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
+@Deprecated("will be removed")
 class SettingPage extends BasePage {
   SettingPage({required String routeName}) : super(routeName: routeName);
 

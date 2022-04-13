@@ -977,11 +977,13 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                   }
                 },
                 icon: const Icon(Icons.table_chart)),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.upload_file),
-              tooltip: FlutterI18n.translate(context, "label.uploadFile"),
-            ),
+
+            /// not supported yet
+            // IconButton(
+            //   onPressed: () {},
+            //   icon: const Icon(Icons.upload_file),
+            //   tooltip: FlutterI18n.translate(context, "label.uploadFile"),
+            // ),
             IconButton(
                 tooltip: FlutterI18n.translate(context, "label.downloadFile"),
                 onPressed: () async {

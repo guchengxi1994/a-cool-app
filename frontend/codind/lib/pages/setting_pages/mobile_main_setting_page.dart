@@ -1,8 +1,10 @@
 import 'package:codind/pages/setting_pages/account_safety_page.dart';
 import 'package:codind/providers/my_providers.dart';
+import 'package:codind/router.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../utils/shared_preference_utils.dart';
 import '../../widgets/widgets.dart' show CustomListTile;
 import '../_mobile_base_page.dart';
 import '_custom_mainpage_cards_page.dart';
@@ -94,6 +96,13 @@ class _MobileMainSettingPageState<T>
             height: 10,
           ),
           InkWell(
+            onTap: () async {
+              PersistenceStorage ps = PersistenceStorage();
+              await ps.setUserEmail("");
+              await ps.setUserPassword("");
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil(Routers.pageLogin, (route) => false);
+            },
             child: Container(
                 height: 50,
                 color: Colors.white,

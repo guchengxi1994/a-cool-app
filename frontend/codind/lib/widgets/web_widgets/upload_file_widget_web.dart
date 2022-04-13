@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 
+@Deprecated("will be removed because `file_picker` supports web now")
 class UploadSingleImageWidget extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
   UploadSingleImageWidget({Key? key}) : super(key: key);

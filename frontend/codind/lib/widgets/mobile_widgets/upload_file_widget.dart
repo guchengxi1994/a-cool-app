@@ -1,40 +1,60 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:codind/utils/utils.dart' show PlatformUtils;
+import 'package:codind/providers/multi_image_upload_provider.dart';
+import 'package:codind/utils/platform_utils.dart';
+import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class UploadMultiImageWidget extends StatefulWidget {
-  UploadMultiImageWidget({Key? key, required this.type}) : super(key: key);
-
-  /// type==0 or type==1
-  int type;
+  UploadMultiImageWidget({Key? key}) : super(key: key);
 
   @override
-  _UploadMultiImageWidgetNotWebState createState() =>
-      _UploadMultiImageWidgetNotWebState();
+  _UploadMultiImageWidgetState createState() => _UploadMultiImageWidgetState();
 }
 
-class _UploadMultiImageWidgetNotWebState extends State<UploadMultiImageWidget> {
+class _UploadMultiImageWidgetState extends State<UploadMultiImageWidget> {
+  final ScrollController _controller = ScrollController();
+
+  int imgCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  List<Widget> render(List<ImgData> ls) {
+    List<Widget> ws = [];
+    for (ImgData l in ls) {
+      ws.add(ImageWidgetV2(
+        data: l.data,
+        isMulti: true,
+      ));
+    }
+
+    return ws;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      width: MediaQuery.of(context).size.width,
       height: 180,
-      child: Row(
-        children: [
-          IconButton(
-              onPressed: () {
-                debugPrint("这里来load图片");
-                if (PlatformUtils.isWeb) {
-                  debugPrint("platform 是 web");
-                } else {
-                  debugPrint("platform 不是 web");
-                }
-              },
-              icon: const Icon(Icons.plus_one)),
-        ],
+      child: SingleChildScrollView(
+        controller: _controller,
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: render(context.watch<MultiImageUploadController>().imgList),
+        ),
       ),
     );
   }
@@ -71,10 +91,13 @@ class ImageWidgetV2 extends StatefulWidget {
     required this.data,
     this.height,
     this.width,
+    this.isMulti,
   }) : super(key: key);
   Uint8List? data;
   double? height;
   double? width;
+  // for multi-file
+  bool? isMulti;
 
   @override
   State<ImageWidgetV2> createState() => _ImageWidgetV2State();
@@ -87,6 +110,7 @@ class _ImageWidgetV2State extends State<ImageWidgetV2> {
   @override
   void initState() {
     data = widget.data;
+    imageName = "";
     super.initState();
   }
 
@@ -122,6 +146,12 @@ class _ImageWidgetV2State extends State<ImageWidgetV2> {
                         setState(() {
                           data = null;
                         });
+
+                        if (widget.isMulti ?? false) {
+                          context
+                              .read<MultiImageUploadController>()
+                              .removeImg(imageName);
+                        }
                       },
                     ),
                   ))
@@ -131,9 +161,24 @@ class _ImageWidgetV2State extends State<ImageWidgetV2> {
                 FilePickerResult? result =
                     await FilePicker.platform.pickFiles();
                 if (result != null) {
-                  File file = File(result.files.single.path!);
-                  data = await file.readAsBytes();
-                  setState(() {});
+                  if (!PlatformUtils.isWeb) {
+                    imageName = result.files.single.path!;
+                    File file = File(imageName);
+                    data = await file.readAsBytes();
+
+                    setState(() {});
+                  } else {
+                    data = result.files.first.bytes;
+                    imageName = result.files.first.name;
+
+                    setState(() {});
+                  }
+
+                  if (widget.isMulti ?? false) {
+                    context
+                        .read<MultiImageUploadController>()
+                        .addImg(ImgData(data: data, imgname: imageName));
+                  }
                 }
               },
               icon: const Icon(

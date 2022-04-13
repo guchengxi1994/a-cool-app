@@ -9,6 +9,8 @@
  */
 
 import 'package:codind/pages/card_page.dart';
+import 'package:codind/pages/login_page.dart';
+import 'package:codind/pages/main_page_v2.dart';
 import 'package:codind/pages/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -18,7 +20,7 @@ class Global {
 }
 
 class Routers {
-  static const pageSetting = '/pageSetting';
+  // static const pageSetting = '/pageSetting';
   static const pageMain = '/pageMain';
   static const pageMdEditor = '/pageMdEditor';
   static const pageFolder = '/pageFolder';
@@ -28,16 +30,17 @@ class Routers {
   static const pageMindMap = "/pageMindMap";
   static const pageYourAbilities = "/pageAbilities";
   static const pageResumePage = "/resume";
+  static const pageLogin = "pageLogin";
   // static const pageAvatarSettingPage = "/pageAvatarSettingPage";
   static const pageMobileSettingsPage = "/pageMobileSettingsPage";
   // static const pageAccountSafty = "/pageAccountSafety";
   static const pageFriend = "/pageFriend";
 
   static final Map<String, WidgetBuilder> routers = {
-    pageSetting: (ctx) => SettingPage(
-          routeName: "setting",
-        ),
-    pageMain: (ctx) => const MainPage(),
+    // pageSetting: (ctx) => SettingPage(
+    //       routeName: "setting",
+    //     ),
+    pageMain: (ctx) => MainPageV2(),
     pageMdEditor: (context) => WritingPage(
           routeName: FlutterI18n.translate(context, "label.md"),
           needLoading: true,
@@ -55,5 +58,6 @@ class Routers {
         ),
     // pageAccountSafty: (context) => AccountSafetyPage(),
     pageFriend: (context) => CardPage(),
+    pageLogin: (context) => LoginScreen(),
   };
 }

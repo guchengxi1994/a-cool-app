@@ -15,6 +15,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
 
+// ignore: constant_identifier_names
+const AppVersion = "1.0.0-frontend-alpha+4";
+
 FlutterI18nDelegate getI18n(String lang) {
   FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
     translationLoader: FileTranslationLoader(
@@ -26,9 +29,6 @@ FlutterI18nDelegate getI18n(String lang) {
   );
   return flutterI18nDelegate;
 }
-
-// ignore: constant_identifier_names
-const AppVersion = "1.0.0-frontend-alpha+2";
 
 const leftBackIconSize = 35.0;
 
