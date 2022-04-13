@@ -40,4 +40,5 @@ jobs:
 
       - name: Analyze project source
         run: dart analyze
+        working-directory: frontend/codind
 
