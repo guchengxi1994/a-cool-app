@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-12 22:03:15
+ * @LastEditTime: 2022-04-13 21:36:36
  */
 
 import 'package:codind/pages/card_page.dart';
@@ -23,14 +23,14 @@ class Routers {
   // static const pageSetting = '/pageSetting';
   static const pageMain = '/pageMain';
   static const pageMdEditor = '/pageMdEditor';
-  static const pageFolder = '/pageFolder';
+  // static const pageFolder = '/pageFolder';
   static const pageSchedule = '/pageSchedule';
-  static const pageMdPreview = "/pageMdPreview";
-  static const pageSavedLinks = "/pageSavedLinks";
-  static const pageMindMap = "/pageMindMap";
-  static const pageYourAbilities = "/pageAbilities";
+  // static const pageMdPreview = "/pageMdPreview";
+  // static const pageSavedLinks = "/pageSavedLinks";
+  // static const pageMindMap = "/pageMindMap";
+  // static const pageYourAbilities = "/pageAbilities";
   static const pageResumePage = "/resume";
-  static const pageLogin = "pageLogin";
+  static const pageLogin = "/pageLogin";
   // static const pageAvatarSettingPage = "/pageAvatarSettingPage";
   static const pageMobileSettingsPage = "/pageMobileSettingsPage";
   // static const pageAccountSafty = "/pageAccountSafety";
@@ -45,12 +45,12 @@ class Routers {
           routeName: FlutterI18n.translate(context, "label.md"),
           needLoading: true,
         ),
-    pageFolder: (context) => FileExplorePage(),
+    // pageFolder: (context) => FileExplorePage(),
     pageSchedule: (context) => GanttPage(),
-    pageMdPreview: (context) => const BaseMarkdownPreviewPage(),
-    pageSavedLinks: (context) => SavedLinksPage(),
-    pageMindMap: (context) => MindMapPageV2(),
-    pageYourAbilities: (context) => YourAbilitiesPage(),
+    // pageMdPreview: (context) => const BaseMarkdownPreviewPage(),
+    // pageSavedLinks: (context) => SavedLinksPage(),
+    // pageMindMap: (context) => MindMapPageV2(),
+    // pageYourAbilities: (context) => YourAbilitiesPage(),
     pageResumePage: (context) => ResumePage(),
     // pageAvatarSettingPage: (context) => GenerateAvatarPage(),
     pageMobileSettingsPage: (context) => MobileMainSettingPage(

@@ -242,8 +242,8 @@ class _ThingItemState extends State<ThingItem> {
                   "subjectId": id,
                   "data": _data,
                 };
-                Navigator.pushNamed(context, Routers.pageMdPreview,
-                    arguments: params);
+                // Navigator.pushNamed(context, Routers.pageMdPreview,
+                //     arguments: params);
               }
             : null,
         child: Card(

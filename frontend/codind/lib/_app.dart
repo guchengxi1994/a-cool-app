@@ -113,9 +113,9 @@ List<SingleChildWidget> getProviders() {
     ChangeNotifierProvider(
       create: (_) => EmojiController(),
     ),
-    ChangeNotifierProvider(
-      create: (_) => ChangeBackgroundProvider(),
-    ),
+    // ChangeNotifierProvider(
+    //   create: (_) => ChangeBackgroundProvider(),
+    // ),
     ChangeNotifierProvider(
       create: (_) => RadioProvider(),
     ),

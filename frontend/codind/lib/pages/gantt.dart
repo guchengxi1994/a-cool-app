@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-14 20:24:08
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-24 19:10:48
+ * @LastEditTime: 2022-04-13 21:39:20
  */
 import 'package:codind/bloc/gantt_bloc.dart';
 import 'package:codind/entity/schedule.dart';
@@ -19,6 +19,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:codind/utils/common.dart' as my;
 import 'package:loading_overlay/loading_overlay.dart';
 
+import '../widgets/things.dart';
 import '_schedule_detail_page.dart';
 
 /// my gantt chart !!!

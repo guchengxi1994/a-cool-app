@@ -36,8 +36,8 @@ class UserAvatarWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SizedBox(
-            height: 100,
-            width: 100,
+            height: MediaQuery.of(context).size.width * 0.2,
+            width: MediaQuery.of(context).size.width * 0.2,
             child: Transform.rotate(
               angle: context.watch<AngleController>().angle,
               child: buildAvatar(avatarImg),
@@ -124,12 +124,15 @@ class SettingButton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Icon(
+            Icon(
               Icons.settings,
-              size: 50,
+              size: MediaQuery.of(context).size.width * 0.1,
               color: Colors.black,
             ),
-            Text(FlutterI18n.translate(context, "label.settings1"))
+            Text(
+              FlutterI18n.translate(context, "label.settings1"),
+              maxLines: 2,
+            )
           ],
         ),
       ),
@@ -157,7 +160,10 @@ class TodoListWidget extends StatelessWidget {
           itemWidth: 100,
           itemBuilder: (context, index) {
             return Center(
-              child: Text(todos[index]),
+              child: Text(
+                todos[index],
+                maxLines: 2,
+              ),
             );
           },
         ),

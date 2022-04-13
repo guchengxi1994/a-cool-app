@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 19:54:23
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-12 21:36:51
+ * @LastEditTime: 2022-04-13 21:23:24
  */
 
 import 'package:codind/pages/create_things_page.dart';
@@ -80,6 +80,22 @@ class _MainPageV2State extends State<MainPageV2> {
                     )
                   ],
                 ),
+                actions: [
+                  Container(
+                    padding: EdgeInsets.only(top: 5, right: 20, bottom: 5),
+                    child: IconButton(
+                        onPressed: () {
+                          _controller.animateTo(0,
+                              duration: Duration(seconds: 1),
+                              curve: Curves.ease);
+                        },
+                        icon: const Icon(
+                          Icons.expand,
+                          color: Colors.black,
+                          size: 35,
+                        )),
+                  ),
+                ],
               )
             : null,
         body: Container(
@@ -230,10 +246,6 @@ class _MainPageV2State extends State<MainPageV2> {
       flexibleSpace: FlexibleSpaceBar(
         background: Row(
           children: [
-            Container(
-              width: 30,
-              color: Colors.red,
-            ),
             Expanded(
                 child: Column(
               children: [
@@ -335,6 +347,24 @@ class _MainPageV2State extends State<MainPageV2> {
                 )
               ],
             )),
+            Container(
+              margin: EdgeInsets.only(left: 5),
+              padding: EdgeInsets.only(top: 30, right: 10),
+              // width: 30,
+              color: Colors.transparent,
+              alignment: Alignment.topCenter,
+              child: IconButton(
+                icon: const Icon(
+                  Icons.expand_less,
+                  color: Colors.black,
+                  size: 35,
+                ),
+                onPressed: () {
+                  _controller.animateTo(400,
+                      duration: Duration(seconds: 1), curve: Curves.ease);
+                },
+              ),
+            ),
           ],
         ),
       ),
