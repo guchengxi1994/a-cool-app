@@ -25,24 +25,27 @@ class MainPageCardController extends ChangeNotifier {
     "resume.title": false,
     "label.friend": false,
     "label.md": false,
+    "label.kb": false,
   };
 
   List<String> _recorded = [];
 
-  Map<String, String> _titleNameMap = {
+  final Map<String, String> _titleNameMap = {
     "label.todos": "assets/images/my_todos.png",
     "resume.abi": "assets/images/my_study.png",
     "resume.title": "assets/images/my_resume.png",
     "label.friend": "assets/images/friend.png",
-    "label.md": "assets/images/writing.png"
+    "label.md": "assets/images/writing.png",
+    "label.kb": "assets/images/kb.png",
   };
 
-  Map<String, String> _titleContentMap = {
+  final Map<String, String> _titleContentMap = {
     "label.todos": "早睡早起\n规律作息",
     "resume.abi": "好好学习\n实力提升",
     "resume.title": "只有自己才了解自己",
     "label.friend": "桃花潭水深千尺",
-    "label.md": "Writing"
+    "label.md": "Writing",
+    "label.kb": "博观而约取，厚积而薄发",
   };
 
   String? getImgPath(String key) {

@@ -39,6 +39,7 @@ label:
   todos: "Todo list"
   friend: "Friends"
   md: "Writing"
+  kb: "Knowledge Base"
 
 # Objects can be many levels deep
 button:

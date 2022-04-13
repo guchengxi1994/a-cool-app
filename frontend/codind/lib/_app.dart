@@ -1,4 +1,5 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:codind/pages/login_page.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
@@ -91,9 +92,10 @@ class _MyAppState extends State<MyApp> {
             return FlutterSmartDialog(
                 child: FlutterI18n.rootAppBuilder().call(context, child));
           },
-          home: TestPage(
-            routeName: "test page",
-          ),
+          // home: TestPage(
+          //   routeName: "test page",
+          // ),
+          home: LoginScreen(),
           // initialRoute: Routers.pageLogin,
           navigatorObservers: [FlutterSmartDialog.observer],
           localizationsDelegates: [

@@ -8,6 +8,7 @@
  * @LastEditTime: 2022-04-12 21:36:51
  */
 
+import 'package:codind/pages/create_things_page.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/shared_preference_utils.dart';
 import 'package:codind/widgets/main_page_widgets/main_page_collaps_widget.dart';
@@ -187,6 +188,24 @@ class _MainPageV2State extends State<MainPageV2> {
                 ));
           }
 
+          if (context.watch<MainPageCardController>().selectedCards[index] ==
+              "label.kb") {
+            return InkWell(
+                onTap: () async {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    // return NewTodosPage(
+                    //   pageName: FlutterI18n.translate(context, "label.kb"),
+                    // );
+                    return CreateKnowledgeBasePage(
+                      pageName: FlutterI18n.translate(context, "label.kb"),
+                    );
+                  }));
+                },
+                child: CoolCollapsWidget(
+                  cardName: "label.kb",
+                ));
+          }
+
           return Card(
             margin:
                 const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
@@ -209,104 +228,113 @@ class _MainPageV2State extends State<MainPageV2> {
       title: null,
       expandedHeight: 400,
       flexibleSpace: FlexibleSpaceBar(
-        background: Column(
+        background: Row(
           children: [
-            InkWell(
-              onTap: () async {
-                String result = "";
-                var res = await showCupertinoDialog(
-                    context: context,
-                    builder: (context) {
-                      return CupertinoAlertDialog(
-                        title: Text("Input a topic"),
-                        content: Container(
-                          color: Colors.transparent,
-                          child: TextField(
-                            maxLength: 10,
-                            onChanged: (v) {
-                              result = v;
-                            },
-                          ),
-                        ),
-                        actions: [
-                          CupertinoActionSheetAction(
-                              onPressed: () {
-                                Navigator.of(context).pop(result);
-                              },
-                              child: Text(FlutterI18n.translate(
-                                  context, "button.label.ok"))),
-                          CupertinoActionSheetAction(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text(FlutterI18n.translate(
-                                  context, "button.label.cancel"))),
-                        ],
-                      );
-                    });
-                if (res != null) {
-                  context.read<TopicController>().changeTopic(res);
-
-                  PersistenceStorage ps = PersistenceStorage();
-
-                  await ps.setTopic(res);
-                  await ps.setLastTopicTime(DateTime.now());
-                }
-              },
-              child: CoolCollapsWidgetWithoutProvider(
-                cardName: context.watch<TopicController>().topic,
-                frontImgPath: null,
-                backImgPath: "assets/images/achievement.png",
-                fontSize: 15,
-              ),
-            ),
             Container(
-              // color: Colors.white,
-              height: 250,
-              width: MediaQuery.of(context).size.width,
-              padding:
-                  const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: UserAvatarWidget(
-                      avatarImg: context.watch<AvatarController>().img,
-                      userInfo: "测试用户",
-                    ),
+              width: 30,
+              color: Colors.red,
+            ),
+            Expanded(
+                child: Column(
+              children: [
+                InkWell(
+                  onTap: () async {
+                    String result = "";
+                    var res = await showCupertinoDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            title: Text("Input a topic"),
+                            content: Container(
+                              color: Colors.transparent,
+                              child: TextField(
+                                maxLength: 10,
+                                onChanged: (v) {
+                                  result = v;
+                                },
+                              ),
+                            ),
+                            actions: [
+                              CupertinoActionSheetAction(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(result);
+                                  },
+                                  child: Text(FlutterI18n.translate(
+                                      context, "button.label.ok"))),
+                              CupertinoActionSheetAction(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(FlutterI18n.translate(
+                                      context, "button.label.cancel"))),
+                            ],
+                          );
+                        });
+                    if (res != null) {
+                      context.read<TopicController>().changeTopic(res);
+
+                      PersistenceStorage ps = PersistenceStorage();
+
+                      await ps.setTopic(res);
+                      await ps.setLastTopicTime(DateTime.now());
+                    }
+                  },
+                  child: CoolCollapsWidgetWithoutProvider(
+                    cardName: context.watch<TopicController>().topic,
+                    frontImgPath: null,
+                    backImgPath: "assets/images/achievement.png",
+                    fontSize: 15,
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 120,
-                          child: TodoListWidget(
-                            todos: ["当前共有X未完成事项", "当前已完成X事项", "当前有X逾期事项"],
-                          ),
+                ),
+                Container(
+                  // color: Colors.white,
+                  height: 250,
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, top: 5, bottom: 5),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: UserAvatarWidget(
+                          avatarImg: context.watch<AvatarController>().img,
+                          userInfo: "测试用户",
                         ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Expanded(
-                            child: Row(
-                          children: const [
-                            Expanded(
-                              flex: 1,
-                              child: SignupButton(),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 120,
+                              child: TodoListWidget(
+                                todos: ["当前共有X未完成事项", "当前已完成X事项", "当前有X逾期事项"],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
                             ),
                             Expanded(
-                              flex: 1,
-                              child: SettingButton(),
-                            )
+                                child: Row(
+                              children: const [
+                                Expanded(
+                                  flex: 1,
+                                  child: SignupButton(),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: SettingButton(),
+                                )
+                              ],
+                            )),
                           ],
-                        )),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            )
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            )),
           ],
         ),
       ),

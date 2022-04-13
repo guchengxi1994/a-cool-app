@@ -87,10 +87,11 @@ class __ChangedMdEditorState extends State<_ChangedMdEditor> {
 class WritingPage extends BasePage {
   WritingPage({Key? key, required String routeName, required bool needLoading})
       : super(
-            key: key,
-            routeName: routeName,
-            needLoading: needLoading,
-            centerTitle: true);
+          key: key,
+          routeName: routeName,
+          needLoading: needLoading,
+          centerTitle: true,
+        );
 
   @override
   BasePageState<BasePage> getState() {

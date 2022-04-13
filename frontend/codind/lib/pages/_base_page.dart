@@ -1,6 +1,8 @@
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
@@ -14,12 +16,14 @@ abstract class BasePage extends StatefulWidget {
       required this.routeName,
       this.needLoading,
       this.leadingWidgetClick,
-      this.centerTitle})
+      this.centerTitle,
+      this.needWarning})
       : super(key: key);
   String? routeName;
   bool? needLoading;
   bool? centerTitle;
   VoidCallback? leadingWidgetClick;
+  bool? needWarning;
 
   @override
   BasePageState createState() {
@@ -108,8 +112,37 @@ class BasePageState<T extends BasePage> extends State<T> {
               )
             : null,
         leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
+            onPressed: () async {
+              if (widget.needLoading ?? false) {
+                var res = await showCupertinoDialog(
+                    context: context,
+                    builder: (context) {
+                      return CupertinoAlertDialog(
+                        title: Text(FlutterI18n.translate(
+                            context, "label.exitWarning")),
+                        actions: [
+                          CupertinoActionSheetAction(
+                              onPressed: () {
+                                Navigator.of(context).pop(true);
+                              },
+                              child: Text(FlutterI18n.translate(
+                                  context, "button.label.ok"))),
+                          CupertinoActionSheetAction(
+                              onPressed: () {
+                                Navigator.of(context).pop(false);
+                              },
+                              child: Text(FlutterI18n.translate(
+                                  context, "button.label.quit"))),
+                        ],
+                      );
+                    });
+
+                if (res) {
+                  Navigator.of(context).pop();
+                }
+              } else {
+                Navigator.of(context).pop();
+              }
             },
             icon: const Icon(
               Icons.chevron_left,

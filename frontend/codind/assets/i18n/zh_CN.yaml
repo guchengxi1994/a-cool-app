@@ -36,6 +36,7 @@ label:
   todos: "计划一览"
   friend: "朋友"
   md: "创作"
+  kb: "知识库"
 
 button:
   label:

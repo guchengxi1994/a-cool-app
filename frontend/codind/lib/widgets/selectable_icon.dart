@@ -367,6 +367,10 @@ class MainPageCardData {
           titleTxt: "label.md",
           endColor: Color.fromARGB(255, 41, 179, 29).value.toRadixString(16),
           startColor: Color.fromARGB(255, 42, 105, 34).value.toRadixString(16)),
+      MainPageCardData(
+          titleTxt: "label.kb",
+          endColor: Color.fromARGB(255, 51, 60, 109).value.toRadixString(16),
+          startColor: Color.fromARGB(255, 33, 37, 140).value.toRadixString(16)),
     ];
   }
 
@@ -387,6 +391,9 @@ class MainPageCardData {
         break;
       case "label.md":
         l = ["Write here", "Write there", "..."];
+        break;
+      case "label.kb":
+        l = ["好记性不如烂笔头", "..."];
         break;
       default:
         l = [];
@@ -414,6 +421,9 @@ class MainPageCardData {
         break;
       case "label.md":
         l = "Enjoy writing";
+        break;
+      case "label.kb":
+        l = "Keep learning";
         break;
       default:
         l = "";
