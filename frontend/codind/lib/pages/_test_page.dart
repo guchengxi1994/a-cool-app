@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-11 21:42:53
+ * @LastEditTime: 2022-04-14 22:06:27
  */
 
 import 'package:codind/pages/_base_page.dart';
@@ -57,8 +57,6 @@ class _TestPageState<T> extends BasePageState<TestPage> {
     // return CoolExpandedWidget(
     //   child: RadarAbilityChart(),
     // );
-
-    return CreateKnowledgeWidget();
 
     // return CreateEventWidget();
   }

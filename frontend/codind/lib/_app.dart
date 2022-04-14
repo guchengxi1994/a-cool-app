@@ -92,10 +92,10 @@ class _MyAppState extends State<MyApp> {
             return FlutterSmartDialog(
                 child: FlutterI18n.rootAppBuilder().call(context, child));
           },
-          home: TestPage(
-            routeName: "test page",
-          ),
-          // home: LoginScreen(),
+          // home: TestPage(
+          //   routeName: "test page",
+          // ),
+          home: LoginScreen(),
           navigatorObservers: [FlutterSmartDialog.observer],
           localizationsDelegates: [
             getI18n(context.watch<LanguageControllerV2>().currentLang),
@@ -141,6 +141,9 @@ List<SingleChildWidget> getProviders() {
     ),
     ChangeNotifierProvider(
       create: (_) => MultiImageUploadController()..init(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => KnowledgeWidgetController(),
     ),
   ];
 }

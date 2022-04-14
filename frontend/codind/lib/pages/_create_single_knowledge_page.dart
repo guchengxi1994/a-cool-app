@@ -5,12 +5,14 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-04-12 22:05:46
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-12 22:22:21
+ * @LastEditTime: 2022-04-14 22:14:29
  */
 import 'package:codind/utils/extensions/datetime_extension.dart';
 import 'package:codind/widgets/mobile_widgets/upload_file_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
 import 'package:code_text_field/code_text_field.dart';
 import 'package:flutter_highlight/themes/monokai-sublime.dart';
@@ -21,19 +23,23 @@ import 'package:highlight/languages/rust.dart' as _rust;
 import 'package:highlight/languages/python.dart' as _python;
 import 'package:highlight/languages/java.dart' as _java;
 
-import '../providers/language_provider.dart';
+import '../providers/my_providers.dart';
 import '../utils/platform_utils.dart';
-import 'mobile_widgets/qr_scanner_widget.dart';
+import '../widgets/mobile_widgets/qr_scanner_widget.dart';
+import '_mobile_base_page.dart';
 
 /// maybe something like a diary
-class CreateKnowledgeWidget extends StatefulWidget {
-  CreateKnowledgeWidget({Key? key}) : super(key: key);
+class CreateKnowledgeWidget extends MobileBasePage {
+  CreateKnowledgeWidget({Key? key}) : super(key: key, pageName: null);
 
   @override
-  State<CreateKnowledgeWidget> createState() => _CreateKnowledgeWidgetState();
+  MobileBasePageState<MobileBasePage> getState() {
+    return _CreateKnowledgeWidgetState();
+  }
 }
 
-class _CreateKnowledgeWidgetState extends State<CreateKnowledgeWidget> {
+class _CreateKnowledgeWidgetState<T>
+    extends MobileBasePageState<CreateKnowledgeWidget> {
   late DateTime _time;
   DatetimeSeparator sep = DatetimeSeparator.chinese;
   final TextEditingController _titleController = TextEditingController();
@@ -78,7 +84,7 @@ class _CreateKnowledgeWidgetState extends State<CreateKnowledgeWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget baseBuild(BuildContext context) {
     /// title
     /// 时间
     /// 简介（问题简介）
@@ -113,7 +119,7 @@ class _CreateKnowledgeWidgetState extends State<CreateKnowledgeWidget> {
                   controller: _titleController,
                   // maxLength: 10,
                   decoration: InputDecoration(
-                    fillColor: Color(0x30cccccc),
+                    fillColor: Colors.white,
                     filled: true,
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Color(0x00FF0000)),
@@ -165,7 +171,7 @@ class _CreateKnowledgeWidgetState extends State<CreateKnowledgeWidget> {
               maxLength: 200,
               maxLines: 5,
               decoration: InputDecoration(
-                fillColor: Color(0x30cccccc),
+                fillColor: Colors.white,
                 filled: true,
                 enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0x00FF0000)),
@@ -187,7 +193,7 @@ class _CreateKnowledgeWidgetState extends State<CreateKnowledgeWidget> {
               controller: _detailController,
               maxLines: null,
               decoration: InputDecoration(
-                fillColor: Color(0x30cccccc),
+                fillColor: Colors.white,
                 filled: true,
                 enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0x00FF0000)),
@@ -256,7 +262,7 @@ class _CreateKnowledgeWidgetState extends State<CreateKnowledgeWidget> {
                   controller: _fromController,
                   // maxLength: 10,
                   decoration: InputDecoration(
-                    fillColor: Color(0x30cccccc),
+                    fillColor: Colors.white,
                     filled: true,
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Color(0x00FF0000)),
@@ -298,7 +304,7 @@ class _CreateKnowledgeWidgetState extends State<CreateKnowledgeWidget> {
               maxLength: 100,
               maxLines: 3,
               decoration: InputDecoration(
-                fillColor: Color(0x30cccccc),
+                fillColor: Colors.white,
                 filled: true,
                 enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0x00FF0000)),
@@ -330,36 +336,59 @@ class _CreateKnowledgeWidgetState extends State<CreateKnowledgeWidget> {
                       _knowledgeEntity.codeStyle = currentLang;
                     }
 
-                    var tag = (String s) {
+                    // ignore: prefer_function_declarations_over_variables
+                    var tag = () {
                       if (_knowledgeEntity.tag != null) {
                         List<String> ls = _knowledgeEntity.tag!.split(",");
 
                         String res = "";
+
+                        for (var i in ls) {
+                          res += " **$i**  ";
+                        }
+                        return res;
                       }
 
                       return "";
                     };
 
-                    String res = """
-                        # ${_knowledgeEntity.title}
+                    String res =
+                        """ # ${_knowledgeEntity.title}  \n ### 记录时间： ${_knowledgeEntity.time}  \n ## 摘要 \n  ${_knowledgeEntity.summary} \n   ## 标签 \n ${tag()}  \n   ## 详情  \n  ${_knowledgeEntity.detail} """;
 
-                        ### 记录时间： ${_knowledgeEntity.time}
-
-                        ## 摘要
-
-                        ${_knowledgeEntity.summary}
-
-                        ## 详情
-
-                        ${_knowledgeEntity.detail}
-
-
-
-                      """;
+                    showCupertinoDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            title: Text("预览"),
+                            content: Container(
+                              height: 300,
+                              width: 300,
+                              child: Markdown(
+                                padding: const EdgeInsets.only(bottom: 100),
+                                data: res,
+                              ),
+                            ),
+                            actions: [
+                              CupertinoActionSheetAction(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(FlutterI18n.translate(
+                                      context, "button.label.ok")))
+                            ],
+                          );
+                        });
                   },
                   child: Text("预览")),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context
+                        .read<KnowledgeWidgetController>()
+                        .addItem(KnowledgeSummaryWidget(
+                          summary: _summaryController.text,
+                        ));
+                    Navigator.of(context).pop();
+                  },
                   child:
                       Text(FlutterI18n.translate(context, "button.label.ok"))),
             ],
@@ -391,4 +420,24 @@ class _KnowledgeEntity {
       this.codes,
       this.codeStyle,
       this.imgs});
+}
+
+class KnowledgeSummaryWidget extends StatelessWidget {
+  KnowledgeSummaryWidget({Key? key, required this.summary}) : super(key: key);
+  String summary;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.red,
+      padding: EdgeInsets.all(5),
+      constraints: BoxConstraints(minWidth: 100, maxWidth: 250),
+      height: 200,
+      child: Center(
+          child: Text(
+        summary,
+        maxLines: null,
+      )),
+    );
+  }
 }
