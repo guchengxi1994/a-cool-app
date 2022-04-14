@@ -126,7 +126,7 @@ class SettingButton extends StatelessWidget {
           children: [
             Icon(
               Icons.settings,
-              // size: MediaQuery.of(context).size.width * 0.1,
+              size: 50,
               color: Colors.black,
             ),
             Text(

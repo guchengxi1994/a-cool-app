@@ -242,14 +242,18 @@ class _MainPageV2State extends State<MainPageV2> {
       pinned: false,
       floating: false,
       title: null,
-      expandedHeight: 400,
+      expandedHeight: 380,
       flexibleSpace: FlexibleSpaceBar(
         background: Row(
           children: [
             Expanded(
                 child: Column(
               children: [
-                InkWell(
+                CoolCollapsWidgetWithoutProvider(
+                  cardName: context.watch<TopicController>().topic,
+                  frontImgPath: null,
+                  backImgPath: "assets/images/achievement.png",
+                  fontSize: 15,
                   onTap: () async {
                     String result = "";
                     var res = await showCupertinoDialog(
@@ -291,12 +295,6 @@ class _MainPageV2State extends State<MainPageV2> {
                       await ps.setLastTopicTime(DateTime.now());
                     }
                   },
-                  child: CoolCollapsWidgetWithoutProvider(
-                    cardName: context.watch<TopicController>().topic,
-                    frontImgPath: null,
-                    backImgPath: "assets/images/achievement.png",
-                    fontSize: 15,
-                  ),
                 ),
                 Container(
                   // color: Colors.white,
@@ -344,25 +342,75 @@ class _MainPageV2State extends State<MainPageV2> {
                       )
                     ],
                   ),
-                )
+                ),
+                // InkWell(
+                //   onTap: () async {
+                //     String result = "";
+                //     var res = await showCupertinoDialog(
+                //         context: context,
+                //         builder: (context) {
+                //           return CupertinoAlertDialog(
+                //             title: Text("Input a topic"),
+                //             content: Container(
+                //               color: Colors.transparent,
+                //               child: TextField(
+                //                 maxLength: 10,
+                //                 onChanged: (v) {
+                //                   result = v;
+                //                 },
+                //               ),
+                //             ),
+                //             actions: [
+                //               CupertinoActionSheetAction(
+                //                   onPressed: () {
+                //                     Navigator.of(context).pop(result);
+                //                   },
+                //                   child: Text(FlutterI18n.translate(
+                //                       context, "button.label.ok"))),
+                //               CupertinoActionSheetAction(
+                //                   onPressed: () {
+                //                     Navigator.of(context).pop();
+                //                   },
+                //                   child: Text(FlutterI18n.translate(
+                //                       context, "button.label.cancel"))),
+                //             ],
+                //           );
+                //         });
+                //     if (res != null) {
+                //       context.read<TopicController>().changeTopic(res);
+
+                //       PersistenceStorage ps = PersistenceStorage();
+
+                //       await ps.setTopic(res);
+                //       await ps.setLastTopicTime(DateTime.now());
+                //     }
+                //   },
+                //   child: CoolCollapsWidgetWithoutProvider(
+                //     cardName: context.watch<TopicController>().topic,
+                //     frontImgPath: null,
+                //     backImgPath: "assets/images/achievement.png",
+                //     fontSize: 15,
+                //   ),
+                // ),
               ],
             )),
             Container(
-              margin: EdgeInsets.only(left: 5),
-              padding: EdgeInsets.only(top: 30, right: 10),
-              // width: 30,
+              margin: EdgeInsets.only(top: 30, right: 10, left: 5),
               color: Colors.transparent,
               alignment: Alignment.topCenter,
-              child: IconButton(
-                icon: const Icon(
-                  Icons.expand_less,
-                  color: Colors.black,
-                  size: 35,
-                ),
-                onPressed: () {
-                  _controller.animateTo(400,
+              child: InkWell(
+                onTap: () {
+                  _controller.animateTo(380,
                       duration: Duration(seconds: 1), curve: Curves.ease);
                 },
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  child: Image.asset(
+                    "assets/images/expand.png",
+                    width: 20,
+                    height: 20,
+                  ),
+                ),
               ),
             ),
           ],
