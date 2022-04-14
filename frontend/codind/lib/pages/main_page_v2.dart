@@ -236,186 +236,136 @@ class _MainPageV2State extends State<MainPageV2> {
 
   Widget buildSliverGrid() {
     return SliverAppBar(
-      backgroundColor: Colors.transparent,
-      automaticallyImplyLeading: false,
-      leading: null,
-      pinned: false,
-      floating: false,
-      title: null,
-      expandedHeight: 380,
-      flexibleSpace: FlexibleSpaceBar(
-        background: Row(
-          children: [
-            Expanded(
-                child: Column(
-              children: [
-                CoolCollapsWidgetWithoutProvider(
-                  cardName: context.watch<TopicController>().topic,
-                  frontImgPath: null,
-                  backImgPath: "assets/images/achievement.png",
-                  fontSize: 15,
-                  onTap: () async {
-                    String result = "";
-                    var res = await showCupertinoDialog(
-                        context: context,
-                        builder: (context) {
-                          return CupertinoAlertDialog(
-                            title: Text("Input a topic"),
-                            content: Container(
-                              color: Colors.transparent,
-                              child: TextField(
-                                maxLength: 10,
-                                onChanged: (v) {
-                                  result = v;
-                                },
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        leading: null,
+        pinned: false,
+        floating: false,
+        title: null,
+        expandedHeight: 380,
+        flexibleSpace: FlexibleSpaceBar(
+          background: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                      child: CoolCollapsWidgetWithoutProvider(
+                    cardName: context.watch<TopicController>().topic,
+                    frontImgPath: null,
+                    backImgPath: "assets/images/achievement.png",
+                    fontSize: 15,
+                    onTap: () async {
+                      String result = "";
+                      var res = await showCupertinoDialog(
+                          context: context,
+                          builder: (context) {
+                            return CupertinoAlertDialog(
+                              title: Text("Input a topic"),
+                              content: Container(
+                                color: Colors.transparent,
+                                child: TextField(
+                                  maxLength: 10,
+                                  onChanged: (v) {
+                                    result = v;
+                                  },
+                                ),
                               ),
-                            ),
-                            actions: [
-                              CupertinoActionSheetAction(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(result);
-                                  },
-                                  child: Text(FlutterI18n.translate(
-                                      context, "button.label.ok"))),
-                              CupertinoActionSheetAction(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text(FlutterI18n.translate(
-                                      context, "button.label.cancel"))),
-                            ],
-                          );
-                        });
-                    if (res != null) {
-                      context.read<TopicController>().changeTopic(res);
+                              actions: [
+                                CupertinoActionSheetAction(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(result);
+                                    },
+                                    child: Text(FlutterI18n.translate(
+                                        context, "button.label.ok"))),
+                                CupertinoActionSheetAction(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(FlutterI18n.translate(
+                                        context, "button.label.cancel"))),
+                              ],
+                            );
+                          });
+                      if (res != null) {
+                        context.read<TopicController>().changeTopic(res);
 
-                      PersistenceStorage ps = PersistenceStorage();
+                        PersistenceStorage ps = PersistenceStorage();
 
-                      await ps.setTopic(res);
-                      await ps.setLastTopicTime(DateTime.now());
-                    }
-                  },
-                ),
-                Container(
-                  // color: Colors.white,
-                  height: 250,
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.only(
-                      left: 20, right: 20, top: 5, bottom: 5),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: UserAvatarWidget(
-                          avatarImg: context.watch<AvatarController>().img,
-                          userInfo: "测试用户",
+                        await ps.setTopic(res);
+                        await ps.setLastTopicTime(DateTime.now());
+                      }
+                    },
+                  )),
+                  Container(
+                    margin: EdgeInsets.only(top: 15, right: 10, left: 5),
+                    color: Colors.transparent,
+                    alignment: Alignment.topCenter,
+                    child: InkWell(
+                      onTap: () {
+                        _controller.animateTo(380,
+                            duration: Duration(seconds: 1), curve: Curves.ease);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        child: Image.asset(
+                          "assets/images/expand.png",
+                          width: 20,
+                          height: 20,
                         ),
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 120,
-                              child: TodoListWidget(
-                                todos: ["当前共有X未完成事项", "当前已完成X事项", "当前有X逾期事项"],
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                // color: Colors.white,
+                height: 250,
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.only(
+                    left: 20, right: 20, top: 5, bottom: 5),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: UserAvatarWidget(
+                        avatarImg: context.watch<AvatarController>().img,
+                        userInfo: "测试用户",
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 120,
+                            child: TodoListWidget(
+                              todos: ["当前共有X未完成事项", "当前已完成X事项", "当前有X逾期事项"],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Expanded(
+                              child: Row(
+                            children: const [
+                              Expanded(
+                                flex: 1,
+                                child: SignupButton(),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Expanded(
-                                child: Row(
-                              children: const [
-                                Expanded(
-                                  flex: 1,
-                                  child: SignupButton(),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: SettingButton(),
-                                )
-                              ],
-                            )),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                // InkWell(
-                //   onTap: () async {
-                //     String result = "";
-                //     var res = await showCupertinoDialog(
-                //         context: context,
-                //         builder: (context) {
-                //           return CupertinoAlertDialog(
-                //             title: Text("Input a topic"),
-                //             content: Container(
-                //               color: Colors.transparent,
-                //               child: TextField(
-                //                 maxLength: 10,
-                //                 onChanged: (v) {
-                //                   result = v;
-                //                 },
-                //               ),
-                //             ),
-                //             actions: [
-                //               CupertinoActionSheetAction(
-                //                   onPressed: () {
-                //                     Navigator.of(context).pop(result);
-                //                   },
-                //                   child: Text(FlutterI18n.translate(
-                //                       context, "button.label.ok"))),
-                //               CupertinoActionSheetAction(
-                //                   onPressed: () {
-                //                     Navigator.of(context).pop();
-                //                   },
-                //                   child: Text(FlutterI18n.translate(
-                //                       context, "button.label.cancel"))),
-                //             ],
-                //           );
-                //         });
-                //     if (res != null) {
-                //       context.read<TopicController>().changeTopic(res);
-
-                //       PersistenceStorage ps = PersistenceStorage();
-
-                //       await ps.setTopic(res);
-                //       await ps.setLastTopicTime(DateTime.now());
-                //     }
-                //   },
-                //   child: CoolCollapsWidgetWithoutProvider(
-                //     cardName: context.watch<TopicController>().topic,
-                //     frontImgPath: null,
-                //     backImgPath: "assets/images/achievement.png",
-                //     fontSize: 15,
-                //   ),
-                // ),
-              ],
-            )),
-            Container(
-              margin: EdgeInsets.only(top: 30, right: 10, left: 5),
-              color: Colors.transparent,
-              alignment: Alignment.topCenter,
-              child: InkWell(
-                onTap: () {
-                  _controller.animateTo(380,
-                      duration: Duration(seconds: 1), curve: Curves.ease);
-                },
-                child: Container(
-                  padding: EdgeInsets.all(5),
-                  child: Image.asset(
-                    "assets/images/expand.png",
-                    width: 20,
-                    height: 20,
-                  ),
+                              Expanded(
+                                flex: 1,
+                                child: SettingButton(),
+                              )
+                            ],
+                          )),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+            ],
+          ),
+        ));
   }
 }

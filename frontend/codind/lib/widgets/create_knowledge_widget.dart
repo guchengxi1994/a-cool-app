@@ -40,6 +40,7 @@ class _CreateKnowledgeWidgetState extends State<CreateKnowledgeWidget> {
   final TextEditingController _summaryController = TextEditingController();
   final TextEditingController _detailController = TextEditingController();
   final TextEditingController _fromController = TextEditingController();
+  final TextEditingController _tagController = TextEditingController();
   String codes = "";
   String currentLang = "选择语言";
   late CodeController _codeController;
@@ -72,6 +73,7 @@ class _CreateKnowledgeWidgetState extends State<CreateKnowledgeWidget> {
     _detailController.dispose();
     _codeController.dispose();
     _fromController.dispose();
+    _tagController.dispose();
     super.dispose();
   }
 
@@ -285,12 +287,77 @@ class _CreateKnowledgeWidgetState extends State<CreateKnowledgeWidget> {
             height: 20,
           ),
           const SizedBox(
+            height: 20,
+          ),
+          Container(
+            constraints: BoxConstraints(
+                minHeight: 60, minWidth: MediaQuery.of(context).size.width),
+            child: TextField(
+              controller: _tagController,
+              // maxLength: 10,
+              maxLength: 100,
+              maxLines: 3,
+              decoration: InputDecoration(
+                fillColor: Color(0x30cccccc),
+                filled: true,
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0x00FF0000)),
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                hintText: '输入标签（逗号隔开）',
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0x00000000)),
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+              ),
+            ),
+          ),
+          const SizedBox(
             height: 50,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              ElevatedButton(onPressed: () {}, child: Text("预览")),
+              ElevatedButton(
+                  onPressed: () {
+                    _KnowledgeEntity _knowledgeEntity = _KnowledgeEntity();
+                    _knowledgeEntity.time = _time.toDateString(sep);
+                    _knowledgeEntity.title = _titleController.text;
+                    _knowledgeEntity.detail = _detailController.text;
+                    _knowledgeEntity.summary = _summaryController.text;
+                    _knowledgeEntity.fromUrlOrOthers = _fromController.text;
+                    _knowledgeEntity.tag = _tagController.text;
+                    _knowledgeEntity.codes = codes;
+                    if (codes != "") {
+                      _knowledgeEntity.codeStyle = currentLang;
+                    }
+
+                    var tag = (String s) {
+                      if (_knowledgeEntity.tag != null) {
+                        List<String> ls = _knowledgeEntity.tag!.split(",");
+
+                        String res = "";
+                      }
+
+                      return "";
+                    };
+
+                    String res = """
+                        # ${_knowledgeEntity.title}
+
+                        ### 记录时间： ${_knowledgeEntity.time}
+
+                        ## 摘要
+
+                        ${_knowledgeEntity.summary}
+
+                        ## 详情
+
+                        ${_knowledgeEntity.detail}
+
+
+
+                      """;
+                  },
+                  child: Text("预览")),
               ElevatedButton(
                   onPressed: () {},
                   child:
@@ -301,4 +368,27 @@ class _CreateKnowledgeWidgetState extends State<CreateKnowledgeWidget> {
       ),
     );
   }
+}
+
+class _KnowledgeEntity {
+  String? time;
+  String? title;
+  String? detail;
+  String? summary;
+  String? fromUrlOrOthers;
+  String? tag;
+  String? codes;
+  String? codeStyle;
+  List<String>? imgs;
+
+  _KnowledgeEntity(
+      {this.time,
+      this.title,
+      this.detail,
+      this.summary,
+      this.fromUrlOrOthers,
+      this.tag,
+      this.codes,
+      this.codeStyle,
+      this.imgs});
 }

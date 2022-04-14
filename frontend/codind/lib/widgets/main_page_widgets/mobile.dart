@@ -36,8 +36,12 @@ class UserAvatarWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.width * 0.2,
-            width: MediaQuery.of(context).size.width * 0.2,
+            height: MediaQuery.of(context).size.width * 0.2 <= 120
+                ? MediaQuery.of(context).size.width * 0.2
+                : 120,
+            width: MediaQuery.of(context).size.width * 0.2 <= 120
+                ? MediaQuery.of(context).size.width * 0.2
+                : 120,
             child: Transform.rotate(
               angle: context.watch<AngleController>().angle,
               child: buildAvatar(avatarImg),

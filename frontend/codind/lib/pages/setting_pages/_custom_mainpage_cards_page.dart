@@ -33,12 +33,11 @@ class _CustomMainpageCardsPageState<T>
   @override
   baseBuild(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.only(
-        bottom: 60,
-        top: 20,
-      ),
+      scrollDirection: Axis.horizontal,
+      padding: EdgeInsets.only(bottom: 20, top: 20, left: 20),
       child: Wrap(
-        alignment: WrapAlignment.start,
+        direction: Axis.vertical,
+        // alignment: WrapAlignment.start,
         children:
             context.read<MainPageCardController>().selectedCard.keys.map((e) {
           return CoolSelectableIcon(
