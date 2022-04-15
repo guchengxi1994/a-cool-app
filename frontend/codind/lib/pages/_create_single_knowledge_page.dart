@@ -23,6 +23,7 @@ import 'package:highlight/languages/rust.dart' as _rust;
 import 'package:highlight/languages/python.dart' as _python;
 import 'package:highlight/languages/java.dart' as _java;
 
+import '../entity/knowledge_entity.dart';
 import '../providers/my_providers.dart';
 import '../utils/platform_utils.dart';
 import '../widgets/mobile_widgets/qr_scanner_widget.dart';
@@ -324,7 +325,7 @@ class _CreateKnowledgeWidgetState<T>
             children: [
               ElevatedButton(
                   onPressed: () {
-                    _KnowledgeEntity _knowledgeEntity = _KnowledgeEntity();
+                    KnowledgeEntity _knowledgeEntity = KnowledgeEntity();
                     _knowledgeEntity.time = _time.toDateString(sep);
                     _knowledgeEntity.title = _titleController.text;
                     _knowledgeEntity.detail = _detailController.text;
@@ -397,29 +398,6 @@ class _CreateKnowledgeWidgetState<T>
       ),
     );
   }
-}
-
-class _KnowledgeEntity {
-  String? time;
-  String? title;
-  String? detail;
-  String? summary;
-  String? fromUrlOrOthers;
-  String? tag;
-  String? codes;
-  String? codeStyle;
-  List<String>? imgs;
-
-  _KnowledgeEntity(
-      {this.time,
-      this.title,
-      this.detail,
-      this.summary,
-      this.fromUrlOrOthers,
-      this.tag,
-      this.codes,
-      this.codeStyle,
-      this.imgs});
 }
 
 class KnowledgeSummaryWidget extends StatelessWidget {
