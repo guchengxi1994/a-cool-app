@@ -69,6 +69,10 @@ dependencies:
   flip_card: ^0.6.0
   code_text_field: ^1.0.2
   qr: ^3.0.1  # generate qr code
+  waterfall_flow: ^3.0.2
+  permission_handler: ^9.1.0
+  # file_saver: ^0.1.0
+  path_provider: ^2.0.9
   
 
 dev_dependencies:

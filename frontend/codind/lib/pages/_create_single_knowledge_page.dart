@@ -199,7 +199,7 @@ class _CreateKnowledgeWidgetState<T>
                 enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0x00FF0000)),
                     borderRadius: BorderRadius.all(Radius.circular(20))),
-                hintText: '输入详情(支持Markdown语法)',
+                hintText: '输入详情',
                 focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0x00000000)),
                     borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -406,16 +406,15 @@ class KnowledgeSummaryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.red,
-      padding: EdgeInsets.all(5),
-      constraints: BoxConstraints(minWidth: 100, maxWidth: 250),
-      height: 200,
-      child: Center(
+    return Card(
+      color: Colors.white,
+      child: Container(
+          padding: EdgeInsets.all(15),
+          alignment: Alignment.center,
           child: Text(
-        summary,
-        maxLines: null,
-      )),
+            summary,
+            maxLines: null,
+          )),
     );
   }
 }

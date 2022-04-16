@@ -1,5 +1,6 @@
 import 'package:codind/entity/knowledge_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 import '../globals.dart';
 
@@ -22,17 +23,66 @@ class KnowlegetPreviewPage extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.all(20),
         child: Column(
           children: [
-            Center(),
-            Center(),
             Center(
-              child: Text(
-                "by 测试用户",
-                style: TextStyle(
-                    fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
-              ),
-            )
+                child: Text(
+              data.title ?? "",
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            )),
+            const SizedBox(
+              height: 5,
+            ),
+            Center(
+              child: Text(data.time ?? "",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: RichText(
+                  maxLines: null,
+                  text: TextSpan(
+                      style: TextStyle(fontSize: 14, color: Colors.black),
+                      children: [
+                        TextSpan(
+                            text: "摘要: ",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(text: data.summary)
+                      ])),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Text(
+              data.detail ?? "",
+              maxLines: null,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: RichText(
+                  text: TextSpan(
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                      children: [
+                    TextSpan(
+                      text: "by ",
+                    ),
+                    TextSpan(
+                        text: "测试用户",
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                        ))
+                  ])),
+            ),
           ],
         ),
       ),
