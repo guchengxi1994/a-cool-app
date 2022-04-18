@@ -31,32 +31,11 @@ Windows 10
 笔和触控	没有可用于此显示器的笔或触控输入
 ```
 
-# 部分演示demo
+# 部分页面（web端用于展示，支持全平台）
 
-## 2022.3.16
+## 登录
 
-![image1](https://github.com/guchengxi1994/xiaoshuyui_docs/blob/main/code-find/gantt_demo.gif)
 
-![image2](https://github.com/guchengxi1994/xiaoshuyui_docs/raw/main/code-find/a-small-demo-of-provider.gif)
-
-## 2022.2.16 一个简易的日程规划工具(bloc实现，后续会在此基础上完成甘特图)
-
-![schedule_demo](https://github.com/guchengxi1994/xiaoshuyui_docs/raw/main/code-find/schedule_demo.gif)
-
-## 2022.2.7 一个简易的文件管理页面
-
-![code_find_04](https://github.com/guchengxi1994/xiaoshuyui_docs/raw/main/code-find/code_find_05.gif)
-
-## 2022.2.5
-
-![code_find_04](https://github.com/guchengxi1994/xiaoshuyui_docs/raw/main/code-find/code_find_04.gif)
-
-## 2022.2.3
-
-![code_find_03](https://github.com/guchengxi1994/xiaoshuyui_docs/raw/main/code-find/code_find_03.gif)
-
-## 2022.2.2
-
-![code_find_02](https://github.com/guchengxi1994/xiaoshuyui_docs/raw/main/code-find/code_find_02.gif)
-![code_find_01](https://github.com/guchengxi1994/xiaoshuyui_docs/raw/main/code-find/code_find_01.gif)
+| ![image-20220418083141351](./images/image-20220418083141351.png) | login page的样式是用了开源的[仓库](https://github.com/NearHuscarl/flutter_login),稍做了修改，支持国际化（通过[provider](https://github.com/rrousselGit/provider)状态管理） |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
 
