@@ -164,91 +164,179 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
         Container(
           padding:
               const EdgeInsets.only(left: 24, right: 24, top: 0, bottom: 0),
-          child: InkWell(
-            onTap: () => onTap(),
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: <Widget>[
-                Padding(
-                  // padding: const EdgeInsets.only(top: 16, bottom: 16),
-                  padding: const EdgeInsets.only(top: 16, bottom: 5),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: ReservedAppTheme.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(8.0),
-                          bottomLeft: Radius.circular(8.0),
-                          bottomRight: Radius.circular(8.0),
-                          topRight: Radius.circular(8.0)),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                            color: ReservedAppTheme.grey.withOpacity(0.4),
-                            offset: Offset(1.1, 1.1),
-                            blurRadius: 10.0),
-                      ],
-                    ),
-                    child: Stack(
-                      alignment: Alignment.topLeft,
-                      children: <Widget>[
-                        ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                          child: SizedBox(
-                            height: 74,
-                            child: AspectRatio(
-                              aspectRatio: 1.714,
-                              child: backImgPath != null
-                                  ? Image.asset(backImgPath!)
-                                  : Image.asset("assets/images/back.png"),
-                            ),
+          child: onTap != null
+              ? InkWell(
+                  onTap: () => onTap(),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: <Widget>[
+                      Padding(
+                        // padding: const EdgeInsets.only(top: 16, bottom: 16),
+                        padding: const EdgeInsets.only(top: 16, bottom: 5),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: ReservedAppTheme.white,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(8.0),
+                                bottomLeft: Radius.circular(8.0),
+                                bottomRight: Radius.circular(8.0),
+                                topRight: Radius.circular(8.0)),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                  color: ReservedAppTheme.grey.withOpacity(0.4),
+                                  offset: Offset(1.1, 1.1),
+                                  blurRadius: 10.0),
+                            ],
+                          ),
+                          child: Stack(
+                            alignment: Alignment.topLeft,
+                            children: <Widget>[
+                              ClipRRect(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0)),
+                                child: SizedBox(
+                                  height: 74,
+                                  child: AspectRatio(
+                                    aspectRatio: 1.714,
+                                    child: backImgPath != null
+                                        ? Image.asset(backImgPath!)
+                                        : Image.asset("assets/images/back.png"),
+                                  ),
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          left: 120,
+                                          // right: 16,
+                                          top: 25,
+                                        ),
+                                        child: Text(
+                                          cardName,
+                                          maxLines: 2,
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            fontFamily:
+                                                ReservedAppTheme.fontName,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: fontSize ?? 18.5,
+                                            letterSpacing: 0.0,
+                                            color:
+                                                ReservedAppTheme.nearlyDarkBlue,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      ),
+                      if (frontImgPath != null)
+                        Positioned(
+                          top: -16,
+                          right: 20,
+                          child: SizedBox(
+                            width: imgSize ?? 80,
+                            height: imgSize ?? 80,
+                            child: Image.asset(
+                              frontImgPath!,
+                            ),
+                          ),
+                        )
+                    ],
+                  ),
+                )
+              : Stack(
+                  clipBehavior: Clip.none,
+                  children: <Widget>[
+                    Padding(
+                      // padding: const EdgeInsets.only(top: 16, bottom: 16),
+                      padding: const EdgeInsets.only(top: 16, bottom: 5),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: ReservedAppTheme.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(8.0),
+                              bottomLeft: Radius.circular(8.0),
+                              bottomRight: Radius.circular(8.0),
+                              topRight: Radius.circular(8.0)),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                                color: ReservedAppTheme.grey.withOpacity(0.4),
+                                offset: Offset(1.1, 1.1),
+                                blurRadius: 10.0),
+                          ],
+                        ),
+                        child: Stack(
+                          alignment: Alignment.topLeft,
                           children: <Widget>[
-                            Row(
+                            ClipRRect(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0)),
+                              child: SizedBox(
+                                height: 74,
+                                child: AspectRatio(
+                                  aspectRatio: 1.714,
+                                  child: backImgPath != null
+                                      ? Image.asset(backImgPath!)
+                                      : Image.asset("assets/images/back.png"),
+                                ),
+                              ),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 120,
-                                    // right: 16,
-                                    top: 25,
-                                  ),
-                                  child: Text(
-                                    cardName,
-                                    maxLines: 2,
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      fontFamily: ReservedAppTheme.fontName,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: fontSize ?? 18.5,
-                                      letterSpacing: 0.0,
-                                      color: ReservedAppTheme.nearlyDarkBlue,
+                                Row(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        left: 120,
+                                        // right: 16,
+                                        top: 25,
+                                      ),
+                                      child: Text(
+                                        cardName,
+                                        maxLines: 2,
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          fontFamily: ReservedAppTheme.fontName,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: fontSize ?? 18.5,
+                                          letterSpacing: 0.0,
+                                          color:
+                                              ReservedAppTheme.nearlyDarkBlue,
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-                if (frontImgPath != null)
-                  Positioned(
-                    top: -16,
-                    right: 20,
-                    child: SizedBox(
-                      width: imgSize ?? 80,
-                      height: imgSize ?? 80,
-                      child: Image.asset(
-                        frontImgPath!,
                       ),
                     ),
-                  )
-              ],
-            ),
-          ),
+                    if (frontImgPath != null)
+                      Positioned(
+                        top: -16,
+                        right: 20,
+                        child: SizedBox(
+                          width: imgSize ?? 80,
+                          height: imgSize ?? 80,
+                          child: Image.asset(
+                            frontImgPath!,
+                          ),
+                        ),
+                      )
+                  ],
+                ),
         ),
       ],
     );

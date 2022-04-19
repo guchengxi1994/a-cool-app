@@ -115,7 +115,7 @@ Windows 10
 > )
 > ```
 >
-> 可以注意到，我这里 builder 中将两个模块的初始化方法都糅合在一起了。坑的地方是什么呢？
+> 注意，我这里 builder 中将两个模块的初始化方法都糅合在一起了。坑的地方是什么呢？
 >
 > | ![image-20220418215028676](./images/image-20220418215028676.png) | ![image-20220418215108677](./images/image-20220418215108677.png) | ![image-20220418215157915](./images/image-20220418215157915.png) |
 > | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -135,7 +135,7 @@ Windows 10
 >
 > ```dart
 > ChangeNotifierProvider(
->       create: (_) => MainPageCardController()..init(),
+>    create: (_) => MainPageCardController()..init(),
 > ),
 > ```
 >
@@ -143,21 +143,70 @@ Windows 10
 >
 > ```dart
 > Future init() async {
->     PersistenceStorage ps = PersistenceStorage();
+>  PersistenceStorage ps = PersistenceStorage();
 > 
->     List<String> l = await ps.getMainpageCardTitles();
+>  List<String> l = await ps.getMainpageCardTitles();
 > 
->     for (var i in l) {
->       if (selectedCard.containsKey(i)) {
->         selectedCard[i] = true;
->       }
->     }
+>  for (var i in l) {
+>    if (selectedCard.containsKey(i)) {
+>      selectedCard[i] = true;
+>    }
+>  }
 > 
->     notifyListeners();
+>  notifyListeners();
 > }
 > ```
 >
-> dart中的“..”运算符叫做级联运算符，是一种便利的写法。简单的说，就是上一步的输出作为下一步的输入，某些时候可以简化代码。这种写法也广泛用于bloc的状态初始化。
+> dart中的“..”运算符叫做级联运算符，是一种便利的写法，某些时候可以简化代码。和“.”运算符不一样的是，级联运算符的输出（可以看成是输出，其实更多的可以当作完成了赋值或者初始化操作，所以返回值和原数据类型是一致的）和“.”运算符是不一样的，打个比方：
+>
+> ```dart
+> class Person {
+>   int? age;
+>   String? name;
+> 
+>   Person({this.age, this.name});
+> 
+>   void setAge(int a) {
+>     age = a;
+>   }
+> 
+>   void setName(String n) {
+>     name = n;
+>   }
+> }
+> 
+> // 这是一个简单的类，通过name和age来构造一个person
+> // 我们有多种方式可以给这两个参数赋值，先来看看级联是怎么
+> // 完成的
+> 
+> // 级联赋值1
+> Person p = Person()
+>     ..age = 18
+>     ..name = "Dart";
+> // 可以看到通过级联运算符直接在声明对象的时候直接对对象赋值了
+> 
+> // 级联赋值2
+> Person p2 = Person()
+>     ..setAge(17)
+>     ..setName("flutter");
+> // 因为我们定义了 set 方法，所以也可以直接这样赋值
+> 
+> // 但是 "." 运算符就不行，因为set方法返回值不是一个
+> // person类型，而是 void
+> // Person p3 = Person().setAge(19); 的时候就会报错
+> 
+> /*
+> void setAge(int a)
+> 
+> This expression has a type of 'void' so its value can't be used.
+> Try checking to see if you're using the correct API; there might be a function or call that returns void you didn't expect. Also check type parameters and variables which might also be void
+> 
+> */
+> ```
+>
+> 
+>
+> 这种写法也广泛用于bloc的状态初始化。
 >
 > > 本app中也是有用到```bloc```的，并且一开始provider使用的场景很少，因为bloc更适合于复杂的场景，provider则可以用于简单的状态共享。这里也就涉及到另一个问题，怎么设置全局的Providers以及全局的bloc呢？
 > >
@@ -167,23 +216,23 @@ Windows 10
 > >
 > > ```dart
 > > Future main() async {
-> >   debugPrint(
-> >       "use username= `test@xiaoshuyui.org.cn` &  password= `123456` to test");
+> > debugPrint(
+> >    "use username= `test@xiaoshuyui.org.cn` &  password= `123456` to test");
 > > 
 > > 
-> >   WidgetsFlutterBinding.ensureInitialized();
-> >   // 这里执行一些初始化插件操作
+> > WidgetsFlutterBinding.ensureInitialized();
+> > // 这里执行一些初始化插件操作
 > > 
 > > 
 > > 
-> >   BlocOverrides.runZoned(
-> >       (() => runApp(MultiProvider(
-> >             providers: getProviders(),
-> >             child: const MyApp(
-> >               ...
-> >             ),
-> >           ))),
-> >       blocObserver: SimpleBlocObserver());
+> > BlocOverrides.runZoned(
+> >    (() => runApp(MultiProvider(
+> >          providers: getProviders(),
+> >          child: const MyApp(
+> >            ...
+> >          ),
+> >        ))),
+> >    blocObserver: SimpleBlocObserver());
 > > }
 > > ```
 > >
@@ -191,12 +240,12 @@ Windows 10
 > >
 > > ```dart
 > > List<SingleChildWidget> getProviders() {
-> >   return [
-> >     ChangeNotifierProvider(
-> >       create: (_) => EmojiController(),
-> >     ),
-> >     // ... 很多，很多，很多的 provider
-> >   ];
+> > return [
+> >  ChangeNotifierProvider(
+> >    create: (_) => EmojiController(),
+> >  ),
+> >  // ... 很多，很多，很多的 provider
+> > ];
 > > }
 > > ```
 > >
@@ -206,61 +255,113 @@ Windows 10
 > >
 > > ```dart
 > > class MyApp extends StatefulWidget {
-> >   const MyApp({Key? key, this.colorList, this.lang}) : super(key: key);
-> >   // final getI18n flutterI18nDelegate;
-> >   final List<String>? colorList;
-> >   final String? lang;
+> > const MyApp({Key? key, this.colorList, this.lang}) : super(key: key);
+> > // final getI18n flutterI18nDelegate;
+> > final List<String>? colorList;
+> > final String? lang;
 > > 
-> >   @override
-> >   State<MyApp> createState() => _MyAppState();
+> > @override
+> > State<MyApp> createState() => _MyAppState();
 > > }
 > > 
 > > class _MyAppState extends State<MyApp> {
-> >   @override
-> >   void initState() {
-> >     super.initState();
+> > @override
+> > void initState() {
+> >  super.initState();
 > > 
-> >     // 这里有很长的 init 逻辑，因为很长所以去掉了
-> >   }
+> >  // 这里有很长的 init 逻辑，因为很长所以去掉了
+> > }
 > > 
-> >   @override
-> >   Widget build(BuildContext context) {
-> >     return MultiBlocProvider(
-> >         providers: [
-> >           BlocProvider(
-> >             create: (_) => GanttBloc()..add(InitialGanttEvent()),
-> >           ),
-> >           // ... 有一些 bloc
-> >           )
-> >         ],
-> >         child: MaterialApp(
-> >           scrollBehavior: !PlatformUtils.isMobile
-> >               ? MyCustomScrollBehavior()
-> >               : const MaterialScrollBehavior(),
-> >           routes: Routers.routers,
-> >           debugShowCheckedModeBanner: false,
-> >           builder: (context, child) {
-> >             return FlutterSmartDialog(
-> >                 child: FlutterI18n.rootAppBuilder().call(context, child));
-> >           },
-> >           home: LoginScreen(),
-> >           navigatorObservers: [FlutterSmartDialog.observer],
-> >           localizationsDelegates: [
-> >             getI18n(context.watch<LanguageControllerV2>().currentLang),
-> >             GlobalMaterialLocalizations.delegate,
-> >             GlobalWidgetsLocalizations.delegate
-> >           ],
-> >           navigatorKey: Global.navigatorKey,
-> >         ));
-> >   }
+> > @override
+> > Widget build(BuildContext context) {
+> >  return MultiBlocProvider(
+> >      providers: [
+> >        BlocProvider(
+> >          create: (_) => GanttBloc()..add(InitialGanttEvent()),
+> >        ),
+> >        // ... 有一些 bloc
+> >        )
+> >      ],
+> >      child: MaterialApp(
+> >        scrollBehavior: !PlatformUtils.isMobile
+> >            ? MyCustomScrollBehavior()
+> >            : const MaterialScrollBehavior(),
+> >        routes: Routers.routers,
+> >        debugShowCheckedModeBanner: false,
+> >        builder: (context, child) {
+> >          return FlutterSmartDialog(
+> >              child: FlutterI18n.rootAppBuilder().call(context, child));
+> >        },
+> >        home: LoginScreen(),
+> >        navigatorObservers: [FlutterSmartDialog.observer],
+> >        localizationsDelegates: [
+> >          getI18n(context.watch<LanguageControllerV2>().currentLang),
+> >          GlobalMaterialLocalizations.delegate,
+> >          GlobalWidgetsLocalizations.delegate
+> >        ],
+> >        navigatorKey: Global.navigatorKey,
+> >      ));
+> > }
 > > }
 > > ```
 > >
 > > 这样就可以同时让两者都全局生效了。
 
-## 4. 各模块介绍
+## 4. 每日热点
+
+| ![image-20220419082021178](./images/image-20220419082021178.png) | ![image-20220419082124218](./images/image-20220419082124218.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+
+>简单的功能，通过缓存记录修改的时间，每次启动的时候和当前时间对比，如果不是同一天，则显示“输入今日topic”，如果是同一天，则从缓存中拿出存储的topic显示
+>
+>by the way， 自然数之和是 -1/12 是个很有意思的证明，我看了有点懵逼
+
+## 5. 各模块介绍
 
 首页各个模块拿出来说一说。
 
-### 4.1
+### 5.1 创建计划（日程）
+
+| ![image-20220419083214833](./images/image-20220419083214833.png) | ![image-20220419083244337](./images/image-20220419083244337.png) | ![image-20220419083244337](./images/20220419_01.gif) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ---------------------------------------------------- |
+
+> 这里采用的是 notification完成的，iOS端需要额外做一些配置，Android直接用就行了。不过这一块还没有完全实现。时间选择器还是很花哨的。
+
+### 5.2 能力表
+
+![image-20220419083244337](./images/20220419_02.gif)
+
+> 这里用到了两个第三方组件，```fl_chart```和```expandable```,用来完成展开时展示图表功能。
+
+### 5.3 简历
+
+| ![image-20220419115312066](./images/image-20220419115312066.png) | ![image-20220419083244337](./images/20220419_03.gif) |
+| ------------------------------------------------------------ | ---------------------------------------------------- |
+
+> 比较简单的功能，不过现在的```file_picker```模块支持多平台了，开发起来也就简单多了。
+
+### 5.4 friends
+
+| ![image-20220419120112697](./images/image-20220419120112697.png) | ![image-20220419083244337](./images/20220419_04.gif) |
+| ------------------------------------------------------------ | ---------------------------------------------------- |
+
+> 有一个controller的联动，也是比较简单
+
+### 5.5 知识库
+
+| ![image-20220419123228298](./images/image-20220419123228298.png) | ![image-20220419083244337](./images/20220419_05.gif) |
+| ------------------------------------------------------------ | ---------------------------------------------------- |
+
+### 5.6 markdown 写作
+
+| ![image-20220419123845728](./images/image-20220419123845728.png) | ![image-20220419083244337](./images/20220419_06.gif) |
+| ------------------------------------------------------------ | ---------------------------------------------------- |
+
+> 我一直觉得手机上写代码是可以实现的，连一个键盘，共享一个屏幕，轻轻松松，code everywhere。
+
+### 5.7 其它功能
+
+#### 5.7.1 扫码共享
+
+#### 5.7.2 ...
 
