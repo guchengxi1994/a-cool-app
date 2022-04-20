@@ -9,7 +9,7 @@
 -->
 # a-cool-app
 
-The coolest thing is build a app on your own!
+The coolest thing is build an app on your own!
 
 ### 我的目标是做一个personal知识库，同时做到创建文档，管理文件以及分享心得。并且，最coooool的地方在于，all platforms, everywhere。
 
