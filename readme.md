@@ -7,7 +7,9 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-04-18 20:50:23
 -->
-# a-cool-flutter-app
+# a-cool-app
+
+The coolest thing is build a app on your own!
 
 ### 我的目标是做一个personal知识库，同时做到创建文档，管理文件以及分享心得。并且，最coooool的地方在于，all platforms, everywhere。
 
