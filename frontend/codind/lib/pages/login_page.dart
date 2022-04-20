@@ -8,6 +8,7 @@
  * @LastEditTime: 2022-04-09 20:59:59
  */
 
+import 'package:codind/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -158,6 +159,17 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [
+          if (!PlatformUtils.isMobile)
+            IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.qr_code,
+                  color: Color.fromARGB(255, 19, 41, 133),
+                )),
+          if (!PlatformUtils.isMobile)
+            SizedBox(
+              width: 10,
+            ),
           const Center(
             child: Text(
               "离线模式",

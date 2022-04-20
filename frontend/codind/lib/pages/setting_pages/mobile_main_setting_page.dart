@@ -1,6 +1,7 @@
 import 'package:codind/pages/setting_pages/account_safety_page.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/router.dart';
+import 'package:codind/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -41,6 +42,18 @@ class _MobileMainSettingPageState<T>
               size: 25,
             ),
           ),
+          const SizedBox(
+            height: 10,
+          ),
+          if (PlatformUtils.isMobile)
+            CustomListTile(
+              style: _style,
+              title: "扫码登录桌面端",
+              trailing: const Icon(
+                Icons.chevron_right,
+                size: 25,
+              ),
+            ),
           const SizedBox(
             height: 10,
           ),

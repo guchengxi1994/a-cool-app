@@ -53,17 +53,15 @@ class _MyAppState extends State<MyApp> {
 
         // somehow on web there is a null-value excepthon when using flutter_i18n,
         // so i add one second duration
-        Future.delayed(const Duration(seconds: 1))
-            .then((value) => context
-                .read<LanguageControllerV2>()
-                .changeLanguage(widget.lang!))
-            .then((value) {
-          AwesomeNotifications().createdStream.listen((event) {
-            ScaffoldMessenger.of(Global.navigatorKey.currentContext!)
-                .showSnackBar(
-                    SnackBar(content: Text("A notification created")));
-          });
-        });
+        Future.delayed(const Duration(seconds: 1)).then((value) =>
+            context.read<LanguageControllerV2>().changeLanguage(widget.lang!));
+        // .then((value) {
+        // AwesomeNotifications().createdStream.listen((event) {
+        //   ScaffoldMessenger.of(Global.navigatorKey.currentContext!)
+        //       .showSnackBar(
+        //           SnackBar(content: Text("A notification created")));
+        // });
+        // });
       },
     );
   }
