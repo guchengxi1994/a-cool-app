@@ -143,5 +143,8 @@ List<SingleChildWidget> getProviders() {
     ChangeNotifierProvider(
       create: (_) => KnowledgeWidgetController(),
     ),
+    ChangeNotifierProvider(
+      create: (_) => KnowledgeController(),
+    ),
   ];
 }
