@@ -122,19 +122,19 @@ class SettingButton extends StatelessWidget {
       color: const Color.fromARGB(150, 199, 177, 152),
       child: InkWell(
         onTap: () {
-          Navigator.of(context).pushNamed(Routers.pageMobileSettingsPage);
+          Navigator.of(context).pushNamed(Routers.pageMine);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Icon(
-              Icons.settings,
+              Icons.person,
               size: 50,
               color: Colors.black,
             ),
             Text(
-              FlutterI18n.translate(context, "label.settings1"),
+              FlutterI18n.translate(context, "我的"),
               maxLines: 2,
             )
           ],

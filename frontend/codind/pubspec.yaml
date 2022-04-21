@@ -73,7 +73,10 @@ dependencies:
   permission_handler: ^9.1.0
   # file_saver: ^0.1.0
   path_provider: ^2.0.9
-  
+  sqlite3: ^1.6.4
+
+dependency_overrides:
+  js: ^0.6.4
 
 dev_dependencies:
   flutter_test:

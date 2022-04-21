@@ -7,6 +7,7 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-04-14 22:14:29
  */
+import 'package:codind/pages/_knowledge_preview_page.dart';
 import 'package:codind/utils/extensions/datetime_extension.dart';
 import 'package:codind/widgets/mobile_widgets/upload_file_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,6 +49,7 @@ class _CreateKnowledgeWidgetState<T>
   final TextEditingController _detailController = TextEditingController();
   final TextEditingController _fromController = TextEditingController();
   final TextEditingController _tagController = TextEditingController();
+  KnowledgeEntity _knowledgeEntity = KnowledgeEntity();
   String codes = "";
   String currentLang = "选择语言";
   late CodeController _codeController;
@@ -325,7 +327,6 @@ class _CreateKnowledgeWidgetState<T>
             children: [
               ElevatedButton(
                   onPressed: () {
-                    KnowledgeEntity _knowledgeEntity = KnowledgeEntity();
                     _knowledgeEntity.time = _time.toDateString(sep);
                     _knowledgeEntity.title = _titleController.text;
                     _knowledgeEntity.detail = _detailController.text;
@@ -388,6 +389,9 @@ class _CreateKnowledgeWidgetState<T>
                         .addItem(KnowledgeSummaryWidget(
                           summary: _summaryController.text,
                         ));
+                    context
+                        .read<KnowledgeController>()
+                        .addItem(_knowledgeEntity);
                     Navigator.of(context).pop();
                   },
                   child:
@@ -408,13 +412,22 @@ class KnowledgeSummaryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: Colors.white,
-      child: Container(
-          padding: EdgeInsets.all(15),
-          alignment: Alignment.center,
-          child: Text(
-            summary,
-            maxLines: null,
-          )),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return KnowlegetPreviewPage(
+                data: context.read<KnowledgeController>().getOne(summary) ??
+                    KnowledgeEntity());
+          }));
+        },
+        child: Container(
+            padding: EdgeInsets.all(15),
+            alignment: Alignment.center,
+            child: Text(
+              summary,
+              maxLines: null,
+            )),
+      ),
     );
   }
 }

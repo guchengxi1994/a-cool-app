@@ -35,6 +35,7 @@ class Routers {
   static const pageMobileSettingsPage = "/pageMobileSettingsPage";
   // static const pageAccountSafty = "/pageAccountSafety";
   static const pageFriend = "/pageFriend";
+  static const pageMine = "/pageMine";
 
   static final Map<String, WidgetBuilder> routers = {
     // pageSetting: (ctx) => SettingPage(
@@ -59,5 +60,6 @@ class Routers {
     // pageAccountSafty: (context) => AccountSafetyPage(),
     pageFriend: (context) => CardPage(),
     pageLogin: (context) => LoginScreen(),
+    pageMine: (context) => MinePage(pageName: "我的"),
   };
 }

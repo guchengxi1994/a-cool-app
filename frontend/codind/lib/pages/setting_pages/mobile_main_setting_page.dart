@@ -5,7 +5,6 @@ import 'package:codind/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../utils/shared_preference_utils.dart';
 import '../../widgets/widgets.dart' show CustomListTile;
 import '../_mobile_base_page.dart';
 import '_custom_mainpage_cards_page.dart';
@@ -42,18 +41,18 @@ class _MobileMainSettingPageState<T>
               size: 25,
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          if (PlatformUtils.isMobile)
-            CustomListTile(
-              style: _style,
-              title: "扫码登录桌面端",
-              trailing: const Icon(
-                Icons.chevron_right,
-                size: 25,
-              ),
-            ),
+          // const SizedBox(
+          //   height: 10,
+          // ),
+          // if (PlatformUtils.isMobile)
+          //   CustomListTile(
+          //     style: _style,
+          //     title: "扫码登录桌面端",
+          //     trailing: const Icon(
+          //       Icons.chevron_right,
+          //       size: 25,
+          //     ),
+          //   ),
           const SizedBox(
             height: 10,
           ),
