@@ -1,3 +1,12 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: xiaoshuyui
+ * @email: guchengxi1994@qq.com
+ * @Date: 2022-04-21 19:47:56
+ * @LastEditors: xiaoshuyui
+ * @LastEditTime: 2022-04-21 22:02:25
+ */
 import 'dart:io';
 
 import 'package:sqlite3/sqlite3.dart';
@@ -36,9 +45,9 @@ void main() {
 
   // You can iterate on the result set in multiple ways to retrieve Row objects
   // one by one.
-  resultSet.forEach((element) {
+  for (var element in resultSet) {
     print(element);
-  });
+  }
   for (final Row row in resultSet) {
     print('Artist[id: ${row['id']}, name: ${row['name']}]');
   }

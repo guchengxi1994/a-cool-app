@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 19:54:23
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-09 20:59:59
+ * @LastEditTime: 2022-04-21 21:40:21
  */
 
 import 'package:codind/utils/utils.dart';
@@ -13,7 +13,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_login/flutter_login.dart';
-import '../utils/shared_preference_utils.dart';
 import './main_page_v2.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:provider/provider.dart';

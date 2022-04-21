@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 19:54:23
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-13 21:23:24
+ * @LastEditTime: 2022-04-21 21:53:23
  */
 
 import 'package:codind/pages/create_things_page.dart';
@@ -53,6 +53,20 @@ class _MainPageV2State extends State<MainPageV2> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        bottomSheet: context.watch<AngleController>().showbar
+            ? Container(
+                padding: EdgeInsets.only(left: 40),
+                alignment: Alignment.centerLeft,
+                width: double.infinity,
+                height: 50,
+                child: Text(
+                  "当前工作台共有${context.watch<MainPageCardController>().selectedCards.length}个项目，"
+                  "还有${context.watch<MainPageCardController>().all - context.watch<MainPageCardController>().selectedCards.length}个可选项",
+                  maxLines: 2,
+                  style: TextStyle(fontSize: 16),
+                ),
+              )
+            : null,
         appBar: context.watch<AngleController>().showbar
             ? AppBar(
                 backgroundColor: Colors.transparent,

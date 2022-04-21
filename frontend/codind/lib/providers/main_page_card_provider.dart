@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-04-09 19:03:08
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-12 21:45:53
+ * @LastEditTime: 2022-04-21 21:51:15
  */
 import 'package:flutter/material.dart';
 
@@ -29,6 +29,8 @@ class MainPageCardController extends ChangeNotifier {
   };
 
   List<String> _recorded = [];
+
+  int get all => selectedCard.keys.length;
 
   final Map<String, String> _titleNameMap = {
     "label.todos": "assets/images/my_todos.png",

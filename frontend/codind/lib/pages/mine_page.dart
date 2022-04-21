@@ -1,3 +1,12 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: xiaoshuyui
+ * @email: guchengxi1994@qq.com
+ * @Date: 2022-04-21 19:47:56
+ * @LastEditors: xiaoshuyui
+ * @LastEditTime: 2022-04-21 21:55:51
+ */
 import 'package:codind/pages/_mobile_base_page.dart';
 import 'package:flutter/material.dart';
 
@@ -37,6 +46,10 @@ class _MinePageState extends MobileBasePageState<MinePage> {
             ),
           ),
           if (PlatformUtils.isMobile)
+            const SizedBox(
+              height: 10,
+            ),
+          if (PlatformUtils.isMobile)
             CustomListTile(
               style: _style,
               title: "扫码登录桌面端",
@@ -45,6 +58,17 @@ class _MinePageState extends MobileBasePageState<MinePage> {
                 size: 25,
               ),
             ),
+          const SizedBox(
+            height: 10,
+          ),
+          CustomListTile(
+            style: _style,
+            title: "展示个人二维码",
+            trailing: const Icon(
+              Icons.chevron_right,
+              size: 25,
+            ),
+          ),
         ],
       ),
     );
