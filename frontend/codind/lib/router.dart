@@ -36,6 +36,7 @@ class Routers {
   // static const pageAccountSafty = "/pageAccountSafety";
   static const pageFriend = "/pageFriend";
   static const pageMine = "/pageMine";
+  static const pageIntro = "/pageIntro";
 
   static final Map<String, WidgetBuilder> routers = {
     // pageSetting: (ctx) => SettingPage(
@@ -61,5 +62,6 @@ class Routers {
     pageFriend: (context) => CardPage(),
     pageLogin: (context) => LoginScreen(),
     pageMine: (context) => MinePage(pageName: "我的"),
+    pageIntro: (context) => IntroductionAnimationScreen(),
   };
 }

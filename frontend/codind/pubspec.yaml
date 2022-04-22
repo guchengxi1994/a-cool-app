@@ -75,6 +75,7 @@ dependencies:
   path_provider: ^2.0.9
   sqlite3: ^1.6.4
   add_2_calendar: ^2.1.2
+  animations: ^2.0.0
 
 dependency_overrides:
   js: ^0.6.4
@@ -116,6 +117,7 @@ flutter:
     - assets/_test_svg_01.svg  # for svg test
     - assets/ca/lets-encrypt-r3.pem # ca
     - assets/p/ # polacy
+    - assets/intro/
 
     # - assets/fitness_app/  # for UI test
 

@@ -9,6 +9,7 @@
  */
 import 'package:codind/globals.dart';
 import 'package:codind/pages/_mobile_base_page.dart';
+import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,21 @@ class _MinePageState extends MobileBasePageState<MinePage> {
       padding: const EdgeInsets.only(top: 10, bottom: 10),
       child: Column(
         children: [
+          CustomListTile(
+            // nextPage: MobileMainSettingPage(
+            //   pageName: "设置",
+            // ),
+            route: Routers.pageIntro,
+            style: _style,
+            title: "查看APP介绍",
+            trailing: const Icon(
+              Icons.chevron_right,
+              size: 25,
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
           CustomListTile(
             nextPage: MobileMainSettingPage(
               pageName: "设置",
