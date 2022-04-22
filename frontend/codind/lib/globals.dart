@@ -14,9 +14,15 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'utils/toast_utils.dart';
 
 // ignore: constant_identifier_names
 const AppVersion = "1.0.0-frontend-alpha+4";
+
+// ignore: constant_identifier_names
+const AppName = "助手";
 
 FlutterI18nDelegate getI18n(String lang) {
   FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
@@ -62,5 +68,11 @@ class CommonUtil {
 
   static screenH() {
     return _height;
+  }
+}
+
+void launchURL(String _url) async {
+  if (!await launch(_url)) {
+    showToastMessage("cannot launch url", null);
   }
 }

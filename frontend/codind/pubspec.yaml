@@ -115,6 +115,7 @@ flutter:
     - assets/_test_svg.svg  # for svg test
     - assets/_test_svg_01.svg  # for svg test
     - assets/ca/lets-encrypt-r3.pem # ca
+    - assets/p/ # polacy
 
     # - assets/fitness_app/  # for UI test
 

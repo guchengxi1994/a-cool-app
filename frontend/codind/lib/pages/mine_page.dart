@@ -7,8 +7,12 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-04-21 21:55:51
  */
+import 'package:codind/globals.dart';
 import 'package:codind/pages/_mobile_base_page.dart';
+import 'package:codind/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../utils/platform_utils.dart';
 import '../widgets/widgets.dart';
@@ -64,6 +68,42 @@ class _MinePageState extends MobileBasePageState<MinePage> {
           CustomListTile(
             style: _style,
             title: "展示个人二维码",
+            trailing: const Icon(
+              Icons.chevron_right,
+              size: 25,
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          CustomListTile(
+            style: _style,
+            onTap: () {
+              showCupertinoDialog(
+                  context: context,
+                  builder: (context) {
+                    return CupertinoAlertDialog(
+                      title: Text("是否打开第三方链接"),
+                      actions: [
+                        CupertinoActionSheetAction(
+                            onPressed: () {
+                              launchURL(
+                                  "https://github.com/guchengxi1994/a-cool-app");
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(FlutterI18n.translate(
+                                context, "button.label.ok"))),
+                        CupertinoActionSheetAction(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(FlutterI18n.translate(
+                                context, "button.label.cancel")))
+                      ],
+                    );
+                  });
+            },
+            title: "访问源码仓库",
             trailing: const Icon(
               Icons.chevron_right,
               size: 25,
