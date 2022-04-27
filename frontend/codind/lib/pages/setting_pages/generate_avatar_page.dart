@@ -11,7 +11,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:loading_overlay/loading_overlay.dart';
+// import 'package:loading_overlay/loading_overlay.dart';
+import 'package:taichi/taichi.dart';
 import 'package:provider/provider.dart';
 
 import '../_mobile_base_page.dart';
@@ -87,7 +88,7 @@ class _GenerateAvatarPageState<T>
 
   @override
   baseBuild(BuildContext context) {
-    return LoadingOverlay(
+    return TaichiOverlay.simple(
       isLoading: isLoading,
       child: SingleChildScrollView(
         padding: const EdgeInsets.only(top: 20, bottom: 20),

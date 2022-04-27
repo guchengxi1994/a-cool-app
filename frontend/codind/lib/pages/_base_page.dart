@@ -3,8 +3,9 @@ import 'package:codind/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:loading_overlay/loading_overlay.dart';
+// import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
+import 'package:taichi/taichi.dart';
 
 import '../globals.dart';
 
@@ -96,7 +97,8 @@ class BasePageState<T extends BasePage> extends State<T> {
           ? SafeArea(
               child: baseBuild(context),
             )
-          : LoadingOverlay(isLoading: isLoading, child: baseBuild(context)),
+          : TaichiOverlay.simple(
+              isLoading: isLoading, child: baseBuild(context)),
       appBar: AppBar(
         centerTitle: widget.centerTitle,
         backgroundColor: Colors.white,

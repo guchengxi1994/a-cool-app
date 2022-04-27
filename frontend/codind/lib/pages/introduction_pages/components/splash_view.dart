@@ -38,16 +38,25 @@ class _SplashViewState extends State<SplashView> {
             Padding(
               padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
               child: Text(
-                "Clearhead",
+                "Life is strange",
                 style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
               padding: EdgeInsets.only(left: 64, right: 64),
               child: Text(
-                "Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore",
+                "生活就好像写代码\n每天都在不停地用for循环\n \n按部就班不是人生的全部。有时候，if和exception也很精彩",
                 textAlign: TextAlign.center,
               ),
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 64, right: 64),
+              child: Text("出品人: xiaoshuyui",
+                  style:
+                      TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
             ),
             SizedBox(
               height: 48,

@@ -36,7 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   equatable: ^2.0.3 #增强组件相等性判断
   flutter_bloc: ^8.0.1
-  loading_overlay: ^0.3.0
+  # loading_overlay: ^0.3.0
   flutter_i18n: ^0.31.1
   # fluttertoast: ^8.0.9
   flutter_smart_dialog: ^3.4.0+2
@@ -76,6 +76,10 @@ dependencies:
   sqlite3: ^1.6.4
   add_2_calendar: ^2.1.2
   animations: ^2.0.0
+  taichi:
+    git:
+        url: https://github.com/guchengxi1994/taichi
+        ref: dev    # 用自己写的库，不过分吧
 
 dependency_overrides:
   js: ^0.6.4

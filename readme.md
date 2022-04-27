@@ -15,6 +15,8 @@ The coolest thing is build an app on your own!
 
 ## [前端说明](./frontend/codind/README.md)
 
+> 测试账号 test@xiaoshuyui.org.cn 密码 123456
+
 ## [后端说明](./backend/README.md)
 
 ## [多端适配说明](./frontend/multi_platform_support.md)
