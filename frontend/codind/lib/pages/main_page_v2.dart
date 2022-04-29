@@ -8,6 +8,8 @@
  * @LastEditTime: 2022-04-21 21:53:23
  */
 
+/// 手机端的主页
+
 import 'package:codind/pages/create_things_page.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/shared_preference_utils.dart';
