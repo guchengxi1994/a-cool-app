@@ -1,7 +1,9 @@
 /// modified from https://github.com/Im-unk/simple_login_form_flutter_UI/blob/master/lib/Views/login.dart
+import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:codind/globals.dart';
 import 'package:codind/notifications/notifications.dart';
 import 'package:codind/pages/_loading_page_mixin.dart';
+import 'package:codind/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -28,6 +30,8 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
 
   GlobalKey<TodoTimepickerWidgetState> globalKey1 = GlobalKey();
   GlobalKey<TodoTimepickerWidgetState> globalKey2 = GlobalKey();
+
+  bool useNative = true;
 
   // bool showBack = false;
 
@@ -160,6 +164,8 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
 
   @override
   Widget baseLoadingMixinBuild(BuildContext context) {
+    double _fixedBoundry = MediaQuery.of(context).size.width * 0.4;
+
     return SafeArea(
         child: Scaffold(
       body: NestedScrollView(
@@ -177,9 +183,15 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      FlutterI18n.translate(context, "todo.selectType"),
-                      style: TextStyle(color: Colors.blue[700]!, fontSize: 20),
+                    Container(
+                      constraints: BoxConstraints(
+                          maxWidth: 200 > _fixedBoundry ? _fixedBoundry : 200),
+                      child: Text(
+                        FlutterI18n.translate(context, "todo.selectType"),
+                        maxLines: 2,
+                        style:
+                            TextStyle(color: Colors.blue[700]!, fontSize: 20),
+                      ),
                     ),
                     DropdownButtonHideUnderline(
                         child: DropdownButton2(
@@ -235,7 +247,7 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
                       iconEnabledColor: Colors.yellow,
                       iconDisabledColor: Colors.grey,
                       buttonHeight: 50,
-                      buttonWidth: 200,
+                      buttonWidth: 200 > _fixedBoundry ? _fixedBoundry : 200,
                       buttonPadding: const EdgeInsets.only(left: 14, right: 14),
                       buttonDecoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14),
@@ -351,6 +363,24 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
                 buttonStr: FlutterI18n.translate(context, "todo.select2"),
               ),
 
+              if (PlatformUtils.isMobile)
+                const SizedBox(
+                  height: 20,
+                ),
+              if (PlatformUtils.isMobile)
+                CheckboxListTile(
+                    secondary: Icon(
+                      Icons.notifications_active,
+                      color: useNative ? Colors.blue : Colors.grey,
+                    ),
+                    title: Text("使用原生日历提醒(推荐)"),
+                    value: useNative,
+                    onChanged: (value) {
+                      setState(() {
+                        useNative = value!;
+                      });
+                    }),
+
               const SizedBox(
                 height: 40,
               ),
@@ -370,14 +400,38 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
                         return;
                       }
 
-                      ScheduleNotificationEntity entity =
-                          ScheduleNotificationEntity(
-                        notificationId: 21,
-                        title: titleController.text,
-                        timeOfDay: globalKey1.currentState!.time,
-                        isRepeat: true,
-                      );
-                      await createReminderNotivication(entity);
+                      if (!useNative) {
+                        ScheduleNotificationEntity entity =
+                            ScheduleNotificationEntity(
+                          notificationId: 21,
+                          title: titleController.text,
+                          timeOfDay: globalKey1.currentState!.time,
+                          isRepeat: true,
+                        );
+                        await createReminderNotivication(entity);
+                      } else {
+                        var today = DateTime.now();
+                        Event _event = Event(
+                            allDay: false,
+                            title: titleController.text,
+                            description: bodyController.text,
+                            startDate: DateTime(
+                                today.year,
+                                today.month,
+                                today.day,
+                                globalKey1.currentState!.time.hour,
+                                globalKey1.currentState!.time.minute),
+                            endDate: DateTime(
+                                today.year,
+                                today.month,
+                                today.day,
+                                globalKey2.currentState!.time.hour,
+                                globalKey2.currentState!.time.minute));
+                        Add2Calendar.addEvent2Cal(_event);
+                      }
+                      ScaffoldMessenger.of(Global.navigatorKey.currentContext!)
+                          .showSnackBar(SnackBar(
+                              content: Text("A notification created")));
                     },
                     child: Container(
                       padding:

@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-14 20:24:08
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-24 19:10:48
+ * @LastEditTime: 2022-04-13 21:39:20
  */
 import 'package:codind/bloc/gantt_bloc.dart';
 import 'package:codind/entity/schedule.dart';
@@ -17,8 +17,10 @@ import 'package:codind/utils/utils.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:codind/utils/common.dart' as my;
-import 'package:loading_overlay/loading_overlay.dart';
+// import 'package:loading_overlay/loading_overlay.dart';
+import 'package:taichi/taichi.dart';
 
+import '../widgets/things.dart';
 import '_schedule_detail_page.dart';
 
 /// my gantt chart !!!
@@ -66,7 +68,7 @@ class _GanttPageState extends State<GanttPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GanttBloc, GanttState>(builder: (context, state) {
-      return LoadingOverlay(
+      return TaichiOverlay.simple(
           isLoading: _ganttBloc.state.isLoading,
           child: Scaffold(
             appBar: PlatformUtils.isMobile

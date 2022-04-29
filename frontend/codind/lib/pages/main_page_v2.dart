@@ -5,12 +5,16 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 19:54:23
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-08 21:14:44
+ * @LastEditTime: 2022-04-21 21:53:23
  */
 
+import 'package:codind/pages/create_things_page.dart';
 import 'package:codind/router.dart';
+import 'package:codind/utils/shared_preference_utils.dart';
+import 'package:codind/widgets/main_page_widgets/main_page_collaps_widget.dart';
 import 'package:codind/widgets/main_page_widgets/radar_chart.dart';
 import 'package:codind/widgets/widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
@@ -49,17 +53,26 @@ class _MainPageV2State extends State<MainPageV2> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        bottomSheet: context.watch<AngleController>().showbar
+            ? Container(
+                padding: EdgeInsets.only(left: 40),
+                alignment: Alignment.centerLeft,
+                width: double.infinity,
+                height: 50,
+                child: Text(
+                  "当前工作台共有${context.watch<MainPageCardController>().selectedCards.length}个项目，"
+                  "还有${context.watch<MainPageCardController>().all - context.watch<MainPageCardController>().selectedCards.length}个可选项",
+                  maxLines: 2,
+                  style: TextStyle(fontSize: 16),
+                ),
+              )
+            : null,
         appBar: context.watch<AngleController>().showbar
             ? AppBar(
                 backgroundColor: Colors.transparent,
                 automaticallyImplyLeading: false,
                 leading: null,
                 elevation: 0,
-                // title: Text(
-                //   "测试用户",
-                //   style: TextStyle(
-                //       color: Colors.black, fontWeight: FontWeight.bold),
-                // ),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -75,16 +88,32 @@ class _MainPageV2State extends State<MainPageV2> {
                       width: 10,
                     ),
                     Text(
-                      "测试用户",
+                      "测试用户" + "的工作台",
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
                     )
                   ],
                 ),
+                actions: [
+                  Container(
+                    padding: EdgeInsets.only(top: 5, right: 20, bottom: 5),
+                    child: IconButton(
+                        onPressed: () {
+                          _controller.animateTo(0,
+                              duration: Duration(seconds: 1),
+                              curve: Curves.ease);
+                        },
+                        icon: const Icon(
+                          Icons.expand,
+                          color: Colors.black,
+                          size: 35,
+                        )),
+                  ),
+                ],
               )
             : null,
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -93,8 +122,10 @@ class _MainPageV2State extends State<MainPageV2> {
                 1.0
               ],
                   colors: [
-                Color.fromARGB(255, 223, 211, 195),
-                Color.fromARGB(200, 240, 236, 227)
+                // Color.fromARGB(255, 223, 211, 195),
+                // Color.fromARGB(200, 240, 236, 227)
+                Colors.grey[300]!,
+                Colors.grey[100]!,
               ])),
           child: buildBody(),
         ),
@@ -131,11 +162,13 @@ class _MainPageV2State extends State<MainPageV2> {
           if (context.watch<MainPageCardController>().selectedCards[index] ==
               "resume.abi") {
             return MainPageCard(
-              collapsedWidget: MainPageCustomListTile(
-                icon: Icon(Icons.pan_tool),
-                title: FlutterI18n.translate(context, "resume.abi"),
+              collapsedWidget: CoolCollapsWidget(
+                cardName: "resume.abi",
               ),
-              expanedWidget: RadarAbilityChart(),
+              expanedWidget: Padding(
+                padding: EdgeInsets.all(5),
+                child: RadarAbilityChart(),
+              ),
               closeIconColor: Colors.black,
             );
           }
@@ -145,9 +178,28 @@ class _MainPageV2State extends State<MainPageV2> {
             return InkWell(
                 onTap: () =>
                     Navigator.of(context).pushNamed(Routers.pageResumePage),
-                child: MainPageCustomListTile(
-                  icon: Icon(Icons.work),
-                  title: FlutterI18n.translate(context, "resume.title"),
+                child: CoolCollapsWidget(
+                  cardName: "resume.title",
+                ));
+          }
+
+          if (context.watch<MainPageCardController>().selectedCards[index] ==
+              "label.friend") {
+            return InkWell(
+                onTap: () =>
+                    Navigator.of(context).pushNamed(Routers.pageFriend),
+                child: CoolCollapsWidget(
+                  cardName: "label.friend",
+                ));
+          }
+
+          if (context.watch<MainPageCardController>().selectedCards[index] ==
+              "label.md") {
+            return InkWell(
+                onTap: () =>
+                    Navigator.of(context).pushNamed(Routers.pageMdEditor),
+                child: CoolCollapsWidget(
+                  cardName: "label.md",
                 ));
           }
 
@@ -161,9 +213,26 @@ class _MainPageV2State extends State<MainPageV2> {
                     );
                   }));
                 },
-                child: MainPageCustomListTile(
-                  icon: Icon(Icons.schedule),
-                  title: FlutterI18n.translate(context, "label.todos"),
+                child: CoolCollapsWidget(
+                  cardName: "label.todos",
+                ));
+          }
+
+          if (context.watch<MainPageCardController>().selectedCards[index] ==
+              "label.kb") {
+            return InkWell(
+                onTap: () async {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    // return NewTodosPage(
+                    //   pageName: FlutterI18n.translate(context, "label.kb"),
+                    // );
+                    return CreateKnowledgeBasePage(
+                      pageName: FlutterI18n.translate(context, "label.kb"),
+                    );
+                  }));
+                },
+                child: CoolCollapsWidget(
+                  cardName: "label.kb",
                 ));
           }
 
@@ -181,62 +250,136 @@ class _MainPageV2State extends State<MainPageV2> {
 
   Widget buildSliverGrid() {
     return SliverAppBar(
-      backgroundColor: Colors.transparent,
-      automaticallyImplyLeading: false,
-      leading: null,
-      pinned: false,
-      floating: false,
-      title: null,
-      expandedHeight: 250,
-      flexibleSpace: FlexibleSpaceBar(
-        background: Container(
-          // color: Colors.white,
-          height: 300,
-          width: MediaQuery.of(context).size.width,
-          padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
-          child: Row(
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        leading: null,
+        pinned: false,
+        floating: false,
+        title: null,
+        expandedHeight: 380,
+        flexibleSpace: FlexibleSpaceBar(
+          background: Column(
             children: [
-              Expanded(
-                flex: 1,
-                child: UserAvatarWidget(
-                  avatarImg: context.watch<AvatarController>().img,
-                  userInfo: "测试用户",
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 120,
-                      child: TodoListWidget(
-                        todos: ["当前共有X未完成事项", "当前已完成X事项", "当前有X逾期事项"],
+              Row(
+                children: [
+                  Expanded(
+                      child: CoolCollapsWidgetWithoutProvider(
+                    cardName: context.watch<TopicController>().topic,
+                    frontImgPath: null,
+                    backImgPath: "assets/images/achievement.png",
+                    fontSize: 15,
+                    onTap: () async {
+                      String result = "";
+                      var res = await showCupertinoDialog(
+                          context: context,
+                          builder: (context) {
+                            return CupertinoAlertDialog(
+                              title: Text("Input a topic"),
+                              content: Container(
+                                color: Colors.transparent,
+                                child: TextField(
+                                  maxLength: 10,
+                                  onChanged: (v) {
+                                    result = v;
+                                  },
+                                ),
+                              ),
+                              actions: [
+                                CupertinoActionSheetAction(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(result);
+                                    },
+                                    child: Text(FlutterI18n.translate(
+                                        context, "button.label.ok"))),
+                                CupertinoActionSheetAction(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(FlutterI18n.translate(
+                                        context, "button.label.cancel"))),
+                              ],
+                            );
+                          });
+                      if (res != null) {
+                        context.read<TopicController>().changeTopic(res);
+
+                        PersistenceStorage ps = PersistenceStorage();
+
+                        await ps.setTopic(res);
+                        await ps.setLastTopicTime(DateTime.now());
+                      }
+                    },
+                  )),
+                  Container(
+                    margin: EdgeInsets.only(top: 15, right: 10, left: 5),
+                    color: Colors.transparent,
+                    alignment: Alignment.topCenter,
+                    child: InkWell(
+                      onTap: () {
+                        _controller.animateTo(380,
+                            duration: Duration(seconds: 1), curve: Curves.ease);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        child: Image.asset(
+                          "assets/images/expand.png",
+                          width: 20,
+                          height: 20,
+                        ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 5,
+                  ),
+                ],
+              ),
+              Container(
+                // color: Colors.white,
+                height: 250,
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.only(
+                    left: 20, right: 20, top: 5, bottom: 5),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: UserAvatarWidget(
+                        avatarImg: context.watch<AvatarController>().img,
+                        userInfo: "测试用户",
+                      ),
                     ),
                     Expanded(
-                        child: Row(
-                      children: const [
-                        Expanded(
-                          flex: 1,
-                          child: SignupButton(),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: SettingButton(),
-                        )
-                      ],
-                    )),
+                      flex: 1,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 120,
+                            child: TodoListWidget(
+                              todos: ["当前共有X未完成事项", "当前已完成X事项", "当前有X逾期事项"],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Expanded(
+                              child: Row(
+                            children: const [
+                              Expanded(
+                                flex: 1,
+                                child: SignupButton(),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: SettingButton(),
+                              )
+                            ],
+                          )),
+                        ],
+                      ),
+                    )
                   ],
                 ),
-              )
+              ),
             ],
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

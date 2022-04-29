@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:loading_overlay/loading_overlay.dart';
+// import 'package:loading_overlay/loading_overlay.dart';
+import 'package:taichi/taichi.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../entity/entity.dart' show DataFrom, Schedule, Subject;
@@ -153,7 +154,7 @@ class _BaseMarkdownPreviewPageState extends State<BaseMarkdownPreviewPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GanttBloc, GanttState>(builder: (context, state) {
-      return LoadingOverlay(
+      return TaichiOverlay.simple(
           isLoading: _ganttBloc.state.isLoading, child: buildView(context));
     });
   }

@@ -34,6 +34,9 @@ label:
   nothingtodo: "今日无事"
   qrcodescan: "扫描二维码"
   todos: "计划一览"
+  friend: "朋友"
+  md: "创作"
+  kb: "知识库"
 
 button:
   label:

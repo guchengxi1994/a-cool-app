@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-04-08 21:31:53
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-08 21:46:05
+ * @LastEditTime: 2022-04-11 21:10:48
  */
 
 import 'package:day_night_time_picker/day_night_time_picker.dart';
@@ -37,76 +37,64 @@ class TodoTimepickerWidgetState extends State<TodoTimepickerWidget> {
   void initState() {
     super.initState();
     _time = TimeOfDay.now();
+    formatDaytime(_time);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          margin: EdgeInsets.only(left: paddingSize),
-          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 30),
-          decoration: BoxDecoration(
-            // color: Colors.blue[500]!,
-            border: Border.all(color: Colors.blue[500]!),
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Text(
-            selectedTime,
+    return Padding(
+      padding: EdgeInsets.only(left: 20, right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            widget.buttonStr,
             style: TextStyle(
-              color: Colors.black,
+              color: Colors.blue[700]!,
               fontSize: 20,
             ),
           ),
-          constraints: BoxConstraints(
-              minWidth: MediaQuery.of(context).size.width * 0.21),
-        ),
-        Container(
-          margin: EdgeInsets.only(right: paddingSize),
-          // width: MediaQuery.of(context).size.width * 0.21,
-          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 30),
-          decoration: BoxDecoration(
-            gradient:
-                LinearGradient(colors: [Colors.blue[500]!, Colors.blue[700]!]),
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: InkWell(
-            onTap: () async {
-              var res = await Navigator.of(context).push(
-                showPicker(
-                    context: context,
-                    value: _time,
-                    onChange: onTimeChanged,
-                    cancelText:
-                        FlutterI18n.translate(context, "button.label.cancel"),
-                    okText: FlutterI18n.translate(context, "button.label.ok")),
-              );
-              if (res != null) {
-                setState(() {
-                  int hour = (res as TimeOfDay).hour;
-                  int min = res.minute;
-                  var minstr = min.toString();
-                  if (min < 10) {
-                    minstr = "0" + minstr;
-                  }
-
-                  selectedTime = hour.toString() + " : " + minstr;
-                });
-              }
-            },
-            child: Text(
-              // FlutterI18n.translate(context, "button.label.ok"),
-              widget.buttonStr,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-              ),
-            ),
-          ),
-        )
-      ],
+          TextButton(
+              onPressed: () async {
+                var res = await Navigator.of(context).push(
+                  showPicker(
+                      context: context,
+                      value: _time,
+                      onChange: onTimeChanged,
+                      cancelText:
+                          FlutterI18n.translate(context, "button.label.cancel"),
+                      okText:
+                          FlutterI18n.translate(context, "button.label.ok")),
+                );
+                if (res != null) {
+                  setState(() {
+                    formatDaytime(res);
+                  });
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.all(2),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blue[700]!, width: 1),
+                    borderRadius: BorderRadius.circular(5)),
+                child: Text(
+                  selectedTime,
+                  style: TextStyle(fontSize: 20, color: Colors.black),
+                ),
+              ))
+        ],
+      ),
     );
+  }
+
+  void formatDaytime(TimeOfDay res) {
+    int hour = (res).hour;
+    int min = res.minute;
+    var minstr = min.toString();
+    if (min < 10) {
+      minstr = "0" + minstr;
+    }
+
+    selectedTime = hour.toString() + " : " + minstr;
   }
 }

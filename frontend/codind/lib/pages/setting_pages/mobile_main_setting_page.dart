@@ -1,11 +1,14 @@
 import 'package:codind/pages/setting_pages/account_safety_page.dart';
 import 'package:codind/providers/my_providers.dart';
+import 'package:codind/router.dart';
+import 'package:codind/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/widgets.dart' show CustomListTile;
 import '../_mobile_base_page.dart';
 import '_custom_mainpage_cards_page.dart';
+import '_polacy_page.dart';
 
 class MobileMainSettingPage extends MobileBasePage {
   MobileMainSettingPage({Key? key, required String pageName})
@@ -39,12 +42,28 @@ class _MobileMainSettingPageState<T>
               size: 25,
             ),
           ),
+          // const SizedBox(
+          //   height: 10,
+          // ),
+          // if (PlatformUtils.isMobile)
+          //   CustomListTile(
+          //     style: _style,
+          //     title: "扫码登录桌面端",
+          //     trailing: const Icon(
+          //       Icons.chevron_right,
+          //       size: 25,
+          //     ),
+          //   ),
           const SizedBox(
             height: 10,
           ),
           CustomListTile(
             style: _style,
             title: "隐私政策",
+            nextPage: PolacyPage(
+              type: 1,
+              needBar: true,
+            ),
             trailing: const Icon(
               Icons.chevron_right,
               size: 25,
@@ -52,6 +71,10 @@ class _MobileMainSettingPageState<T>
           ),
           CustomListTile(
             style: _style,
+            nextPage: PolacyPage(
+              type: 0,
+              needBar: true,
+            ),
             title: "服务协议",
             trailing: const Icon(
               Icons.chevron_right,
@@ -94,6 +117,13 @@ class _MobileMainSettingPageState<T>
             height: 10,
           ),
           InkWell(
+            onTap: () async {
+              PersistenceStorage ps = PersistenceStorage();
+              await ps.setUserEmail("");
+              await ps.setUserPassword("");
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil(Routers.pageLogin, (route) => false);
+            },
             child: Container(
                 height: 50,
                 color: Colors.white,

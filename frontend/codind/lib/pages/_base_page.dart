@@ -1,10 +1,13 @@
 import 'package:codind/providers/my_providers.dart';
-import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:loading_overlay/loading_overlay.dart';
+// import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
+import 'package:taichi/taichi.dart';
+
+import '../globals.dart';
 
 // ignore: must_be_immutable
 abstract class BasePage extends StatefulWidget {
@@ -13,11 +16,15 @@ abstract class BasePage extends StatefulWidget {
       {Key? key,
       required this.routeName,
       this.needLoading,
-      this.leadingWidgetClick})
+      this.leadingWidgetClick,
+      this.centerTitle,
+      this.needWarning})
       : super(key: key);
-  String routeName;
+  String? routeName;
   bool? needLoading;
+  bool? centerTitle;
   VoidCallback? leadingWidgetClick;
+  bool? needWarning;
 
   @override
   BasePageState createState() {
@@ -39,35 +46,35 @@ class BasePageState<T extends BasePage> extends State<T> {
     if (widget.needLoading != null) {
       needLoading = widget.needLoading!;
     }
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      List<Widget> _actions = [
-        PopupMenuButton<String>(
-            tooltip: FlutterI18n.translate(context, "label.localization"),
-            icon: Container(
-              color: Colors.white,
-              height: 20,
-              width: 20,
-              child: Image.asset("assets/icons/lan.png"),
-            ),
-            itemBuilder: (context) => <PopupMenuItem<String>>[
-                  buildPopupMenuItem("中文"),
-                  buildPopupMenuItem("English"),
-                ]),
-        IconButton(
-            tooltip: FlutterI18n.translate(context, "label.settings"),
-            onPressed: () {
-              Navigator.pushNamed(context, Routers.pageSetting);
-            },
-            icon: Container(
-              color: Colors.white,
-              height: 20,
-              width: 20,
-              child: Image.asset("assets/icons/self_male.png"),
-            ))
-      ];
+    // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    //   List<Widget> _actions = [
+    //     PopupMenuButton<String>(
+    //         tooltip: FlutterI18n.translate(context, "label.localization"),
+    //         icon: Container(
+    //           color: Colors.white,
+    //           height: 20,
+    //           width: 20,
+    //           child: Image.asset("assets/icons/lan.png"),
+    //         ),
+    //         itemBuilder: (context) => <PopupMenuItem<String>>[
+    //               buildPopupMenuItem("中文"),
+    //               buildPopupMenuItem("English"),
+    //             ]),
+    //     IconButton(
+    //         tooltip: FlutterI18n.translate(context, "label.settings"),
+    //         onPressed: () {
+    //           Navigator.pushNamed(context, Routers.pageSetting);
+    //         },
+    //         icon: Container(
+    //           color: Colors.white,
+    //           height: 20,
+    //           width: 20,
+    //           child: Image.asset("assets/icons/self_male.png"),
+    //         ))
+    //   ];
 
-      addActions(_actions);
-    });
+    //   addActions(_actions);
+    // });
   }
 
   addAction(Widget w) {
@@ -85,19 +92,65 @@ class BasePageState<T extends BasePage> extends State<T> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // key: context.read<MenuController>().scaffoldKey,
+      backgroundColor: Colors.transparent,
       body: !needLoading
           ? SafeArea(
               child: baseBuild(context),
             )
-          : LoadingOverlay(isLoading: isLoading, child: baseBuild(context)),
+          : TaichiOverlay.simple(
+              isLoading: isLoading, child: baseBuild(context)),
       appBar: AppBar(
-        elevation: Responsive.isRoughMobile(context) ? 4 : 0,
-        // backgroundColor: Responsive.isRoughMobile(context)
-        //     ? context.watch<ThemeController>().savedColor['appBarColor']
-        //     : Colors.grey[300],
+        centerTitle: widget.centerTitle,
+        backgroundColor: Colors.white,
+        elevation: 0,
         automaticallyImplyLeading: false,
-        leading: getLeadingWidget(),
+        title: widget.routeName != null
+            ? Text(
+                widget.routeName!,
+                style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+              )
+            : null,
+        leading: IconButton(
+            onPressed: () async {
+              if (widget.needLoading ?? false) {
+                var res = await showCupertinoDialog(
+                    context: context,
+                    builder: (context) {
+                      return CupertinoAlertDialog(
+                        title: Text(FlutterI18n.translate(
+                            context, "label.exitWarning")),
+                        actions: [
+                          CupertinoActionSheetAction(
+                              onPressed: () {
+                                Navigator.of(context).pop(true);
+                              },
+                              child: Text(FlutterI18n.translate(
+                                  context, "button.label.ok"))),
+                          CupertinoActionSheetAction(
+                              onPressed: () {
+                                Navigator.of(context).pop(false);
+                              },
+                              child: Text(FlutterI18n.translate(
+                                  context, "button.label.quit"))),
+                        ],
+                      );
+                    });
+
+                if (res) {
+                  Navigator.of(context).pop();
+                }
+              } else {
+                Navigator.of(context).pop();
+              }
+            },
+            icon: const Icon(
+              Icons.chevron_left,
+              size: leftBackIconSize,
+              color: Color.fromARGB(255, 78, 63, 63),
+            )),
         actions: actions,
       ),
     );

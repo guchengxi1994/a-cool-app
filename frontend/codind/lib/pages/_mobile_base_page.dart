@@ -1,10 +1,21 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: xiaoshuyui
+ * @email: guchengxi1994@qq.com
+ * @Date: 2022-04-07 19:09:19
+ * @LastEditors: xiaoshuyui
+ * @LastEditTime: 2022-04-10 12:33:45
+ */
 import 'package:flutter/material.dart';
 
 import '../globals.dart';
 
 abstract class MobileBasePage extends StatefulWidget {
-  MobileBasePage({Key? key, required this.pageName}) : super(key: key);
+  MobileBasePage({Key? key, required this.pageName, this.backgroundColor})
+      : super(key: key);
   String? pageName;
+  Color? backgroundColor;
 
   @override
   MobileBasePageState createState() {
@@ -20,18 +31,23 @@ class MobileBasePageState<T extends MobileBasePage> extends State<T> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                stops: [
-              0.0,
-              1.0
-            ],
-                colors: [
-              Color.fromARGB(255, 223, 211, 195),
-              Color.fromARGB(255, 240, 236, 227)
-            ])),
+        decoration: BoxDecoration(
+            color: widget.backgroundColor,
+            gradient: widget.backgroundColor == null
+                ? LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    stops: const [
+                        0.0,
+                        1.0
+                      ],
+                    colors: [
+                        // Color.fromARGB(255, 223, 211, 195),
+                        // Color.fromARGB(255, 240, 236, 227)
+                        Colors.grey[300]!,
+                        Colors.grey[100]!,
+                      ])
+                : null),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(

@@ -3,6 +3,7 @@ import 'package:codind/entity/avatar_img_entity.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
+import 'package:codind/widgets/main_page_widgets/main_page_expanded_widget.dart';
 import 'package:codind/widgets/mobile_widgets/qr_scanner_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +36,12 @@ class UserAvatarWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SizedBox(
-            height: 100,
-            width: 100,
+            height: MediaQuery.of(context).size.width * 0.2 <= 120
+                ? MediaQuery.of(context).size.width * 0.2
+                : 120,
+            width: MediaQuery.of(context).size.width * 0.2 <= 120
+                ? MediaQuery.of(context).size.width * 0.2
+                : 120,
             child: Transform.rotate(
               angle: context.watch<AngleController>().angle,
               child: buildAvatar(avatarImg),
@@ -45,7 +50,11 @@ class UserAvatarWidget extends StatelessWidget {
           const SizedBox(
             height: 5,
           ),
-          if (userInfo != null) Text(userInfo ?? "用户A"),
+          if (userInfo != null)
+            Text(
+              userInfo ?? "用户A",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
         ],
       ),
     );
@@ -113,18 +122,21 @@ class SettingButton extends StatelessWidget {
       color: const Color.fromARGB(150, 199, 177, 152),
       child: InkWell(
         onTap: () {
-          Navigator.of(context).pushNamed(Routers.pageMobileSettingsPage);
+          Navigator.of(context).pushNamed(Routers.pageMine);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Icon(
-              Icons.settings,
+            Icon(
+              Icons.person,
               size: 50,
               color: Colors.black,
             ),
-            Text(FlutterI18n.translate(context, "label.settings1"))
+            Text(
+              FlutterI18n.translate(context, "我的"),
+              maxLines: 2,
+            )
           ],
         ),
       ),
@@ -152,7 +164,10 @@ class TodoListWidget extends StatelessWidget {
           itemWidth: 100,
           itemBuilder: (context, index) {
             return Center(
-              child: Text(todos[index]),
+              child: Text(
+                todos[index],
+                maxLines: 2,
+              ),
             );
           },
         ),
@@ -235,12 +250,14 @@ class MainPageCard extends StatelessWidget {
   Widget collapsedWidget;
   Widget expanedWidget;
   Color? closeIconColor;
+  Color? expandedMainColor;
 
   MainPageCard(
       {Key? key,
       required this.collapsedWidget,
       required this.expanedWidget,
-      required this.closeIconColor})
+      required this.closeIconColor,
+      this.expandedMainColor})
       : super(key: key);
 
   @override
@@ -256,28 +273,25 @@ class MainPageCard extends StatelessWidget {
               },
               child: collapsedWidget,
             ),
-            expanded: Container(
-              padding: EdgeInsets.only(
-                left: 25,
-                right: 25,
+            expanded: Stack(children: [
+              CoolExpandedWidget(
+                mainColor: expandedMainColor,
+                child: expanedWidget,
               ),
-              child: Stack(children: [
-                expanedWidget,
-                Positioned(
-                    right: 15,
-                    top: 5,
-                    child: IconButton(
-                      onPressed: () {
-                        controller.toggle();
-                      },
-                      icon: Icon(
-                        Icons.close,
-                        size: 30,
-                        color: closeIconColor ?? Colors.black,
-                      ),
-                    ))
-              ]),
-            ),
+              Positioned(
+                  right: 35,
+                  top: 15,
+                  child: IconButton(
+                    onPressed: () {
+                      controller.toggle();
+                    },
+                    icon: Icon(
+                      Icons.close,
+                      size: 30,
+                      color: closeIconColor ?? Colors.black,
+                    ),
+                  ))
+            ]),
           );
         },
       ),
@@ -285,6 +299,7 @@ class MainPageCard extends StatelessWidget {
   }
 }
 
+@Deprecated("not beautiful as expected")
 class MainPageCustomListTile extends StatelessWidget {
   MainPageCustomListTile({Key? key, required this.icon, required this.title})
       : super(key: key);

@@ -68,6 +68,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
 
+@Deprecated("will be removed")
 class ColorSettingPage extends StatefulWidget {
   ColorSettingPage({Key? key}) : super(key: key);
 

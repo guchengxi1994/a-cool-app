@@ -7,7 +7,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-10 21:52:59
+ * @LastEditTime: 2022-04-12 22:02:50
  */
 
 /*
@@ -86,7 +86,12 @@ class __ChangedMdEditorState extends State<_ChangedMdEditor> {
 
 class WritingPage extends BasePage {
   WritingPage({Key? key, required String routeName, required bool needLoading})
-      : super(key: key, routeName: routeName, needLoading: needLoading);
+      : super(
+          key: key,
+          routeName: routeName,
+          needLoading: needLoading,
+          centerTitle: true,
+        );
 
   @override
   BasePageState<BasePage> getState() {
@@ -132,81 +137,83 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
     });
 
     super.addAction(IconButton(
+        tooltip: "Templete",
         onPressed: () async {
-          if (!PlatformUtils.isMobile) {
-            await showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    actions: [
-                      ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text("取消")),
-                      ElevatedButton(
-                          onPressed: () {
-                            textEditingController.text += mdData ?? "";
-                            textEditingController.text += "\n";
-                            textEditingController.text += "# ";
+          await showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  actions: [
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text("取消")),
+                    ElevatedButton(
+                        onPressed: () {
+                          textEditingController.text += mdData ?? "";
+                          textEditingController.text += "\n";
+                          textEditingController.text += "# ";
 
-                            _globalKey.currentState!
-                                .changeData(textEditingController.text);
+                          _globalKey.currentState!
+                              .changeData(textEditingController.text);
 
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text("确定")),
-                    ],
-                    title:
-                        Text(FlutterI18n.translate(context, "label.preview")),
-                    content: SingleChildScrollView(
-                      child: SizedBox(
-                        height: 450,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              width: 500,
-                              height: 100,
-                              child: ListView.builder(
-                                  key: UniqueKey(),
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: li.length,
-                                  itemBuilder: ((context, index) {
-                                    return SelectableIconButton(
-                                        radioValue: li[index]);
-                                  })),
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text("确定")),
+                  ],
+                  title: Text(FlutterI18n.translate(context, "label.preview")),
+                  content: SingleChildScrollView(
+                    child: SizedBox(
+                      height: 450,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: 500,
+                            height: 100,
+                            child: ListView.builder(
+                                key: UniqueKey(),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: li.length,
+                                itemBuilder: ((context, index) {
+                                  return SelectableIconButton(
+                                      radioValue: li[index]);
+                                })),
+                          ),
+                          SizedBox(
+                            height: 300,
+                            width: 500,
+                            child: FutureBuilder(
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.done) {
+                                  return Markdown(
+                                      data: snapshot.data as String);
+                                } else {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                              },
+                              future: loadMdFile(context
+                                  .watch<RadioProvider>()
+                                  .mdTemplatePath),
                             ),
-                            SizedBox(
-                              height: 300,
-                              width: 500,
-                              child: FutureBuilder(
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.done) {
-                                    return Markdown(
-                                        data: snapshot.data as String);
-                                  } else {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  }
-                                },
-                                future: loadMdFile(context
-                                    .watch<RadioProvider>()
-                                    .mdTemplatePath),
-                              ),
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
                     ),
-                  );
-                });
-          }
+                  ),
+                );
+              });
         },
-        icon: const Icon(Icons.file_present)));
+        icon: const Icon(
+          Icons.file_present,
+          color: Colors.black,
+        )));
 
     super.addAction(IconButton(
+      tooltip: "Preview",
       onPressed: () {
         if (Responsive.isRoughMobile(context)) {
           if (!_scaffoldKey.currentState!.isEndDrawerOpen) {
@@ -220,7 +227,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
       },
       icon: const Icon(
         Icons.preview,
-        color: Colors.white,
+        color: Colors.black,
       ),
     ));
 
@@ -971,11 +978,13 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                   }
                 },
                 icon: const Icon(Icons.table_chart)),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.upload_file),
-              tooltip: FlutterI18n.translate(context, "label.uploadFile"),
-            ),
+
+            /// not supported yet
+            // IconButton(
+            //   onPressed: () {},
+            //   icon: const Icon(Icons.upload_file),
+            //   tooltip: FlutterI18n.translate(context, "label.uploadFile"),
+            // ),
             IconButton(
                 tooltip: FlutterI18n.translate(context, "label.downloadFile"),
                 onPressed: () async {
@@ -1062,26 +1071,4 @@ String convertTabelScaleToString(int rowNumber, int columnNumber) {
     contentStr += "\n";
   }
   return titleStr + subTitleStr + contentStr;
-}
-
-class WritingProviderPage extends StatelessWidget {
-  const WritingProviderPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => EmojiController(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => LanguageController(context),
-        ),
-      ],
-      child: WritingPage(
-        routeName: "md editor",
-        needLoading: true,
-      ),
-    );
-  }
 }

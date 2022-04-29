@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0-frontend-alpha+2
+version: 1.0.0-frontend-alpha+4
 
 environment:
   sdk: ">=2.15.1 <3.0.0"
@@ -36,7 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   equatable: ^2.0.3 #增强组件相等性判断
   flutter_bloc: ^8.0.1
-  loading_overlay: ^0.3.0
+  # loading_overlay: ^0.3.0
   flutter_i18n: ^0.31.1
   # fluttertoast: ^8.0.9
   flutter_smart_dialog: ^3.4.0+2
@@ -63,9 +63,26 @@ dependencies:
   # awesome_notifications: 0.7.0-beta.2 这个包 0.6.21和0.7.0暂时有问题
   awesome_notifications: ^0.0.6+12
   day_night_time_picker: ^1.0.5
-  package_info_plus: ^1.4.2
   dropdown_button2: ^1.4.0
-  
+  timeline_tile: ^2.0.0
+  file_picker: ^4.5.1
+  flip_card: ^0.6.0
+  code_text_field: ^1.0.2
+  qr: ^3.0.1  # generate qr code
+  waterfall_flow: ^3.0.2
+  permission_handler: ^9.1.0
+  # file_saver: ^0.1.0
+  path_provider: ^2.0.9
+  sqlite3: ^1.6.4
+  add_2_calendar: ^2.1.2
+  animations: ^2.0.0
+  taichi:
+    git:
+        url: https://github.com/guchengxi1994/taichi
+        ref: dev    # 用自己写的库，不过分吧
+
+dependency_overrides:
+  js: ^0.6.4
 
 dev_dependencies:
   flutter_test:
@@ -103,7 +120,10 @@ flutter:
     - assets/_test_svg.svg  # for svg test
     - assets/_test_svg_01.svg  # for svg test
     - assets/ca/lets-encrypt-r3.pem # ca
-  #   - images/a_dot_ham.jpeg
+    - assets/p/ # polacy
+    - assets/intro/
+
+    # - assets/fitness_app/  # for UI test
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

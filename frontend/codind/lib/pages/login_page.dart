@@ -5,13 +5,14 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 19:54:23
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-07 22:43:03
+ * @LastEditTime: 2022-04-21 21:40:21
  */
 
+import 'package:codind/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_login/flutter_login.dart';
-import '../utils/shared_preference_utils.dart';
 import './main_page_v2.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +32,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   Duration get loginTime => const Duration(milliseconds: 2250);
   PersistenceStorage ps = PersistenceStorage();
+  bool isOffline = false;
   @override
   void initState() {
     super.initState();
@@ -46,6 +48,8 @@ class _LoginScreenState extends State<LoginScreen> {
           ));
         }
       }
+
+      debugPrint("[size]: ${MediaQuery.of(context).size}");
     });
   }
 
@@ -149,23 +153,58 @@ class _LoginScreenState extends State<LoginScreen> {
           FlutterI18n.translate(context, "login-labels.ConfirmSignupSuccess"),
     );
 
-    return FlutterLogin(
-      messages: messages,
-      // titleTag: "aaa",
-      title: '随身助手',
-      theme: LoginTheme(
-          primaryColor: const Color.fromARGB(255, 223, 211, 195),
-          buttonStyle: const TextStyle(color: Colors.black),
-          switchAuthTextColor: const Color.fromARGB(255, 223, 211, 195)),
-      logo: const AssetImage('assets/icon_no_background.png'),
-      onLogin: _authUser,
-      onSignup: _signupUser,
-      onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => MainPageV2(),
-        ));
-      },
-      onRecoverPassword: _recoverPassword,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        actions: [
+          if (!PlatformUtils.isMobile)
+            IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.qr_code,
+                  color: Color.fromARGB(255, 19, 41, 133),
+                )),
+          if (!PlatformUtils.isMobile)
+            SizedBox(
+              width: 10,
+            ),
+          const Center(
+            child: Text(
+              "离线模式",
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+          const SizedBox(
+            width: 5,
+          ),
+          CupertinoSwitch(
+              value: isOffline,
+              onChanged: (v) {
+                setState(() {
+                  isOffline = v;
+                });
+              })
+        ],
+      ),
+      body: FlutterLogin(
+        messages: messages,
+        // titleTag: "aaa",
+        title: '随身助手',
+        theme: LoginTheme(
+            primaryColor: const Color.fromARGB(255, 223, 211, 195),
+            buttonStyle: const TextStyle(color: Colors.black),
+            switchAuthTextColor: const Color.fromARGB(255, 223, 211, 195)),
+        logo: const AssetImage('assets/icon_no_background.png'),
+        onLogin: _authUser,
+        onSignup: _signupUser,
+        onSubmitAnimationCompleted: () {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => MainPageV2(),
+          ));
+        },
+        onRecoverPassword: _recoverPassword,
+      ),
     );
   }
 }
