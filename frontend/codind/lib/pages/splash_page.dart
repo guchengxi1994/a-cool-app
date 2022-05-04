@@ -1,3 +1,12 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: xiaoshuyui
+ * @email: guchengxi1994@qq.com
+ * @Date: 2022-05-04 19:56:02
+ * @LastEditors: xiaoshuyui
+ * @LastEditTime: 2022-05-04 20:13:33
+ */
 import 'package:flutter/material.dart';
 import 'package:taichi/taichi.dart';
 import 'package:timeline_tile/timeline_tile.dart';
@@ -15,6 +24,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
+    TaichiFitnessUtil.init(context);
     return Container(
       padding: EdgeInsets.only(top: 0.05 * MediaQuery.of(context).size.height),
       color: Colors.white,

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:taichi/taichi.dart';
 import 'bloc/my_blocs.dart';
 import 'globals.dart';
 import 'pages/_test_page.dart';
@@ -90,8 +91,12 @@ class _MyAppState extends State<MyApp> {
           routes: Routers.routers,
           debugShowCheckedModeBanner: false,
           builder: (context, child) {
-            return FlutterSmartDialog(
-                child: FlutterI18n.rootAppBuilder().call(context, child));
+            child = TaichiFitnessUtil.rootBuilder(
+                    designHeight: 932, designWidth: 500)!
+                .call(context, child);
+            // child = TaichiFitnessUtil.rootBuilder()!.call(context, child);
+            child = FlutterI18n.rootAppBuilder().call(context, child);
+            return FlutterSmartDialog(child: child);
           },
           // home: TestPage(
           //   routeName: "test page",

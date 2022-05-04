@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 19:54:23
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-21 21:53:23
+ * @LastEditTime: 2022-05-04 20:54:29
  */
 
 /// 手机端的主页
@@ -20,6 +20,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
+import 'package:taichi/taichi.dart';
 
 import '../providers/my_providers.dart';
 import 'new_todos_page.dart';
@@ -53,6 +54,7 @@ class _MainPageV2State extends State<MainPageV2> {
 
   @override
   Widget build(BuildContext context) {
+    TaichiFitnessUtil.init(context);
     return SafeArea(
       child: Scaffold(
         bottomSheet: context.watch<AngleController>().showbar
@@ -60,7 +62,7 @@ class _MainPageV2State extends State<MainPageV2> {
                 padding: EdgeInsets.only(left: 40),
                 alignment: Alignment.centerLeft,
                 width: double.infinity,
-                height: 50,
+                height: 50.h,
                 child: Text(
                   "当前工作台共有${context.watch<MainPageCardController>().selectedCards.length}个项目，"
                   "还有${context.watch<MainPageCardController>().all - context.watch<MainPageCardController>().selectedCards.length}个可选项",
@@ -82,7 +84,7 @@ class _MainPageV2State extends State<MainPageV2> {
                       width: 10,
                     ),
                     SizedBox(
-                      height: 45,
+                      height: 45.h,
                       width: 45,
                       child: buildAvatar(context.watch<AvatarController>().img),
                     ),
@@ -147,7 +149,7 @@ class _MainPageV2State extends State<MainPageV2> {
   /// for test
   buildImg(Color color, double height) {
     return SizedBox(
-        height: height,
+        height: height.h,
         child: Container(
           decoration: BoxDecoration(
             color: color,
@@ -243,7 +245,7 @@ class _MainPageV2State extends State<MainPageV2> {
                 const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
             child: Container(
               color: Colors.red,
-              height: 80,
+              height: 80.h,
               child: Text(index.toString()),
             ),
           );
@@ -326,7 +328,7 @@ class _MainPageV2State extends State<MainPageV2> {
                         child: Image.asset(
                           "assets/images/expand.png",
                           width: 20,
-                          height: 20,
+                          height: 20.h,
                         ),
                       ),
                     ),
@@ -335,7 +337,7 @@ class _MainPageV2State extends State<MainPageV2> {
               ),
               Container(
                 // color: Colors.white,
-                height: 250,
+                height: 250.h,
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.only(
                     left: 20, right: 20, top: 5, bottom: 5),
@@ -353,13 +355,13 @@ class _MainPageV2State extends State<MainPageV2> {
                       child: Column(
                         children: [
                           SizedBox(
-                            height: 120,
+                            height: 120.h,
                             child: TodoListWidget(
                               todos: ["当前共有X未完成事项", "当前已完成X事项", "当前有X逾期事项"],
                             ),
                           ),
-                          const SizedBox(
-                            height: 5,
+                          SizedBox(
+                            height: 5.h,
                           ),
                           Expanded(
                               child: Row(

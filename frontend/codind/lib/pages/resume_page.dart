@@ -4,6 +4,7 @@ import 'package:codind/widgets/mobile_widgets/upload_file_widget.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:taichi/taichi.dart';
 
 import '../globals.dart';
 
@@ -66,8 +67,8 @@ class _ResumePageState extends State<ResumePage> with BackgroundColorMixin {
           padding: const EdgeInsets.only(bottom: 100),
           child: Column(
             children: [
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: 20.h,
               ),
               Row(
                 children: [
@@ -75,8 +76,8 @@ class _ResumePageState extends State<ResumePage> with BackgroundColorMixin {
                   UploadSingleImageWidget(),
                 ],
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: 20.h,
               ),
               MainPageCard(
                 expandedMainColor: Colors.grey[100],
@@ -88,8 +89,8 @@ class _ResumePageState extends State<ResumePage> with BackgroundColorMixin {
                 expanedWidget: _expandedWidget(context, educationColumnWidget),
                 closeIconColor: Colors.red,
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: 20.h,
               ),
               MainPageCard(
                 expandedMainColor: Colors.grey[100],
@@ -101,8 +102,8 @@ class _ResumePageState extends State<ResumePage> with BackgroundColorMixin {
                 expanedWidget: _expandedWidget(context, workColumnWidget),
                 closeIconColor: Colors.red,
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: 20.h,
               ),
               MainPageCard(
                 expandedMainColor: Colors.grey[100],
@@ -123,7 +124,7 @@ class _ResumePageState extends State<ResumePage> with BackgroundColorMixin {
 Widget _expandedWidget(BuildContext context, ExpandedColumnWidget w) {
   return Container(
     constraints: BoxConstraints(
-        minHeight: 100, minWidth: MediaQuery.of(context).size.width),
+        minHeight: 100.h, minWidth: MediaQuery.of(context).size.width),
     child: Card(
       child: w,
     ),
