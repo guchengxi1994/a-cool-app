@@ -281,7 +281,7 @@ class _MainPageV2State extends State<MainPageV2> {
                     cardName: context.watch<TopicController>().topic,
                     frontImgPath: null,
                     backImgPath: "assets/images/achievement.png",
-                    fontSize: 15.sp,
+                    fontSize: 18.sp,
                     onTap: () async {
                       String result = "";
                       var res = await showCupertinoDialog(

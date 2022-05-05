@@ -32,7 +32,8 @@ class _IntroductionAnimationScreenState
   @override
   Widget build(BuildContext context) {
     print(_animationController?.value);
-    return Scaffold(
+    return SafeArea(
+        child: Scaffold(
       backgroundColor: Color(0xffF7EBE1),
       body: ClipRect(
         child: Stack(
@@ -64,7 +65,7 @@ class _IntroductionAnimationScreenState
           ],
         ),
       ),
-    );
+    ));
   }
 
   void _onSkipClick() {

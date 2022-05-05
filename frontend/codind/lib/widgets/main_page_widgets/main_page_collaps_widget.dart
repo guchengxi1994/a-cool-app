@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
+import 'package:taichi/taichi.dart';
 
 import '../../providers/my_providers.dart';
 import '../_styles.dart';
@@ -156,14 +157,14 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TaichiFitnessUtil.init(context);
     return Column(
       children: <Widget>[
-        const SizedBox(
-          height: 10,
+        SizedBox(
+          height: 10.h,
         ),
         Container(
-          padding:
-              const EdgeInsets.only(left: 24, right: 24, top: 0, bottom: 0),
+          padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 0, bottom: 0),
           child: onTap != null
               ? InkWell(
                   onTap: () => onTap(),
@@ -195,7 +196,7 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(8.0)),
                                 child: SizedBox(
-                                  height: 74,
+                                  height: 74.h,
                                   child: AspectRatio(
                                     aspectRatio: 1.714,
                                     child: backImgPath != null
@@ -211,9 +212,9 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
                                     children: <Widget>[
                                       Padding(
                                         padding: EdgeInsets.only(
-                                          left: 120,
+                                          left: 120.w,
                                           // right: 16,
-                                          top: 25,
+                                          top: 25.h,
                                         ),
                                         child: Text(
                                           cardName,
@@ -240,11 +241,11 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
                       ),
                       if (frontImgPath != null)
                         Positioned(
-                          top: -16,
-                          right: 20,
+                          top: -16.h,
+                          right: 20.w,
                           child: SizedBox(
-                            width: imgSize ?? 80,
-                            height: imgSize ?? 80,
+                            width: imgSize ?? 80.sp,
+                            height: imgSize ?? 80.sp,
                             child: Image.asset(
                               frontImgPath!,
                             ),
