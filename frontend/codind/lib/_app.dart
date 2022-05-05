@@ -1,5 +1,4 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:codind/pages/login_page.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
@@ -128,7 +127,7 @@ List<SingleChildWidget> getProviders() {
       create: (_) => RadioProvider(),
     ),
     ChangeNotifierProvider(
-      create: (_) => AngleController(),
+      create: (_) => AngleController()..initThreshold(300.h),
     ),
     ChangeNotifierProvider(
       create: (_) => ExperienceController(),

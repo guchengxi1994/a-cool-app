@@ -10,6 +10,7 @@
 
 /// 手机端的主页
 
+import 'package:codind/entity/entity.dart';
 import 'package:codind/pages/create_things_page.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/shared_preference_utils.dart';
@@ -24,11 +25,14 @@ import 'package:taichi/taichi.dart';
 
 import '../providers/my_providers.dart';
 import 'new_todos_page.dart';
+import 'work_work_work_page.dart';
 
 /// this is for mobile
-/// test on web first
+///
+/// tested on web first
 
 class MainPageV2 extends StatefulWidget {
+  // ignore: prefer_const_constructors_in_immutables
   MainPageV2({Key? key}) : super(key: key);
 
   @override
@@ -37,12 +41,15 @@ class MainPageV2 extends StatefulWidget {
 
 class _MainPageV2State extends State<MainPageV2> {
   final ScrollController _controller = ScrollController();
+  late double _position;
 
   @override
   void initState() {
     super.initState();
-    _controller.addListener(() {
-      context.read<AngleController>().changeAngle(_controller.offset);
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      _controller.addListener(() {
+        context.read<AngleController>().changeAngle(_controller.offset);
+      });
     });
   }
 
@@ -55,11 +62,12 @@ class _MainPageV2State extends State<MainPageV2> {
   @override
   Widget build(BuildContext context) {
     TaichiFitnessUtil.init(context);
+    _position = 380.h;
     return SafeArea(
       child: Scaffold(
         bottomSheet: context.watch<AngleController>().showbar
             ? Container(
-                padding: EdgeInsets.only(left: 40),
+                padding: EdgeInsets.only(left: 40.w),
                 alignment: Alignment.centerLeft,
                 width: double.infinity,
                 height: 50.h,
@@ -67,7 +75,7 @@ class _MainPageV2State extends State<MainPageV2> {
                   "当前工作台共有${context.watch<MainPageCardController>().selectedCards.length}个项目，"
                   "还有${context.watch<MainPageCardController>().all - context.watch<MainPageCardController>().selectedCards.length}个可选项",
                   maxLines: 2,
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16.sp),
                 ),
               )
             : null,
@@ -80,16 +88,16 @@ class _MainPageV2State extends State<MainPageV2> {
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      width: 10,
+                    SizedBox(
+                      width: 10.w,
                     ),
                     SizedBox(
                       height: 45.h,
-                      width: 45,
+                      width: 45.h,
                       child: buildAvatar(context.watch<AvatarController>().img),
                     ),
-                    const SizedBox(
-                      width: 10,
+                    SizedBox(
+                      width: 10.w,
                     ),
                     Text(
                       "测试用户" + "的工作台",
@@ -100,17 +108,18 @@ class _MainPageV2State extends State<MainPageV2> {
                 ),
                 actions: [
                   Container(
-                    padding: EdgeInsets.only(top: 5, right: 20, bottom: 5),
+                    padding:
+                        EdgeInsets.only(top: 5.h, right: 20.w, bottom: 5.h),
                     child: IconButton(
                         onPressed: () {
                           _controller.animateTo(0,
-                              duration: Duration(seconds: 1),
+                              duration: const Duration(seconds: 1),
                               curve: Curves.ease);
                         },
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.expand,
                           color: Colors.black,
-                          size: 35,
+                          size: 35.sp,
                         )),
                   ),
                 ],
@@ -170,7 +179,7 @@ class _MainPageV2State extends State<MainPageV2> {
                 cardName: "resume.abi",
               ),
               expanedWidget: Padding(
-                padding: EdgeInsets.all(5),
+                padding: EdgeInsets.all(5.sp),
                 child: RadarAbilityChart(),
               ),
               closeIconColor: Colors.black,
@@ -241,8 +250,8 @@ class _MainPageV2State extends State<MainPageV2> {
           }
 
           return Card(
-            margin:
-                const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+            margin: EdgeInsets.only(
+                left: 20.w, right: 20.w, top: 10.h, bottom: 10.h),
             child: Container(
               color: Colors.red,
               height: 80.h,
@@ -253,6 +262,7 @@ class _MainPageV2State extends State<MainPageV2> {
   }
 
   Widget buildSliverGrid() {
+    // debugPrint("[debug position] : $_position");
     return SliverAppBar(
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
@@ -260,7 +270,7 @@ class _MainPageV2State extends State<MainPageV2> {
         pinned: false,
         floating: false,
         title: null,
-        expandedHeight: 380,
+        expandedHeight: 380.h,
         flexibleSpace: FlexibleSpaceBar(
           background: Column(
             children: [
@@ -271,7 +281,7 @@ class _MainPageV2State extends State<MainPageV2> {
                     cardName: context.watch<TopicController>().topic,
                     frontImgPath: null,
                     backImgPath: "assets/images/achievement.png",
-                    fontSize: 15,
+                    fontSize: 15.sp,
                     onTap: () async {
                       String result = "";
                       var res = await showCupertinoDialog(
@@ -315,20 +325,20 @@ class _MainPageV2State extends State<MainPageV2> {
                     },
                   )),
                   Container(
-                    margin: EdgeInsets.only(top: 15, right: 10, left: 5),
+                    margin: EdgeInsets.only(top: 15.h, right: 10.w),
                     color: Colors.transparent,
                     alignment: Alignment.topCenter,
                     child: InkWell(
                       onTap: () {
-                        _controller.animateTo(380,
+                        _controller.animateTo(_position,
                             duration: Duration(seconds: 1), curve: Curves.ease);
                       },
                       child: Container(
                         padding: EdgeInsets.all(5),
                         child: Image.asset(
                           "assets/images/expand.png",
-                          width: 20,
-                          height: 20.h,
+                          width: 25.w,
+                          height: 25.h,
                         ),
                       ),
                     ),
@@ -339,8 +349,8 @@ class _MainPageV2State extends State<MainPageV2> {
                 // color: Colors.white,
                 height: 250.h,
                 width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.only(
-                    left: 20, right: 20, top: 5, bottom: 5),
+                padding: EdgeInsets.only(
+                    left: 20.w, right: 20.w, top: 5.h, bottom: 5.h),
                 child: Row(
                   children: [
                     Expanded(
@@ -354,10 +364,25 @@ class _MainPageV2State extends State<MainPageV2> {
                       flex: 1,
                       child: Column(
                         children: [
-                          SizedBox(
-                            height: 120.h,
-                            child: TodoListWidget(
-                              todos: ["当前共有X未完成事项", "当前已完成X事项", "当前有X逾期事项"],
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return WorkWorkWorkPage(
+                                  pageName: "日程统计",
+                                  work: WorkWorkWork(
+                                      all: 20,
+                                      delayed: 5,
+                                      done: 10,
+                                      underGoing: 5),
+                                );
+                              }));
+                            },
+                            child: SizedBox(
+                              height: 120.h,
+                              child: TodoListWidget(
+                                todos: ["当前共有X未完成事项", "当前已完成X事项", "当前有X逾期事项"],
+                              ),
                             ),
                           ),
                           SizedBox(

@@ -10,12 +10,20 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+// import 'package:taichi/taichi.dart';
 
 class AngleController extends ChangeNotifier {
   double _angle = 0;
   double get angle => _angle / (pi * 60);
 
-  bool get showbar => _angle > 300;
+  double _threshold = 300;
+
+  void initThreshold(double v) {
+    _threshold = v;
+    notifyListeners();
+  }
+
+  bool get showbar => _angle > _threshold;
 
   void changeAngle(double i) {
     _angle = i;

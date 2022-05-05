@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:codind/router.dart';
 import 'package:codind/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_login/flutter_login.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart';
 
@@ -14,6 +15,8 @@ class SplashPageScreenController extends ChangeNotifier {
   Directory? _appSupportDirectory;
   bool _isFirst = true;
   int _currentIndex = 0;
+
+  late LoginData logdata;
 
   final List<String> steps = [
     "验证平台信息...",
@@ -68,12 +71,25 @@ class SplashPageScreenController extends ChangeNotifier {
   }
 
   _initRole() async {
+    logdata = LoginData(
+        name: await ps.getUserEmail(), password: await ps.getUserPassword());
     await Future.delayed(Duration(milliseconds: 200));
     changeValue(1);
   }
 
   _push() async {
-    Global.navigatorKey.currentState!
-        .pushNamedAndRemoveUntil(Routers.pageLogin, (route) => false);
+    if (await logdata.isTestAccount()) {
+      Global.navigatorKey.currentState!
+          .pushNamedAndRemoveUntil(Routers.pageMain, (route) => false);
+    } else {
+      Global.navigatorKey.currentState!
+          .pushNamedAndRemoveUntil(Routers.pageLogin, (route) => false);
+    }
+  }
+}
+
+extension AccountTest on LoginData {
+  Future<bool> isTestAccount() async {
+    return name == "test@xiaoshuyui.org.cn" && password == "123456";
   }
 }

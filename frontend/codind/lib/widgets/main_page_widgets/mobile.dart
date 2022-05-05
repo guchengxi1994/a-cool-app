@@ -11,6 +11,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:expandable/expandable.dart';
+import 'package:taichi/taichi.dart';
 
 import '../../entity/entity.dart';
 import 'radar_chart.dart';
@@ -28,7 +29,7 @@ class UserAvatarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // debugPrint("[debug avatarImg]: ${avatarImg.toString()}");
-
+    TaichiFitnessUtil.init(context);
     return Card(
       color: const Color.fromARGB(255, 199, 177, 152),
       child: Column(
@@ -36,12 +37,14 @@ class UserAvatarWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.width * 0.2 <= 120
-                ? MediaQuery.of(context).size.width * 0.2
-                : 120,
-            width: MediaQuery.of(context).size.width * 0.2 <= 120
-                ? MediaQuery.of(context).size.width * 0.2
-                : 120,
+            // height: MediaQuery.of(context).size.width * 0.2 <= 120
+            //     ? MediaQuery.of(context).size.width * 0.2
+            //     : 120,
+            // width: MediaQuery.of(context).size.width * 0.2 <= 120
+            //     ? MediaQuery.of(context).size.width * 0.2
+            //     : 120,
+            height: 120.sp,
+            width: 120.sp,
             child: Transform.rotate(
               angle: context.watch<AngleController>().angle,
               child: buildAvatar(avatarImg),
@@ -53,7 +56,7 @@ class UserAvatarWidget extends StatelessWidget {
           if (userInfo != null)
             Text(
               userInfo ?? "用户A",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
             ),
         ],
       ),
@@ -102,10 +105,14 @@ class SignupButton extends StatelessWidget {
           children: [
             Image.asset(
               "assets/icons/dk.png",
-              width: 50,
-              height: 50,
+              width: 50.sp,
+              height: 50.sp,
             ),
-            Text(FlutterI18n.translate(context, "label.signin"))
+            Text(
+              FlutterI18n.translate(context, "label.signin"),
+              style: const TextStyle(fontWeight: FontWeight.bold),
+              maxLines: 2,
+            )
           ],
         ),
       ),
@@ -130,11 +137,12 @@ class SettingButton extends StatelessWidget {
           children: [
             Icon(
               Icons.person,
-              size: 50,
+              size: 50.sp,
               color: Colors.black,
             ),
             Text(
               FlutterI18n.translate(context, "我的"),
+              style: const TextStyle(fontWeight: FontWeight.bold),
               maxLines: 2,
             )
           ],
