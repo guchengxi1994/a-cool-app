@@ -1,50 +1,33 @@
 package server
 
 import (
-	"bufio"
 	"fmt"
-	"io"
-	"log"
-	"net"
+	"net/http"
+
+	uuid "github.com/satori/go.uuid"
+
+	db "github.com/guchengxi1994/fishDB/db"
 )
 
-func ListenAndServe(addr string) {
-	listener, err := net.Listen("tcp", addr)
+func GetValue(w http.ResponseWriter, r *http.Request) {
+	param := r.URL.Query().Get("name")
+	res, err := db.Database.Get([]byte(param))
 	if err != nil {
-		log.Fatal(fmt.Sprintf("listen err: %v\n", err))
+		fmt.Printf("get err: %v\n", err)
+		w.Write([]byte(""))
 		return
 	}
-	defer listener.Close()
-	log.Println(fmt.Sprintf("start listening on %s", addr))
 
-	for {
-		conn, err := listener.Accept()
-		if err != nil {
-			log.Fatal(fmt.Sprintf("accept err: %v\n", err))
-			break
-		}
-
-		go Handle(conn)
-	}
+	w.Write([]byte(res))
 }
 
-func Handle(conn net.Conn) {
-	reader := bufio.NewReader(conn)
-	for {
-		msg, err := reader.ReadString('\n')
+func Register(w http.ResponseWriter, r *http.Request) {
+	param := r.URL.Query().Get("username")
 
-		if err != nil {
-			if err == io.EOF {
-				log.Println("connection close")
-				continue
-			} else {
-				log.Println(err.Error())
-				continue
-			}
-		}
+	w.Write([]byte(param))
+}
 
-		b := []byte(msg)
-
-		conn.Write(b)
-	}
+func NewQr(w http.ResponseWriter, r *http.Request) {
+	u := uuid.NewV4()
+	w.Write([]byte(u.String()))
 }
