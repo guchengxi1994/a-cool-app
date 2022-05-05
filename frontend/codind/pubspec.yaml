@@ -78,14 +78,14 @@ dependencies:
   add_2_calendar: ^2.1.2
   animations: ^2.0.0
   ## github taichi
-  # taichi:
-  #   git:
-  #       url: https://github.com/guchengxi1994/taichi
-  #       ref: dev    # 用自己写的库，不过分吧
+  taichi:
+    git:
+        url: https://github.com/guchengxi1994/taichi
+        ref: dev    # 用自己写的库，不过分吧
 
   ## local taichi
-  taichi:
-    path: D:/github_repo/taichi
+  # taichi:
+  #   path: D:/github_repo/taichi
 
 dependency_overrides:
   js: ^0.6.4
