@@ -13,6 +13,8 @@ The coolest thing is build an app on your own!
 
 ### 我的目标是做一个personal知识库，同时做到创建文档，管理文件以及分享心得。并且，最coooool的地方在于，all platforms, everywhere。
 
+# 近期会进行 [taichi](https://github.com/guchengxi1994/taichi)适配以及 ```provider``` 整体重构工作 
+
 ## [前端说明](./frontend/codind/README.md)
 
 > 测试账号 test@xiaoshuyui.org.cn 密码 123456
