@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-13 21:36:36
+ * @LastEditTime: 2022-05-04 20:49:09
  */
 
 import 'package:codind/pages/card_page.dart';
@@ -62,6 +62,6 @@ class Routers {
     pageFriend: (context) => CardPage(),
     pageLogin: (context) => LoginScreen(),
     pageMine: (context) => MinePage(pageName: "我的"),
-    pageIntro: (context) => IntroductionAnimationScreen(),
+    pageIntro: (context) => const IntroductionAnimationScreen(),
   };
 }

@@ -203,6 +203,18 @@ class PersistenceStorage {
 
     await _storage!.setStringList("titleList", titles);
   }
+
+  Future<bool> isFirstTime() async {
+    await _initStorage();
+
+    return _storage!.getBool("firstTime") ?? true;
+  }
+
+  Future setFirstTime() async {
+    await _initStorage();
+
+    _storage!.setBool("firstTime", false);
+  }
 }
 
 bool _compareDatetime(DateTime t1, DateTime t2) {
