@@ -4,7 +4,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 // import 'package:loading_overlay/loading_overlay.dart';
 import 'package:taichi/taichi.dart';
 
-import '../../globals.dart';
+import '../../_styles.dart';
 
 // ignore: must_be_immutable
 abstract class BasePage extends StatefulWidget {
@@ -116,7 +116,7 @@ class BasePageState<T extends BasePage> extends State<T> {
             },
             icon: const Icon(
               Icons.chevron_left,
-              size: leftBackIconSize,
+              size: AppTheme.leftBackIconSize,
               color: Color.fromARGB(255, 78, 63, 63),
             )),
         actions: actions,

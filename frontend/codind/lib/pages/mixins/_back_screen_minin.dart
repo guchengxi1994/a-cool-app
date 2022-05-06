@@ -9,7 +9,7 @@
  */
 import 'package:flutter/material.dart';
 
-import '../../globals.dart';
+import '../../_styles.dart';
 
 @Deprecated("will be removed")
 mixin BackScreenMixin<T extends StatefulWidget> on State<T> {
@@ -21,7 +21,7 @@ mixin BackScreenMixin<T extends StatefulWidget> on State<T> {
           leading: IconButton(
             icon: const Icon(
               Icons.chevron_left,
-              size: leftBackIconSize,
+              size: AppTheme.leftBackIconSize,
             ),
             onPressed: () {
               Navigator.of(context).pop();

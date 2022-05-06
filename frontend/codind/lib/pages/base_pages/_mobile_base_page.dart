@@ -9,9 +9,8 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-04-10 12:33:45
  */
+import 'package:codind/_styles.dart';
 import 'package:flutter/material.dart';
-
-import '../../globals.dart';
 
 abstract class MobileBasePage extends StatefulWidget {
   MobileBasePage({Key? key, required this.pageName, this.backgroundColor})
@@ -39,21 +38,13 @@ class MobileBasePageState<T extends MobileBasePage> extends State<T> {
                 ? LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    stops: const [
-                        0.0,
-                        1.0
-                      ],
-                    colors: [
-                        // Color.fromARGB(255, 223, 211, 195),
-                        // Color.fromARGB(255, 240, 236, 227)
-                        Colors.grey[300]!,
-                        Colors.grey[100]!,
-                      ])
+                    stops: const [0.0, 1.0],
+                    colors: AppTheme.baseBackgroundColors)
                 : null),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            backgroundColor: Colors.white,
+            backgroundColor: AppTheme.baseAppbarColor,
             elevation: 0,
             title: widget.pageName != null
                 ? Text(
@@ -71,7 +62,7 @@ class MobileBasePageState<T extends MobileBasePage> extends State<T> {
                 },
                 icon: const Icon(
                   Icons.chevron_left,
-                  size: leftBackIconSize,
+                  size: AppTheme.leftBackIconSize,
                   color: Color.fromARGB(255, 78, 63, 63),
                 )),
           ),

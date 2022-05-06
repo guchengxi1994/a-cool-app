@@ -301,7 +301,7 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
                                   children: <Widget>[
                                     Padding(
                                       padding: EdgeInsets.only(
-                                        left: 120,
+                                        left: 120.w,
                                         // right: 16,
                                         top: 25,
                                       ),
@@ -331,8 +331,8 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
                         top: -16,
                         right: 20,
                         child: SizedBox(
-                          width: imgSize ?? 80,
-                          height: imgSize ?? 80,
+                          width: imgSize ?? 80.sp,
+                          height: imgSize ?? 80.sp,
                           child: Image.asset(
                             frontImgPath!,
                           ),

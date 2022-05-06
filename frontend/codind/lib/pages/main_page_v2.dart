@@ -375,25 +375,20 @@ class _TopicWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      // providers: [
-      //   ChangeNotifierProvider(
-      //     create: (_) => TopicController()..init(),
-      //   ),
-      // ],
       create: (_) => TopicController()..init(),
       builder: (context, child) {
         return CoolCollapsWidgetWithoutProvider(
           cardName: context.watch<TopicController>().topic,
           frontImgPath: null,
           backImgPath: "assets/images/achievement.png",
-          fontSize: 18.sp,
+          fontSize: 21.sp,
           onTap: () async {
             String result = "";
             var res = await showCupertinoDialog(
                 context: context,
                 builder: (context) {
                   return CupertinoAlertDialog(
-                    title: Text("Input a topic"),
+                    title: Text("输入一个topic"),
                     content: Container(
                       color: Colors.transparent,
                       child: TextField(

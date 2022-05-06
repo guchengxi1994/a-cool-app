@@ -5,7 +5,7 @@ import 'package:codind/providers/avatar_provider.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
-import '../../globals.dart';
+import '../../_styles.dart';
 import '../mixins/_background_color_mixin.dart';
 import 'package:provider/provider.dart';
 
@@ -82,7 +82,7 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
               child: IconButton(
                 icon: const Icon(
                   Icons.chevron_left,
-                  size: leftBackIconSize,
+                  size: AppTheme.leftBackIconSize,
                   color: Colors.white,
                 ),
                 onPressed: () {

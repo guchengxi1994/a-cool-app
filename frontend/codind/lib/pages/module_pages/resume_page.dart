@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:taichi/taichi.dart';
 
-import '../../globals.dart';
+import '../../_styles.dart';
 
 const bigSize = 25.0;
 const smallSize = 20.0;
@@ -59,7 +59,7 @@ class _ResumePageState extends State<ResumePage> with BackgroundColorMixin {
             },
             icon: const Icon(
               Icons.chevron_left,
-              size: leftBackIconSize,
+              size: AppTheme.leftBackIconSize,
               color: Color.fromARGB(255, 78, 63, 63),
             )),
       ),

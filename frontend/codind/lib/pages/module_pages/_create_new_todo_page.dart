@@ -2,7 +2,6 @@
 // ignore_for_file: constant_identifier_names, unused_field, prefer_const_constructors
 
 import 'package:add_2_calendar/add_2_calendar.dart';
-import 'package:codind/globals.dart';
 import 'package:codind/notifications/notifications.dart';
 import 'package:codind/pages/mixins/_loading_page_mixin.dart';
 import 'package:codind/router.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:provider/provider.dart';
 
+import '../../_styles.dart';
 import '../../entity/entity.dart' show ScheduleNotificationEntity;
 import '../../providers/my_providers.dart' show TodoPageScrollController;
 import '../../utils/utils.dart';
@@ -119,7 +119,7 @@ class _CreateNewTodoState extends State<_CreateNewTodo> with LoadingPageMixin {
             ? IconButton(
                 icon: const Icon(
                   Icons.chevron_left,
-                  size: leftBackIconSize,
+                  size: AppTheme.leftBackIconSize,
                   color: Colors.black,
                 ),
                 onPressed: () {
@@ -141,7 +141,7 @@ class _CreateNewTodoState extends State<_CreateNewTodo> with LoadingPageMixin {
       leading: IconButton(
         icon: const Icon(
           Icons.chevron_left,
-          size: leftBackIconSize,
+          size: AppTheme.leftBackIconSize,
           color: Colors.black,
         ),
         onPressed: () {

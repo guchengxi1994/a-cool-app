@@ -155,8 +155,10 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                           textEditingController.text += "\n";
                           textEditingController.text += "# ";
 
-                          _globalKey.currentState!
-                              .changeData(textEditingController.text);
+                          if (_globalKey.currentState != null) {
+                            _globalKey.currentState!
+                                .changeData(textEditingController.text);
+                          }
 
                           Navigator.of(context).pop();
                         },

@@ -36,8 +36,6 @@ FlutterI18nDelegate getI18n(String lang) {
   return flutterI18nDelegate;
 }
 
-const leftBackIconSize = 35.0;
-
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {

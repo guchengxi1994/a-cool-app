@@ -30,6 +30,15 @@ class AppTheme {
   static const Color spacer = Color(0xFFF2F2F2);
   static const String fontName = 'Roboto';
 
+  static List<Color> baseBackgroundColors = [
+    Colors.grey[300]!,
+    Colors.grey[100]!,
+  ];
+
+  static const Color baseAppbarColor = Colors.white;
+
+  static const double leftBackIconSize = 35.0;
+
   static const TextTheme textTheme = TextTheme(
     headline4: display1,
     headline5: headline,
