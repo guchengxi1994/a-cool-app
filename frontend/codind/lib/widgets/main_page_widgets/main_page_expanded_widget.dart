@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../_styles.dart';
+import '../../_styles.dart';
 
 // ignore: must_be_immutable
 class CoolExpandedWidget extends StatelessWidget {
@@ -20,7 +20,7 @@ class CoolExpandedWidget extends StatelessWidget {
             const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 18),
         child: Container(
           decoration: BoxDecoration(
-            color: mainColor ?? ReservedAppTheme.white,
+            color: mainColor ?? AppTheme.white,
             borderRadius: !reversed!
                 ? BorderRadius.only(
                     topRight: Radius.circular(8.0),
@@ -34,7 +34,7 @@ class CoolExpandedWidget extends StatelessWidget {
                     topRight: Radius.circular(68.0)),
             boxShadow: <BoxShadow>[
               BoxShadow(
-                  color: ReservedAppTheme.grey.withOpacity(0.2),
+                  color: AppTheme.grey.withOpacity(0.2),
                   offset: Offset(1.1, 1.1),
                   blurRadius: 10.0),
             ],

@@ -3,7 +3,7 @@
 import 'package:codind/entity/knowledge_entity.dart';
 import 'package:flutter/material.dart';
 
-import '../globals.dart';
+import '../../globals.dart';
 
 class KnowlegetPreviewPage extends StatelessWidget {
   KnowlegetPreviewPage({Key? key, required this.data}) : super(key: key);

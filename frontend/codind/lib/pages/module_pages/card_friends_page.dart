@@ -4,8 +4,8 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:codind/widgets/card_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../globals.dart';
-import 'base_pages/_mobile_base_page.dart';
+import '../../globals.dart';
+import '../base_pages/_mobile_base_page.dart';
 
 /// friend page
 class CardPage extends MobileBasePage {

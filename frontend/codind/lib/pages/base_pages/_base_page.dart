@@ -1,10 +1,7 @@
-import 'package:codind/providers/my_providers.dart';
-import 'package:codind/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 // import 'package:loading_overlay/loading_overlay.dart';
-import 'package:provider/provider.dart';
 import 'package:taichi/taichi.dart';
 
 import '../../globals.dart';
@@ -125,43 +122,6 @@ class BasePageState<T extends BasePage> extends State<T> {
         actions: actions,
       ),
     );
-  }
-
-  Widget? getLeadingWidget() {
-    if (widget.routeName == "main" && Responsive.isRoughDesktop(context)) {
-      return null;
-    }
-
-    if (widget.routeName == "main" && !Responsive.isRoughDesktop(context)) {
-      // print("应该到这里了");
-      return IconButton(
-        onPressed: () {
-          context.read<MenuController>().controlMenu();
-        },
-        icon: const Icon(
-          Icons.menu,
-          color: Colors.white,
-        ),
-      );
-    }
-
-    if (PlatformUtils.isWeb) {
-      return null;
-    } else {
-      if (widget.routeName != "main") {
-        return IconButton(
-          // ignore: prefer_const_constructors
-          icon: Icon(
-            Icons.chevron_left,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        );
-      } else {
-        return null;
-      }
-    }
   }
 
   @override

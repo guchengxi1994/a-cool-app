@@ -1,5 +1,4 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:codind/router.dart';
 import 'package:flutter/material.dart';
 
 class NotificationWeekAndTime {
@@ -33,9 +32,9 @@ class NotificationController {
   /// Use this method to detect when the user taps on a notification or action button
   static Future<void> onActionReceivedMethod(
       ReceivedAction receivedAction) async {
-    // Navigate into pages, avoiding to open the notification details page over another details page already opened
-    Global.navigatorKey.currentState?.pushNamedAndRemoveUntil(Routers.pageMain,
-        (route) => (route.settings.name != Routers.pageMain) || route.isFirst,
-        arguments: receivedAction);
+    /// Navigate into pages, avoiding to open the notification details page over another details page already opened
+    // Global.navigatorKey.currentState?.pushNamedAndRemoveUntil(Routers.pageMain,
+    //     (route) => (route.settings.name != Routers.pageMain) || route.isFirst,
+    //     arguments: receivedAction);
   }
 }

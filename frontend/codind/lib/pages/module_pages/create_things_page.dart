@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
-import '../providers/my_providers.dart';
+import '../../providers/my_providers.dart';
 import '_create_single_knowledge_page.dart';
 
 class CreateKnowledgeBasePage extends MobileBasePage {

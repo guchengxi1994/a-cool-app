@@ -31,7 +31,7 @@ import 'package:codind/utils/other_platform/mobile_utils.dart'
     if (dart.library.html) 'package:codind/utils/web/web_utils.dart'
     show saveMdFile;
 
-import 'base_pages/_base_page.dart';
+import '../base_pages/_base_page.dart';
 
 class _EmojiFutureEntity {
   List<String>? usedEmoji;

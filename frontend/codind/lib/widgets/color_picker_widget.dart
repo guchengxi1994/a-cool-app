@@ -7,12 +7,11 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-02-01 09:41:40
  */
-import 'package:codind/providers/my_providers.dart';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-// ignore: implementation_imports
-import 'package:provider/src/provider.dart';
 
 // ignore: must_be_immutable
 class ColorPickerWidget extends StatefulWidget {
@@ -29,8 +28,7 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
   @override
   void initState() {
     super.initState();
-    selectedColor = widget.currentColor ??
-        context.read<ThemeController>().themeData.primaryColor;
+    selectedColor = widget.currentColor ?? Colors.blue;
   }
 
   @override

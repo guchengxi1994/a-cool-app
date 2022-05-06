@@ -12,7 +12,7 @@
 import 'package:codind/entity/knowledge_entity.dart';
 import 'package:flutter/material.dart';
 
-import '../pages/_create_single_knowledge_page.dart';
+import '../pages/module_pages/_create_single_knowledge_page.dart';
 
 class KnowledgeWidgetController extends ChangeNotifier {
   List<KnowledgeSummaryWidget> _items = [];

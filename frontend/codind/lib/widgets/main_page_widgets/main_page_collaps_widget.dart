@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:taichi/taichi.dart';
 
 import '../../providers/my_providers.dart';
-import '../_styles.dart';
+import '../../_styles.dart';
 
 // ignore: must_be_immutable
 class CoolCollapsWidget extends StatelessWidget {
@@ -33,7 +33,7 @@ class CoolCollapsWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 16),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: ReservedAppTheme.white,
+                    color: AppTheme.white,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(8.0),
                         bottomLeft: Radius.circular(8.0),
@@ -41,7 +41,7 @@ class CoolCollapsWidget extends StatelessWidget {
                         topRight: Radius.circular(8.0)),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
-                          color: ReservedAppTheme.grey.withOpacity(0.4),
+                          color: AppTheme.grey.withOpacity(0.4),
                           offset: Offset(1.1, 1.1),
                           blurRadius: 10.0),
                     ],
@@ -76,11 +76,11 @@ class CoolCollapsWidget extends StatelessWidget {
                                   FlutterI18n.translate(context, cardName),
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
-                                    fontFamily: ReservedAppTheme.fontName,
+                                    fontFamily: AppTheme.fontName,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 14,
                                     letterSpacing: 0.0,
-                                    color: ReservedAppTheme.nearlyDarkBlue,
+                                    color: AppTheme.nearlyDarkBlue,
                                   ),
                                 ),
                               ),
@@ -99,11 +99,11 @@ class CoolCollapsWidget extends StatelessWidget {
                                   .getContent(cardName),
                               textAlign: TextAlign.left,
                               style: TextStyle(
-                                fontFamily: ReservedAppTheme.fontName,
+                                fontFamily: AppTheme.fontName,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 10,
                                 letterSpacing: 0.0,
-                                color: ReservedAppTheme.grey.withOpacity(0.5),
+                                color: AppTheme.grey.withOpacity(0.5),
                               ),
                             ),
                           ),
@@ -181,7 +181,7 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 16, bottom: 5),
                         child: Container(
                           decoration: BoxDecoration(
-                            color: ReservedAppTheme.white,
+                            color: AppTheme.white,
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(8.0),
                                 bottomLeft: Radius.circular(8.0),
@@ -189,7 +189,7 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
                                 topRight: Radius.circular(8.0)),
                             boxShadow: <BoxShadow>[
                               BoxShadow(
-                                  color: ReservedAppTheme.grey.withOpacity(0.4),
+                                  color: AppTheme.grey.withOpacity(0.4),
                                   offset: Offset(1.1, 1.1),
                                   blurRadius: 10.0),
                             ],
@@ -226,13 +226,11 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
                                           maxLines: 2,
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
-                                            fontFamily:
-                                                ReservedAppTheme.fontName,
+                                            fontFamily: AppTheme.fontName,
                                             fontWeight: FontWeight.w500,
                                             fontSize: fontSize ?? 18.5,
                                             letterSpacing: 0.0,
-                                            color:
-                                                ReservedAppTheme.nearlyDarkBlue,
+                                            color: AppTheme.nearlyDarkBlue,
                                           ),
                                         ),
                                       ),
@@ -267,7 +265,7 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 16, bottom: 5),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: ReservedAppTheme.white,
+                          color: AppTheme.white,
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(8.0),
                               bottomLeft: Radius.circular(8.0),
@@ -275,7 +273,7 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
                               topRight: Radius.circular(8.0)),
                           boxShadow: <BoxShadow>[
                             BoxShadow(
-                                color: ReservedAppTheme.grey.withOpacity(0.4),
+                                color: AppTheme.grey.withOpacity(0.4),
                                 offset: Offset(1.1, 1.1),
                                 blurRadius: 10.0),
                           ],
@@ -312,12 +310,11 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
                                         maxLines: 2,
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
-                                          fontFamily: ReservedAppTheme.fontName,
+                                          fontFamily: AppTheme.fontName,
                                           fontWeight: FontWeight.w500,
                                           fontSize: fontSize ?? 18.5,
                                           letterSpacing: 0.0,
-                                          color:
-                                              ReservedAppTheme.nearlyDarkBlue,
+                                          color: AppTheme.nearlyDarkBlue,
                                         ),
                                       ),
                                     ),

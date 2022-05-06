@@ -9,7 +9,7 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-04-14 22:14:29
  */
-import 'package:codind/pages/_knowledge_preview_page.dart';
+import 'package:codind/pages/module_pages/_knowledge_preview_page.dart';
 import 'package:codind/utils/extensions/datetime_extension.dart';
 import 'package:codind/widgets/mobile_widgets/upload_file_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,11 +26,11 @@ import 'package:highlight/languages/rust.dart' as _rust;
 import 'package:highlight/languages/python.dart' as _python;
 import 'package:highlight/languages/java.dart' as _java;
 
-import '../entity/knowledge_entity.dart';
-import '../providers/my_providers.dart';
-import '../utils/platform_utils.dart';
-import '../widgets/mobile_widgets/qr_scanner_widget.dart';
-import 'base_pages/_mobile_base_page.dart';
+import '../../entity/knowledge_entity.dart';
+import '../../providers/my_providers.dart';
+import '../../utils/platform_utils.dart';
+import '../../widgets/mobile_widgets/qr_scanner_widget.dart';
+import '../base_pages/_mobile_base_page.dart';
 
 /// maybe something like a diary
 class CreateKnowledgeWidget extends MobileBasePage {

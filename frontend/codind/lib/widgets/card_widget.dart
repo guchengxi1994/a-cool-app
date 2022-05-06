@@ -6,7 +6,7 @@ import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 
 import '../globals.dart';
-import '_styles.dart';
+import '../_styles.dart';
 import 'main_page_widgets/main_page_expanded_widget.dart';
 
 // ignore: non_constant_identifier_names
@@ -163,14 +163,14 @@ class _CardWidgetState extends State<CardWidget> {
                           width: 100,
                           height: 100,
                           decoration: BoxDecoration(
-                            color: ReservedAppTheme.white,
+                            color: AppTheme.white,
                             borderRadius: BorderRadius.all(
                               Radius.circular(100.0),
                             ),
                             border: Border.all(
                                 width: 4,
-                                color: ReservedAppTheme.nearlyDarkBlue
-                                    .withOpacity(0.2)),
+                                color:
+                                    AppTheme.nearlyDarkBlue.withOpacity(0.2)),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -180,22 +180,22 @@ class _CardWidgetState extends State<CardWidget> {
                                 '1555',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontFamily: ReservedAppTheme.fontName,
+                                  fontFamily: AppTheme.fontName,
                                   fontWeight: FontWeight.normal,
                                   fontSize: 24,
                                   letterSpacing: 0.0,
-                                  color: ReservedAppTheme.nearlyDarkBlue,
+                                  color: AppTheme.nearlyDarkBlue,
                                 ),
                               ),
                               Text(
                                 'Kcal left',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontFamily: ReservedAppTheme.fontName,
+                                  fontFamily: AppTheme.fontName,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                   letterSpacing: 0.0,
-                                  color: ReservedAppTheme.grey.withOpacity(0.5),
+                                  color: AppTheme.grey.withOpacity(0.5),
                                 ),
                               ),
                             ],
@@ -207,7 +207,7 @@ class _CardWidgetState extends State<CardWidget> {
                           padding: const EdgeInsets.all(4.0),
                           child: CustomPaint(
                             painter: CurvePainter(colors: [
-                              ReservedAppTheme.nearlyDarkBlue,
+                              AppTheme.nearlyDarkBlue,
                               HexColor("#8A98E8"),
                               HexColor("#8A98E8")
                             ], angle: 140 + (360 - 140) * (1.0 - 0.5)),
@@ -223,8 +223,8 @@ class _CardWidgetState extends State<CardWidget> {
                           height: 108,
                           width: 108,
                           decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: ReservedAppTheme.nearlyDarkBlue)),
+                              border:
+                                  Border.all(color: AppTheme.nearlyDarkBlue)),
                         )
                     ],
                   ),

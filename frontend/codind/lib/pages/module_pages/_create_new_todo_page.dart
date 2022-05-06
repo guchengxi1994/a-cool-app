@@ -11,10 +11,10 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:provider/provider.dart';
 
-import '../entity/entity.dart' show ScheduleNotificationEntity;
-import '../providers/my_providers.dart' show TodoPageScrollController;
-import '../utils/utils.dart';
-import '../widgets/widgets.dart'
+import '../../entity/entity.dart' show ScheduleNotificationEntity;
+import '../../providers/my_providers.dart' show TodoPageScrollController;
+import '../../utils/utils.dart';
+import '../../widgets/widgets.dart'
     show TodoTimepickerWidget, TodoTimepickerWidgetState;
 
 class CreateNewTodo extends StatelessWidget {

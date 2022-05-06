@@ -11,7 +11,8 @@
 /// diy a scroll bar  https://www.jianshu.com/p/c14c5bd649c2
 
 import 'package:codind/bloc/gantt_bloc.dart';
-import 'package:codind/pages/_schedule_detail_page.dart';
+import 'package:codind/pages/module_pages/_schedule_detail_page.dart'
+    show ScheduleDetailPage;
 import 'package:codind/router.dart';
 import 'package:codind/utils/common.dart' as my;
 import 'package:flutter/material.dart';

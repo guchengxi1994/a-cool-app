@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:taichi/taichi.dart';
 
-import '../globals.dart';
+import '../../globals.dart';
 
 const bigSize = 25.0;
 const smallSize = 20.0;

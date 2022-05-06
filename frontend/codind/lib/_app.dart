@@ -42,28 +42,8 @@ class _MyAppState extends State<MyApp> {
 
     WidgetsBinding.instance!.addPostFrameCallback(
       (timeStamp) {
-        if (widget.colorList != null) {
-          Map<String, Color> savedColor = {
-            "primaryColor": Color(int.parse(widget.colorList![0])),
-            "primaryColorLight": Color(int.parse(widget.colorList![1])),
-            "primaryColorDark": Color(int.parse(widget.colorList![2])),
-            "bottomAppBarColor": Color(int.parse(widget.colorList![3])),
-            "appBarColor": Color(int.parse(widget.colorList![4])),
-          };
-          context.read<ThemeController>().setThemeByMap(savedColor);
-        }
-
-        // somehow on web there is a null-value excepthon when using flutter_i18n,
-        // so i add one second duration
         Future.delayed(const Duration(seconds: 1)).then((value) =>
             context.read<LanguageControllerV2>().changeLanguage(widget.lang!));
-        // .then((value) {
-        // AwesomeNotifications().createdStream.listen((event) {
-        //   ScaffoldMessenger.of(Global.navigatorKey.currentContext!)
-        //       .showSnackBar(
-        //           SnackBar(content: Text("A notification created")));
-        // });
-        // });
       },
     );
   }
@@ -92,7 +72,6 @@ class _MyAppState extends State<MyApp> {
             child = TaichiFitnessUtil.rootBuilder(
                     designHeight: 932, designWidth: 500)!
                 .call(context, child);
-            // child = TaichiFitnessUtil.rootBuilder()!.call(context, child);
             child = FlutterI18n.rootAppBuilder().call(context, child);
             return FlutterSmartDialog(child: child);
           },

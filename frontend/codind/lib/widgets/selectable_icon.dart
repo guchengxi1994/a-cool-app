@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-import '_styles.dart';
+import '../_styles.dart';
 
 @Deprecated("will be removed later")
 // ignore: must_be_immutable
@@ -190,11 +190,11 @@ class _CoolSelectableIconState extends State<CoolSelectableIcon> {
                             context, mainPageCardData!.titleTxt),
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          fontFamily: ReservedAppTheme.fontName,
+                          fontFamily: AppTheme.fontName,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                           letterSpacing: 0.2,
-                          color: ReservedAppTheme.white,
+                          color: AppTheme.white,
                         ),
                       ),
                       Expanded(
@@ -207,11 +207,11 @@ class _CoolSelectableIconState extends State<CoolSelectableIcon> {
                               Text(
                                 mainPageCardData!.getNotes().join('\n'),
                                 style: const TextStyle(
-                                  fontFamily: ReservedAppTheme.fontName,
+                                  fontFamily: AppTheme.fontName,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 10,
                                   letterSpacing: 0.2,
-                                  color: ReservedAppTheme.white,
+                                  color: AppTheme.white,
                                 ),
                               ),
                             ],
@@ -226,11 +226,11 @@ class _CoolSelectableIconState extends State<CoolSelectableIcon> {
                             mainPageCardData!.tip,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                              fontFamily: ReservedAppTheme.fontName,
+                              fontFamily: AppTheme.fontName,
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
                               letterSpacing: 0.2,
-                              color: ReservedAppTheme.white,
+                              color: AppTheme.white,
                             ),
                           ),
                         ],
@@ -248,7 +248,7 @@ class _CoolSelectableIconState extends State<CoolSelectableIcon> {
               width: 84,
               height: 84,
               decoration: BoxDecoration(
-                color: ReservedAppTheme.nearlyWhite.withOpacity(0.2),
+                color: AppTheme.nearlyWhite.withOpacity(0.2),
                 shape: BoxShape.circle,
               ),
             ),

@@ -8,7 +8,7 @@
  * @LastEditTime: 2022-05-04 20:49:09
  */
 
-import 'package:codind/pages/card_page.dart';
+import 'package:codind/pages/module_pages/card_friends_page.dart';
 import 'package:codind/pages/login_page.dart';
 import 'package:codind/pages/main_page_v2.dart';
 import 'package:codind/pages/pages.dart';

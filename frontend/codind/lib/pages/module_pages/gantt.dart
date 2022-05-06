@@ -20,7 +20,7 @@ import 'package:codind/utils/common.dart' as my;
 // import 'package:loading_overlay/loading_overlay.dart';
 import 'package:taichi/taichi.dart';
 
-import '../widgets/things.dart';
+import '../../widgets/things.dart';
 import '_schedule_detail_page.dart';
 
 /// my gantt chart !!!

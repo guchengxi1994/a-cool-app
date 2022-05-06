@@ -13,7 +13,7 @@
 /// 手机端的主页
 
 import 'package:codind/entity/entity.dart';
-import 'package:codind/pages/create_things_page.dart';
+import 'package:codind/pages/module_pages/create_things_page.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/shared_preference_utils.dart';
 import 'package:codind/widgets/main_page_widgets/main_page_collaps_widget.dart';
@@ -26,8 +26,8 @@ import 'package:provider/provider.dart';
 import 'package:taichi/taichi.dart';
 
 import '../providers/my_providers.dart';
-import 'new_todos_page.dart';
-import 'work_work_work_page.dart';
+import 'module_pages/new_todos_page.dart';
+import 'module_pages/work_work_work_page.dart';
 
 /// this is for mobile
 ///
