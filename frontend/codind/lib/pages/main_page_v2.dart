@@ -276,54 +276,7 @@ class _MainPageV2State extends State<MainPageV2> {
             children: [
               Row(
                 children: [
-                  Expanded(
-                      child: CoolCollapsWidgetWithoutProvider(
-                    cardName: context.watch<TopicController>().topic,
-                    frontImgPath: null,
-                    backImgPath: "assets/images/achievement.png",
-                    fontSize: 18.sp,
-                    onTap: () async {
-                      String result = "";
-                      var res = await showCupertinoDialog(
-                          context: context,
-                          builder: (context) {
-                            return CupertinoAlertDialog(
-                              title: Text("Input a topic"),
-                              content: Container(
-                                color: Colors.transparent,
-                                child: TextField(
-                                  maxLength: 10,
-                                  onChanged: (v) {
-                                    result = v;
-                                  },
-                                ),
-                              ),
-                              actions: [
-                                CupertinoActionSheetAction(
-                                    onPressed: () {
-                                      Navigator.of(context).pop(result);
-                                    },
-                                    child: Text(FlutterI18n.translate(
-                                        context, "button.label.ok"))),
-                                CupertinoActionSheetAction(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text(FlutterI18n.translate(
-                                        context, "button.label.cancel"))),
-                              ],
-                            );
-                          });
-                      if (res != null) {
-                        context.read<TopicController>().changeTopic(res);
-
-                        PersistenceStorage ps = PersistenceStorage();
-
-                        await ps.setTopic(res);
-                        await ps.setLastTopicTime(DateTime.now());
-                      }
-                    },
-                  )),
+                  const Expanded(child: _TopicWidget()),
                   Container(
                     margin: EdgeInsets.only(top: 15.h, right: 10.w),
                     color: Colors.transparent,
@@ -410,5 +363,70 @@ class _MainPageV2State extends State<MainPageV2> {
             ],
           ),
         ));
+  }
+}
+
+class _TopicWidget extends StatelessWidget {
+  const _TopicWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      // providers: [
+      //   ChangeNotifierProvider(
+      //     create: (_) => TopicController()..init(),
+      //   ),
+      // ],
+      create: (_) => TopicController()..init(),
+      builder: (context, child) {
+        return CoolCollapsWidgetWithoutProvider(
+          cardName: context.watch<TopicController>().topic,
+          frontImgPath: null,
+          backImgPath: "assets/images/achievement.png",
+          fontSize: 18.sp,
+          onTap: () async {
+            String result = "";
+            var res = await showCupertinoDialog(
+                context: context,
+                builder: (context) {
+                  return CupertinoAlertDialog(
+                    title: Text("Input a topic"),
+                    content: Container(
+                      color: Colors.transparent,
+                      child: TextField(
+                        maxLength: 10,
+                        onChanged: (v) {
+                          result = v;
+                        },
+                      ),
+                    ),
+                    actions: [
+                      CupertinoActionSheetAction(
+                          onPressed: () {
+                            Navigator.of(context).pop(result);
+                          },
+                          child: Text(FlutterI18n.translate(
+                              context, "button.label.ok"))),
+                      CupertinoActionSheetAction(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(FlutterI18n.translate(
+                              context, "button.label.cancel"))),
+                    ],
+                  );
+                });
+            if (res != null) {
+              context.read<TopicController>().changeTopic(res);
+
+              PersistenceStorage ps = PersistenceStorage();
+
+              await ps.setTopic(res);
+              await ps.setLastTopicTime(DateTime.now());
+            }
+          },
+        );
+      },
+    );
   }
 }

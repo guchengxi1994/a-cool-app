@@ -138,18 +138,18 @@ List<SingleChildWidget> getProviders() {
     ChangeNotifierProvider(
       create: (_) => LanguageControllerV2(),
     ),
-    ChangeNotifierProvider(
-      create: (_) => TodoPageScrollController(),
-    ),
+    // ChangeNotifierProvider(
+    //   create: (_) => TodoPageScrollController(),
+    // ),
     ChangeNotifierProvider(
       create: (_) => MainPageCardController()..init(),
     ),
-    ChangeNotifierProvider(
-      create: (_) => TopicController()..init(),
-    ),
-    ChangeNotifierProvider(
-      create: (_) => MultiImageUploadController()..init(),
-    ),
+    // ChangeNotifierProvider(
+    //   create: (_) => TopicController()..init(),
+    // ),
+    // ChangeNotifierProvider(
+    //   create: (_) => MultiImageUploadController()..init(),
+    // ),
     ChangeNotifierProvider(
       create: (_) => KnowledgeWidgetController(),
     ),

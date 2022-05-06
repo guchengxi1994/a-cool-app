@@ -15,14 +15,31 @@ import '../utils/utils.dart';
 import '../widgets/widgets.dart'
     show TodoTimepickerWidget, TodoTimepickerWidgetState;
 
-class CreateNewTodo extends StatefulWidget {
-  const CreateNewTodo({key}) : super(key: key);
+class CreateNewTodo extends StatelessWidget {
+  const CreateNewTodo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // return Container();
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => TodoPageScrollController(),
+        ),
+      ],
+      child: const _CreateNewTodo(),
+    );
+  }
+}
+
+class _CreateNewTodo extends StatefulWidget {
+  const _CreateNewTodo({key}) : super(key: key);
 
   @override
   _CreateNewTodoState createState() => _CreateNewTodoState();
 }
 
-class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
+class _CreateNewTodoState extends State<_CreateNewTodo> with LoadingPageMixin {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController bodyController = TextEditingController();
   final ScrollController scrollController = ScrollController();
