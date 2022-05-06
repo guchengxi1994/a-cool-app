@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors
+
 import 'package:codind/utils/platform_utils.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
@@ -7,6 +9,7 @@ import '../globals.dart';
 import '_styles.dart';
 import 'main_page_widgets/main_page_expanded_widget.dart';
 
+// ignore: non_constant_identifier_names
 double GAP = (0.75 * CommonUtil.screenW() - 4 * 36) / 5;
 
 class CardWidget extends StatefulWidget {

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 /*
  * @Descripttion: 
  * @version: 
@@ -100,7 +102,7 @@ class _MainPageV2State extends State<MainPageV2> {
                       width: 10.w,
                     ),
                     Text(
-                      "测试用户" + "的工作台",
+                      "测试用户的工作台",
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
                     )
@@ -130,7 +132,7 @@ class _MainPageV2State extends State<MainPageV2> {
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  stops: [
+                  stops: const [
                 0.0,
                 1.0
               ],
@@ -334,6 +336,7 @@ class _MainPageV2State extends State<MainPageV2> {
                             child: SizedBox(
                               height: 120.h,
                               child: TodoListWidget(
+                                // ignore: prefer_const_literals_to_create_immutables
                                 todos: ["当前共有X未完成事项", "当前已完成X事项", "当前有X逾期事项"],
                               ),
                             ),

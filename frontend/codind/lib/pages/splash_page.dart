@@ -15,7 +15,7 @@ import '../providers/splash_page_provider.dart'
     if (dart.library.html) '../providers/splash_page_web_provider.dart';
 
 class SplashScreen extends StatefulWidget {
-  SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();

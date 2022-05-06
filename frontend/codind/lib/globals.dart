@@ -60,8 +60,8 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
 class CommonUtil {
   /// 获取屏幕大小
   static MediaQueryData mediaQuery = MediaQueryData.fromWindow(_ui.window);
-  static double _width = mediaQuery.size.width;
-  static double _height = mediaQuery.size.height;
+  static final double _width = mediaQuery.size.width;
+  static final double _height = mediaQuery.size.height;
   static screenW() {
     return _width;
   }

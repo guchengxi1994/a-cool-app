@@ -9,8 +9,9 @@
  */
 import 'package:flutter/material.dart';
 
-import '../globals.dart';
+import '../../globals.dart';
 
+@Deprecated("will be removed")
 mixin BackScreenMixin<T extends StatefulWidget> on State<T> {
   @override
   Widget build(BuildContext context) {

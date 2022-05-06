@@ -8,7 +8,7 @@ mixin BackgroundColorMixin<T extends StatefulWidget> on State<T> {
           gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              stops: [
+              stops: const [
             0.0,
             1.0
           ],

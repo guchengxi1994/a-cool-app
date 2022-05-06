@@ -1,10 +1,11 @@
-import 'package:codind/pages/_mobile_base_page.dart';
+import 'package:codind/pages/base_pages/_mobile_base_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../widgets/widgets.dart' show CustomListTile;
 import '_create_new_todo_page.dart';
 
+// ignore: must_be_immutable
 class NewTodosPage extends MobileBasePage {
   NewTodosPage({Key? key, required pageName})
       : super(key: key, pageName: pageName);

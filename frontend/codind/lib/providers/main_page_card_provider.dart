@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 /*
  * @Descripttion: 
  * @version: 
@@ -18,7 +20,6 @@ class MainPageCardController extends ChangeNotifier {
   PersistenceStorage ps = PersistenceStorage();
 
   /// i18n key and selected
-  // ignore: prefer_final_fields
   Map<String, bool> selectedCard = {
     "label.todos": false,
     "resume.abi": false,

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class TopBackSkipView extends StatelessWidget {
@@ -49,7 +51,7 @@ class TopBackSkipView extends StatelessWidget {
       position: _animation,
       child: Padding(
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-        child: Container(
+        child: SizedBox(
           height: 58,
           child: Padding(
             padding: const EdgeInsets.only(left: 8, right: 16),

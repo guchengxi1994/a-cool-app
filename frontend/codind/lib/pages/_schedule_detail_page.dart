@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_typing_uninitialized_variables, must_be_immutable, prefer_const_constructors
 
 import 'package:codind/entity/schedule.dart';
 import 'package:codind/utils/platform_utils.dart';

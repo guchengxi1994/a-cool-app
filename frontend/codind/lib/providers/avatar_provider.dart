@@ -13,6 +13,7 @@ class AvatarController extends ChangeNotifier {
   String get imgData => _imgData;
   Color get backgroundColor => _backgroundColor;
 
+  // ignore: prefer_final_fields
   AvatarImg _img = AvatarImg(
     type: AvatarType.undefined,
   );

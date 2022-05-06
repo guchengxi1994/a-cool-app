@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 /*
  * @Descripttion: 
  * @version: 
@@ -14,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 /// used in ../pages/resume_page.dart
+// ignore: must_be_immutable
 class CreateEventWidget extends StatefulWidget {
   CreateEventWidget({Key? key, required this.index, required this.name})
       : super(key: key);

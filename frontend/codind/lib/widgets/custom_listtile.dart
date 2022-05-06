@@ -27,6 +27,7 @@ class CustomListTile extends StatelessWidget {
   TextStyle style;
   String title;
   Widget trailing;
+  // ignore: prefer_typing_uninitialized_variables
   final onTap;
 
   @override

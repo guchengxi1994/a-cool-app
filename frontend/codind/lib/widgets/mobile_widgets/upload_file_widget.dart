@@ -23,6 +23,7 @@ class UploadMultiImageWidget extends StatelessWidget {
 
 // ignore: must_be_immutable
 class _UploadMultiImageWidget extends StatefulWidget {
+  // ignore: prefer_const_constructors_in_immutables
   _UploadMultiImageWidget({Key? key}) : super(key: key);
 
   @override
@@ -99,6 +100,7 @@ class _UploadSingleImageWidgetState extends State<UploadSingleImageWidget> {
   }
 }
 
+// ignore: must_be_immutable
 class ImageWidgetV2 extends StatefulWidget {
   ImageWidgetV2({
     Key? key,

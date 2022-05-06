@@ -8,7 +8,6 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:taichi/taichi.dart';
 import 'bloc/my_blocs.dart';
 import 'globals.dart';
-import 'pages/_test_page.dart';
 import 'pages/splash_page.dart';
 import 'providers/my_providers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,12 +75,12 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(
             create: (_) => GanttBloc()..add(InitialGanttEvent()),
           ),
-          BlocProvider(
-            create: (_) => SavedLinksBloc()..add(InitialSavedLinksEvent()),
-          ),
-          BlocProvider(
-            create: (_) => MindMapBloc()..add(InitialMindMapEvent()),
-          )
+          // BlocProvider(
+          //   create: (_) => SavedLinksBloc()..add(InitialSavedLinksEvent()),
+          // ),
+          // BlocProvider(
+          //   create: (_) => MindMapBloc()..add(InitialMindMapEvent()),
+          // )
         ],
         child: MaterialApp(
           scrollBehavior: !PlatformUtils.isMobile
@@ -97,11 +96,7 @@ class _MyAppState extends State<MyApp> {
             child = FlutterI18n.rootAppBuilder().call(context, child);
             return FlutterSmartDialog(child: child);
           },
-          // home: TestPage(
-          //   routeName: "test page",
-          // ),
-          // home: LoginScreen(),
-          home: SplashScreen(),
+          home: const SplashScreen(),
           navigatorObservers: [FlutterSmartDialog.observer],
           localizationsDelegates: [
             getI18n(context.watch<LanguageControllerV2>().currentLang),
@@ -118,10 +113,6 @@ List<SingleChildWidget> getProviders() {
     ChangeNotifierProvider(
       create: (_) => EmojiController(),
     ),
-    // ChangeNotifierProvider(
-    //   create: (_) => ChangeBackgroundProvider(),
-    // ),
-
     ChangeNotifierProvider(create: (_) => SplashPageScreenController()..init()),
     ChangeNotifierProvider(
       create: (_) => RadioProvider(),
@@ -138,18 +129,9 @@ List<SingleChildWidget> getProviders() {
     ChangeNotifierProvider(
       create: (_) => LanguageControllerV2(),
     ),
-    // ChangeNotifierProvider(
-    //   create: (_) => TodoPageScrollController(),
-    // ),
     ChangeNotifierProvider(
       create: (_) => MainPageCardController()..init(),
     ),
-    // ChangeNotifierProvider(
-    //   create: (_) => TopicController()..init(),
-    // ),
-    // ChangeNotifierProvider(
-    //   create: (_) => MultiImageUploadController()..init(),
-    // ),
     ChangeNotifierProvider(
       create: (_) => KnowledgeWidgetController(),
     ),

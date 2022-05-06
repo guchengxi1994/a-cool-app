@@ -1,4 +1,4 @@
-import 'package:codind/pages/_background_color_mixin.dart';
+import 'package:codind/pages/mixins/_background_color_mixin.dart';
 import 'package:codind/widgets/main_page_widgets/main_page_collaps_widget.dart';
 import 'package:codind/widgets/mobile_widgets/upload_file_widget.dart';
 import 'package:codind/widgets/widgets.dart';
@@ -12,7 +12,7 @@ const bigSize = 25.0;
 const smallSize = 20.0;
 
 class ResumePage extends StatefulWidget {
-  ResumePage({Key? key}) : super(key: key);
+  const ResumePage({Key? key}) : super(key: key);
 
   @override
   State<ResumePage> createState() => _ResumePageState();

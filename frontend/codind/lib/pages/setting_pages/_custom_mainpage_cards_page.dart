@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 /*
  * @Descripttion: 
  * @version: 
@@ -13,8 +15,9 @@ import 'package:codind/providers/my_providers.dart' show MainPageCardController;
 
 import '../../widgets/_styles.dart';
 import '../../widgets/selectable_icon.dart';
-import '../_mobile_base_page.dart';
+import '../base_pages/_mobile_base_page.dart';
 
+// ignore: must_be_immutable
 class CustomMainpageCardsPage extends MobileBasePage {
   CustomMainpageCardsPage({Key? key})
       : super(

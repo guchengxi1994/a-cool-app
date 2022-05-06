@@ -8,17 +8,18 @@
  * @LastEditTime: 2022-04-21 21:55:51
  */
 import 'package:codind/globals.dart';
-import 'package:codind/pages/_mobile_base_page.dart';
+import 'package:codind/pages/base_pages/_mobile_base_page.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-import '../utils/platform_utils.dart';
-import '../widgets/widgets.dart';
-import 'setting_pages/mobile_main_setting_page.dart';
+import '../../utils/platform_utils.dart';
+import '../../widgets/widgets.dart';
+import 'mobile_main_setting_page.dart';
 
+// ignore: must_be_immutable
 class MinePage extends MobileBasePage {
   MinePage({Key? key, required String pageName})
       : super(key: key, pageName: pageName);
@@ -40,12 +41,11 @@ class _MinePageState extends MobileBasePageState<MinePage> {
       child: Column(
         children: [
           CustomListTile(
-            // nextPage: MobileMainSettingPage(
-            //   pageName: "设置",
-            // ),
-            route: Routers.pageIntro,
+            nextPage: MobileMainSettingPage(
+              pageName: "设置",
+            ),
             style: _style,
-            title: "查看APP介绍",
+            title: "偏好设置",
             trailing: const Icon(
               Icons.chevron_right,
               size: 25,
@@ -55,11 +55,12 @@ class _MinePageState extends MobileBasePageState<MinePage> {
             height: 10,
           ),
           CustomListTile(
-            nextPage: MobileMainSettingPage(
-              pageName: "设置",
-            ),
+            // nextPage: MobileMainSettingPage(
+            //   pageName: "设置",
+            // ),
+            route: Routers.pageIntro,
             style: _style,
-            title: "偏好设置",
+            title: "查看APP介绍",
             trailing: const Icon(
               Icons.chevron_right,
               size: 25,
@@ -99,6 +100,7 @@ class _MinePageState extends MobileBasePageState<MinePage> {
                   context: context,
                   builder: (context) {
                     return CupertinoAlertDialog(
+                      // ignore: prefer_const_constructors
                       title: Text("是否打开第三方链接"),
                       actions: [
                         CupertinoActionSheetAction(

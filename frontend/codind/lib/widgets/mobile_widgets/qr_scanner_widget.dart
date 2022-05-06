@@ -7,12 +7,12 @@ class ScanMainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScanPage();
+    return const ScanPage();
   }
 }
 
 class ScanPage extends StatefulWidget {
-  ScanPage({Key? key}) : super(key: key);
+  const ScanPage({Key? key}) : super(key: key);
 
   @override
   _ScanPageState createState() => _ScanPageState();

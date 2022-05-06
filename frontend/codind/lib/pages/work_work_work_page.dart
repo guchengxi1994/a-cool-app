@@ -1,8 +1,9 @@
 import 'package:codind/entity/entity.dart';
 import 'package:flutter/material.dart';
 
-import '_mobile_base_page.dart';
+import 'base_pages/_mobile_base_page.dart';
 
+// ignore: must_be_immutable
 class WorkWorkWorkPage extends MobileBasePage {
   WorkWorkWorkPage({Key? key, required this.work, required pageName})
       : super(key: key, pageName: pageName);

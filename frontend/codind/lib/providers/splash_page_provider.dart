@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:io';
 
 import 'package:codind/router.dart';
@@ -37,7 +39,7 @@ class SplashPageScreenController extends ChangeNotifier {
   }
 
   _initPlatform() async {
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(const Duration(milliseconds: 200));
     changeValue(1);
   }
 
@@ -73,7 +75,7 @@ class SplashPageScreenController extends ChangeNotifier {
   _initRole() async {
     logdata = LoginData(
         name: await ps.getUserEmail(), password: await ps.getUserPassword());
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(const Duration(milliseconds: 200));
     changeValue(1);
   }
 

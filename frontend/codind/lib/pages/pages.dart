@@ -14,5 +14,5 @@ export './gantt.dart';
 export './resume_page.dart';
 export './setting_pages/generate_avatar_page.dart';
 export './setting_pages/mobile_main_setting_page.dart';
-export './mine_page.dart';
+export 'setting_pages/mine_page.dart';
 export './introduction_pages/introduction_screen.dart';

@@ -1,7 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 import '../_styles.dart';
 
+// ignore: must_be_immutable
 class CoolExpandedWidget extends StatelessWidget {
   CoolExpandedWidget(
       {Key? key, required this.child, this.mainColor, this.reversed = false})

@@ -28,7 +28,7 @@ import '_schedule_detail_page.dart';
 /// https://zhuanlan.zhihu.com/p/302687896
 
 class GanttPage extends StatefulWidget {
-  GanttPage({Key? key}) : super(key: key);
+  const GanttPage({Key? key}) : super(key: key);
 
   @override
   State<GanttPage> createState() => _GanttPageState();

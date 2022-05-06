@@ -101,7 +101,7 @@ class Schedule {
   }
 
   @override
-  int get hashCode => super.hashCode;
+  int get hashCode => title.hashCode + completion.hashCode + subject.hashCode;
 }
 
 class Subject {
@@ -244,7 +244,8 @@ class Subject {
   }
 
   @override
-  int get hashCode => super.hashCode;
+  int get hashCode =>
+      subTitle.hashCode + from.hashCode + to.hashCode + subCompletion.hashCode;
 }
 
 class SubjectJob {

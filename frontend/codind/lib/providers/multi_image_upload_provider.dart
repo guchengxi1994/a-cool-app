@@ -16,11 +16,15 @@ class ImgData {
     if ((other as ImgData).imgname == null) {
       return false;
     }
-    return imgname == (other as ImgData).imgname;
+    return imgname == (other).imgname;
   }
+
+  @override
+  int get hashCode => imgname.hashCode;
 }
 
 class MultiImageUploadController extends ChangeNotifier {
+  // ignore: prefer_final_fields
   List<ImgData> _imgList = [];
 
   List<ImgData> get imgList => _imgList;

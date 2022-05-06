@@ -7,11 +7,10 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-04-14 22:06:11
  */
-export './side_menu.dart';
+
 export './color_picker_widget.dart';
 export './calendar.dart';
 export './calendar_by_month.dart';
-export './mind_map_widgets/node_widget_v2.dart';
 export './selectable_icon.dart';
 export './main_page_widgets/mobile.dart';
 export './expanded_column_widget.dart';

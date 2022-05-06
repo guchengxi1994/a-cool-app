@@ -3,6 +3,7 @@ import 'package:codind/entity/schedule_notification_entity.dart'
 import 'package:codind/widgets/main_page_widgets/mobile.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ScheduleNotificationWidget extends StatelessWidget {
   ScheduleNotificationWidget({Key? key, required this.entity})
       : super(key: key);

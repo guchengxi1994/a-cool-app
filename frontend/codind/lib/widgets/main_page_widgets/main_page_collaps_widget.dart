@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +8,7 @@ import 'package:taichi/taichi.dart';
 import '../../providers/my_providers.dart';
 import '../_styles.dart';
 
+// ignore: must_be_immutable
 class CoolCollapsWidget extends StatelessWidget {
   final String cardName;
   String? backImgPath;
@@ -138,6 +141,7 @@ class CoolCollapsWidget extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
   CoolCollapsWidgetWithoutProvider(
       {Key? key,
@@ -153,6 +157,7 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
   String? backImgPath;
   double? fontSize;
   double? imgSize;
+  // ignore: prefer_typing_uninitialized_variables
   final onTap;
 
   @override

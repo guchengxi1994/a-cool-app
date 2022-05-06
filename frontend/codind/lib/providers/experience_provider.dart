@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
 class ExperienceController extends ChangeNotifier {
+  // ignore: prefer_final_fields
   Map<String, List<Tuple2>> _data = {"edu": [], "work": [], "abi": []};
 
   List<Tuple2> get edu => _data["edu"]!;

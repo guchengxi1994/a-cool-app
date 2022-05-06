@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/my_providers.dart' show ExperienceController;
 
+// ignore: must_be_immutable
 class ExpandedColumnWidget extends StatefulWidget {
   ExpandedColumnWidget({Key? key, required this.name}) : super(key: key);
   String name;
@@ -42,7 +43,7 @@ class _ExpandedColumnWidgetState extends State<ExpandedColumnWidget> {
           DeletableWidget(
             child: Container(
               height: 150,
-              color: Color.fromARGB(255, 241, 235, 221),
+              color: const Color.fromARGB(255, 241, 235, 221),
               // margin: const EdgeInsets.only(left: 20, right: 20),
               width: MediaQuery.of(context).size.width,
             ),
@@ -120,6 +121,7 @@ class _ExpandedColumnWidgetState extends State<ExpandedColumnWidget> {
   }
 }
 
+// ignore: must_be_immutable
 class DeletableWidget extends StatelessWidget {
   DeletableWidget(
       {Key? key,
@@ -131,6 +133,7 @@ class DeletableWidget extends StatelessWidget {
   Widget child;
   int index;
   GlobalKey? textWidgetKey;
+  // ignore: prefer_typing_uninitialized_variables
   final removeSelf;
 
   @override
@@ -164,62 +167,63 @@ class DeletableWidget extends StatelessWidget {
   }
 }
 
-@Deprecated("dont be used")
-class TextWidget extends StatefulWidget {
-  TextWidget({Key? key, required this.name, required this.index})
-      : super(key: key);
-  String name;
-  int index;
+// @Deprecated("dont be used")
+// class TextWidget extends StatefulWidget {
+//   TextWidget({Key? key, required this.name, required this.index})
+//       : super(key: key);
+//   String name;
+//   int index;
 
-  @override
-  State<TextWidget> createState() => _TextWidgetState();
-}
+//   @override
+//   State<TextWidget> createState() => _TextWidgetState();
+// }
 
-class _TextWidgetState extends State<TextWidget> {
-  String result = "";
-  bool enable = true;
+// class _TextWidgetState extends State<TextWidget> {
+//   String result = "";
+//   bool enable = true;
 
-  @override
-  void initState() {
-    super.initState();
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      maxLength: 100,
-      maxLines: 3,
-      enabled: enable,
-      decoration: InputDecoration(
-        disabledBorder: const OutlineInputBorder(
-            borderSide:
-                BorderSide(color: Color.fromARGB(255, 39, 50, 100), width: 3)),
-        enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.amber, width: 2),
-            borderRadius: BorderRadius.all(Radius.circular(15))),
-        focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 3)),
-        suffix: enable
-            ? IconButton(
-                icon: const Icon(Icons.done),
-                onPressed: () {
-                  setState(() {
-                    context
-                        .read<ExperienceController>()
-                        .addValue(widget.name, widget.index, result);
-                    enable = false;
-                  });
-                },
-              )
-            : null,
-      ),
-      onChanged: (v) {
-        result = v;
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return TextField(
+//       maxLength: 100,
+//       maxLines: 3,
+//       enabled: enable,
+//       decoration: InputDecoration(
+//         disabledBorder: const OutlineInputBorder(
+//             borderSide:
+//                 BorderSide(color: Color.fromARGB(255, 39, 50, 100), width: 3)),
+//         enabledBorder: const OutlineInputBorder(
+//             borderSide: BorderSide(color: Colors.amber, width: 2),
+//             borderRadius: BorderRadius.all(Radius.circular(15))),
+//         focusedBorder: const OutlineInputBorder(
+//             borderSide: BorderSide(color: Colors.green, width: 3)),
+//         suffix: enable
+//             ? IconButton(
+//                 icon: const Icon(Icons.done),
+//                 onPressed: () {
+//                   setState(() {
+//                     context
+//                         .read<ExperienceController>()
+//                         .addValue(widget.name, widget.index, result);
+//                     enable = false;
+//                   });
+//                 },
+//               )
+//             : null,
+//       ),
+//       onChanged: (v) {
+//         result = v;
+//       },
+//     );
+//   }
+// }
 
+// ignore: must_be_immutable
 class TextWidgetV2 extends StatefulWidget {
   TextWidgetV2({Key? key, required this.name, required this.index})
       : super(key: key);

@@ -1,14 +1,16 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:codind/pages/setting_pages/generate_avatar_page.dart';
 import 'package:codind/providers/avatar_provider.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 import '../../globals.dart';
-import '../_background_color_mixin.dart';
+import '../mixins/_background_color_mixin.dart';
 import 'package:provider/provider.dart';
 
 class AccountSafetyPage extends StatefulWidget {
-  AccountSafetyPage({Key? key}) : super(key: key);
+  const AccountSafetyPage({Key? key}) : super(key: key);
 
   @override
   State<AccountSafetyPage> createState() => _AccountSafetyPageState();

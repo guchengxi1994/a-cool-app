@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 /*
  * @Descripttion: 
  * @version: 
@@ -9,7 +11,7 @@
  */
 import 'package:flutter/material.dart';
 
-import '../globals.dart';
+import '../../globals.dart';
 
 abstract class MobileBasePage extends StatefulWidget {
   MobileBasePage({Key? key, required this.pageName, this.backgroundColor})

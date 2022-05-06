@@ -10,6 +10,7 @@ const double containerSize = 20;
 const double paddingSize = 5;
 
 class CalendarByMonth extends StatefulWidget {
+  // ignore: prefer_const_constructors_in_immutables
   CalendarByMonth({Key? key}) : super(key: key);
 
   @override
@@ -22,11 +23,11 @@ class _CalendarByMonthState extends State<CalendarByMonth> {
   ScrollController scrollController = ScrollController();
   ScrollController scrollCanvasController = ScrollController();
 
-  bool _handleScrollNotification(ScrollNotification notification) {
-    final ScrollMetrics metrics = notification.metrics;
-    scrollCanvasController.jumpTo(metrics.pixels);
-    return true;
-  }
+  // bool _handleScrollNotification(ScrollNotification notification) {
+  //   final ScrollMetrics metrics = notification.metrics;
+  //   scrollCanvasController.jumpTo(metrics.pixels);
+  //   return true;
+  // }
 
   @override
   void initState() {
@@ -161,7 +162,7 @@ class GanttPainter extends CustomPainter {
       var count = 0;
 
       for (var sl in scheduleList) {
-        var line;
+        Paint line;
         if (sl.status == BoxStatus.delayed) {
           line = Paint()
             ..style = PaintingStyle.stroke

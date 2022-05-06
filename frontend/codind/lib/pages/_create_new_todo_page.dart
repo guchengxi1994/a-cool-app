@@ -1,8 +1,10 @@
 /// modified from https://github.com/Im-unk/simple_login_form_flutter_UI/blob/master/lib/Views/login.dart
+// ignore_for_file: constant_identifier_names, unused_field, prefer_const_constructors
+
 import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:codind/globals.dart';
 import 'package:codind/notifications/notifications.dart';
-import 'package:codind/pages/_loading_page_mixin.dart';
+import 'package:codind/pages/mixins/_loading_page_mixin.dart';
 import 'package:codind/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';

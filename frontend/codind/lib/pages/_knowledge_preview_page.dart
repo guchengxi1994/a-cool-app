@@ -1,6 +1,7 @@
+// ignore_for_file: must_be_immutable, prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:codind/entity/knowledge_entity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 
 import '../globals.dart';
 

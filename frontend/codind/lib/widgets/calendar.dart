@@ -22,6 +22,7 @@ import '../entity/entity.dart';
 import '../utils/utils.dart';
 
 class CalendarWidget extends StatefulWidget {
+  // ignore: prefer_const_constructors_in_immutables
   CalendarWidget({Key? key}) : super(key: key);
 
   @override
@@ -174,6 +175,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   }
 }
 
+// ignore: must_be_immutable
 class DayBox extends StatefulWidget {
   DayBox(
       {Key? key,
