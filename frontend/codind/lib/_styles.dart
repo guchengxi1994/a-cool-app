@@ -30,6 +30,12 @@ class AppTheme {
   static const Color spacer = Color(0xFFF2F2F2);
   static const String fontName = 'Roboto';
 
+  static const TextStyle settingPageListTileTitleStyle =
+      TextStyle(fontWeight: FontWeight.bold, color: Colors.black);
+
+  static const TextStyle aboutPageTextStyle =
+      TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20);
+
   static List<Color> baseBackgroundColors = [
     Colors.grey[300]!,
     Colors.grey[100]!,

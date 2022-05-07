@@ -7,6 +7,8 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-02-02 18:08:31
  */
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import "dart:ui" as _ui;
 
@@ -31,7 +33,25 @@ class Responsive {
       MediaQuery.of(context).size.width >= 850;
 }
 
+extension SizeExtension on num {
+  double get w => CommonUtils.scaleWidth * (toDouble());
+
+  double get h => CommonUtils.scaleHeight * (toDouble());
+
+  double get sp => CommonUtils.scaleText * (toDouble());
+}
+
 class CommonUtils {
+  CommonUtils._();
+  static const double _designHeight = 932;
+  static const double _designWidth = 500;
+
+  static double get scaleWidth => _width / _designWidth;
+
+  static double get scaleHeight => _height / _designHeight;
+
+  static double get scaleText => min(scaleWidth, scaleHeight);
+
   /// 获取屏幕大小
   static MediaQueryData mediaQuery = MediaQueryData.fromWindow(_ui.window);
   static final double _width = mediaQuery.size.width;

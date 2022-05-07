@@ -5,12 +5,12 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 
-import '../globals.dart';
 import '../_styles.dart';
+import '../utils/common.dart';
 import 'main_page_widgets/main_page_expanded_widget.dart';
 
 // ignore: non_constant_identifier_names
-double GAP = (0.75 * CommonUtil.screenW() - 4 * 36) / 5;
+double GAP = (0.75 * CommonUtils.screenW() - 4 * 36) / 5;
 
 class CardWidget extends StatefulWidget {
   final int index;
@@ -48,7 +48,7 @@ class _CardWidgetState extends State<CardWidget> {
                   left: 0,
                   child: SizedBox(
                     // color: Colors.green,
-                    width: 0.75 * CommonUtil.screenW(),
+                    width: 0.75 * CommonUtils.screenW(),
                     child: Image.asset(
                       "assets/images/ctitle.png",
                       fit: BoxFit.fitWidth,
@@ -58,7 +58,7 @@ class _CardWidgetState extends State<CardWidget> {
                   bottom: 18,
                   left: 0,
                   child: SizedBox(
-                    width: 0.75 * CommonUtil.screenW(),
+                    width: 0.75 * CommonUtils.screenW(),
                     child: Image.asset(
                       "assets/images/bottom.png",
                       fit: BoxFit.fitWidth,
@@ -67,7 +67,7 @@ class _CardWidgetState extends State<CardWidget> {
 
               /// 头像
               Positioned(
-                  top: 0.75 * CommonUtil.screenW() * 0.75,
+                  top: 0.75 * CommonUtils.screenW() * 0.75,
                   left: 20,
                   child: const SizedBox(
                     width: 48,
@@ -78,7 +78,7 @@ class _CardWidgetState extends State<CardWidget> {
                     ),
                   )),
               Positioned(
-                top: 0.75 * CommonUtil.screenW() * 0.75 + 60,
+                top: 0.75 * CommonUtils.screenW() * 0.75 + 60,
                 left: 0,
                 child: Row(
                   children: [
@@ -108,7 +108,7 @@ class _CardWidgetState extends State<CardWidget> {
                 ),
               ),
               Positioned(
-                  top: 0.75 * CommonUtil.screenW() * 0.75 + 60 + 40,
+                  top: 0.75 * CommonUtils.screenW() * 0.75 + 60 + 40,
                   left: 0,
                   child: Row(
                     children: [
@@ -130,7 +130,7 @@ class _CardWidgetState extends State<CardWidget> {
                   )),
 
               Positioned(
-                  top: 0.75 * CommonUtil.screenW() * 0.75 + 60 + 40,
+                  top: 0.75 * CommonUtils.screenW() * 0.75 + 60 + 40,
                   right: 20,
                   child: Row(
                     children: [
@@ -146,7 +146,7 @@ class _CardWidgetState extends State<CardWidget> {
           ),
         ),
         back: SizedBox(
-          width: 0.75 * CommonUtil.screenW(),
+          width: 0.75 * CommonUtils.screenW(),
           height: 500,
           child: CoolExpandedWidget(
             child: Stack(children: [

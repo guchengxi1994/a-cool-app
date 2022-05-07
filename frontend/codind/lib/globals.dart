@@ -8,7 +8,6 @@
  * @LastEditTime: 2022-04-09 20:43:27
  */
 import 'dart:io';
-import "dart:ui" as _ui;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'utils/toast_utils.dart';
 
 // ignore: constant_identifier_names
-const AppVersion = "1.0.0-frontend-alpha+4";
+const AppVersion = "1.0.0-frontend-alpha+7";
 
 // ignore: constant_identifier_names
 const AppName = "助手";
@@ -53,20 +52,6 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
         PointerDeviceKind.touch,
         PointerDeviceKind.mouse,
       };
-}
-
-class CommonUtil {
-  /// 获取屏幕大小
-  static MediaQueryData mediaQuery = MediaQueryData.fromWindow(_ui.window);
-  static final double _width = mediaQuery.size.width;
-  static final double _height = mediaQuery.size.height;
-  static screenW() {
-    return _width;
-  }
-
-  static screenH() {
-    return _height;
-  }
 }
 
 void launchURL(String _url) async {

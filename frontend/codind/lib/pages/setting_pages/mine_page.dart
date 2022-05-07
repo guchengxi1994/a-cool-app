@@ -15,8 +15,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
+import '../../_styles.dart';
 import '../../utils/platform_utils.dart';
 import '../../widgets/widgets.dart';
+import 'about_page.dart';
 import 'mobile_main_setting_page.dart';
 
 // ignore: must_be_immutable
@@ -31,9 +33,6 @@ class MinePage extends MobileBasePage {
 }
 
 class _MinePageState extends MobileBasePageState<MinePage> {
-  final TextStyle _style =
-      const TextStyle(fontWeight: FontWeight.bold, color: Colors.black);
-
   @override
   baseBuild(BuildContext context) {
     return SingleChildScrollView(
@@ -44,7 +43,7 @@ class _MinePageState extends MobileBasePageState<MinePage> {
             nextPage: MobileMainSettingPage(
               pageName: "设置",
             ),
-            style: _style,
+            style: AppTheme.settingPageListTileTitleStyle,
             title: "偏好设置",
             trailing: const Icon(
               Icons.chevron_right,
@@ -59,7 +58,7 @@ class _MinePageState extends MobileBasePageState<MinePage> {
             //   pageName: "设置",
             // ),
             route: Routers.pageIntro,
-            style: _style,
+            style: AppTheme.settingPageListTileTitleStyle,
             title: "查看APP介绍",
             trailing: const Icon(
               Icons.chevron_right,
@@ -72,7 +71,7 @@ class _MinePageState extends MobileBasePageState<MinePage> {
             ),
           if (PlatformUtils.isMobile)
             CustomListTile(
-              style: _style,
+              style: AppTheme.settingPageListTileTitleStyle,
               title: "扫码登录桌面端",
               trailing: const Icon(
                 Icons.chevron_right,
@@ -83,7 +82,7 @@ class _MinePageState extends MobileBasePageState<MinePage> {
             height: 10,
           ),
           CustomListTile(
-            style: _style,
+            style: AppTheme.settingPageListTileTitleStyle,
             title: "展示个人二维码",
             trailing: const Icon(
               Icons.chevron_right,
@@ -94,7 +93,7 @@ class _MinePageState extends MobileBasePageState<MinePage> {
             height: 10,
           ),
           CustomListTile(
-            style: _style,
+            style: AppTheme.settingPageListTileTitleStyle,
             onTap: () {
               showCupertinoDialog(
                   context: context,
@@ -122,6 +121,24 @@ class _MinePageState extends MobileBasePageState<MinePage> {
                   });
             },
             title: "访问源码仓库",
+            trailing: const Icon(
+              Icons.chevron_right,
+              size: 25,
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          CustomListTile(
+            style: AppTheme.settingPageListTileTitleStyle,
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return AboutPage(
+                  pageName: AppName,
+                );
+              }));
+            },
+            title: "关于 $AppName",
             trailing: const Icon(
               Icons.chevron_right,
               size: 25,

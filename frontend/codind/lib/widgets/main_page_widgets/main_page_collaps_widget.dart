@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
-import 'package:taichi/taichi.dart';
 
 import '../../providers/my_providers.dart';
 import '../../_styles.dart';
@@ -162,7 +162,6 @@ class CoolCollapsWidgetWithoutProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TaichiFitnessUtil.init(context);
     return Column(
       children: <Widget>[
         SizedBox(

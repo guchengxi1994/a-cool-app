@@ -11,7 +11,6 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:expandable/expandable.dart';
-import 'package:taichi/taichi.dart';
 
 import '../../entity/entity.dart';
 
@@ -29,7 +28,6 @@ class UserAvatarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // debugPrint("[debug avatarImg]: ${avatarImg.toString()}");
-    TaichiFitnessUtil.init(context);
     return Card(
       color: const Color.fromARGB(255, 199, 177, 152),
       child: Column(

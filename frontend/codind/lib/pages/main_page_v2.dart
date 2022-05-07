@@ -16,6 +16,7 @@ import 'package:codind/entity/entity.dart';
 import 'package:codind/pages/module_pages/create_things_page.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/shared_preference_utils.dart';
+import 'package:codind/utils/common.dart';
 import 'package:codind/widgets/main_page_widgets/main_page_collaps_widget.dart';
 import 'package:codind/widgets/main_page_widgets/radar_chart.dart';
 import 'package:codind/widgets/widgets.dart';
@@ -23,7 +24,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
-import 'package:taichi/taichi.dart';
 
 import '../providers/my_providers.dart';
 import 'module_pages/new_todos_page.dart';
@@ -63,7 +63,7 @@ class _MainPageV2State extends State<MainPageV2> {
 
   @override
   Widget build(BuildContext context) {
-    TaichiFitnessUtil.init(context);
+    // TaichiFitnessUtil.init(context);
     _position = 380.h;
     return SafeArea(
       child: Scaffold(
