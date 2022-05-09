@@ -30,6 +30,7 @@ class ResponseInterceptors extends Interceptor {
 }
 
 class DioUtils {
+  // ignore: prefer_final_fields
   static DioUtils _instance = DioUtils._internal();
   factory DioUtils() => _instance;
   Dio? _dio;

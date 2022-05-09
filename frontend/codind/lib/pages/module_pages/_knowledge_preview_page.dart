@@ -1,8 +1,9 @@
+// ignore_for_file: must_be_immutable, prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:codind/entity/knowledge_entity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 
-import '../globals.dart';
+import '../../_styles.dart';
 
 class KnowlegetPreviewPage extends StatelessWidget {
   KnowlegetPreviewPage({Key? key, required this.data}) : super(key: key);
@@ -15,7 +16,7 @@ class KnowlegetPreviewPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(
             Icons.chevron_left,
-            size: leftBackIconSize,
+            size: AppTheme.leftBackIconSize,
           ),
           onPressed: () {
             Navigator.of(context).pop();

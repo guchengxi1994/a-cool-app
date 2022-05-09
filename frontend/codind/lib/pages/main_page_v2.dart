@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 /*
  * @Descripttion: 
  * @version: 
@@ -5,15 +7,15 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 19:54:23
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-05-04 20:54:29
+ * @LastEditTime: 2022-05-09 21:44:07
  */
 
 /// 手机端的主页
 
-import 'package:codind/entity/entity.dart';
-import 'package:codind/pages/create_things_page.dart';
+import 'package:codind/pages/module_pages/create_things_page.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/shared_preference_utils.dart';
+import 'package:codind/utils/common.dart';
 import 'package:codind/widgets/main_page_widgets/main_page_collaps_widget.dart';
 import 'package:codind/widgets/main_page_widgets/radar_chart.dart';
 import 'package:codind/widgets/widgets.dart';
@@ -21,15 +23,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
-import 'package:taichi/taichi.dart';
 
 import '../providers/my_providers.dart';
-import 'new_todos_page.dart';
-import 'work_work_work_page.dart';
-
-/// this is for mobile
-///
-/// tested on web first
+import 'module_pages/new_todos_page.dart';
+import 'module_pages/work_work_work_page.dart';
 
 class MainPageV2 extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
@@ -61,7 +58,7 @@ class _MainPageV2State extends State<MainPageV2> {
 
   @override
   Widget build(BuildContext context) {
-    TaichiFitnessUtil.init(context);
+    // TaichiFitnessUtil.init(context);
     _position = 380.h;
     return SafeArea(
       child: Scaffold(
@@ -100,7 +97,7 @@ class _MainPageV2State extends State<MainPageV2> {
                       width: 10.w,
                     ),
                     Text(
-                      "测试用户" + "的工作台",
+                      "测试用户的工作台",
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
                     )
@@ -130,7 +127,7 @@ class _MainPageV2State extends State<MainPageV2> {
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  stops: [
+                  stops: const [
                 0.0,
                 1.0
               ],
@@ -276,54 +273,7 @@ class _MainPageV2State extends State<MainPageV2> {
             children: [
               Row(
                 children: [
-                  Expanded(
-                      child: CoolCollapsWidgetWithoutProvider(
-                    cardName: context.watch<TopicController>().topic,
-                    frontImgPath: null,
-                    backImgPath: "assets/images/achievement.png",
-                    fontSize: 18.sp,
-                    onTap: () async {
-                      String result = "";
-                      var res = await showCupertinoDialog(
-                          context: context,
-                          builder: (context) {
-                            return CupertinoAlertDialog(
-                              title: Text("Input a topic"),
-                              content: Container(
-                                color: Colors.transparent,
-                                child: TextField(
-                                  maxLength: 10,
-                                  onChanged: (v) {
-                                    result = v;
-                                  },
-                                ),
-                              ),
-                              actions: [
-                                CupertinoActionSheetAction(
-                                    onPressed: () {
-                                      Navigator.of(context).pop(result);
-                                    },
-                                    child: Text(FlutterI18n.translate(
-                                        context, "button.label.ok"))),
-                                CupertinoActionSheetAction(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text(FlutterI18n.translate(
-                                        context, "button.label.cancel"))),
-                              ],
-                            );
-                          });
-                      if (res != null) {
-                        context.read<TopicController>().changeTopic(res);
-
-                        PersistenceStorage ps = PersistenceStorage();
-
-                        await ps.setTopic(res);
-                        await ps.setLastTopicTime(DateTime.now());
-                      }
-                    },
-                  )),
+                  const Expanded(child: _TopicWidget()),
                   Container(
                     margin: EdgeInsets.only(top: 15.h, right: 10.w),
                     color: Colors.transparent,
@@ -364,27 +314,7 @@ class _MainPageV2State extends State<MainPageV2> {
                       flex: 1,
                       child: Column(
                         children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return WorkWorkWorkPage(
-                                  pageName: "日程统计",
-                                  work: WorkWorkWork(
-                                      all: 20,
-                                      delayed: 5,
-                                      done: 10,
-                                      underGoing: 5),
-                                );
-                              }));
-                            },
-                            child: SizedBox(
-                              height: 120.h,
-                              child: TodoListWidget(
-                                todos: ["当前共有X未完成事项", "当前已完成X事项", "当前有X逾期事项"],
-                              ),
-                            ),
-                          ),
+                          TodoListWidgetWithProvider(),
                           SizedBox(
                             height: 5.h,
                           ),
@@ -410,5 +340,98 @@ class _MainPageV2State extends State<MainPageV2> {
             ],
           ),
         ));
+  }
+}
+
+class _TopicWidget extends StatelessWidget {
+  const _TopicWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => TopicController()..init(),
+      builder: (context, child) {
+        return CoolCollapsWidgetWithoutProvider(
+          cardName: context.watch<TopicController>().topic,
+          frontImgPath: null,
+          backImgPath: "assets/images/achievement.png",
+          fontSize: 21.sp,
+          onTap: () async {
+            String result = "";
+            var res = await showCupertinoDialog(
+                context: context,
+                builder: (context) {
+                  return CupertinoAlertDialog(
+                    title: Text("输入一个topic"),
+                    content: Container(
+                      color: Colors.transparent,
+                      child: TextField(
+                        maxLength: 10,
+                        onChanged: (v) {
+                          result = v;
+                        },
+                      ),
+                    ),
+                    actions: [
+                      CupertinoActionSheetAction(
+                          onPressed: () {
+                            Navigator.of(context).pop(result);
+                          },
+                          child: Text(FlutterI18n.translate(
+                              context, "button.label.ok"))),
+                      CupertinoActionSheetAction(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(FlutterI18n.translate(
+                              context, "button.label.cancel"))),
+                    ],
+                  );
+                });
+            if (res != null) {
+              context.read<TopicController>().changeTopic(res);
+
+              PersistenceStorage ps = PersistenceStorage();
+
+              await ps.setTopic(res);
+              await ps.setLastTopicTime(DateTime.now());
+            }
+          },
+        );
+      },
+    );
+  }
+}
+
+class TodoListWidgetWithProvider extends StatelessWidget {
+  const TodoListWidgetWithProvider({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => TodoProvider()..init(),
+      builder: (context, _) {
+        return InkWell(
+          onTap: () async {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return WorkWorkWorkPage(
+                pageName: "日程统计",
+              );
+            }));
+          },
+          child: SizedBox(
+            height: 120.h,
+            child: TodoListWidget(
+              // ignore: prefer_const_literals_to_create_immutables
+              todos: [
+                "当前共有${context.read<TodoProvider>().work.underGoing}未完成事项",
+                "当前已完成${context.read<TodoProvider>().work.done}事项",
+                "当前有${context.read<TodoProvider>().work.delayed}逾期事项"
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

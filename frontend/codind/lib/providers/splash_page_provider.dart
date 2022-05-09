@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:io';
 
 import 'package:codind/router.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart';
 
+import '../globals.dart';
 import '../utils/shared_preference_utils.dart';
 
 /// not on webs
@@ -16,6 +19,8 @@ class SplashPageScreenController extends ChangeNotifier {
   bool _isFirst = true;
   int _currentIndex = 0;
 
+  int thresHold = 5;
+
   late LoginData logdata;
 
   final List<String> steps = [
@@ -23,10 +28,14 @@ class SplashPageScreenController extends ChangeNotifier {
     "验证是否第一次使用...",
     "正在创建知识数据库...",
     "正在创建文件数据库...",
+    "正在创建日程数据库...",
     "正在验证身份...",
   ];
 
   List<String> get done => steps.getRange(0, _currentIndex).toList();
+
+  List<String> get splashPageRows =>
+      done.length <= 5 ? done : done.sublist(done.length - 4);
 
   String get value =>
       (_currentIndex / steps.length * 100).ceil().toString() + "%";
@@ -37,7 +46,7 @@ class SplashPageScreenController extends ChangeNotifier {
   }
 
   _initPlatform() async {
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(const Duration(milliseconds: 200));
     changeValue(1);
   }
 
@@ -50,22 +59,67 @@ class SplashPageScreenController extends ChangeNotifier {
     changeValue(1);
     await _initKnowledgeDatabase();
     await _initFileDatabase();
+    await _initTodoDatabase();
     await _initRole();
     _push();
   }
 
   _initKnowledgeDatabase() async {
     if (_isFirst && _appSupportDirectory != null) {
-      var dbPath = "knowledge.db";
-      var db = sqlite3.open("${_appSupportDirectory!.path}/$dbPath");
+      // var dbPath = "knowledge.db";
+
+      File _dbFile = File("${_appSupportDirectory!.path}/$knowLedgebasePath");
+
+      if (!_dbFile.existsSync()) {
+        var db =
+            sqlite3.open("${_appSupportDirectory!.path}/$knowLedgebasePath");
+        debugPrint(
+            "[knowledge base path] ${_appSupportDirectory!.path}/$knowLedgebasePath}");
+        db.execute('''
+            CREATE TABLE `knowledge` (
+              `time` varchar(25),
+              `title` varchar(25),
+              `detail` text,
+              `summary` text,
+              `fromUrlOrOthers` varchar(50),
+              `codes` text,
+              `tag` text,
+              `imgs` text,
+              `codeStyle` text,
+              `kid` INTEGER primary key AUTOINCREMENT
+            );
+        ''');
+      }
     }
     changeValue(1);
   }
 
   _initFileDatabase() async {
     if (_isFirst && _appSupportDirectory != null && PlatformUtils.isMobile) {
-      var dbPath = "file.db";
-      var db = sqlite3.open("${_appSupportDirectory!.path}/$dbPath");
+      var db = sqlite3.open("${_appSupportDirectory!.path}/$fileBasePath");
+    }
+    changeValue(1);
+  }
+
+  _initTodoDatabase() async {
+    if (_isFirst && _appSupportDirectory != null) {
+      File _dbFile = File("${_appSupportDirectory!.path}/$todosBasePath");
+
+      if (!_dbFile.existsSync()) {
+        var db = sqlite3.open("${_appSupportDirectory!.path}/$todosBasePath");
+        debugPrint(
+            "[todo base path] ${_appSupportDirectory!.path}/$todosBasePath}");
+
+        db.execute('''
+            CREATE TABLE `todos` (
+              `startTime` varchar(25),
+              `todoName` varchar(25),
+              `tid` INTEGER primary key AUTOINCREMENT,
+              `endTime` varchar(25),
+              `idDone` int
+            );
+          ''');
+      }
     }
     changeValue(1);
   }
@@ -73,7 +127,7 @@ class SplashPageScreenController extends ChangeNotifier {
   _initRole() async {
     logdata = LoginData(
         name: await ps.getUserEmail(), password: await ps.getUserPassword());
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(const Duration(milliseconds: 200));
     changeValue(1);
   }
 

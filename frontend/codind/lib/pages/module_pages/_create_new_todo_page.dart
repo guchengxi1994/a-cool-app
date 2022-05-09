@@ -1,28 +1,47 @@
 /// modified from https://github.com/Im-unk/simple_login_form_flutter_UI/blob/master/lib/Views/login.dart
+// ignore_for_file: constant_identifier_names, unused_field, prefer_const_constructors
+
 import 'package:add_2_calendar/add_2_calendar.dart';
-import 'package:codind/globals.dart';
 import 'package:codind/notifications/notifications.dart';
-import 'package:codind/pages/_loading_page_mixin.dart';
+import 'package:codind/pages/mixins/_loading_page_mixin.dart';
 import 'package:codind/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:provider/provider.dart';
 
-import '../entity/entity.dart' show ScheduleNotificationEntity;
-import '../providers/my_providers.dart' show TodoPageScrollController;
-import '../utils/utils.dart';
-import '../widgets/widgets.dart'
+import '../../_styles.dart';
+import '../../entity/entity.dart' show ScheduleNotificationEntity;
+import '../../providers/my_providers.dart' show TodoPageScrollController;
+import '../../utils/utils.dart';
+import '../../widgets/widgets.dart'
     show TodoTimepickerWidget, TodoTimepickerWidgetState;
 
-class CreateNewTodo extends StatefulWidget {
-  const CreateNewTodo({key}) : super(key: key);
+class CreateNewTodo extends StatelessWidget {
+  const CreateNewTodo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // return Container();
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => TodoPageScrollController(),
+        ),
+      ],
+      child: const _CreateNewTodo(),
+    );
+  }
+}
+
+class _CreateNewTodo extends StatefulWidget {
+  const _CreateNewTodo({key}) : super(key: key);
 
   @override
   _CreateNewTodoState createState() => _CreateNewTodoState();
 }
 
-class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
+class _CreateNewTodoState extends State<_CreateNewTodo> with LoadingPageMixin {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController bodyController = TextEditingController();
   final ScrollController scrollController = ScrollController();
@@ -100,7 +119,7 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
             ? IconButton(
                 icon: const Icon(
                   Icons.chevron_left,
-                  size: leftBackIconSize,
+                  size: AppTheme.leftBackIconSize,
                   color: Colors.black,
                 ),
                 onPressed: () {
@@ -122,7 +141,7 @@ class _CreateNewTodoState extends State<CreateNewTodo> with LoadingPageMixin {
       leading: IconButton(
         icon: const Icon(
           Icons.chevron_left,
-          size: leftBackIconSize,
+          size: AppTheme.leftBackIconSize,
           color: Colors.black,
         ),
         onPressed: () {

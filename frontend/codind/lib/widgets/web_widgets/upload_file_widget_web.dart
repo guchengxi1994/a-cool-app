@@ -1,4 +1,6 @@
 // web by default
+// ignore_for_file: must_be_immutable
+
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -16,6 +18,7 @@ class UploadSingleImageWidget extends StatefulWidget {
       _UploadSingleImageWidgetState();
 }
 
+// ignore: deprecated_member_use_from_same_package
 class _UploadSingleImageWidgetState extends State<UploadSingleImageWidget> {
   final GlobalKey<_ImageWidgetV2State> imageKey = GlobalKey();
 
@@ -38,7 +41,6 @@ class _UploadSingleImageWidgetState extends State<UploadSingleImageWidget> {
   }
 }
 
-// ignore: must_be_immutable
 class ImageWidget extends StatefulWidget {
   ImageWidget(
       {Key? key,
@@ -245,7 +247,7 @@ class _UploadImageMultiWidgetState extends State<UploadMultiImageWidget> {
       height: 200,
       child: Row(
         // children: _createCompanyBloc.state.widgets,
-        children: [],
+        children: const [],
       ),
     );
   }
@@ -277,6 +279,7 @@ class _UploadImageMultiWidgetState extends State<UploadMultiImageWidget> {
 
       binaryImgs.add(_bytesData);
 
+      // ignore: unused_local_variable
       ImageWidget image = ImageWidget(
         data: _bytesData!,
         index: count,

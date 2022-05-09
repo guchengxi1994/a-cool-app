@@ -51,9 +51,7 @@ class _MyTimePickerState extends State<MyTimePicker> {
               onChange: onTimeChanged,
             ),
           );
-
-          print(res);
         },
-        child: Text("click"));
+        child: const Text("click"));
   }
 }

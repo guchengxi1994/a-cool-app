@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 /*
  * @Descripttion: 
  * @version: 
@@ -11,16 +13,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:codind/providers/my_providers.dart' show MainPageCardController;
 
-import '../../widgets/_styles.dart';
+import '../../_styles.dart';
 import '../../widgets/selectable_icon.dart';
-import '../_mobile_base_page.dart';
+import '../base_pages/_mobile_base_page.dart';
 
+// ignore: must_be_immutable
 class CustomMainpageCardsPage extends MobileBasePage {
   CustomMainpageCardsPage({Key? key})
-      : super(
-            key: key,
-            pageName: "选择想要展示的内容",
-            backgroundColor: ReservedAppTheme.white);
+      : super(key: key, pageName: "选择想要展示的内容", backgroundColor: AppTheme.white);
 
   @override
   MobileBasePageState<MobileBasePage> getState() {

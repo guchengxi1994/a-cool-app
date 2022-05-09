@@ -5,10 +5,9 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 21:47:48
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-09 20:43:27
+ * @LastEditTime: 2022-05-09 21:41:52
  */
 import 'dart:io';
-import "dart:ui" as _ui;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'utils/toast_utils.dart';
 
 // ignore: constant_identifier_names
-const AppVersion = "1.0.0-frontend-alpha+4";
+const AppVersion = "1.0.0-frontend-alpha+8";
 
 // ignore: constant_identifier_names
 const AppName = "助手";
@@ -35,8 +34,6 @@ FlutterI18nDelegate getI18n(String lang) {
   );
   return flutterI18nDelegate;
 }
-
-const leftBackIconSize = 35.0;
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -57,22 +54,12 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
       };
 }
 
-class CommonUtil {
-  /// 获取屏幕大小
-  static MediaQueryData mediaQuery = MediaQueryData.fromWindow(_ui.window);
-  static double _width = mediaQuery.size.width;
-  static double _height = mediaQuery.size.height;
-  static screenW() {
-    return _width;
-  }
-
-  static screenH() {
-    return _height;
-  }
-}
-
 void launchURL(String _url) async {
   if (!await launch(_url)) {
     showToastMessage("cannot launch url", null);
   }
 }
+
+const knowLedgebasePath = "knowledge.db";
+const todosBasePath = "todo.db";
+const fileBasePath = "file.db";

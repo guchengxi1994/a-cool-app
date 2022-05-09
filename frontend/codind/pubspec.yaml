@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0-frontend-alpha+5
+version: 1.0.0-frontend-alpha+8
 
 environment:
   sdk: ">=2.15.1 <3.0.0"
@@ -47,9 +47,9 @@ dependencies:
   flutter_colorpicker: ^1.0.3
   shared_preferences: ^2.0.12
   dart_date: ^1.1.1
-  screenshot: ^1.2.3  # save images
-  uuid: ^3.0.6 # uuid
-  graphview: ^1.1.1
+  # screenshot: ^1.2.3  # save images
+  # uuid: ^3.0.6 # uuid
+  # graphview: ^1.1.1
   card_swiper: ^2.0.3  # null-safety swiper
   flutter_login: ^3.2.0
   expandable: ^5.0.1
@@ -68,24 +68,25 @@ dependencies:
   file_picker: ^4.5.1
   flip_card: ^0.6.0
   code_text_field: ^1.0.2
-  qr: ^3.0.1  # generate qr code
+  # qr: ^3.0.1  # generate qr code
+  qr_flutter: ^4.0.0
   waterfall_flow: ^3.0.2
-  permission_handler: ^9.1.0
+  permission_handler: ^9.2.0
   # file_saver: ^0.1.0
   path_provider: ^2.0.9
-  sqlite3: ^1.6.4
-  sqlite3_flutter_libs: ^0.5.5
+  sqlite3: ^1.7.0
+  sqlite3_flutter_libs: ^0.5.6
   add_2_calendar: ^2.1.2
   animations: ^2.0.0
   ## github taichi
-  taichi:
-    git:
-        url: https://github.com/guchengxi1994/taichi
-        ref: dev    # 用自己写的库，不过分吧
+  # taichi:
+  #   git:
+  #       url: https://github.com/guchengxi1994/taichi
+  #       ref: dev    # 用自己写的库，不过分吧
 
   ## local taichi
-  # taichi:
-  #   path: D:/github_repo/taichi
+  taichi:
+    path: D:/github_repo/taichi
 
 dependency_overrides:
   js: ^0.6.4

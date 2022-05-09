@@ -1,13 +1,10 @@
-import 'package:codind/providers/my_providers.dart';
-import 'package:codind/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 // import 'package:loading_overlay/loading_overlay.dart';
-import 'package:provider/provider.dart';
 import 'package:taichi/taichi.dart';
 
-import '../globals.dart';
+import '../../_styles.dart';
 
 // ignore: must_be_immutable
 abstract class BasePage extends StatefulWidget {
@@ -46,35 +43,6 @@ class BasePageState<T extends BasePage> extends State<T> {
     if (widget.needLoading != null) {
       needLoading = widget.needLoading!;
     }
-    // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-    //   List<Widget> _actions = [
-    //     PopupMenuButton<String>(
-    //         tooltip: FlutterI18n.translate(context, "label.localization"),
-    //         icon: Container(
-    //           color: Colors.white,
-    //           height: 20,
-    //           width: 20,
-    //           child: Image.asset("assets/icons/lan.png"),
-    //         ),
-    //         itemBuilder: (context) => <PopupMenuItem<String>>[
-    //               buildPopupMenuItem("中文"),
-    //               buildPopupMenuItem("English"),
-    //             ]),
-    //     IconButton(
-    //         tooltip: FlutterI18n.translate(context, "label.settings"),
-    //         onPressed: () {
-    //           Navigator.pushNamed(context, Routers.pageSetting);
-    //         },
-    //         icon: Container(
-    //           color: Colors.white,
-    //           height: 20,
-    //           width: 20,
-    //           child: Image.asset("assets/icons/self_male.png"),
-    //         ))
-    //   ];
-
-    //   addActions(_actions);
-    // });
   }
 
   addAction(Widget w) {
@@ -148,61 +116,11 @@ class BasePageState<T extends BasePage> extends State<T> {
             },
             icon: const Icon(
               Icons.chevron_left,
-              size: leftBackIconSize,
+              size: AppTheme.leftBackIconSize,
               color: Color.fromARGB(255, 78, 63, 63),
             )),
         actions: actions,
       ),
-    );
-  }
-
-  Widget? getLeadingWidget() {
-    if (widget.routeName == "main" && Responsive.isRoughDesktop(context)) {
-      return null;
-    }
-
-    if (widget.routeName == "main" && !Responsive.isRoughDesktop(context)) {
-      // print("应该到这里了");
-      return IconButton(
-        onPressed: () {
-          context.read<MenuController>().controlMenu();
-        },
-        icon: const Icon(
-          Icons.menu,
-          color: Colors.white,
-        ),
-      );
-    }
-
-    if (PlatformUtils.isWeb) {
-      return null;
-    } else {
-      if (widget.routeName != "main") {
-        return IconButton(
-          // ignore: prefer_const_constructors
-          icon: Icon(
-            Icons.chevron_left,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        );
-      } else {
-        return null;
-      }
-    }
-  }
-
-  PopupMenuItem<String> buildPopupMenuItem(String key) {
-    return PopupMenuItem(
-      child: Text(key),
-      onTap: () async {
-        String lang = reservedOptions[key]!;
-        if (lang != context.read<LanguageController>().currentLang) {
-          await context.read<LanguageController>().changeLanguage(lang);
-          setState(() {});
-        }
-      },
     );
   }
 

@@ -20,7 +20,7 @@ import 'package:codind/utils/common.dart' as my;
 // import 'package:loading_overlay/loading_overlay.dart';
 import 'package:taichi/taichi.dart';
 
-import '../widgets/things.dart';
+import '../../widgets/things.dart';
 import '_schedule_detail_page.dart';
 
 /// my gantt chart !!!
@@ -28,7 +28,7 @@ import '_schedule_detail_page.dart';
 /// https://zhuanlan.zhihu.com/p/302687896
 
 class GanttPage extends StatefulWidget {
-  GanttPage({Key? key}) : super(key: key);
+  const GanttPage({Key? key}) : super(key: key);
 
   @override
   State<GanttPage> createState() => _GanttPageState();

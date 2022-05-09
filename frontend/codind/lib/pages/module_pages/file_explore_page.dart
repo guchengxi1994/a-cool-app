@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:codind/entity/file_entity.dart';
-import 'package:codind/pages/_loading_page_mixin.dart';
+import 'package:codind/pages/mixins/_loading_page_mixin.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ class FileExplorePage extends StatefulWidget {
 
 class _FileExplorePageState extends State<FileExplorePage>
     with LoadingPageMixin {
-  List<Object> _list = [];
+  // List<Object> _list = [];
   GlobalKey<_FileExploreStackState> globalKey = GlobalKey();
   late int currentDepth;
   late String currentFatherPath;
@@ -233,6 +233,7 @@ class FileExploreStack extends StatefulWidget {
 
 class _FileExploreStackState extends State<FileExploreStack> {
   List<Object> _list = [];
+  // ignore: prefer_typing_uninitialized_variables
   var loadFileFuture;
 
   PersistenceStorage ps = PersistenceStorage();

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, prefer_const_constructors
+
 import 'package:codind/pages/setting_pages/account_safety_page.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/router.dart';
@@ -6,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/widgets.dart' show CustomListTile;
-import '../_mobile_base_page.dart';
+import '../base_pages/_mobile_base_page.dart';
 import '_custom_mainpage_cards_page.dart';
 import '_polacy_page.dart';
 
@@ -34,7 +36,7 @@ class _MobileMainSettingPageState<T>
       child: Column(
         children: [
           CustomListTile(
-            nextPage: AccountSafetyPage(),
+            nextPage: const AccountSafetyPage(),
             style: _style,
             title: "账号与安全",
             trailing: const Icon(
@@ -144,7 +146,7 @@ class _MobileMainSettingPageState<T>
 }
 
 class ChooseLangDialog extends StatefulWidget {
-  ChooseLangDialog({Key? key}) : super(key: key);
+  const ChooseLangDialog({Key? key}) : super(key: key);
 
   @override
   State<ChooseLangDialog> createState() => _ChooseLangDialogState();

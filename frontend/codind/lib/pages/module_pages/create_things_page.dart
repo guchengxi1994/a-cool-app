@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, prefer_const_constructors
+
 /*
  * @Descripttion: 
  * @version: 
@@ -7,12 +9,12 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-04-14 22:15:20
  */
-import 'package:codind/pages/_mobile_base_page.dart';
+import 'package:codind/pages/base_pages/_mobile_base_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
-import '../providers/my_providers.dart';
+import '../../providers/my_providers.dart';
 import '_create_single_knowledge_page.dart';
 
 class CreateKnowledgeBasePage extends MobileBasePage {

@@ -1,13 +1,16 @@
+// ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors
+
 import 'package:codind/utils/platform_utils.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 
-import '../globals.dart';
-import '_styles.dart';
+import '../_styles.dart';
+import '../utils/common.dart';
 import 'main_page_widgets/main_page_expanded_widget.dart';
 
-double GAP = (0.75 * CommonUtil.screenW() - 4 * 36) / 5;
+// ignore: non_constant_identifier_names
+double GAP = (0.75 * CommonUtils.screenW() - 4 * 36) / 5;
 
 class CardWidget extends StatefulWidget {
   final int index;
@@ -45,7 +48,7 @@ class _CardWidgetState extends State<CardWidget> {
                   left: 0,
                   child: SizedBox(
                     // color: Colors.green,
-                    width: 0.75 * CommonUtil.screenW(),
+                    width: 0.75 * CommonUtils.screenW(),
                     child: Image.asset(
                       "assets/images/ctitle.png",
                       fit: BoxFit.fitWidth,
@@ -55,7 +58,7 @@ class _CardWidgetState extends State<CardWidget> {
                   bottom: 18,
                   left: 0,
                   child: SizedBox(
-                    width: 0.75 * CommonUtil.screenW(),
+                    width: 0.75 * CommonUtils.screenW(),
                     child: Image.asset(
                       "assets/images/bottom.png",
                       fit: BoxFit.fitWidth,
@@ -64,7 +67,7 @@ class _CardWidgetState extends State<CardWidget> {
 
               /// 头像
               Positioned(
-                  top: 0.75 * CommonUtil.screenW() * 0.75,
+                  top: 0.75 * CommonUtils.screenW() * 0.75,
                   left: 20,
                   child: const SizedBox(
                     width: 48,
@@ -75,7 +78,7 @@ class _CardWidgetState extends State<CardWidget> {
                     ),
                   )),
               Positioned(
-                top: 0.75 * CommonUtil.screenW() * 0.75 + 60,
+                top: 0.75 * CommonUtils.screenW() * 0.75 + 60,
                 left: 0,
                 child: Row(
                   children: [
@@ -105,7 +108,7 @@ class _CardWidgetState extends State<CardWidget> {
                 ),
               ),
               Positioned(
-                  top: 0.75 * CommonUtil.screenW() * 0.75 + 60 + 40,
+                  top: 0.75 * CommonUtils.screenW() * 0.75 + 60 + 40,
                   left: 0,
                   child: Row(
                     children: [
@@ -127,7 +130,7 @@ class _CardWidgetState extends State<CardWidget> {
                   )),
 
               Positioned(
-                  top: 0.75 * CommonUtil.screenW() * 0.75 + 60 + 40,
+                  top: 0.75 * CommonUtils.screenW() * 0.75 + 60 + 40,
                   right: 20,
                   child: Row(
                     children: [
@@ -143,7 +146,7 @@ class _CardWidgetState extends State<CardWidget> {
           ),
         ),
         back: SizedBox(
-          width: 0.75 * CommonUtil.screenW(),
+          width: 0.75 * CommonUtils.screenW(),
           height: 500,
           child: CoolExpandedWidget(
             child: Stack(children: [
@@ -160,14 +163,14 @@ class _CardWidgetState extends State<CardWidget> {
                           width: 100,
                           height: 100,
                           decoration: BoxDecoration(
-                            color: ReservedAppTheme.white,
+                            color: AppTheme.white,
                             borderRadius: BorderRadius.all(
                               Radius.circular(100.0),
                             ),
                             border: Border.all(
                                 width: 4,
-                                color: ReservedAppTheme.nearlyDarkBlue
-                                    .withOpacity(0.2)),
+                                color:
+                                    AppTheme.nearlyDarkBlue.withOpacity(0.2)),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -177,22 +180,22 @@ class _CardWidgetState extends State<CardWidget> {
                                 '1555',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontFamily: ReservedAppTheme.fontName,
+                                  fontFamily: AppTheme.fontName,
                                   fontWeight: FontWeight.normal,
                                   fontSize: 24,
                                   letterSpacing: 0.0,
-                                  color: ReservedAppTheme.nearlyDarkBlue,
+                                  color: AppTheme.nearlyDarkBlue,
                                 ),
                               ),
                               Text(
                                 'Kcal left',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontFamily: ReservedAppTheme.fontName,
+                                  fontFamily: AppTheme.fontName,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                   letterSpacing: 0.0,
-                                  color: ReservedAppTheme.grey.withOpacity(0.5),
+                                  color: AppTheme.grey.withOpacity(0.5),
                                 ),
                               ),
                             ],
@@ -204,7 +207,7 @@ class _CardWidgetState extends State<CardWidget> {
                           padding: const EdgeInsets.all(4.0),
                           child: CustomPaint(
                             painter: CurvePainter(colors: [
-                              ReservedAppTheme.nearlyDarkBlue,
+                              AppTheme.nearlyDarkBlue,
                               HexColor("#8A98E8"),
                               HexColor("#8A98E8")
                             ], angle: 140 + (360 - 140) * (1.0 - 0.5)),
@@ -220,8 +223,8 @@ class _CardWidgetState extends State<CardWidget> {
                           height: 108,
                           width: 108,
                           decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: ReservedAppTheme.nearlyDarkBlue)),
+                              border:
+                                  Border.all(color: AppTheme.nearlyDarkBlue)),
                         )
                     ],
                   ),

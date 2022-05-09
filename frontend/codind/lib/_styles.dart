@@ -10,8 +10,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-class ReservedAppTheme {
-  ReservedAppTheme._();
+class AppTheme {
+  AppTheme._();
   static const Color nearlyWhite = Color(0xFFFAFAFA);
   static const Color white = Color(0xFFFFFFFF);
   static const Color background = Color(0xFFF2F3F8);
@@ -20,7 +20,7 @@ class ReservedAppTheme {
   static const Color nearlyBlue = Color(0xFF00B6F0);
   static const Color nearlyBlack = Color(0xFF213333);
   static const Color grey = Color(0xFF3A5160);
-  static const Color dark_grey = Color(0xFF313A44);
+  static const Color darkGrey = Color(0xFF313A44);
 
   static const Color darkText = Color(0xFF253840);
   static const Color darkerText = Color(0xFF17262A);
@@ -29,6 +29,21 @@ class ReservedAppTheme {
   static const Color dismissibleBackground = Color(0xFF364A54);
   static const Color spacer = Color(0xFFF2F2F2);
   static const String fontName = 'Roboto';
+
+  static const TextStyle settingPageListTileTitleStyle =
+      TextStyle(fontWeight: FontWeight.bold, color: Colors.black);
+
+  static const TextStyle aboutPageTextStyle =
+      TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20);
+
+  static List<Color> baseBackgroundColors = [
+    Colors.grey[300]!,
+    Colors.grey[100]!,
+  ];
+
+  static const Color baseAppbarColor = Colors.white;
+
+  static const double leftBackIconSize = 35.0;
 
   static const TextTheme textTheme = TextTheme(
     headline4: display1,
@@ -189,7 +204,7 @@ class CurvePainter extends CustomPainter {
         false,
         paint);
 
-    const gradient1 = const SweepGradient(
+    const gradient1 = SweepGradient(
       tileMode: TileMode.repeated,
       colors: [Colors.white, Colors.white],
     );
@@ -208,7 +223,7 @@ class CurvePainter extends CustomPainter {
 
     canvas.save();
     canvas.translate(0.0, -centerToCircle + 14 / 2);
-    canvas.drawCircle(Offset(0, 0), 14 / 5, cPaint);
+    canvas.drawCircle(const Offset(0, 0), 14 / 5, cPaint);
 
     canvas.restore();
     canvas.restore();

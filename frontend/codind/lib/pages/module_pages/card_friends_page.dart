@@ -1,10 +1,13 @@
+// ignore_for_file: must_be_immutable, prefer_const_constructors
+
 import 'package:card_swiper/card_swiper.dart';
+import 'package:codind/utils/utils.dart';
 import 'package:codind/widgets/card_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../globals.dart';
-import '_mobile_base_page.dart';
+import '../base_pages/_mobile_base_page.dart';
 
+/// friend page
 class CardPage extends MobileBasePage {
   CardPage({Key? key}) : super(key: key, pageName: "Friends");
 
@@ -31,8 +34,8 @@ class _CardPageState<T> extends MobileBasePageState<CardPage> {
           SizedBox(
             height: 30,
           ),
-          Container(
-              height: 0.65 * CommonUtil.screenH(),
+          SizedBox(
+              height: 0.65 * CommonUtils.screenH(),
               child: Center(
                 child: Swiper(
                   key: UniqueKey(),
@@ -59,9 +62,9 @@ class _CardPageState<T> extends MobileBasePageState<CardPage> {
           SizedBox(
             height: 30,
           ),
-          Container(
+          SizedBox(
             height: 110,
-            width: CommonUtil.screenW(),
+            width: CommonUtils.screenW(),
             child: ListView.separated(
                 separatorBuilder: (BuildContext context, int index) => SizedBox(
                       width: 20,
@@ -73,7 +76,7 @@ class _CardPageState<T> extends MobileBasePageState<CardPage> {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
-                      print(index);
+                      // print(index);
                       setState(() {
                         currentIndex = index;
                       });

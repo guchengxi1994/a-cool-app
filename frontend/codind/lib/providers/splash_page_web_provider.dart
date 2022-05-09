@@ -1,3 +1,14 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: xiaoshuyui
+ * @email: guchengxi1994@qq.com
+ * @Date: 2022-05-04 19:56:02
+ * @LastEditors: xiaoshuyui
+ * @LastEditTime: 2022-05-09 20:30:07
+ */
+// ignore_for_file: prefer_const_constructors
+
 import 'package:codind/router.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +20,7 @@ class SplashPageScreenController extends ChangeNotifier {
     "验证是否第一次使用...",
     "正在创建知识数据库...",
     "正在创建文件数据库...",
+    "正在创建日程数据库...",
     "正在验证身份...",
   ];
 
@@ -16,6 +28,9 @@ class SplashPageScreenController extends ChangeNotifier {
       (_currentIndex / steps.length * 100).ceil().toString() + "%";
 
   List<String> get done => steps.getRange(0, _currentIndex).toList();
+
+  List<String> get splashPageRows =>
+      done.length <= 5 ? done : done.sublist(done.length - 4);
 
   changeValue(int step) {
     _currentIndex += step;
@@ -34,6 +49,7 @@ class SplashPageScreenController extends ChangeNotifier {
     await _initKnowledgeDatabase();
     await _initFileDatabase();
     await _initRole();
+    await _initTodoDatabase();
     push();
   }
 
@@ -43,6 +59,11 @@ class SplashPageScreenController extends ChangeNotifier {
   }
 
   _initFileDatabase() async {
+    await Future.delayed(Duration(milliseconds: 500));
+    changeValue(1);
+  }
+
+  _initTodoDatabase() async {
     await Future.delayed(Duration(milliseconds: 500));
     changeValue(1);
   }

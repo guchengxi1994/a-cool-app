@@ -1,18 +1,18 @@
-import 'package:codind/pages/_background_color_mixin.dart';
+import 'package:codind/pages/mixins/_background_color_mixin.dart';
+import 'package:codind/utils/utils.dart';
 import 'package:codind/widgets/main_page_widgets/main_page_collaps_widget.dart';
 import 'package:codind/widgets/mobile_widgets/upload_file_widget.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:taichi/taichi.dart';
 
-import '../globals.dart';
+import '../../_styles.dart';
 
 const bigSize = 25.0;
 const smallSize = 20.0;
 
 class ResumePage extends StatefulWidget {
-  ResumePage({Key? key}) : super(key: key);
+  const ResumePage({Key? key}) : super(key: key);
 
   @override
   State<ResumePage> createState() => _ResumePageState();
@@ -59,7 +59,7 @@ class _ResumePageState extends State<ResumePage> with BackgroundColorMixin {
             },
             icon: const Icon(
               Icons.chevron_left,
-              size: leftBackIconSize,
+              size: AppTheme.leftBackIconSize,
               color: Color.fromARGB(255, 78, 63, 63),
             )),
       ),

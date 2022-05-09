@@ -8,17 +8,21 @@
  * @LastEditTime: 2022-04-21 21:55:51
  */
 import 'package:codind/globals.dart';
-import 'package:codind/pages/_mobile_base_page.dart';
+import 'package:codind/pages/base_pages/_mobile_base_page.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
+import 'package:codind/widgets/mobile_widgets/qr_scanner_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-import '../utils/platform_utils.dart';
-import '../widgets/widgets.dart';
-import 'setting_pages/mobile_main_setting_page.dart';
+import '../../_styles.dart';
+import '../../utils/platform_utils.dart';
+import '../../widgets/widgets.dart';
+import 'about_page.dart';
+import 'mobile_main_setting_page.dart';
 
+// ignore: must_be_immutable
 class MinePage extends MobileBasePage {
   MinePage({Key? key, required String pageName})
       : super(key: key, pageName: pageName);
@@ -30,9 +34,6 @@ class MinePage extends MobileBasePage {
 }
 
 class _MinePageState extends MobileBasePageState<MinePage> {
-  final TextStyle _style =
-      const TextStyle(fontWeight: FontWeight.bold, color: Colors.black);
-
   @override
   baseBuild(BuildContext context) {
     return SingleChildScrollView(
@@ -40,12 +41,11 @@ class _MinePageState extends MobileBasePageState<MinePage> {
       child: Column(
         children: [
           CustomListTile(
-            // nextPage: MobileMainSettingPage(
-            //   pageName: "设置",
-            // ),
-            route: Routers.pageIntro,
-            style: _style,
-            title: "查看APP介绍",
+            nextPage: MobileMainSettingPage(
+              pageName: "设置",
+            ),
+            style: AppTheme.settingPageListTileTitleStyle,
+            title: "偏好设置",
             trailing: const Icon(
               Icons.chevron_right,
               size: 25,
@@ -55,11 +55,12 @@ class _MinePageState extends MobileBasePageState<MinePage> {
             height: 10,
           ),
           CustomListTile(
-            nextPage: MobileMainSettingPage(
-              pageName: "设置",
-            ),
-            style: _style,
-            title: "偏好设置",
+            // nextPage: MobileMainSettingPage(
+            //   pageName: "设置",
+            // ),
+            route: Routers.pageIntro,
+            style: AppTheme.settingPageListTileTitleStyle,
+            title: "查看APP介绍",
             trailing: const Icon(
               Icons.chevron_right,
               size: 25,
@@ -71,7 +72,7 @@ class _MinePageState extends MobileBasePageState<MinePage> {
             ),
           if (PlatformUtils.isMobile)
             CustomListTile(
-              style: _style,
+              style: AppTheme.settingPageListTileTitleStyle,
               title: "扫码登录桌面端",
               trailing: const Icon(
                 Icons.chevron_right,
@@ -82,7 +83,7 @@ class _MinePageState extends MobileBasePageState<MinePage> {
             height: 10,
           ),
           CustomListTile(
-            style: _style,
+            style: AppTheme.settingPageListTileTitleStyle,
             title: "展示个人二维码",
             trailing: const Icon(
               Icons.chevron_right,
@@ -93,12 +94,13 @@ class _MinePageState extends MobileBasePageState<MinePage> {
             height: 10,
           ),
           CustomListTile(
-            style: _style,
+            style: AppTheme.settingPageListTileTitleStyle,
             onTap: () {
               showCupertinoDialog(
                   context: context,
                   builder: (context) {
                     return CupertinoAlertDialog(
+                      // ignore: prefer_const_constructors
                       title: Text("是否打开第三方链接"),
                       actions: [
                         CupertinoActionSheetAction(
@@ -125,6 +127,43 @@ class _MinePageState extends MobileBasePageState<MinePage> {
               size: 25,
             ),
           ),
+          const SizedBox(
+            height: 10,
+          ),
+          CustomListTile(
+            style: AppTheme.settingPageListTileTitleStyle,
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return AboutPage(
+                  pageName: AppName,
+                );
+              }));
+            },
+            title: "关于 $AppName",
+            trailing: const Icon(
+              Icons.chevron_right,
+              size: 25,
+            ),
+          ),
+          if (PlatformUtils.isMobile)
+            const SizedBox(
+              height: 10,
+            ),
+          if (PlatformUtils.isMobile)
+            CustomListTile(
+              style: AppTheme.settingPageListTileTitleStyle,
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  var _page = ScanMainPage(type: 1);
+                  return _page.getPage();
+                }));
+              },
+              title: "扫码登录桌面版",
+              trailing: const Icon(
+                Icons.chevron_right,
+                size: 25,
+              ),
+            ),
         ],
       ),
     );

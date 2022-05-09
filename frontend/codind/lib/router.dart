@@ -8,7 +8,7 @@
  * @LastEditTime: 2022-05-04 20:49:09
  */
 
-import 'package:codind/pages/card_page.dart';
+import 'package:codind/pages/module_pages/card_friends_page.dart';
 import 'package:codind/pages/login_page.dart';
 import 'package:codind/pages/main_page_v2.dart';
 import 'package:codind/pages/pages.dart';
@@ -20,47 +20,29 @@ class Global {
 }
 
 class Routers {
-  // static const pageSetting = '/pageSetting';
   static const pageMain = '/pageMain';
   static const pageMdEditor = '/pageMdEditor';
-  // static const pageFolder = '/pageFolder';
   static const pageSchedule = '/pageSchedule';
-  // static const pageMdPreview = "/pageMdPreview";
-  // static const pageSavedLinks = "/pageSavedLinks";
-  // static const pageMindMap = "/pageMindMap";
-  // static const pageYourAbilities = "/pageAbilities";
   static const pageResumePage = "/resume";
   static const pageLogin = "/pageLogin";
-  // static const pageAvatarSettingPage = "/pageAvatarSettingPage";
   static const pageMobileSettingsPage = "/pageMobileSettingsPage";
-  // static const pageAccountSafty = "/pageAccountSafety";
   static const pageFriend = "/pageFriend";
   static const pageMine = "/pageMine";
   static const pageIntro = "/pageIntro";
 
   static final Map<String, WidgetBuilder> routers = {
-    // pageSetting: (ctx) => SettingPage(
-    //       routeName: "setting",
-    //     ),
     pageMain: (ctx) => MainPageV2(),
     pageMdEditor: (context) => WritingPage(
           routeName: FlutterI18n.translate(context, "label.md"),
           needLoading: true,
         ),
-    // pageFolder: (context) => FileExplorePage(),
-    pageSchedule: (context) => GanttPage(),
-    // pageMdPreview: (context) => const BaseMarkdownPreviewPage(),
-    // pageSavedLinks: (context) => SavedLinksPage(),
-    // pageMindMap: (context) => MindMapPageV2(),
-    // pageYourAbilities: (context) => YourAbilitiesPage(),
-    pageResumePage: (context) => ResumePage(),
-    // pageAvatarSettingPage: (context) => GenerateAvatarPage(),
+    pageSchedule: (context) => const GanttPage(),
+    pageResumePage: (context) => const ResumePage(),
     pageMobileSettingsPage: (context) => MobileMainSettingPage(
           pageName: FlutterI18n.translate(context, "label.settings"),
         ),
-    // pageAccountSafty: (context) => AccountSafetyPage(),
     pageFriend: (context) => CardPage(),
-    pageLogin: (context) => LoginScreen(),
+    pageLogin: (context) => const LoginScreen(),
     pageMine: (context) => MinePage(pageName: "我的"),
     pageIntro: (context) => const IntroductionAnimationScreen(),
   };

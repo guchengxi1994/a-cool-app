@@ -11,7 +11,8 @@
 /// diy a scroll bar  https://www.jianshu.com/p/c14c5bd649c2
 
 import 'package:codind/bloc/gantt_bloc.dart';
-import 'package:codind/pages/_schedule_detail_page.dart';
+import 'package:codind/pages/module_pages/_schedule_detail_page.dart'
+    show ScheduleDetailPage;
 import 'package:codind/router.dart';
 import 'package:codind/utils/common.dart' as my;
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ import '../entity/entity.dart';
 import '../utils/utils.dart';
 
 class CalendarWidget extends StatefulWidget {
+  // ignore: prefer_const_constructors_in_immutables
   CalendarWidget({Key? key}) : super(key: key);
 
   @override
@@ -174,6 +176,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   }
 }
 
+// ignore: must_be_immutable
 class DayBox extends StatefulWidget {
   DayBox(
       {Key? key,

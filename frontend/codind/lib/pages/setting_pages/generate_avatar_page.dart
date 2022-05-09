@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, must_be_immutable
 
 import 'package:codind/entity/entity.dart';
 import 'package:codind/providers/my_providers.dart';
@@ -15,7 +15,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:taichi/taichi.dart';
 import 'package:provider/provider.dart';
 
-import '../_mobile_base_page.dart';
+import '../base_pages/_mobile_base_page.dart';
 
 /// thanks to "dicebear" and
 /// this uses https://avatars.dicebear.com/docs/http-api

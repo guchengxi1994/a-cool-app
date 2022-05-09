@@ -1,12 +1,15 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:codind/providers/my_providers.dart'
     show RadioProvider, MainPageCardController;
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-import '_styles.dart';
+import '../_styles.dart';
 
 @Deprecated("will be removed later")
+// ignore: must_be_immutable
 class SelectableIconButton extends StatefulWidget {
   SelectableIconButton({Key? key, required this.radioValue}) : super(key: key);
   int radioValue;
@@ -15,6 +18,7 @@ class SelectableIconButton extends StatefulWidget {
   State<SelectableIconButton> createState() => _SelectableIconButtonState();
 }
 
+// ignore: deprecated_member_use_from_same_package
 class _SelectableIconButtonState extends State<SelectableIconButton> {
   bool isSelected = false;
 
@@ -63,72 +67,6 @@ class _SelectableIconButtonState extends State<SelectableIconButton> {
   }
 }
 
-@Deprecated("will be removed later")
-class SelectableIconV2 extends StatefulWidget {
-  SelectableIconV2({Key? key, required this.iconStr}) : super(key: key);
-  String iconStr;
-
-  @override
-  State<SelectableIconV2> createState() => _SelectableIconV2State();
-}
-
-class _SelectableIconV2State extends State<SelectableIconV2> {
-  bool isSelected = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    isSelected = context
-        .watch<MainPageCardController>()
-        .selectedCards
-        .contains(widget.iconStr);
-    return InkWell(
-      onTap: () {
-        setState(() {
-          isSelected = !isSelected;
-        });
-        context.read<MainPageCardController>().changeSelected(widget.iconStr);
-      },
-      child: Container(
-        margin: const EdgeInsets.all(15),
-        // padding: const EdgeInsets.only(left: 20, right: 20),
-        height: 200,
-        width: MediaQuery.of(context).size.width * 0.3,
-        decoration: BoxDecoration(
-          //背景
-          color: Colors.white,
-          //设置四周圆角 角度
-          borderRadius: const BorderRadius.all(Radius.circular(15.0)),
-          //设置四周边框
-          border: isSelected
-              ? Border.all(width: 1, color: Colors.red)
-              : Border.all(width: 1, color: Colors.grey[300]!),
-        ),
-        child: Stack(children: [
-          Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.only(left: 40, right: 20),
-            child: Text(
-              FlutterI18n.translate(context, widget.iconStr),
-              maxLines: 3,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ),
-          Positioned(
-            left: 10,
-            top: 10,
-            child: _getCircle(isSelected, fill: true),
-          )
-        ]),
-      ),
-    );
-  }
-}
-
 Widget _getCircle(bool selected, {Color? color, bool? fill}) {
   if (selected) {
     if (fill!) {
@@ -170,6 +108,7 @@ Widget _getCircle(bool selected, {Color? color, bool? fill}) {
 }
 
 /// inspired by best_flutter_ui_templates
+// ignore: must_be_immutable
 class CoolSelectableIcon extends StatefulWidget {
   CoolSelectableIcon({Key? key, this.mainPageCardData, required this.iconStr})
       : super(key: key);
@@ -251,11 +190,11 @@ class _CoolSelectableIconState extends State<CoolSelectableIcon> {
                             context, mainPageCardData!.titleTxt),
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          fontFamily: ReservedAppTheme.fontName,
+                          fontFamily: AppTheme.fontName,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                           letterSpacing: 0.2,
-                          color: ReservedAppTheme.white,
+                          color: AppTheme.white,
                         ),
                       ),
                       Expanded(
@@ -268,11 +207,11 @@ class _CoolSelectableIconState extends State<CoolSelectableIcon> {
                               Text(
                                 mainPageCardData!.getNotes().join('\n'),
                                 style: const TextStyle(
-                                  fontFamily: ReservedAppTheme.fontName,
+                                  fontFamily: AppTheme.fontName,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 10,
                                   letterSpacing: 0.2,
-                                  color: ReservedAppTheme.white,
+                                  color: AppTheme.white,
                                 ),
                               ),
                             ],
@@ -287,11 +226,11 @@ class _CoolSelectableIconState extends State<CoolSelectableIcon> {
                             mainPageCardData!.tip,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                              fontFamily: ReservedAppTheme.fontName,
+                              fontFamily: AppTheme.fontName,
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
                               letterSpacing: 0.2,
-                              color: ReservedAppTheme.white,
+                              color: AppTheme.white,
                             ),
                           ),
                         ],
@@ -309,7 +248,7 @@ class _CoolSelectableIconState extends State<CoolSelectableIcon> {
               width: 84,
               height: 84,
               decoration: BoxDecoration(
-                color: ReservedAppTheme.nearlyWhite.withOpacity(0.2),
+                color: AppTheme.nearlyWhite.withOpacity(0.2),
                 shape: BoxShape.circle,
               ),
             ),

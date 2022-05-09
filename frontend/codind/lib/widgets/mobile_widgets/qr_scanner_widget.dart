@@ -1,18 +1,29 @@
+import 'package:codind/_apis.dart';
+import 'package:codind/pages/base_pages/_mobile_base_page.dart';
+import 'package:codind/utils/dio_utils.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:scan/scan.dart';
 
-class ScanMainPage extends StatelessWidget {
-  const ScanMainPage({Key? key}) : super(key: key);
+import '../../router.dart';
+import '../../utils/shared_preference_utils.dart';
 
-  @override
-  Widget build(BuildContext context) {
-    return ScanPage();
+class ScanMainPage {
+  int? type;
+  ScanMainPage({this.type = 0});
+
+  Widget getPage() {
+    if (type == 0) {
+      return const ScanPage();
+    } else {
+      return MobileScanToLoginWidget();
+    }
   }
 }
 
 class ScanPage extends StatefulWidget {
-  ScanPage({Key? key}) : super(key: key);
+  const ScanPage({Key? key}) : super(key: key);
 
   @override
   _ScanPageState createState() => _ScanPageState();
@@ -113,6 +124,73 @@ class _ScanPageState extends State<ScanPage> {
             ),
           ],
         ),
+      ),
+    ));
+  }
+}
+
+// ignore: must_be_immutable
+class MobileScanToLoginWidget extends MobileBasePage {
+  MobileScanToLoginWidget({Key? key}) : super(key: key, pageName: "");
+
+  @override
+  MobileBasePageState<MobileBasePage> getState() {
+    return _MobileScanToLoginWidgetState();
+  }
+}
+
+class _MobileScanToLoginWidgetState
+    extends MobileBasePageState<MobileScanToLoginWidget> {
+  ScanController controller = ScanController();
+
+  String qrCode = "";
+  final DioUtils _dioUtils = DioUtils();
+  final PersistenceStorage ps = PersistenceStorage();
+
+  @override
+  baseBuild(BuildContext context) {
+    return SingleChildScrollView(
+        child: Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 50),
+            height: 300,
+            width: 300,
+            child: ScanView(
+              controller: controller,
+              scanAreaScale: 0.8,
+              scanLineColor: const Color.fromARGB(255, 51, 34, 207),
+              onCapture: (data) {
+                debugPrint("[qr-result : $data]");
+                // qrcode = data;
+
+                setState(() {
+                  qrCode = data;
+                });
+              },
+            ),
+          ),
+          if (qrCode != "")
+            ElevatedButton(
+                onPressed: () async {
+                  String email = await ps.getUserEmail();
+                  String url =
+                      apiRoute + Apis["login"]! + "k=$qrCode" + "&v=$email";
+
+                  Response? response = await _dioUtils.get(url);
+                  if (response != null && response.data != null) {
+                    debugPrint(response.data);
+                    if (Global.navigatorKey.currentState != null) {
+                      Global.navigatorKey.currentState!.pushNamedAndRemoveUntil(
+                          Routers.pageMain, (route) => false);
+                    }
+                  }
+                },
+                child: const Text("登录")),
+        ],
       ),
     ));
   }

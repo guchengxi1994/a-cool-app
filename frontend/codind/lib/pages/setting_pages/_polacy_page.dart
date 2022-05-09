@@ -1,7 +1,10 @@
+// ignore_for_file: must_be_immutable, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
+import '../../_styles.dart';
 import '../../globals.dart';
 
 class PolacyPage extends StatefulWidget {
@@ -18,6 +21,7 @@ class PolacyPage extends StatefulWidget {
 class _PolacyPageState extends State<PolacyPage> {
   late String mdStr;
 
+  // ignore: prefer_typing_uninitialized_variables
   var loadMdFuture;
 
   @override
@@ -53,7 +57,7 @@ class _PolacyPageState extends State<PolacyPage> {
               leading: IconButton(
                 icon: const Icon(
                   Icons.chevron_left,
-                  size: leftBackIconSize,
+                  size: AppTheme.leftBackIconSize,
                   color: Colors.black,
                 ),
                 onPressed: () {

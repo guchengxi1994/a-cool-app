@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-05-04 19:56:02
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-05-04 20:13:33
+ * @LastEditTime: 2022-05-09 20:26:33
  */
 import 'package:flutter/material.dart';
 import 'package:taichi/taichi.dart';
@@ -15,16 +15,18 @@ import '../providers/splash_page_provider.dart'
     if (dart.library.html) '../providers/splash_page_web_provider.dart';
 
 class SplashScreen extends StatefulWidget {
-  SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  var done = const IndicatorStyle(color: Colors.green);
+  var unDone = const IndicatorStyle(color: Colors.grey);
+
   @override
   Widget build(BuildContext context) {
-    TaichiFitnessUtil.init(context);
     return Container(
       padding: EdgeInsets.only(top: 0.05 * MediaQuery.of(context).size.height),
       color: Colors.white,
@@ -33,14 +35,27 @@ class _SplashScreenState extends State<SplashScreen> {
       child: Stack(
         children: [
           Column(
-            children: context.watch<SplashPageScreenController>().done.map((e) {
-              int index =
-                  context.read<SplashPageScreenController>().done.indexOf(e);
+            children: context
+                .watch<SplashPageScreenController>()
+                .splashPageRows
+                .map((e) {
+              int index = context
+                  .read<SplashPageScreenController>()
+                  .splashPageRows
+                  .indexOf(e);
               return TimelineTile(
+                indicatorStyle: index ==
+                        context
+                                .read<SplashPageScreenController>()
+                                .splashPageRows
+                                .length -
+                            1
+                    ? unDone
+                    : done,
                 alignment: TimelineAlign.manual,
                 lineXY: 0.1,
                 endChild: Container(
-                  height: 50,
+                  height: 0.1 * MediaQuery.of(context).size.height,
                   padding: const EdgeInsets.only(left: 10),
                   child: Align(
                     alignment: Alignment.centerLeft,
@@ -57,14 +72,14 @@ class _SplashScreenState extends State<SplashScreen> {
                         if (index ==
                             context
                                     .read<SplashPageScreenController>()
-                                    .done
+                                    .splashPageRows
                                     .length -
                                 1)
                           const CircularProgressIndicator(),
                         if (index <
                             context
                                     .read<SplashPageScreenController>()
-                                    .done
+                                    .splashPageRows
                                     .length -
                                 1)
                           const Icon(Icons.done, color: Colors.green),

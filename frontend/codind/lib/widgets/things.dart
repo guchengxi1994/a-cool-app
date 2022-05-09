@@ -1,14 +1,14 @@
 import 'package:codind/bloc/gantt_bloc.dart';
 import 'package:codind/entity/entity.dart';
-import 'package:codind/pages/_schedule_detail_page.dart';
+import 'package:codind/pages/module_pages/_schedule_detail_page.dart';
 import 'package:codind/router.dart';
-import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum CalendarType { month, year }
 
+// ignore: must_be_immutable
 class ThingsWidget extends StatefulWidget {
   ThingsWidget({Key? key, required this.calendarType}) : super(key: key);
 
@@ -49,6 +49,7 @@ class _ThingsWidgetState extends State<ThingsWidget> {
   }
 }
 
+// ignore: must_be_immutable
 class ThingItem extends StatefulWidget {
   ThingItem({
     Key? key,
@@ -237,6 +238,7 @@ class _ThingItemState extends State<ThingItem> {
                       .loadString(subject.subjectJob!.fileLocation!);
                 }
 
+                // ignore: unused_local_variable
                 Map<String, dynamic> params = {
                   "scheduleIndex": index,
                   "subjectId": id,
@@ -272,6 +274,7 @@ class _ThingItemState extends State<ThingItem> {
   }
 }
 
+// ignore: must_be_immutable
 class _TableColumnTitle extends StatelessWidget {
   _TableColumnTitle({Key? key, required this.title}) : super(key: key);
   String title;
@@ -289,6 +292,7 @@ class _TableColumnTitle extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class _TableItemWidget extends StatelessWidget {
   _TableItemWidget({Key? key, required this.title}) : super(key: key);
   String title;

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 /*
  * @Descripttion: 
  * @version: 
@@ -8,14 +10,21 @@
  * @LastEditTime: 2022-04-21 21:40:21
  */
 
+import 'dart:convert';
+
+import 'package:codind/_apis.dart';
 import 'package:codind/utils/utils.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:taichi/taichi.dart';
 import './main_page_v2.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:provider/provider.dart';
+
+import '_qr_page.dart';
 
 // for test
 const users = {
@@ -23,7 +32,7 @@ const users = {
 };
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -33,6 +42,70 @@ class _LoginScreenState extends State<LoginScreen> {
   Duration get loginTime => const Duration(milliseconds: 2250);
   PersistenceStorage ps = PersistenceStorage();
   bool isOffline = false;
+  bool isLoading = false;
+
+  final DioUtils _dioUtils = DioUtils();
+
+  late LoginMessages messages = LoginMessages(
+    passwordHint: FlutterI18n.translate(context, "login-labels.PasswordHint"),
+    confirmPasswordHint:
+        FlutterI18n.translate(context, "login-labels.ConfirmPasswordHint"),
+    forgotPasswordButton:
+        FlutterI18n.translate(context, "login-labels.ForgotPasswordButton"),
+    loginButton: FlutterI18n.translate(context, "login-labels.LoginButton"),
+    signupButton: FlutterI18n.translate(context, "login-labels.SignupButton"),
+    recoverPasswordButton:
+        FlutterI18n.translate(context, "login-labels.RecoverPasswordButton"),
+    recoverPasswordIntro:
+        FlutterI18n.translate(context, "login-labels.RecoverPasswordIntro"),
+    recoverPasswordDescription: FlutterI18n.translate(
+        context, "login-labels.RecoverPasswordDescription"),
+    recoverCodePasswordDescription: FlutterI18n.translate(
+        context, "login-labels.RecoverCodePasswordDescription"),
+    goBackButton: FlutterI18n.translate(context, "login-labels.GoBackButton"),
+    confirmPasswordError:
+        FlutterI18n.translate(context, "login-labels.ConfirmPasswordError"),
+    recoverPasswordSuccess:
+        FlutterI18n.translate(context, "login-labels.RecoverPasswordSuccess"),
+    flushbarTitleSuccess:
+        FlutterI18n.translate(context, "login-labels.flushbarTitleSuccess"),
+    flushbarTitleError:
+        FlutterI18n.translate(context, "login-labels.flushbarTitleError"),
+    signUpSuccess: FlutterI18n.translate(context, "login-labels.SignUpSuccess"),
+    providersTitleFirst:
+        FlutterI18n.translate(context, "login-labels.ProvidersTitleFirst"),
+    providersTitleSecond:
+        FlutterI18n.translate(context, "login-labels.ProvidersTitleSecond"),
+    additionalSignUpSubmitButton: FlutterI18n.translate(
+        context, "login-labels.AdditionalSignUpSubmitButton"),
+    additionalSignUpFormDescription: FlutterI18n.translate(
+        context, "login-labels.AdditionalSignUpFormDescription"),
+    confirmRecoverIntro:
+        FlutterI18n.translate(context, "login-labels.ConfirmRecoverIntro"),
+    recoveryCodeHint:
+        FlutterI18n.translate(context, "login-labels.RecoveryCodeHint"),
+    recoveryCodeValidationError: FlutterI18n.translate(
+        context, "login-labels.RecoveryCodeValidationError"),
+    setPasswordButton:
+        FlutterI18n.translate(context, "login-labels.SetPasswordButton"),
+    confirmRecoverSuccess:
+        FlutterI18n.translate(context, "login-labels.ConfirmRecoverSuccess"),
+    confirmSignupIntro:
+        FlutterI18n.translate(context, "login-labels.ConfirmSignupIntro"),
+    confirmationCodeHint:
+        FlutterI18n.translate(context, "login-labels.ConfirmationCodeHint"),
+    confirmationCodeValidationError: FlutterI18n.translate(
+        context, "login-labels.ConfirmationCodeValidationError"),
+    resendCodeButton:
+        FlutterI18n.translate(context, "login-labels.ResendCodeButton"),
+    resendCodeSuccess:
+        FlutterI18n.translate(context, "login-labels.ResendCodeSuccess"),
+    confirmSignupButton:
+        FlutterI18n.translate(context, "login-labels.ConfirmSignupButton"),
+    confirmSignupSuccess:
+        FlutterI18n.translate(context, "login-labels.ConfirmSignupSuccess"),
+  );
+
   @override
   void initState() {
     super.initState();
@@ -92,67 +165,6 @@ class _LoginScreenState extends State<LoginScreen> {
     debugPrint(
         "[debug-i18n-state ]: ${context.read<LanguageControllerV2>().currentLang}");
 
-    LoginMessages messages = LoginMessages(
-      passwordHint: FlutterI18n.translate(context, "login-labels.PasswordHint"),
-      confirmPasswordHint:
-          FlutterI18n.translate(context, "login-labels.ConfirmPasswordHint"),
-      forgotPasswordButton:
-          FlutterI18n.translate(context, "login-labels.ForgotPasswordButton"),
-      loginButton: FlutterI18n.translate(context, "login-labels.LoginButton"),
-      signupButton: FlutterI18n.translate(context, "login-labels.SignupButton"),
-      recoverPasswordButton:
-          FlutterI18n.translate(context, "login-labels.RecoverPasswordButton"),
-      recoverPasswordIntro:
-          FlutterI18n.translate(context, "login-labels.RecoverPasswordIntro"),
-      recoverPasswordDescription: FlutterI18n.translate(
-          context, "login-labels.RecoverPasswordDescription"),
-      recoverCodePasswordDescription: FlutterI18n.translate(
-          context, "login-labels.RecoverCodePasswordDescription"),
-      goBackButton: FlutterI18n.translate(context, "login-labels.GoBackButton"),
-      confirmPasswordError:
-          FlutterI18n.translate(context, "login-labels.ConfirmPasswordError"),
-      recoverPasswordSuccess:
-          FlutterI18n.translate(context, "login-labels.RecoverPasswordSuccess"),
-      flushbarTitleSuccess:
-          FlutterI18n.translate(context, "login-labels.flushbarTitleSuccess"),
-      flushbarTitleError:
-          FlutterI18n.translate(context, "login-labels.flushbarTitleError"),
-      signUpSuccess:
-          FlutterI18n.translate(context, "login-labels.SignUpSuccess"),
-      providersTitleFirst:
-          FlutterI18n.translate(context, "login-labels.ProvidersTitleFirst"),
-      providersTitleSecond:
-          FlutterI18n.translate(context, "login-labels.ProvidersTitleSecond"),
-      additionalSignUpSubmitButton: FlutterI18n.translate(
-          context, "login-labels.AdditionalSignUpSubmitButton"),
-      additionalSignUpFormDescription: FlutterI18n.translate(
-          context, "login-labels.AdditionalSignUpFormDescription"),
-      confirmRecoverIntro:
-          FlutterI18n.translate(context, "login-labels.ConfirmRecoverIntro"),
-      recoveryCodeHint:
-          FlutterI18n.translate(context, "login-labels.RecoveryCodeHint"),
-      recoveryCodeValidationError: FlutterI18n.translate(
-          context, "login-labels.RecoveryCodeValidationError"),
-      setPasswordButton:
-          FlutterI18n.translate(context, "login-labels.SetPasswordButton"),
-      confirmRecoverSuccess:
-          FlutterI18n.translate(context, "login-labels.ConfirmRecoverSuccess"),
-      confirmSignupIntro:
-          FlutterI18n.translate(context, "login-labels.ConfirmSignupIntro"),
-      confirmationCodeHint:
-          FlutterI18n.translate(context, "login-labels.ConfirmationCodeHint"),
-      confirmationCodeValidationError: FlutterI18n.translate(
-          context, "login-labels.ConfirmationCodeValidationError"),
-      resendCodeButton:
-          FlutterI18n.translate(context, "login-labels.ResendCodeButton"),
-      resendCodeSuccess:
-          FlutterI18n.translate(context, "login-labels.ResendCodeSuccess"),
-      confirmSignupButton:
-          FlutterI18n.translate(context, "login-labels.ConfirmSignupButton"),
-      confirmSignupSuccess:
-          FlutterI18n.translate(context, "login-labels.ConfirmSignupSuccess"),
-    );
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -160,7 +172,36 @@ class _LoginScreenState extends State<LoginScreen> {
         actions: [
           if (!PlatformUtils.isMobile)
             IconButton(
-                onPressed: () {},
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+
+                  String url = apiRoute + Apis["getQR"]!;
+
+                  Response? response = await _dioUtils.get(url);
+                  String _qrData = "";
+                  if (response != null && response.data != null) {
+                    debugPrint(response.data);
+                    var _map = jsonDecode(response.data);
+                    if (_map['code'] == 200) {
+                      _qrData = _map['data'];
+                    }
+                  }
+
+                  setState(() {
+                    isLoading = false;
+                  });
+                  if (_qrData != "") {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return QrPage(
+                        pageName: '手机扫码登录',
+                        qrInfo: _qrData,
+                      );
+                    }));
+                  }
+                },
                 icon: Icon(
                   Icons.qr_code,
                   color: Color.fromARGB(255, 19, 41, 133),
@@ -187,23 +228,34 @@ class _LoginScreenState extends State<LoginScreen> {
               })
         ],
       ),
-      body: FlutterLogin(
-        messages: messages,
-        // titleTag: "aaa",
-        title: '随身助手',
-        theme: LoginTheme(
-            primaryColor: const Color.fromARGB(255, 223, 211, 195),
-            buttonStyle: const TextStyle(color: Colors.black),
-            switchAuthTextColor: const Color.fromARGB(255, 223, 211, 195)),
-        logo: const AssetImage('assets/icon_no_background.png'),
-        onLogin: _authUser,
-        onSignup: _signupUser,
-        onSubmitAnimationCompleted: () {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => MainPageV2(),
-          ));
-        },
-        onRecoverPassword: _recoverPassword,
+      body: Stack(
+        children: [
+          FlutterLogin(
+            messages: messages,
+            // titleTag: "aaa",
+            title: '随身助手',
+            theme: LoginTheme(
+                primaryColor: const Color.fromARGB(255, 223, 211, 195),
+                buttonStyle: const TextStyle(color: Colors.black),
+                switchAuthTextColor: const Color.fromARGB(255, 223, 211, 195)),
+            logo: const AssetImage('assets/icon_no_background.png'),
+            onLogin: _authUser,
+            onSignup: _signupUser,
+            onSubmitAnimationCompleted: () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => MainPageV2(),
+              ));
+            },
+            onRecoverPassword: _recoverPassword,
+          ),
+          Visibility(
+              visible: isLoading,
+              child: Positioned(
+                child: TaichiAutoRotateGraph.simple(size: 50),
+                right: 10,
+                bottom: 10,
+              ))
+        ],
       ),
     );
   }

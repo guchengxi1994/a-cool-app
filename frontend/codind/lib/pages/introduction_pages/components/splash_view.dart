@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class SplashView extends StatefulWidget {
@@ -28,6 +30,9 @@ class _SplashViewState extends State<SplashView> {
       child: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(
+              height: 150,
+            ),
             SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Image.asset(

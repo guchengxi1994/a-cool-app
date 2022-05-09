@@ -7,15 +7,30 @@ import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
+class UploadMultiImageWidget extends StatelessWidget {
+  const UploadMultiImageWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => MultiImageUploadController()..init(),
+      builder: (context, child) {
+        return _UploadMultiImageWidget();
+      },
+    );
+  }
+}
+
 // ignore: must_be_immutable
-class UploadMultiImageWidget extends StatefulWidget {
-  UploadMultiImageWidget({Key? key}) : super(key: key);
+class _UploadMultiImageWidget extends StatefulWidget {
+  // ignore: prefer_const_constructors_in_immutables
+  _UploadMultiImageWidget({Key? key}) : super(key: key);
 
   @override
   _UploadMultiImageWidgetState createState() => _UploadMultiImageWidgetState();
 }
 
-class _UploadMultiImageWidgetState extends State<UploadMultiImageWidget> {
+class _UploadMultiImageWidgetState extends State<_UploadMultiImageWidget> {
   final ScrollController _controller = ScrollController();
 
   int imgCount = 0;
@@ -85,6 +100,7 @@ class _UploadSingleImageWidgetState extends State<UploadSingleImageWidget> {
   }
 }
 
+// ignore: must_be_immutable
 class ImageWidgetV2 extends StatefulWidget {
   ImageWidgetV2({
     Key? key,

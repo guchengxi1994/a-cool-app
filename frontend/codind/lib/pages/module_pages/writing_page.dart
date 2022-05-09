@@ -7,7 +7,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-12 22:02:50
+ * @LastEditTime: 2022-05-09 21:21:14
  */
 
 /*
@@ -27,11 +27,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
-import 'package:codind/utils/other_platform/mobile_utils.dart'
+import 'package:codind/utils/no_web/mobile_utils.dart'
     if (dart.library.html) 'package:codind/utils/web/web_utils.dart'
     show saveMdFile;
 
-import '_base_page.dart';
+import '../base_pages/_base_page.dart';
 
 class _EmojiFutureEntity {
   List<String>? usedEmoji;
@@ -155,8 +155,10 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                           textEditingController.text += "\n";
                           textEditingController.text += "# ";
 
-                          _globalKey.currentState!
-                              .changeData(textEditingController.text);
+                          if (_globalKey.currentState != null) {
+                            _globalKey.currentState!
+                                .changeData(textEditingController.text);
+                          }
 
                           Navigator.of(context).pop();
                         },
@@ -176,6 +178,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                                 scrollDirection: Axis.horizontal,
                                 itemCount: li.length,
                                 itemBuilder: ((context, index) {
+                                  // ignore: deprecated_member_use_from_same_package
                                   return SelectableIconButton(
                                       radioValue: li[index]);
                                 })),
