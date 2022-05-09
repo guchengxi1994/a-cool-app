@@ -10,7 +10,11 @@
  * @LastEditTime: 2022-04-21 21:40:21
  */
 
+import 'dart:convert';
+
+import 'package:codind/_apis.dart';
 import 'package:codind/utils/utils.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -39,6 +43,8 @@ class _LoginScreenState extends State<LoginScreen> {
   PersistenceStorage ps = PersistenceStorage();
   bool isOffline = false;
   bool isLoading = false;
+
+  final DioUtils _dioUtils = DioUtils();
 
   late LoginMessages messages = LoginMessages(
     passwordHint: FlutterI18n.translate(context, "login-labels.PasswordHint"),
@@ -170,18 +176,31 @@ class _LoginScreenState extends State<LoginScreen> {
                   setState(() {
                     isLoading = true;
                   });
-                  await Future.delayed(Duration(seconds: 2)).then((value) {
-                    setState(() {
-                      isLoading = false;
-                    });
-                  });
 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return QrPage(
-                      pageName: '手机扫码登录',
-                      qrInfo: "扫码登录内容",
-                    );
-                  }));
+                  String url = apiRoute + Apis["getQR"]!;
+
+                  Response? response = await _dioUtils.get(url);
+                  String _qrData = "";
+                  if (response != null && response.data != null) {
+                    debugPrint(response.data);
+                    var _map = jsonDecode(response.data);
+                    if (_map['code'] == 200) {
+                      _qrData = _map['data'];
+                    }
+                  }
+
+                  setState(() {
+                    isLoading = false;
+                  });
+                  if (_qrData != "") {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return QrPage(
+                        pageName: '手机扫码登录',
+                        qrInfo: _qrData,
+                      );
+                    }));
+                  }
                 },
                 icon: Icon(
                   Icons.qr_code,
