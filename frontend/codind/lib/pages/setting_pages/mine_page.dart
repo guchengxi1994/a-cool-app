@@ -11,6 +11,7 @@ import 'package:codind/globals.dart';
 import 'package:codind/pages/base_pages/_mobile_base_page.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
+import 'package:codind/widgets/mobile_widgets/qr_scanner_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -139,6 +140,23 @@ class _MinePageState extends MobileBasePageState<MinePage> {
               }));
             },
             title: "关于 $AppName",
+            trailing: const Icon(
+              Icons.chevron_right,
+              size: 25,
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          CustomListTile(
+            style: AppTheme.settingPageListTileTitleStyle,
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                var _page = ScanMainPage(type: 1);
+                return _page.getPage();
+              }));
+            },
+            title: "扫码登录桌面版",
             trailing: const Icon(
               Icons.chevron_right,
               size: 25,

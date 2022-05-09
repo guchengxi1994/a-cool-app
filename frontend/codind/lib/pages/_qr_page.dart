@@ -59,6 +59,9 @@ class _QrPageState extends MobileBasePageState<QrPage> {
         if (_map['data'] != 'undefined') {
           stopTimer();
           debugPrint("[login info] ${_map['data']}");
+
+          /// 这里要执行loginScreen 的登录逻辑
+
           if (Global.navigatorKey.currentState != null) {
             Global.navigatorKey.currentState!
                 .pushNamedAndRemoveUntil(Routers.pageMain, (route) => false);

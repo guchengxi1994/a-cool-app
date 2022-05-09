@@ -93,7 +93,7 @@ class SignupButton extends StatelessWidget {
         onTap: () {
           if (PlatformUtils.isMobile) {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return const ScanMainPage();
+              return ScanMainPage().getPage();
             }));
           }
         },

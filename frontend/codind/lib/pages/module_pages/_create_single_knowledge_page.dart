@@ -286,7 +286,7 @@ class _CreateKnowledgeWidgetState<T>
                   if (PlatformUtils.isMobile) {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
-                      return const ScanMainPage();
+                      return ScanMainPage().getPage();
                     }));
                   }
                 },
