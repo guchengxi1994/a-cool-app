@@ -7,7 +7,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-02 09:59:42
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-12 22:02:50
+ * @LastEditTime: 2022-05-09 21:21:14
  */
 
 /*
@@ -27,7 +27,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
-import 'package:codind/utils/other_platform/mobile_utils.dart'
+import 'package:codind/utils/no_web/mobile_utils.dart'
     if (dart.library.html) 'package:codind/utils/web/web_utils.dart'
     show saveMdFile;
 

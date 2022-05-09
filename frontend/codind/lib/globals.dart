@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 21:47:48
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-09 20:43:27
+ * @LastEditTime: 2022-05-09 21:41:52
  */
 import 'dart:io';
 
@@ -18,7 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'utils/toast_utils.dart';
 
 // ignore: constant_identifier_names
-const AppVersion = "1.0.0-frontend-alpha+7";
+const AppVersion = "1.0.0-frontend-alpha+8";
 
 // ignore: constant_identifier_names
 const AppName = "助手";
@@ -59,3 +59,7 @@ void launchURL(String _url) async {
     showToastMessage("cannot launch url", null);
   }
 }
+
+const knowLedgebasePath = "knowledge.db";
+const todosBasePath = "todo.db";
+const fileBasePath = "file.db";

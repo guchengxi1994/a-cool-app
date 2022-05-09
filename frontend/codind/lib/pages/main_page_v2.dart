@@ -7,12 +7,11 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 19:54:23
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-05-04 20:54:29
+ * @LastEditTime: 2022-05-09 21:44:07
  */
 
 /// 手机端的主页
 
-import 'package:codind/entity/entity.dart';
 import 'package:codind/pages/module_pages/create_things_page.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/shared_preference_utils.dart';
@@ -28,10 +27,6 @@ import 'package:provider/provider.dart';
 import '../providers/my_providers.dart';
 import 'module_pages/new_todos_page.dart';
 import 'module_pages/work_work_work_page.dart';
-
-/// this is for mobile
-///
-/// tested on web first
 
 class MainPageV2 extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
@@ -319,28 +314,7 @@ class _MainPageV2State extends State<MainPageV2> {
                       flex: 1,
                       child: Column(
                         children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return WorkWorkWorkPage(
-                                  pageName: "日程统计",
-                                  work: WorkWorkWork(
-                                      all: 20,
-                                      delayed: 5,
-                                      done: 10,
-                                      underGoing: 5),
-                                );
-                              }));
-                            },
-                            child: SizedBox(
-                              height: 120.h,
-                              child: TodoListWidget(
-                                // ignore: prefer_const_literals_to_create_immutables
-                                todos: ["当前共有X未完成事项", "当前已完成X事项", "当前有X逾期事项"],
-                              ),
-                            ),
-                          ),
+                          TodoListWidgetWithProvider(),
                           SizedBox(
                             height: 5.h,
                           ),
@@ -423,6 +397,39 @@ class _TopicWidget extends StatelessWidget {
               await ps.setLastTopicTime(DateTime.now());
             }
           },
+        );
+      },
+    );
+  }
+}
+
+class TodoListWidgetWithProvider extends StatelessWidget {
+  const TodoListWidgetWithProvider({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => TodoProvider()..init(),
+      builder: (context, _) {
+        return InkWell(
+          onTap: () async {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return WorkWorkWorkPage(
+                pageName: "日程统计",
+              );
+            }));
+          },
+          child: SizedBox(
+            height: 120.h,
+            child: TodoListWidget(
+              // ignore: prefer_const_literals_to_create_immutables
+              todos: [
+                "当前共有${context.read<TodoProvider>().work.underGoing}未完成事项",
+                "当前已完成${context.read<TodoProvider>().work.done}事项",
+                "当前有${context.read<TodoProvider>().work.delayed}逾期事项"
+              ],
+            ),
+          ),
         );
       },
     );
