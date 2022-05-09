@@ -145,23 +145,25 @@ class _MinePageState extends MobileBasePageState<MinePage> {
               size: 25,
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          CustomListTile(
-            style: AppTheme.settingPageListTileTitleStyle,
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                var _page = ScanMainPage(type: 1);
-                return _page.getPage();
-              }));
-            },
-            title: "扫码登录桌面版",
-            trailing: const Icon(
-              Icons.chevron_right,
-              size: 25,
+          if (PlatformUtils.isMobile)
+            const SizedBox(
+              height: 10,
             ),
-          ),
+          if (PlatformUtils.isMobile)
+            CustomListTile(
+              style: AppTheme.settingPageListTileTitleStyle,
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  var _page = ScanMainPage(type: 1);
+                  return _page.getPage();
+                }));
+              },
+              title: "扫码登录桌面版",
+              trailing: const Icon(
+                Icons.chevron_right,
+                size: 25,
+              ),
+            ),
         ],
       ),
     );

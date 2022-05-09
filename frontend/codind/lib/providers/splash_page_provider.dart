@@ -60,6 +60,27 @@ class SplashPageScreenController extends ChangeNotifier {
     if (_isFirst && _appSupportDirectory != null) {
       var dbPath = "knowledge.db";
       var db = sqlite3.open("${_appSupportDirectory!.path}/$dbPath");
+
+      File _dbFile = File("${_appSupportDirectory!.path}/$dbPath");
+
+      if (!_dbFile.existsSync()) {
+        debugPrint(
+            "[knowledge base path] ${_appSupportDirectory!.path}/$dbPath}");
+        db.execute('''
+            CREATE TABLE `knowledge` (
+              `time` text,
+              `title` text,
+              `detail` text,
+              `summary` text,
+              `fromUrlOrOthers` text,
+              `codes` text,
+              `tag` text,
+              `imgs` text,
+              `codeStyle` text,
+              `kid` INTEGER primary key AUTOINCREMENT
+            );
+        ''');
+      }
     }
     changeValue(1);
   }

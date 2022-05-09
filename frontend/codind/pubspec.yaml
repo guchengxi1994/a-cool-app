@@ -71,11 +71,11 @@ dependencies:
   # qr: ^3.0.1  # generate qr code
   qr_flutter: ^4.0.0
   waterfall_flow: ^3.0.2
-  permission_handler: ^9.1.0
+  permission_handler: ^9.2.0
   # file_saver: ^0.1.0
   path_provider: ^2.0.9
-  sqlite3: ^1.6.4
-  sqlite3_flutter_libs: ^0.5.5
+  sqlite3: ^1.7.0
+  sqlite3_flutter_libs: ^0.5.6
   add_2_calendar: ^2.1.2
   animations: ^2.0.0
   ## github taichi
