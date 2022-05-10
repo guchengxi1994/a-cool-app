@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 21:47:48
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-05-09 21:41:52
+ * @LastEditTime: 2022-05-10 21:34:03
  */
 import 'dart:io';
 
@@ -63,3 +63,4 @@ void launchURL(String _url) async {
 const knowledgeBasePath = "knowledge.db";
 const todosBasePath = "todo.db";
 const fileBasePath = "file.db";
+const friendsBasePath = "friend.db";

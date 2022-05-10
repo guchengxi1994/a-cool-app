@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-05-09 21:13:57
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-05-09 21:15:42
+ * @LastEditTime: 2022-05-10 22:12:08
  */
 import 'package:codind/entity/entity.dart';
 import 'package:codind/entity/knowledge_entity.dart';
@@ -35,4 +35,12 @@ class SqliteUtils extends AbstractSqliteUtils {
 
   @override
   Future<void> initTodoBase() async {}
+
+  @override
+  Future<void> initFriendsBase() async {}
+
+  @override
+  Future<Friend?> getFriend() async {
+    return null;
+  }
 }

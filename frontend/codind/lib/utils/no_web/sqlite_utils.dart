@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-05-09 21:03:01
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-05-09 21:22:17
+ * @LastEditTime: 2022-05-10 22:30:48
  */
 
 import 'dart:io';
@@ -174,5 +174,48 @@ class SqliteUtils extends AbstractSqliteUtils {
 
       db.dispose();
     }
+  }
+
+  @override
+  Future<void> initFriendsBase() async {
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+    File _dbFile = File("${_appSupportDirectory.path}/$friendsBasePath");
+    if (!_dbFile.existsSync()) {
+      var db =
+          sql.sqlite3.open("${_appSupportDirectory.path}/$friendsBasePath");
+      debugPrint(
+          "[todo base path] ${_appSupportDirectory.path}/$friendsBasePath}");
+
+      db.execute('''
+            CREATE TABLE `friend` (
+              `fid` INTEGER primary key AUTOINCREMENT,
+              `userName` varchar(25),
+              `userEmail` varchar(50),     
+              `avatarPath` varchar(100),
+              `friendship` int
+            );
+          ''');
+    }
+  }
+
+  @override
+  Future<Friend?> getFriend() async {
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+
+    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$friendsBasePath");
+
+    final sql.ResultSet resultSet =
+        db.select("select * from friendsBasePath where fid = 1");
+
+    Friend _friend = Friend();
+    var _data = resultSet.first;
+    _friend.avatarPath = _data['avatarPath'] ?? "";
+    _friend.fid = _data['fid'] ?? 0;
+    _friend.friendship = _data['friendship'] ?? 0;
+    _friend.userEmail = _data['userEmail'] ?? "";
+    _friend.userName = _data['userName'] ?? "";
+
+    db.dispose();
+    return _friend;
   }
 }
