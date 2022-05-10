@@ -9,6 +9,7 @@
  */
 import 'dart:math';
 
+import 'package:codind/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 import "dart:ui" as _ui;
 
@@ -46,11 +47,14 @@ class CommonUtils {
   static const double _designHeight = 932;
   static const double _designWidth = 500;
 
-  static double get scaleWidth => _width / _designWidth;
+  static double get scaleWidth =>
+      PlatformUtils.isMobile ? _width / _designWidth : 1;
 
-  static double get scaleHeight => _height / _designHeight;
+  static double get scaleHeight =>
+      PlatformUtils.isMobile ? _height / _designHeight : 1;
 
-  static double get scaleText => min(scaleWidth, scaleHeight);
+  static double get scaleText =>
+      PlatformUtils.isMobile ? min(scaleWidth, scaleHeight) : 1;
 
   /// 获取屏幕大小
   static MediaQueryData mediaQuery = MediaQueryData.fromWindow(_ui.window);

@@ -58,7 +58,27 @@ class _MinePageState extends MobileBasePageState<MinePage> {
             // nextPage: MobileMainSettingPage(
             //   pageName: "设置",
             // ),
-            route: Routers.pageIntro,
+            onTap: PlatformUtils.isMobile
+                ? null
+                : () {
+                    showCupertinoDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            // ignore: prefer_const_constructors
+                            title: Text("请前往移动端查看"),
+                            actions: [
+                              CupertinoActionSheetAction(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(FlutterI18n.translate(
+                                      context, "button.label.ok"))),
+                            ],
+                          );
+                        });
+                  },
+            route: PlatformUtils.isMobile ? Routers.pageIntro : null,
             style: AppTheme.settingPageListTileTitleStyle,
             title: "查看APP介绍",
             trailing: const Icon(

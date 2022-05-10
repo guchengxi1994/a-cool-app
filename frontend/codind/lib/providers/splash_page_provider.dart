@@ -1,23 +1,22 @@
 // ignore_for_file: unused_local_variable
 
-import 'dart:io';
-
 import 'package:codind/router.dart';
-import 'package:codind/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:sqlite3/sqlite3.dart';
 
-import '../globals.dart';
+import 'package:codind/utils/no_web/sqlite_utils.dart'
+    if (dart.library.html) 'package:codind/utils/web/sqlite_utils_web.dart';
+
 import '../utils/shared_preference_utils.dart';
 
 /// not on webs
 class SplashPageScreenController extends ChangeNotifier {
   PersistenceStorage ps = PersistenceStorage();
-  Directory? _appSupportDirectory;
+  // Directory? _appSupportDirectory;
   bool _isFirst = true;
   int _currentIndex = 0;
+
+  late SqliteUtils sqlUtils;
 
   int thresHold = 5;
 
@@ -53,9 +52,7 @@ class SplashPageScreenController extends ChangeNotifier {
   init() async {
     await _initPlatform();
     _isFirst = await ps.isFirstTime();
-    if (_isFirst) {
-      _appSupportDirectory = await getApplicationSupportDirectory();
-    }
+    sqlUtils = SqliteUtils();
     changeValue(1);
     await _initKnowledgeDatabase();
     await _initFileDatabase();
@@ -65,61 +62,22 @@ class SplashPageScreenController extends ChangeNotifier {
   }
 
   _initKnowledgeDatabase() async {
-    if (_isFirst && _appSupportDirectory != null) {
-      // var dbPath = "knowledge.db";
-
-      File _dbFile = File("${_appSupportDirectory!.path}/$knowLedgebasePath");
-
-      if (!_dbFile.existsSync()) {
-        var db =
-            sqlite3.open("${_appSupportDirectory!.path}/$knowLedgebasePath");
-        debugPrint(
-            "[knowledge base path] ${_appSupportDirectory!.path}/$knowLedgebasePath}");
-        db.execute('''
-            CREATE TABLE `knowledge` (
-              `time` varchar(25),
-              `title` varchar(25),
-              `detail` text,
-              `summary` text,
-              `fromUrlOrOthers` varchar(50),
-              `codes` text,
-              `tag` text,
-              `imgs` text,
-              `codeStyle` text,
-              `kid` INTEGER primary key AUTOINCREMENT
-            );
-        ''');
-      }
+    if (_isFirst) {
+      sqlUtils.initKnowledgeBase();
     }
     changeValue(1);
   }
 
   _initFileDatabase() async {
-    if (_isFirst && _appSupportDirectory != null && PlatformUtils.isMobile) {
-      var db = sqlite3.open("${_appSupportDirectory!.path}/$fileBasePath");
+    if (_isFirst) {
+      sqlUtils.initFileBase();
     }
     changeValue(1);
   }
 
   _initTodoDatabase() async {
-    if (_isFirst && _appSupportDirectory != null) {
-      File _dbFile = File("${_appSupportDirectory!.path}/$todosBasePath");
-
-      if (!_dbFile.existsSync()) {
-        var db = sqlite3.open("${_appSupportDirectory!.path}/$todosBasePath");
-        debugPrint(
-            "[todo base path] ${_appSupportDirectory!.path}/$todosBasePath}");
-
-        db.execute('''
-            CREATE TABLE `todos` (
-              `startTime` varchar(25),
-              `todoName` varchar(25),
-              `tid` INTEGER primary key AUTOINCREMENT,
-              `endTime` varchar(25),
-              `idDone` int
-            );
-          ''');
-      }
+    if (_isFirst) {
+      sqlUtils.initTodoBase();
     }
     changeValue(1);
   }

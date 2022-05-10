@@ -8,8 +8,31 @@
  * @LastEditTime: 2022-05-09 21:15:42
  */
 import 'package:codind/entity/entity.dart';
+import 'package:codind/entity/knowledge_entity.dart';
+import 'package:codind/utils/_abs_sqlite_utils.dart';
 
-WorkWorkWork getWorkDays() {
-  WorkWorkWork work = WorkWorkWork(all: 11, delayed: 5, done: 5, underGoing: 1);
-  return work;
+class SqliteUtils extends AbstractSqliteUtils {
+  @override
+  Future<void> addNewKnowledge(KnowledgeEntity w) async {}
+
+  @override
+  Future<WorkWorkWork> getWorkDays() async {
+    WorkWorkWork work =
+        WorkWorkWork(all: 11, delayed: 5, done: 5, underGoing: 1);
+    return work;
+  }
+
+  @override
+  List<KnowledgeEntity> queryAllKnowledge() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> initFileBase() async {}
+
+  @override
+  Future<void> initKnowledgeBase() async {}
+
+  @override
+  Future<void> initTodoBase() async {}
 }

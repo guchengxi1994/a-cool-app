@@ -386,13 +386,13 @@ class _CreateKnowledgeWidgetState<T>
                   },
                   child: Text("预览")),
               ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     context
                         .read<KnowledgeWidgetController>()
                         .addItem(KnowledgeSummaryWidget(
                           summary: _summaryController.text,
                         ));
-                    context
+                    await context
                         .read<KnowledgeController>()
                         .addItem(_knowledgeEntity);
                     Navigator.of(context).pop();

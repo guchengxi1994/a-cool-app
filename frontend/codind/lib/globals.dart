@@ -60,6 +60,6 @@ void launchURL(String _url) async {
   }
 }
 
-const knowLedgebasePath = "knowledge.db";
+const knowledgeBasePath = "knowledge.db";
 const todosBasePath = "todo.db";
 const fileBasePath = "file.db";
