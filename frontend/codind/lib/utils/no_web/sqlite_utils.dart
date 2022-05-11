@@ -240,4 +240,18 @@ class SqliteUtils extends AbstractSqliteUtils {
     stmt.dispose();
     db.dispose();
   }
+
+  @override
+  Future<List<Friend>?> getAllFriends() async {
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+
+    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$friendsBasePath");
+
+    final sql.ResultSet resultSet =
+        db.select("select * from friend where isSelf != 1");
+
+    if (resultSet.isEmpty) {
+      return null;
+    }
+  }
 }
