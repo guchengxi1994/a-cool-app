@@ -55,7 +55,7 @@ class UserAvatarWidget extends StatelessWidget {
             ),
             if (userInfo != null)
               Text(
-                userInfo ?? "用户A",
+                userInfo ?? "测试用户",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
               ),
           ],

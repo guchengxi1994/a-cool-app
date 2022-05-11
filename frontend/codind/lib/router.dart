@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-05-04 20:49:09
+ * @LastEditTime: 2022-05-11 19:55:31
  */
 
 import 'package:codind/pages/module_pages/card_friends_page.dart';
@@ -41,7 +41,7 @@ class Routers {
     pageMobileSettingsPage: (context) => MobileMainSettingPage(
           pageName: FlutterI18n.translate(context, "label.settings"),
         ),
-    pageFriend: (context) => CardPage(),
+    pageFriend: (context) => const CardPageWithProvider(),
     pageLogin: (context) => const LoginScreen(),
     pageMine: (context) => MinePage(pageName: "我的"),
     pageIntro: (context) => const IntroductionAnimationScreen(),

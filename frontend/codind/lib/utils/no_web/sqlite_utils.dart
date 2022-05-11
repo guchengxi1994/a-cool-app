@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-05-09 21:03:01
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-05-10 22:30:48
+ * @LastEditTime: 2022-05-11 21:25:10
  */
 
 import 'dart:io';
@@ -216,7 +216,7 @@ class SqliteUtils extends AbstractSqliteUtils {
       _friend.fid = _data['fid'] ?? 0;
       _friend.friendship = _data['friendship'] ?? 0;
       _friend.userEmail = _data['userEmail'] ?? "";
-      _friend.userName = _data['userName'] ?? "";
+      _friend.userName = _data['userName'] ?? "测试用户";
       _friend.password = _data['userPassword'] ?? "";
       _friend.isSelf = true;
       db.dispose();
@@ -244,6 +244,7 @@ class SqliteUtils extends AbstractSqliteUtils {
   @override
   Future<List<Friend>?> getAllFriends() async {
     var _appSupportDirectory = await getApplicationSupportDirectory();
+    List<Friend> friendList = [];
 
     var db = sql.sqlite3.open("${_appSupportDirectory.path}/$friendsBasePath");
 
@@ -253,5 +254,14 @@ class SqliteUtils extends AbstractSqliteUtils {
     if (resultSet.isEmpty) {
       return null;
     }
+
+    for (var row in resultSet) {
+      friendList.add(Friend(
+          userEmail: row["userEmail"] ?? "未知email",
+          userName: row["userName"] ?? "未知用户名",
+          avatarPath: row["avatarPath"]));
+    }
+
+    return friendList;
   }
 }

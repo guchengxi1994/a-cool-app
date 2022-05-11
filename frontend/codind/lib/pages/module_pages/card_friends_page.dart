@@ -4,7 +4,9 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:codind/widgets/card_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../providers/friend_page_provider.dart';
 import '../base_pages/_mobile_base_page.dart';
 
 /// friend page
@@ -42,9 +44,12 @@ class _CardPageState<T> extends MobileBasePageState<CardPage> {
                   itemBuilder: (BuildContext context, int index) {
                     return CardWidget(
                       index: index,
+                      friend:
+                          context.watch<FriendPageController>().friends[index],
                     );
                   },
-                  itemCount: 10,
+                  itemCount:
+                      context.watch<FriendPageController>().friends.length,
                   index: currentIndex,
                   viewportFraction: 0.75,
                   scale: 0.8,
@@ -72,7 +77,7 @@ class _CardPageState<T> extends MobileBasePageState<CardPage> {
                 padding: EdgeInsets.only(left: 20, right: 20),
                 controller: scrollController,
                 scrollDirection: Axis.horizontal,
-                itemCount: 10,
+                itemCount: context.watch<FriendPageController>().friends.length,
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
@@ -90,6 +95,9 @@ class _CardPageState<T> extends MobileBasePageState<CardPage> {
                           : null,
                       child: CardListWidget(
                         index: index,
+                        friend: context
+                            .watch<FriendPageController>()
+                            .friends[index],
                       ),
                     ),
                   );
@@ -97,6 +105,20 @@ class _CardPageState<T> extends MobileBasePageState<CardPage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CardPageWithProvider extends StatelessWidget {
+  const CardPageWithProvider({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => FriendPageController()..init(),
+      builder: (context, _) {
+        return CardPage();
+      },
     );
   }
 }

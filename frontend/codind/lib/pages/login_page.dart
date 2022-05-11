@@ -7,7 +7,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 19:54:23
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-21 21:40:21
+ * @LastEditTime: 2022-05-11 21:35:36
  */
 
 import 'dart:convert';
@@ -134,6 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
     debugPrint('Name: ${data.name}, Password: ${data.password}');
 
     Friend? friend = await _sqliteUtils.getFriend();
+    // print(friend?.toJson());
     if (friend != null) {
       // add users
       users[friend.userEmail!] = friend.password!;

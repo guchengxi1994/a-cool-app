@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 21:47:48
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-05-10 21:34:03
+ * @LastEditTime: 2022-05-11 21:34:21
  */
 import 'dart:io';
 
@@ -18,7 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'utils/toast_utils.dart';
 
 // ignore: constant_identifier_names
-const AppVersion = "1.0.0-frontend-alpha+8";
+const AppVersion = "1.0.0-frontend-alpha+9";
 
 // ignore: constant_identifier_names
 const AppName = "助手";

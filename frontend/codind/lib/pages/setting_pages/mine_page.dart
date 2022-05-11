@@ -5,16 +5,19 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-04-21 19:47:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-21 21:55:51
+ * @LastEditTime: 2022-05-11 21:19:46
  */
 import 'package:codind/globals.dart';
 import 'package:codind/pages/base_pages/_mobile_base_page.dart';
+import 'package:codind/providers/userinfo_provider.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:codind/widgets/mobile_widgets/qr_scanner_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../../_styles.dart';
 import '../../widgets/widgets.dart';
@@ -102,6 +105,35 @@ class _MinePageState extends MobileBasePageState<MinePage> {
             height: 10,
           ),
           CustomListTile(
+            onTap: () async {
+              showCupertinoDialog(
+                  context: context,
+                  builder: (context) {
+                    return CupertinoAlertDialog(
+                      title: const Text("个人二维码"),
+                      content: Material(
+                        child: SizedBox(
+                            height: 250,
+                            width: 300,
+                            child: QrImage(
+                              size: 300,
+                              data: context
+                                  .read<UserinfoController>()
+                                  .userData
+                                  .toJson()
+                                  .toString(),
+                            )),
+                      ),
+                      actions: [
+                        CupertinoActionSheetAction(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text("确定"))
+                      ],
+                    );
+                  });
+            },
             style: AppTheme.settingPageListTileTitleStyle,
             title: "展示个人二维码",
             trailing: const Icon(

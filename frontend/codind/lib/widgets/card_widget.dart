@@ -4,8 +4,10 @@ import 'package:codind/utils/platform_utils.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../_styles.dart';
+import '../entity/friend_entity.dart';
 import '../utils/common.dart';
 import 'main_page_widgets/main_page_expanded_widget.dart';
 
@@ -14,7 +16,9 @@ double GAP = (0.75 * CommonUtils.screenW() - 4 * 36) / 5;
 
 class CardWidget extends StatefulWidget {
   final int index;
-  CardWidget({Key? key, required this.index}) : super(key: key);
+  final Friend friend;
+  CardWidget({Key? key, required this.index, required this.friend})
+      : super(key: key);
 
   @override
   _CardWidgetState createState() => _CardWidgetState();
@@ -22,11 +26,13 @@ class CardWidget extends StatefulWidget {
 
 class _CardWidgetState extends State<CardWidget> {
   late FlipCardController _controller;
+  late Friend friend;
 
   @override
   void initState() {
     super.initState();
     _controller = FlipCardController();
+    friend = widget.friend;
   }
 
   @override
@@ -49,9 +55,30 @@ class _CardWidgetState extends State<CardWidget> {
                   child: SizedBox(
                     // color: Colors.green,
                     width: 0.75 * CommonUtils.screenW(),
-                    child: Image.asset(
-                      "assets/images/ctitle.png",
-                      fit: BoxFit.fitWidth,
+                    child: Stack(
+                      children: [
+                        Image.asset(
+                          "assets/images/ctitle.png",
+                          fit: BoxFit.fitWidth,
+                        ),
+                        Center(
+                          child: SizedBox(
+                            height: 0.5 * CommonUtils.screenW(),
+                            width: 0.5 * CommonUtils.screenW(),
+                            child: Center(
+                              child: PlatformUtils.isWeb
+                                  ? Text(
+                                      "由于web端不支持本地存储：\n请使用客户端展示二维码\n扫码可添加好友",
+                                      style: TextStyle(fontSize: 20),
+                                    )
+                                  : QrImage(
+                                      data: friend.toJson().toString(),
+                                      size: 0.45 * CommonUtils.screenW(),
+                                    ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   )),
               Positioned(
@@ -69,13 +96,15 @@ class _CardWidgetState extends State<CardWidget> {
               Positioned(
                   top: 0.75 * CommonUtils.screenW() * 0.75,
                   left: 20,
-                  child: const SizedBox(
+                  child: SizedBox(
                     width: 48,
                     height: 48,
-                    child: CircleAvatar(
-                      backgroundImage:
-                          AssetImage("assets/images/smile_face.png"),
-                    ),
+                    child: friend.avatarPath == null
+                        ? CircleAvatar(
+                            backgroundImage:
+                                AssetImage("assets/images/smile_face.png"),
+                          )
+                        : Image.network(friend.avatarPath!),
                   )),
               Positioned(
                 top: 0.75 * CommonUtils.screenW() * 0.75 + 60,
@@ -100,8 +129,8 @@ class _CardWidgetState extends State<CardWidget> {
                     const SizedBox(
                       width: 10,
                     ),
-                    const Text(
-                      "这里是邮箱",
+                    Text(
+                      friend.userEmail ?? "未知的邮箱",
                       style: TextStyle(fontSize: 17),
                     )
                   ],
@@ -123,8 +152,8 @@ class _CardWidgetState extends State<CardWidget> {
                           borderRadius: BorderRadius.circular(2),
                         ),
                         // height: 20,
-                        child:
-                            const Text("这里是标签", style: TextStyle(fontSize: 13)),
+                        child: Text(friend.userName ?? "",
+                            style: TextStyle(fontSize: 13)),
                       ),
                     ],
                   )),
@@ -177,7 +206,7 @@ class _CardWidgetState extends State<CardWidget> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                '1555',
+                                (friend.friendship ?? 0).toString(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontFamily: AppTheme.fontName,
@@ -188,7 +217,7 @@ class _CardWidgetState extends State<CardWidget> {
                                 ),
                               ),
                               Text(
-                                'Kcal left',
+                                '友情值',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontFamily: AppTheme.fontName,
@@ -237,15 +266,12 @@ class _CardWidgetState extends State<CardWidget> {
   }
 }
 
-class CardListWidget extends StatefulWidget {
+class CardListWidget extends StatelessWidget {
   final int index;
-  CardListWidget({Key? key, required this.index}) : super(key: key);
+  final Friend friend;
+  CardListWidget({Key? key, required this.index, required this.friend})
+      : super(key: key);
 
-  @override
-  _CardListWidgetState createState() => _CardListWidgetState();
-}
-
-class _CardListWidgetState extends State<CardListWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -253,7 +279,7 @@ class _CardListWidgetState extends State<CardListWidget> {
       width: 66,
       height: 110,
       child: Column(
-        children: const [
+        children: [
           SizedBox(
             height: 5,
           ),
@@ -273,7 +299,7 @@ class _CardListWidgetState extends State<CardListWidget> {
           Align(
             alignment: Alignment.center,
             child: Text(
-              "这里是nickname",
+              friend.userName ?? "未知用户名",
               style: TextStyle(fontSize: 14),
             ),
           ),

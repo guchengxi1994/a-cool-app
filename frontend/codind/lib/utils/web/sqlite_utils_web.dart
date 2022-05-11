@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-05-09 21:13:57
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-05-10 22:12:08
+ * @LastEditTime: 2022-05-11 21:33:29
  */
 import 'package:codind/entity/entity.dart';
 import 'package:codind/entity/knowledge_entity.dart';
@@ -41,7 +41,10 @@ class SqliteUtils extends AbstractSqliteUtils {
 
   @override
   Future<Friend?> getFriend() async {
-    return null;
+    return Friend(
+        userEmail: "test@xiaoshuyui.org.cn",
+        userName: "测试用户",
+        password: "123456");
   }
 
   @override
