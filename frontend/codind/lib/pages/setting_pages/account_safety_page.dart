@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:codind/pages/setting_pages/generate_avatar_page.dart';
-import 'package:codind/providers/avatar_provider.dart';
+import 'package:codind/providers/userinfo_provider.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +49,7 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
                           height: 100,
                           width: 100,
                           child: buildAvatar(
-                              context.watch<AvatarController>().img),
+                              context.watch<UserinfoController>().img),
                         ),
                         Positioned(
                           child: ClipRRect(

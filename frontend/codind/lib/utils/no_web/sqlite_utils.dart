@@ -192,6 +192,8 @@ class SqliteUtils extends AbstractSqliteUtils {
               `userName` varchar(25),
               `userEmail` varchar(50),     
               `avatarPath` varchar(100),
+              `userPassword` varchar(50),
+              `isSelf` int,
               `friendship` int
             );
           ''');
@@ -205,17 +207,37 @@ class SqliteUtils extends AbstractSqliteUtils {
     var db = sql.sqlite3.open("${_appSupportDirectory.path}/$friendsBasePath");
 
     final sql.ResultSet resultSet =
-        db.select("select * from friendsBasePath where fid = 1");
+        db.select("select * from friend where isSelf = 1");
 
     Friend _friend = Friend();
-    var _data = resultSet.first;
-    _friend.avatarPath = _data['avatarPath'] ?? "";
-    _friend.fid = _data['fid'] ?? 0;
-    _friend.friendship = _data['friendship'] ?? 0;
-    _friend.userEmail = _data['userEmail'] ?? "";
-    _friend.userName = _data['userName'] ?? "";
+    try {
+      var _data = resultSet.first;
+      _friend.avatarPath = _data['avatarPath'] ?? "";
+      _friend.fid = _data['fid'] ?? 0;
+      _friend.friendship = _data['friendship'] ?? 0;
+      _friend.userEmail = _data['userEmail'] ?? "";
+      _friend.userName = _data['userName'] ?? "";
+      _friend.password = _data['userPassword'] ?? "";
+      _friend.isSelf = true;
+      db.dispose();
+      return _friend;
+    } catch (_) {
+      return null;
+    }
+  }
 
+  @override
+  Future<void> insertFriend(Friend f) async {
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+
+    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$friendsBasePath");
+
+    final stmt = db.prepare(
+        "INSERT INTO friend (userEmail,userPassword,isSelf,userName) values(?,?,?,?)");
+
+    stmt.execute([f.userEmail, f.password, 1, "未修改用户名"]);
+
+    stmt.dispose();
     db.dispose();
-    return _friend;
   }
 }

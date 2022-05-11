@@ -414,7 +414,7 @@ class _GenerateAvatarPageState<T>
             if (remoteImageUrl != "" || svgData != "")
               ElevatedButton(
                   onPressed: () {
-                    context.read<AvatarController>().changeImg(
+                    context.read<UserinfoController>().changeImg(
                         selectedImgType == "png"
                             ? AvatarType.png
                             : AvatarType.svg,

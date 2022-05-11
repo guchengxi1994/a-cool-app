@@ -91,7 +91,8 @@ class _MainPageV2State extends State<MainPageV2> {
                     SizedBox(
                       height: 45.h,
                       width: 45.h,
-                      child: buildAvatar(context.watch<AvatarController>().img),
+                      child:
+                          buildAvatar(context.watch<UserinfoController>().img),
                     ),
                     SizedBox(
                       width: 10.w,
@@ -306,8 +307,32 @@ class _MainPageV2State extends State<MainPageV2> {
                     Expanded(
                       flex: 1,
                       child: UserAvatarWidget(
-                        avatarImg: context.watch<AvatarController>().img,
-                        userInfo: "测试用户",
+                        onTap: () async {
+                          await showCupertinoDialog(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoAlertDialog(
+                                  title: const Text("修改用户名"),
+                                  actions: [
+                                    CupertinoActionSheetAction(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text("确定")),
+                                    CupertinoActionSheetAction(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text("取消")),
+                                  ],
+                                );
+                              });
+                        },
+                        avatarImg: context.watch<UserinfoController>().img,
+                        userInfo: context
+                            .watch<UserinfoController>()
+                            .userData
+                            .userName,
                       ),
                     ),
                     Expanded(

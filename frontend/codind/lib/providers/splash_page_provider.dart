@@ -28,6 +28,7 @@ class SplashPageScreenController extends ChangeNotifier {
     "正在创建知识数据库...",
     "正在创建文件数据库...",
     "正在创建日程数据库...",
+    "正在创建好友数据库...",
     "正在验证身份...",
   ];
 
@@ -58,6 +59,7 @@ class SplashPageScreenController extends ChangeNotifier {
     await _initFileDatabase();
     await _initTodoDatabase();
     await _initRole();
+    await _initFriend();
     _push();
   }
 
@@ -86,6 +88,13 @@ class SplashPageScreenController extends ChangeNotifier {
     logdata = LoginData(
         name: await ps.getUserEmail(), password: await ps.getUserPassword());
     await Future.delayed(const Duration(milliseconds: 200));
+    changeValue(1);
+  }
+
+  _initFriend() async {
+    if (_isFirst) {
+      sqlUtils.initFriendsBase();
+    }
     changeValue(1);
   }
 

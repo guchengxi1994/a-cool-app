@@ -17,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../_styles.dart';
-import '../../utils/platform_utils.dart';
 import '../../widgets/widgets.dart';
 import 'about_page.dart';
 import 'mobile_main_setting_page.dart';
@@ -184,6 +183,30 @@ class _MinePageState extends MobileBasePageState<MinePage> {
                 size: 25,
               ),
             ),
+          const SizedBox(
+            height: 10,
+          ),
+          InkWell(
+            onTap: () async {
+              PersistenceStorage ps = PersistenceStorage();
+              await ps.setUserEmail("");
+              await ps.setUserPassword("");
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil(Routers.pageLogin, (route) => false);
+            },
+            child: Container(
+                height: 50,
+                color: Colors.white,
+                child: const Center(
+                  child: Text(
+                    "退出登录",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red),
+                  ),
+                )),
+          ),
         ],
       ),
     );

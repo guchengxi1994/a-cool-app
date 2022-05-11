@@ -21,6 +21,7 @@ class SplashPageScreenController extends ChangeNotifier {
     "正在创建知识数据库...",
     "正在创建文件数据库...",
     "正在创建日程数据库...",
+    "正在创建好友数据库...",
     "正在验证身份...",
   ];
 
@@ -50,6 +51,7 @@ class SplashPageScreenController extends ChangeNotifier {
     await _initFileDatabase();
     await _initRole();
     await _initTodoDatabase();
+    await _initFriend();
     push();
   }
 
@@ -59,6 +61,11 @@ class SplashPageScreenController extends ChangeNotifier {
   }
 
   _initFileDatabase() async {
+    await Future.delayed(Duration(milliseconds: 500));
+    changeValue(1);
+  }
+
+  _initFriend() async {
     await Future.delayed(Duration(milliseconds: 500));
     changeValue(1);
   }

@@ -13,14 +13,17 @@ class Friend {
   String? userEmail;
   String? avatarPath;
   int? friendship;
+  String? password;
+  bool? isSelf;
 
-  Friend({
-    this.fid,
-    this.userName,
-    this.userEmail,
-    this.avatarPath,
-    this.friendship,
-  });
+  Friend(
+      {this.fid,
+      this.userName,
+      this.userEmail,
+      this.avatarPath,
+      this.friendship,
+      this.isSelf,
+      this.password});
 
   Friend.fromJson(Map<String, dynamic> json) {
     fid = json['fid'];
@@ -28,6 +31,7 @@ class Friend {
     userEmail = json['userEmail'];
     avatarPath = json['avatarPath'];
     friendship = json['friendship'];
+    isSelf = false;
   }
 
   Map<String, dynamic> toJson() {
@@ -37,6 +41,7 @@ class Friend {
     data['userEmail'] = userEmail;
     data['avatarPath'] = avatarPath;
     data['friendship'] = friendship;
+    data['isSelf'] = false;
     return data;
   }
 }

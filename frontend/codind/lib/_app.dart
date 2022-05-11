@@ -102,7 +102,7 @@ List<SingleChildWidget> getProviders() {
       create: (_) => ExperienceController(),
     ),
     ChangeNotifierProvider(
-      create: (_) => AvatarController(),
+      create: (_) => UserinfoController(),
     ),
     ChangeNotifierProvider(
       create: (_) => LanguageControllerV2(),

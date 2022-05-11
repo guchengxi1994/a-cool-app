@@ -29,4 +29,6 @@ abstract class AbstractSqliteUtils {
   Future<void> initFriendsBase();
   // 获取用户信息
   Future<Friend?> getFriend();
+  // 插入新用户
+  Future<void> insertFriend(Friend f);
 }

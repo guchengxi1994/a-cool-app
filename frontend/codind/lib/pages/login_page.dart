@@ -20,16 +20,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:taichi/taichi.dart';
+import '../entity/friend_entity.dart';
 import './main_page_v2.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:provider/provider.dart';
+import 'package:codind/utils/no_web/sqlite_utils.dart'
+    if (dart.library.html) 'package:codind/utils/web/sqlite_utils_web.dart';
 
 import '_qr_page.dart';
-
-// for test
-const users = {
-  'test@xiaoshuyui.org.cn': '123456',
-};
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -45,6 +43,12 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
 
   final DioUtils _dioUtils = DioUtils();
+  final SqliteUtils _sqliteUtils = SqliteUtils();
+
+  // for test
+  var users = {
+    'test@xiaoshuyui.org.cn': '123456',
+  };
 
   late LoginMessages messages = LoginMessages(
     passwordHint: FlutterI18n.translate(context, "login-labels.PasswordHint"),
@@ -128,6 +132,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<String?> _authUser(LoginData data) async {
     debugPrint('Name: ${data.name}, Password: ${data.password}');
+
+    Friend? friend = await _sqliteUtils.getFriend();
+    if (friend != null) {
+      // add users
+      users[friend.userEmail!] = friend.password!;
+      context.read<UserinfoController>().login(friend);
+    }
+
     return Future.delayed(loginTime).then((_) async {
       if (!users.containsKey(data.name)) {
         return 'User not exists';
@@ -143,11 +155,33 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  Future<String?> _signupUser(SignupData data) {
+  Future<String?> _signupUser(SignupData data) async {
     debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
-    return Future.delayed(loginTime).then((_) {
+    if (PlatformUtils.isWeb) {
+      return "web端暂不支持创建用户";
+    }
+    var _f = Friend(
+      userEmail: data.name,
+      password: data.password,
+    );
+
+    Friend? friend = await _sqliteUtils.getFriend();
+    if (friend == null || (friend.userEmail == "" && friend.password == "")) {
+      // 是新用户
+      await _sqliteUtils.insertFriend(Friend(
+        userEmail: data.name,
+        password: data.password,
+      ));
+
+      context.read<UserinfoController>().login(_f);
       return null;
-    });
+    } else {
+      if (data.name == friend.userName) {
+        return "用户已存在";
+      } else {
+        return "一台设备只有一个用户";
+      }
+    }
   }
 
   Future<String?> _recoverPassword(String name) {

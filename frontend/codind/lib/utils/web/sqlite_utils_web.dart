@@ -43,4 +43,7 @@ class SqliteUtils extends AbstractSqliteUtils {
   Future<Friend?> getFriend() async {
     return null;
   }
+
+  @override
+  Future<void> insertFriend(Friend f) async {}
 }

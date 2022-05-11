@@ -16,47 +16,50 @@ import '../../entity/entity.dart';
 
 // ignore: must_be_immutable
 class UserAvatarWidget extends StatelessWidget {
-  UserAvatarWidget({
-    Key? key,
-    required this.avatarImg,
-    required this.userInfo,
-  }) : super(key: key);
+  UserAvatarWidget(
+      {Key? key, required this.avatarImg, required this.userInfo, this.onTap})
+      : super(key: key);
 
   String? userInfo;
   AvatarImg? avatarImg;
+  // ignore: prefer_typing_uninitialized_variables
+  final onTap;
 
   @override
   Widget build(BuildContext context) {
     // debugPrint("[debug avatarImg]: ${avatarImg.toString()}");
-    return Card(
-      color: const Color.fromARGB(255, 199, 177, 152),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          SizedBox(
-            // height: MediaQuery.of(context).size.width * 0.2 <= 120
-            //     ? MediaQuery.of(context).size.width * 0.2
-            //     : 120,
-            // width: MediaQuery.of(context).size.width * 0.2 <= 120
-            //     ? MediaQuery.of(context).size.width * 0.2
-            //     : 120,
-            height: 120.sp,
-            width: 120.sp,
-            child: Transform.rotate(
-              angle: context.watch<AngleController>().angle,
-              child: buildAvatar(avatarImg),
+    return InkWell(
+      onTap: onTap,
+      child: Card(
+        color: const Color.fromARGB(255, 199, 177, 152),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SizedBox(
+              // height: MediaQuery.of(context).size.width * 0.2 <= 120
+              //     ? MediaQuery.of(context).size.width * 0.2
+              //     : 120,
+              // width: MediaQuery.of(context).size.width * 0.2 <= 120
+              //     ? MediaQuery.of(context).size.width * 0.2
+              //     : 120,
+              height: 120.sp,
+              width: 120.sp,
+              child: Transform.rotate(
+                angle: context.watch<AngleController>().angle,
+                child: buildAvatar(avatarImg),
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          if (userInfo != null)
-            Text(
-              userInfo ?? "用户A",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
+            const SizedBox(
+              height: 5,
             ),
-        ],
+            if (userInfo != null)
+              Text(
+                userInfo ?? "用户A",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
+              ),
+          ],
+        ),
       ),
     );
   }
