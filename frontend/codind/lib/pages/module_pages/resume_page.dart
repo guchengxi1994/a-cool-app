@@ -123,10 +123,12 @@ class _ResumePageState extends State<ResumePage> with BackgroundColorMixin {
 
 Widget _expandedWidget(BuildContext context, ExpandedColumnWidget w) {
   return Container(
+    color: Colors.transparent,
     constraints: BoxConstraints(
         minHeight: 100.h, minWidth: MediaQuery.of(context).size.width),
-    child: Card(
-      child: w,
-    ),
+    // child: Card(
+    //   child: w,
+    // ),
+    child: w,
   );
 }

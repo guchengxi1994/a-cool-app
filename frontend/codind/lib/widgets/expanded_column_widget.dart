@@ -1,9 +1,12 @@
 // ignore_for_file: depend_on_referenced_packages, no_leading_underscores_for_local_identifiers
 
+import 'package:codind/utils/extensions/datetime_extension.dart';
 import 'package:codind/widgets/create_event_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/language_provider.dart';
 import '../providers/my_providers.dart' show ExperienceController;
 
 // ignore: must_be_immutable
@@ -94,18 +97,185 @@ class _ExpandedColumnWidgetState extends State<ExpandedColumnWidget> {
       margin: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
       // width: MediaQuery.of(context).size.width,
       child: Container(
-        color: Colors.white,
+        color: Colors.transparent,
         child: IconButton(
           icon: const Icon(
             Icons.add,
             size: 40,
             color: Colors.black,
           ),
-          onPressed: () {
-            addWidget(TextWidgetV2(
-              name: widget.name,
-              index: children.length - 1,
-            ));
+          onPressed: () async {
+            var career = "";
+            DateTime? startTime = DateTime.now();
+            DateTime? endTime = DateTime.now().add(const Duration(days: 1));
+            var sep =
+                context.read<LanguageControllerV2>().currentLang == "zh_CN"
+                    ? DatetimeSeparator.chinese
+                    : DatetimeSeparator.slash;
+            var res = await showCupertinoDialog(
+                context: context,
+                builder: (context) {
+                  return UnconstrainedBox(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      child: Dialog(
+                        insetPadding: EdgeInsets.zero,
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: const [
+                                BoxShadow(
+                                    blurRadius: 10,
+                                    spreadRadius: 1,
+                                    color: Color(0xFFF7F7F7))
+                              ],
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "请输入",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text("选择开始时间"),
+                                  TextButton(
+                                      onPressed: () async {
+                                        showDatePicker(
+                                                locale: context
+                                                            .read<
+                                                                LanguageControllerV2>()
+                                                            .currentLang ==
+                                                        "zh_CN"
+                                                    ? const Locale("zh", "CH")
+                                                    : const Locale("en", "US"),
+                                                context: context,
+                                                initialDate: startTime!,
+                                                firstDate: DateTime(1970),
+                                                lastDate: DateTime(
+                                                    startTime!.year + 20))
+                                            .then((value) {
+                                          if (value != null) {
+                                            setState(() {
+                                              startTime = value;
+                                            });
+                                          }
+                                        });
+                                      },
+                                      child: Text(startTime!.toDateString(sep)))
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text("选择结束时间"),
+                                  TextButton(
+                                      onPressed: () async {
+                                        showDatePicker(
+                                                locale: context
+                                                            .read<
+                                                                LanguageControllerV2>()
+                                                            .currentLang ==
+                                                        "zh_CN"
+                                                    ? const Locale("zh", "CH")
+                                                    : const Locale("en", "US"),
+                                                context: context,
+                                                initialDate: startTime!,
+                                                firstDate: DateTime(1970),
+                                                lastDate: DateTime(
+                                                    endTime!.year + 20))
+                                            .then((value) {
+                                          if (value != null) {
+                                            setState(() {
+                                              endTime = value;
+                                            });
+                                          }
+                                        });
+                                      },
+                                      child: Text(endTime!.toDateString(sep)))
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                constraints:
+                                    const BoxConstraints(minHeight: 100),
+                                width: MediaQuery.of(context).size.width * 0.75,
+                                child: TextField(
+                                  maxLength: 200,
+                                  maxLines: null,
+                                  decoration: const InputDecoration(
+                                    disabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Color.fromARGB(
+                                                255, 39, 50, 100),
+                                            width: 3)),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.amber, width: 2),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15))),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.green, width: 3)),
+                                  ),
+                                  onChanged: (v) {
+                                    career = v;
+                                  },
+                                ),
+                              ),
+                              Expanded(child: Container()),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(0);
+                                      },
+                                      child: const Text("取消")),
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(1);
+                                      },
+                                      child: const Text("确定")),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                });
+
+            if (res == 1) {
+              addWidget(Column(
+                // mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "${startTime!.toDateString(sep)}~${endTime!.toDateString(sep)}",
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text(career),
+                ],
+              ));
+            }
           },
         ),
       ),
@@ -169,62 +339,7 @@ class DeletableWidget extends StatelessWidget {
   }
 }
 
-// @Deprecated("dont be used")
-// class TextWidget extends StatefulWidget {
-//   TextWidget({Key? key, required this.name, required this.index})
-//       : super(key: key);
-//   String name;
-//   int index;
-
-//   @override
-//   State<TextWidget> createState() => _TextWidgetState();
-// }
-
-// class _TextWidgetState extends State<TextWidget> {
-//   String result = "";
-//   bool enable = true;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return TextField(
-//       maxLength: 100,
-//       maxLines: 3,
-//       enabled: enable,
-//       decoration: InputDecoration(
-//         disabledBorder: const OutlineInputBorder(
-//             borderSide:
-//                 BorderSide(color: Color.fromARGB(255, 39, 50, 100), width: 3)),
-//         enabledBorder: const OutlineInputBorder(
-//             borderSide: BorderSide(color: Colors.amber, width: 2),
-//             borderRadius: BorderRadius.all(Radius.circular(15))),
-//         focusedBorder: const OutlineInputBorder(
-//             borderSide: BorderSide(color: Colors.green, width: 3)),
-//         suffix: enable
-//             ? IconButton(
-//                 icon: const Icon(Icons.done),
-//                 onPressed: () {
-//                   setState(() {
-//                     context
-//                         .read<ExperienceController>()
-//                         .addValue(widget.name, widget.index, result);
-//                     enable = false;
-//                   });
-//                 },
-//               )
-//             : null,
-//       ),
-//       onChanged: (v) {
-//         result = v;
-//       },
-//     );
-//   }
-// }
-
+@Deprecated("will be removed")
 // ignore: must_be_immutable
 class TextWidgetV2 extends StatefulWidget {
   TextWidgetV2({Key? key, required this.name, required this.index})
@@ -236,6 +351,7 @@ class TextWidgetV2 extends StatefulWidget {
   State<TextWidgetV2> createState() => _TextWidgetV2State();
 }
 
+// ignore: deprecated_member_use_from_same_package
 class _TextWidgetV2State extends State<TextWidgetV2> {
   String result = "";
   bool enable = true;
