@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'dart:convert';
 
 import 'package:codind/entity/enums.dart';
@@ -53,7 +55,7 @@ class Schedule {
     for (var s in subject!) {
       sum += s.subCompletion!;
     }
-    return (((sum / subject!.length) * 100) ~/ 1).toString() + "%";
+    return "${((sum / subject!.length) * 100) ~/ 1}%";
   }
 
   DateTime _getEndTime() {
@@ -238,7 +240,7 @@ class Subject {
       } else {
         s = "string";
       }
-      data['job'] = s + "__split__" + (subjectJob!.fileLocation ?? "");
+      data['job'] = "${s}__split__${subjectJob!.fileLocation ?? ""}";
     }
     return data;
   }

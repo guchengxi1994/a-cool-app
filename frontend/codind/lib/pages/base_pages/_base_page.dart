@@ -108,6 +108,7 @@ class BasePageState<T extends BasePage> extends State<T> {
                     });
 
                 if (res) {
+                  // ignore: use_build_context_synchronously
                   Navigator.of(context).pop();
                 }
               } else {

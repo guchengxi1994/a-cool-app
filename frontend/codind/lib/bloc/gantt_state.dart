@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 /*
  * @Descripttion: 
  * @version: 
@@ -84,20 +86,12 @@ class GanttState extends Equatable {
             } else {
               var _tmp = Subject.fromJson(sb.toJson());
               if (fromMonth < currentMonth) {
-                _tmp.from = currentYear.toString() +
-                    "-" +
-                    currentMonth.toString() +
-                    "-" +
-                    "1";
+                _tmp.from = "$currentYear-$currentMonth-1";
               }
 
               if (toMonth > currentMonth) {
-                _tmp.to = currentYear.toString() +
-                    "-" +
-                    currentMonth.toString() +
-                    "-" +
-                    my.DateUtils.getCurrentMonthDays(currentYear, currentMonth)
-                        .toString();
+                _tmp.to =
+                    "$currentYear-$currentMonth-${my.DateUtils.getCurrentMonthDays(currentYear, currentMonth)}";
               }
               _result.add(_tmp);
             }

@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
@@ -39,7 +41,7 @@ class _MyAppState extends State<MyApp> {
       });
     }
 
-    WidgetsBinding.instance!.addPostFrameCallback(
+    WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
         Future.delayed(const Duration(seconds: 1)).then((value) =>
             context.read<LanguageControllerV2>().changeLanguage(widget.lang!));

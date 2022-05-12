@@ -25,8 +25,7 @@ class SplashPageScreenController extends ChangeNotifier {
     "正在验证身份...",
   ];
 
-  String get value =>
-      (_currentIndex / steps.length * 100).ceil().toString() + "%";
+  String get value => "${(_currentIndex / steps.length * 100).ceil()}%";
 
   List<String> get done => steps.getRange(0, _currentIndex).toList();
 

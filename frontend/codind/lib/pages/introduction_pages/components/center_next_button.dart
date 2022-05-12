@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, no_leading_underscores_for_local_identifiers
 
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
@@ -88,10 +88,10 @@ class CenterNextButton extends StatelessWidget {
                     ) {
                       return SharedAxisTransition(
                         fillColor: Colors.transparent,
-                        child: child,
                         animation: animation,
                         secondaryAnimation: secondaryAnimation,
                         transitionType: SharedAxisTransitionType.vertical,
+                        child: child,
                       );
                     },
                     child: _signUpMoveAnimation.value > 0.7

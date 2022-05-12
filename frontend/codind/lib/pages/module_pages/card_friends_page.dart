@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, prefer_const_constructors
+// ignore_for_file: must_be_immutable, prefer_const_constructors, depend_on_referenced_packages
 
 import 'package:card_swiper/card_swiper.dart';
 import 'package:codind/widgets/card_widget.dart';

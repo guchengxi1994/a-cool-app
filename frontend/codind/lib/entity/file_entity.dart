@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_overrides, unused_element, body_might_complete_normally_nullable
+// ignore_for_file: unnecessary_overrides, unused_element, body_might_complete_normally_nullable, no_leading_underscores_for_local_identifiers
 
 /*
  * @Descripttion: 
@@ -156,10 +156,10 @@ List<String> _getPath(EntityFolder entityFolder) {
 
   for (var i in entityFolder.children) {
     if (i.runtimeType == EntityFile) {
-      names.add((i as EntityFile).fatherPath + "/" + i.name);
+      names.add("${(i as EntityFile).fatherPath}/${i.name}");
     } else {
       if (!(i as EntityFolder).hasChildren) {
-        var s = i.fatherPath + "/" + i.name;
+        var s = "${i.fatherPath}/${i.name}";
         names.add(s);
       } else {
         names.addAll(_getPath(i));
@@ -239,7 +239,7 @@ EntityFolder? toStructured(FlattenObject object,
             if (j == 0) {
               fatherPath = fatherPath + slist[j];
             } else {
-              fatherPath = fatherPath + "/" + slist[j];
+              fatherPath = "$fatherPath/${slist[j]}";
             }
           }
           _en = EntityFolder(

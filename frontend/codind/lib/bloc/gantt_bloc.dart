@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:bloc/bloc.dart';
 import 'package:codind/entity/entity.dart';
 import 'package:codind/utils/common.dart' as my;

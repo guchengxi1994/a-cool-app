@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 /*
  * @Descripttion: 
  * @version: 
@@ -106,9 +108,7 @@ class _GanttPageState extends State<GanttPage> {
                                           },
                                           icon: const Icon(
                                               Icons.navigate_before)),
-                                      Text(currentYear.toString() +
-                                          "." +
-                                          currentMonth.toString()),
+                                      Text("$currentYear.$currentMonth"),
                                       IconButton(
                                           onPressed: () {
                                             setState(() {
@@ -235,10 +235,10 @@ class _GanttPageState extends State<GanttPage> {
             child: ThingsWidget(calendarType: _calendarType),
           ),
           Expanded(
+            flex: _flexRight,
             child: _calendarType == CalendarType.year
                 ? CalendarWidget()
                 : CalendarByMonth(),
-            flex: _flexRight,
           )
         ],
       );
@@ -256,10 +256,10 @@ class _GanttPageState extends State<GanttPage> {
               child: ThingsWidget(calendarType: _calendarType),
             ),
             Expanded(
+              flex: _flexRight,
               child: _calendarType == CalendarType.year
                   ? CalendarWidget()
                   : CalendarByMonth(),
-              flex: _flexRight,
             )
           ],
         );

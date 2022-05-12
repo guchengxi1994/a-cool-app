@@ -4,6 +4,7 @@ import 'package:codind/providers/my_providers.dart'
     show RadioProvider, MainPageCardController;
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 
 import '../_styles.dart';
@@ -71,6 +72,14 @@ Widget _getCircle(bool selected, {Color? color, bool? fill}) {
   if (selected) {
     if (fill!) {
       return Container(
+        height: 15,
+        width: 15,
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(100),
+          ),
+          border: Border.all(width: 2, color: color ?? Colors.red),
+        ),
         child: Container(
           height: 10,
           width: 10,
@@ -80,14 +89,6 @@ Widget _getCircle(bool selected, {Color? color, bool? fill}) {
               Radius.circular(5),
             ),
           ),
-        ),
-        height: 15,
-        width: 15,
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(100),
-          ),
-          border: Border.all(width: 2, color: color ?? Colors.red),
         ),
       );
     } else {

@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, no_leading_underscores_for_local_identifiers
+
 /*
  * @Descripttion: 
  * @version: 
@@ -223,6 +225,7 @@ class _MinePageState extends MobileBasePageState<MinePage> {
               PersistenceStorage ps = PersistenceStorage();
               await ps.setUserEmail("");
               await ps.setUserPassword("");
+              // ignore: use_build_context_synchronously
               Navigator.of(context)
                   .pushNamedAndRemoveUntil(Routers.pageLogin, (route) => false);
             },

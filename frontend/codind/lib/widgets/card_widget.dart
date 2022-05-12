@@ -19,6 +19,7 @@ class CardWidget extends StatefulWidget {
       : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _CardWidgetState createState() => _CardWidgetState();
 }
 
@@ -190,6 +191,7 @@ class _CardWidgetState extends State<CardWidget> {
           width: 0.75 * MediaQuery.of(context).size.width,
           height: 500,
           child: CoolExpandedWidget(
+            reversed: true,
             child: Stack(children: [
               Positioned(
                 // padding: const EdgeInsets.only(right: 16),
@@ -272,7 +274,6 @@ class _CardWidgetState extends State<CardWidget> {
                 ),
               )
             ]),
-            reversed: true,
           ),
         ));
   }

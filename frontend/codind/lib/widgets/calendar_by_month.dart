@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:codind/bloc/gantt_bloc.dart';
 import 'package:codind/utils/utils.dart' as my;
 import 'package:flutter/material.dart';
@@ -55,8 +57,8 @@ class _CalendarByMonthState extends State<CalendarByMonth> {
                 height: containerSize,
                 width: containerSize,
                 alignment: Alignment.center,
-                child: Text((e + 1).toString()),
                 color: const Color.fromARGB(255, 175, 147, 145),
+                child: Text((e + 1).toString()),
               );
             }).toList(),
           ),

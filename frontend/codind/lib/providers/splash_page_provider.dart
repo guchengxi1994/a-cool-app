@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, no_leading_underscores_for_local_identifiers
 
 import 'package:codind/entity/friend_entity.dart';
 import 'package:codind/router.dart';
@@ -38,8 +38,7 @@ class SplashPageScreenController extends ChangeNotifier {
   List<String> get splashPageRows =>
       done.length <= 5 ? done : done.sublist(done.length - 4);
 
-  String get value =>
-      (_currentIndex / steps.length * 100).ceil().toString() + "%";
+  String get value => "${(_currentIndex / steps.length * 100).ceil()}%";
 
   changeValue(int step) {
     _currentIndex += step;

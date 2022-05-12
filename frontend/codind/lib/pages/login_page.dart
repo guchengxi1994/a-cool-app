@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, no_leading_underscores_for_local_identifiers
 
 /*
  * @Descripttion: 
@@ -23,6 +23,7 @@ import 'package:taichi/taichi.dart';
 import '../entity/friend_entity.dart';
 import './main_page_v2.dart';
 import 'package:codind/providers/my_providers.dart';
+// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:codind/utils/no_web/sqlite_utils.dart'
     if (dart.library.html) 'package:codind/utils/web/sqlite_utils_web.dart';
@@ -113,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var logdata = LoginData(
           name: await ps.getUserEmail(), password: await ps.getUserPassword());
 
@@ -286,9 +287,9 @@ class _LoginScreenState extends State<LoginScreen> {
           Visibility(
               visible: isLoading,
               child: Positioned(
-                child: TaichiAutoRotateGraph.simple(size: 50),
                 right: 10,
                 bottom: 10,
+                child: TaichiAutoRotateGraph.simple(size: 50),
               ))
         ],
       ),

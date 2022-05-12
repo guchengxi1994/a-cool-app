@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, must_be_immutable, prefer_const_constructors
+// ignore_for_file: prefer_typing_uninitialized_variables, must_be_immutable, prefer_const_constructors, no_leading_underscores_for_local_identifiers
 
 import 'package:codind/entity/schedule.dart';
 import 'package:codind/utils/platform_utils.dart';
@@ -49,10 +49,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
               to: DateTime(widget.currentYear!, widget.month!, widget.day!)
                   .toString(),
               subCompletion: 0,
-              subTitle: widget.month.toString() +
-                  "月" +
-                  (widget.day).toString() +
-                  "日的事情"),
+              subTitle: "${widget.month}月${widget.day}日的事情"),
         );
       }
     }

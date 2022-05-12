@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, no_leading_underscores_for_local_identifiers, use_build_context_synchronously
 
 /*
  * @Descripttion: 
@@ -23,6 +23,7 @@ import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 
 import '../entity/friend_entity.dart';
@@ -49,7 +50,7 @@ class _MainPageV2State extends State<MainPageV2> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       _controller.addListener(() {
         context.read<AngleController>().changeAngle(_controller.offset);
       });

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, no_leading_underscores_for_local_identifiers
+
 import 'package:codind/bloc/gantt_bloc.dart';
 import 'package:codind/entity/entity.dart';
 import 'package:codind/pages/module_pages/_schedule_detail_page.dart';
@@ -227,7 +229,7 @@ class _ThingItemState extends State<ThingItem> {
   TableRow renderSubTitles(Subject subject, int index, int id) {
     return TableRow(children: [
       _TableItemWidget(
-        title: index.toString() + "-" + (id + 1).toString(),
+        title: "$index-${id + 1}",
       ),
       InkWell(
         onTap: subject.subjectJob != null
@@ -252,7 +254,7 @@ class _ThingItemState extends State<ThingItem> {
           color: Colors.grey[300],
           margin: const EdgeInsets.only(left: 5, top: 5, right: 10),
           child: Text(
-            "   " + subject.subTitle!,
+            "   ${subject.subTitle!}",
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -267,7 +269,7 @@ class _ThingItemState extends State<ThingItem> {
         title: subject.duation,
       ),
       _TableItemWidget(
-        title: (subject.subCompletion! * 100 ~/ 1).toString() + "%",
+        title: "${subject.subCompletion! * 100 ~/ 1}%",
       ),
       Container(),
     ]);

@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:codind/_apis.dart';
 import 'package:codind/pages/base_pages/_mobile_base_page.dart';
 import 'package:codind/utils/dio_utils.dart';
@@ -186,7 +188,7 @@ class _MobileScanToLoginWidgetState
 
                       String email = await ps.getUserEmail();
                       String url =
-                          apiRoute + Apis["login"]! + "k=$qrCode" + "&v=$email";
+                          "$apiRoute${Apis["login"]!}k=$qrCode&v=$email";
 
                       Response? response = await _dioUtils.get(url);
                       setState(() {

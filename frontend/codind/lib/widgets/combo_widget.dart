@@ -59,8 +59,8 @@ class ComboWidget extends StatelessWidget {
           tapOnW1 == null
               ? w1
               : InkWell(
-                  child: w1,
                   onTap: tapOnW1!(),
+                  child: w1,
                 ),
           SizedBox(
             height: gap ?? 5,
@@ -68,8 +68,8 @@ class ComboWidget extends StatelessWidget {
           tapOnW2 == null
               ? w2
               : InkWell(
-                  child: w2,
                   onTap: tapOnW2!(),
+                  child: w2,
                 ),
         ],
       ),

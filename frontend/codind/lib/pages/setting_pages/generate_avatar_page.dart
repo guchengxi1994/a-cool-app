@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable
+// ignore_for_file: prefer_const_constructors, must_be_immutable, depend_on_referenced_packages
 
 import 'package:codind/entity/entity.dart';
 import 'package:codind/providers/my_providers.dart';
@@ -357,15 +357,12 @@ class _GenerateAvatarPageState<T>
                         FlutterI18n.translate(context, "avatarPage.warning3"),
                         context);
                   } else {
-                    String url = quertStr +
-                        defaultType +
-                        "/" +
-                        _controller.text +
-                        ".$selectedImgType";
+                    String url =
+                        "$quertStr$defaultType/${_controller.text}.$selectedImgType";
 
                     if (selectedImgType == "svg") {
-                      url += "?background=%23" +
-                          defaultBackgroundColor.value.toRadixString(16);
+                      url +=
+                          "?background=%23${defaultBackgroundColor.value.toRadixString(16)}";
                     }
 
                     // String url = quertStr +

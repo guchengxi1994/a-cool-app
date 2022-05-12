@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, prefer_const_constructors
+// ignore_for_file: must_be_immutable, prefer_const_constructors, depend_on_referenced_packages, use_build_context_synchronously, no_leading_underscores_for_local_identifiers
 
 import 'package:codind/pages/setting_pages/account_safety_page.dart';
 import 'package:codind/providers/my_providers.dart';

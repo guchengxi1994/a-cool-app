@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: must_be_immutable, prefer_const_constructors, prefer_const_literals_to_create_immutables, depend_on_referenced_packages, no_leading_underscores_for_library_prefixes
 
 /*
  * @Descripttion: 
@@ -227,24 +227,24 @@ class _CreateKnowledgeWidgetState<T>
               hint: Text(currentLang),
               items: [
                 DropdownMenuItem(
-                  child: Text("Dart"),
                   value: 0,
+                  child: Text("Dart"),
                 ),
                 DropdownMenuItem(
-                  child: Text("C++"),
                   value: 1,
+                  child: Text("C++"),
                 ),
                 DropdownMenuItem(
-                  child: Text("Rust"),
                   value: 2,
+                  child: Text("Rust"),
                 ),
                 DropdownMenuItem(
-                  child: Text("Python"),
                   value: 3,
+                  child: Text("Python"),
                 ),
                 DropdownMenuItem(
-                  child: Text("Java"),
                   value: 4,
+                  child: Text("Java"),
                 ),
               ],
               onChanged: (value) {
@@ -395,6 +395,7 @@ class _CreateKnowledgeWidgetState<T>
                     await context
                         .read<KnowledgeController>()
                         .addItem(_knowledgeEntity);
+                    // ignore: use_build_context_synchronously
                     Navigator.of(context).pop();
                   },
                   child:

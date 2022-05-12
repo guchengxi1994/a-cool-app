@@ -1,5 +1,5 @@
 /// modified from https://github.com/Im-unk/simple_login_form_flutter_UI/blob/master/lib/Views/login.dart
-// ignore_for_file: constant_identifier_names, unused_field, prefer_const_constructors
+// ignore_for_file: constant_identifier_names, unused_field, prefer_const_constructors, depend_on_referenced_packages, no_leading_underscores_for_local_identifiers
 
 import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:codind/notifications/notifications.dart';
@@ -160,6 +160,10 @@ class _CreateNewTodoState extends State<_CreateNewTodo> with LoadingPageMixin {
             width: 250,
             height: 250,
             child: Container(
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                      colors: [Colors.purple[700]!, Colors.pink[700]!])),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -170,10 +174,6 @@ class _CreateNewTodoState extends State<_CreateNewTodo> with LoadingPageMixin {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                      colors: [Colors.purple[700]!, Colors.pink[700]!])),
             ),
           ),
         ],

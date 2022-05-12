@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously
+
 /*
  * @Descripttion: 
  * @version: 
@@ -115,8 +117,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                             height: 20,
                             width: 20,
                             alignment: Alignment.center,
-                            child: Text((e + 1).toString()),
                             color: const Color.fromARGB(255, 175, 147, 145),
+                            child: Text((e + 1).toString()),
                           );
                         }).toList(),
                       ),
@@ -217,15 +219,8 @@ class _DayBoxState extends State<DayBox> {
     }
 
     tootipMessage = widget.isWeekend
-        ? widget.rowId.toString() +
-            "月" +
-            (widget.columnId + 1).toString() +
-            "日" +
-            " 周末"
-        : widget.rowId.toString() +
-            "月" +
-            (widget.columnId + 1).toString() +
-            "日";
+        ? "${widget.rowId}月${widget.columnId + 1}日 周末"
+        : "${widget.rowId}月${widget.columnId + 1}日";
   }
 
   @override

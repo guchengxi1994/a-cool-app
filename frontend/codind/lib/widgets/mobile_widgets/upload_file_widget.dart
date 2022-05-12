@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:codind/providers/multi_image_upload_provider.dart';
 import 'package:codind/utils/platform_utils.dart';
+// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -80,6 +81,7 @@ class UploadSingleImageWidget extends StatefulWidget {
   UploadSingleImageWidget({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _UploadSingleImageWidgetState createState() =>
       _UploadSingleImageWidgetState();
 }
@@ -191,6 +193,7 @@ class _ImageWidgetV2State extends State<ImageWidgetV2> {
                   }
 
                   if (widget.isMulti ?? false) {
+                    // ignore: use_build_context_synchronously
                     context
                         .read<MultiImageUploadController>()
                         .addImg(ImgData(data: data, imgname: imageName));

@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 /*
  * @Descripttion: 
  * @version: 
@@ -109,7 +111,7 @@ class PersistenceStorage {
         imgPath: imgPath,
         background: color == null || color == ""
             ? Colors.white
-            : Color(int.parse("0x" + color)));
+            : Color(int.parse("0x$color")));
     return _ava;
   }
 

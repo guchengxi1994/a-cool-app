@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, no_leading_underscores_for_local_identifiers
+
 import 'package:codind/widgets/create_event_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,22 +35,22 @@ class _ExpandedColumnWidgetState extends State<ExpandedColumnWidget> {
       children.insert(
           index - 1,
           DeletableWidget(
-            child: w,
             index: index - 1,
             removeSelf: (v) => removeWidget(index - 1),
+            child: w,
           ));
     } else {
       children.insert(
           index - 1,
           DeletableWidget(
+            index: index - 1,
+            removeSelf: (v) => removeWidget(index - 1),
             child: Container(
               height: 150,
               color: const Color.fromARGB(255, 241, 235, 221),
               // margin: const EdgeInsets.only(left: 20, right: 20),
               width: MediaQuery.of(context).size.width,
             ),
-            index: index - 1,
-            removeSelf: (v) => removeWidget(index - 1),
           ));
     }
 

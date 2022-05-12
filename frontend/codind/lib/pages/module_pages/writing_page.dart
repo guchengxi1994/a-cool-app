@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
+// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables, depend_on_referenced_packages, use_build_context_synchronously, no_leading_underscores_for_local_identifiers
 
 /*
  * @Descripttion: 
@@ -37,6 +37,7 @@ class _EmojiFutureEntity {
   List<String>? usedEmoji;
   String? jsonLikeStr;
 
+  // ignore: unused_element
   _EmojiFutureEntity({this.usedEmoji, this.jsonLikeStr});
 
   // ignore: unused_element
@@ -129,7 +130,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       FocusScope.of(context).requestFocus(focusNode);
       li = List<int>.generate(
           (context.read<RadioProvider>().mds.keys.toList().length),
@@ -321,10 +322,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                 context: context,
                 builder: (context) {
                   return CupertinoAlertDialog(
-                    title: Text(FlutterI18n.translate(
-                            context, "label.exitWarning") +
-                        "\n" +
-                        FlutterI18n.translate(context, "label.unSavedWarning")),
+                    title: Text(
+                        "${FlutterI18n.translate(context, "label.exitWarning")}\n${FlutterI18n.translate(context, "label.unSavedWarning")}"),
                     actions: [
                       CupertinoActionSheetAction(
                           onPressed: () {
@@ -357,13 +356,13 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
         extendBody: false,
         key: _scaffoldKey,
         endDrawer: SizedBox(
+          width: 0.8 * MediaQuery.of(context).size.width,
           child: Scaffold(
             body: Markdown(
               padding: const EdgeInsets.only(bottom: 100),
               data: markdownStr,
             ),
           ),
-          width: 0.8 * MediaQuery.of(context).size.width,
         ),
         body: w,
         bottomSheet: bottomSheet(),
@@ -376,22 +375,22 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
+              flex: 1,
               child: Scaffold(
                 body: w,
               ),
-              flex: 1,
             ),
             const VerticalDivider(
               thickness: 2,
               color: Colors.grey,
             ),
             Expanded(
+              flex: 1,
               child: Scaffold(
                   body: _ChangedMdEditor(
                 key: _globalKey,
                 mdData: textEditingController.text,
               )),
-              flex: 1,
             )
           ],
         ),
@@ -1030,7 +1029,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                     });
                     try {
                       saveMdFile(
-                          filename: res.endsWith(".md") ? res : res + ".md",
+                          filename: res.endsWith(".md") ? res : "$res.md",
                           data: textEditingController.text);
                     } catch (_, s) {
                       debugPrint(s.toString());

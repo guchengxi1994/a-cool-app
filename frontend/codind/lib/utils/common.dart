@@ -11,7 +11,7 @@ import 'dart:math';
 
 import 'package:codind/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
-import "dart:ui" as _ui;
+import "dart:ui" as ui;
 
 class Responsive {
 // This size work fine on my design, maybe you need some customization depends on your design
@@ -57,7 +57,7 @@ class CommonUtils {
       PlatformUtils.isMobile ? min(scaleWidth, scaleHeight) : 1;
 
   /// 获取屏幕大小
-  static MediaQueryData mediaQuery = MediaQueryData.fromWindow(_ui.window);
+  static MediaQueryData mediaQuery = MediaQueryData.fromWindow(ui.window);
   static final double _width = mediaQuery.size.width;
   static final double _height = mediaQuery.size.height;
 

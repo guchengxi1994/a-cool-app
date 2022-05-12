@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, depend_on_referenced_packages
 
 import 'package:codind/pages/setting_pages/generate_avatar_page.dart';
 import 'package:codind/providers/userinfo_provider.dart';
@@ -52,6 +52,8 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
                               context.watch<UserinfoController>().img),
                         ),
                         Positioned(
+                          right: 0,
+                          bottom: 0,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
                             child: Container(
@@ -61,8 +63,6 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
                                   const Icon(Icons.photo, color: Colors.blue),
                             ),
                           ),
-                          right: 0,
-                          bottom: 0,
                         )
                       ],
                     ),
@@ -79,6 +79,8 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
               ),
             ),
             Positioned(
+              left: 5,
+              top: 5,
               child: IconButton(
                 icon: const Icon(
                   Icons.chevron_left,
@@ -89,8 +91,6 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
                   Navigator.of(context).pop();
                 },
               ),
-              left: 5,
-              top: 5,
             ),
           ],
         ),

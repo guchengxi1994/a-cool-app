@@ -77,11 +77,11 @@ void main() {
 
 """;
 
-  EntityFolder _en = EntityFolder.fromJson(jsonDecode(s));
+  EntityFolder en = EntityFolder.fromJson(jsonDecode(s));
 
   // print(_en.next("folder_ccc", 3));
 
-  var res = flatten(_en);
+  var res = flatten(en);
 
   // print(res.path);
 

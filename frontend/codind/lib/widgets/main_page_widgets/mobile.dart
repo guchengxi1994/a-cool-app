@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:card_swiper/card_swiper.dart';
 import 'package:codind/entity/avatar_img_entity.dart';
 import 'package:codind/providers/my_providers.dart';

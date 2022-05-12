@@ -94,9 +94,9 @@ class TodoTimepickerWidgetState extends State<TodoTimepickerWidget> {
     int min = res.minute;
     var minstr = min.toString();
     if (min < 10) {
-      minstr = "0" + minstr;
+      minstr = "0$minstr";
     }
 
-    selectedTime = hour.toString() + " : " + minstr;
+    selectedTime = "$hour : $minstr";
   }
 }

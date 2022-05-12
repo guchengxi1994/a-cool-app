@@ -41,7 +41,7 @@ dependencies:
   # fluttertoast: ^8.0.9
   flutter_smart_dialog: ^3.4.0+2
   dio: ^4.0.4
-  extended_image: ^6.0.1
+  extended_image: ^6.2.0
   flutter_markdown: ^0.6.9
   url_launcher: ^6.0.18
   flutter_colorpicker: ^1.0.3
@@ -88,8 +88,8 @@ dependencies:
   taichi:
     path: D:/github_repo/taichi
 
-dependency_overrides:
-  js: ^0.6.4
+# dependency_overrides:
+#   js: ^0.6.4
 
 dev_dependencies:
   flutter_test:
@@ -100,7 +100,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.4
+  flutter_lints: ^2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
