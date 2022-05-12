@@ -122,7 +122,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
           IconButton(
             onPressed: () {
               if (schedule!.subject == null || schedule!.subject!.isEmpty) {
-                showToastMessage("子项目为空", null);
+                showToastMessage("子项目为空");
               } else {
                 if (schedule!.title == "") {
                   schedule!.title = "新建日程";
@@ -130,7 +130,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
 
                 for (var s in schedule!.subject!) {
                   if (!s.validate()) {
-                    showToastMessage("子项目验证失败，请确认提交", null);
+                    showToastMessage("子项目验证失败，请确认提交");
                     return;
                   }
                 }
@@ -369,10 +369,10 @@ class _SubRowWidgetState extends State<SubRowWidget> {
                       _subject.subCompletion = _res;
                       setState(() {});
                     } else {
-                      showToastMessage("完成度需大于0小于1", null);
+                      showToastMessage("完成度需大于0小于1");
                     }
                   } catch (_) {
-                    showToastMessage("数值异常", null);
+                    showToastMessage("数值异常");
                   }
                 });
               },
@@ -399,18 +399,18 @@ class _SubRowWidgetState extends State<SubRowWidget> {
                           onPressed: () {
                             setState(() {
                               if (_subject.subTitle == "") {
-                                showToastMessage("标题不能为空", null);
+                                showToastMessage("标题不能为空");
                                 return;
                               }
                               try {
                                 if (int.parse(_subject.duation) < 0) {
-                                  showToastMessage("开始时间比结束时间晚", null);
+                                  showToastMessage("开始时间比结束时间晚");
                                 } else {
                                   widget.commitSelf(widget.index, _subject);
                                 }
                               } catch (e) {
                                 debugPrint(e.toString());
-                                showToastMessage("录入失败", null);
+                                showToastMessage("录入失败");
                               }
                             });
                           },
@@ -435,18 +435,18 @@ class _SubRowWidgetState extends State<SubRowWidget> {
                           onPressed: () {
                             setState(() {
                               if (_subject.subTitle == "") {
-                                showToastMessage("标题不能为空", null);
+                                showToastMessage("标题不能为空");
                                 return;
                               }
                               try {
                                 if (int.parse(_subject.duation) < 0) {
-                                  showToastMessage("开始时间比结束时间晚", null);
+                                  showToastMessage("开始时间比结束时间晚");
                                 } else {
                                   widget.commitSelf(widget.index, _subject);
                                 }
                               } catch (e) {
                                 debugPrint(e.toString());
-                                showToastMessage("录入失败", null);
+                                showToastMessage("录入失败");
                               }
                             });
                           },

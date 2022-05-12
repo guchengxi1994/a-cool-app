@@ -310,8 +310,8 @@ class _GenerateAvatarPageState<T>
                     ),
                     tapOnW2: () {
                       showToastMessage(
-                          FlutterI18n.translate(context, "avatarPage.warning4"),
-                          context);
+                        FlutterI18n.translate(context, "avatarPage.warning4"),
+                      );
                     },
                   ),
                   FindDropdown(
@@ -354,8 +354,8 @@ class _GenerateAvatarPageState<T>
                 onPressed: () async {
                   if (_controller.text == "") {
                     showToastMessage(
-                        FlutterI18n.translate(context, "avatarPage.warning3"),
-                        context);
+                      FlutterI18n.translate(context, "avatarPage.warning3"),
+                    );
                   } else {
                     String url =
                         "$quertStr$defaultType/${_controller.text}.$selectedImgType";

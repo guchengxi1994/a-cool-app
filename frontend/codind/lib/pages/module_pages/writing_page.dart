@@ -976,7 +976,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                     textEditingController.text +=
                         convertTabelScaleToString(result[0], result[1]);
                   } else {
-                    showToastMessage("行列数值错误", null);
+                    showToastMessage("行列数值错误");
                   }
                 },
                 icon: const Icon(Icons.table_chart)),
@@ -1040,8 +1040,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                     });
                   } else {
                     showToastMessage(
-                        FlutterI18n.translate(context, "errors.invalidName"),
-                        null);
+                      FlutterI18n.translate(context, "errors.invalidName"),
+                    );
                   }
                 },
                 icon: const Icon(Icons.file_download))

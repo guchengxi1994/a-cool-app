@@ -68,7 +68,7 @@ class _QrPageState extends MobileBasePageState<QrPage> {
             Global.navigatorKey.currentState!
                 .pushNamedAndRemoveUntil(Routers.pageMain, (route) => false);
           } else {
-            showToastMessage("登陆失败", null);
+            showToastMessage("登陆失败");
           }
         } else {
           debugPrint("[still connect to server]");

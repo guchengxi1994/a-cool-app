@@ -22,8 +22,7 @@ class ResponseInterceptors extends Interceptor {
     var _resultCode = commenResponse.code;
 
     if (_resultCode != __ok_code__) {
-      showToastMessage(commenResponse.message ?? "未知错误", null,
-          color: Colors.orange);
+      showToastMessage(commenResponse.message ?? "未知错误", color: Colors.orange);
       return super.onResponse(response, handler);
     } else {
       return super.onResponse(response, handler);
@@ -93,17 +92,17 @@ class DioUtils {
 
   void formatError(DioError e) {
     if (e.type == DioErrorType.connectTimeout) {
-      showToastMessage("连接超时", null, color: Colors.orange);
+      showToastMessage("连接超时", color: Colors.orange);
     } else if (e.type == DioErrorType.sendTimeout) {
-      showToastMessage("请求超时", null, color: Colors.orange);
+      showToastMessage("请求超时", color: Colors.orange);
     } else if (e.type == DioErrorType.receiveTimeout) {
-      showToastMessage("响应超时", null, color: Colors.orange);
+      showToastMessage("响应超时", color: Colors.orange);
     } else if (e.type == DioErrorType.response) {
-      showToastMessage("返回结果异常", null, color: Colors.orange);
+      showToastMessage("返回结果异常", color: Colors.orange);
     } else if (e.type == DioErrorType.cancel) {
-      showToastMessage("请求取消", null, color: Colors.orange);
+      showToastMessage("请求取消", color: Colors.orange);
     } else {
-      showToastMessage("无法连接服务器", null, color: Colors.orange);
+      showToastMessage("无法连接服务器", color: Colors.orange);
     }
   }
 }

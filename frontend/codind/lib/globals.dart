@@ -58,7 +58,7 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
 
 void launchURL(String _url) async {
   if (!await launch(_url)) {
-    showToastMessage("cannot launch url", null);
+    showToastMessage("cannot launch url");
   }
 }
 

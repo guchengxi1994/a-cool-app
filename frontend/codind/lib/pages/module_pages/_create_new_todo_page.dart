@@ -410,12 +410,12 @@ class _CreateNewTodoState extends State<_CreateNewTodo> with LoadingPageMixin {
                     onTap: () async {
                       var s = validate();
                       if (s != "") {
-                        showToastMessage(s, context);
+                        showToastMessage(s);
                         return;
                       }
 
                       if (!PlatformUtils.isMobile) {
-                        showToastMessage("当前平台不支持", context);
+                        showToastMessage("当前平台不支持");
                         return;
                       }
 
