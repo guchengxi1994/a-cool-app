@@ -14,6 +14,7 @@
 
 import 'package:codind/pages/module_pages/create_things_page.dart';
 import 'package:codind/router.dart';
+import 'package:codind/utils/platform_utils.dart';
 import 'package:codind/utils/shared_preference_utils.dart';
 import 'package:codind/utils/common.dart';
 import 'package:codind/widgets/main_page_widgets/main_page_collaps_widget.dart';
@@ -24,9 +25,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
+import '../entity/friend_entity.dart';
 import '../providers/my_providers.dart';
 import 'module_pages/new_todos_page.dart';
 import 'module_pages/work_work_work_page.dart';
+import 'package:codind/utils/no_web/sqlite_utils.dart'
+    if (dart.library.html) 'package:codind/utils/web/sqlite_utils_web.dart';
 
 class MainPageV2 extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
@@ -39,14 +43,23 @@ class MainPageV2 extends StatefulWidget {
 class _MainPageV2State extends State<MainPageV2> {
   final ScrollController _controller = ScrollController();
   late double _position;
+  late SqliteUtils sqliteUtils = SqliteUtils();
+  late PersistenceStorage ps = PersistenceStorage();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
       _controller.addListener(() {
         context.read<AngleController>().changeAngle(_controller.offset);
       });
+
+      if (await ps.getUserEmail() != "test@xiaoshuyui.org.cn") {
+        Friend? _friend = await sqliteUtils.getFriend();
+        if (_friend != null) {
+          context.read<UserinfoController>().login(_friend);
+        }
+      }
     });
   }
 
@@ -197,8 +210,40 @@ class _MainPageV2State extends State<MainPageV2> {
           if (context.watch<MainPageCardController>().selectedCards[index] ==
               "label.friend") {
             return InkWell(
-                onTap: () =>
-                    Navigator.of(context).pushNamed(Routers.pageFriend),
+                onTap: () async {
+                  if (PlatformUtils.isMobile &&
+                      MediaQuery.of(context).orientation ==
+                          Orientation.portrait) {
+                    Navigator.of(context).pushNamed(Routers.pageFriend);
+                  } else {
+                    var res = await showCupertinoDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            title: const Text("确定要跳转吗？"),
+                            content: Material(
+                                color: Colors.transparent,
+                                child: Text("非移动端设备显示可能存在问题")),
+                            actions: [
+                              CupertinoActionSheetAction(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(1);
+                                  },
+                                  child: Text("确定")),
+                              CupertinoActionSheetAction(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(0);
+                                  },
+                                  child: Text("取消")),
+                            ],
+                          );
+                        });
+
+                    if (res == 1) {
+                      Navigator.of(context).pushNamed(Routers.pageFriend);
+                    }
+                  }
+                },
                 child: CoolCollapsWidget(
                   cardName: "label.friend",
                 ));
@@ -308,14 +353,27 @@ class _MainPageV2State extends State<MainPageV2> {
                       flex: 1,
                       child: UserAvatarWidget(
                         onTap: () async {
+                          var _name = "";
                           await showCupertinoDialog(
                               context: context,
                               builder: (context) {
                                 return CupertinoAlertDialog(
                                   title: const Text("修改用户名"),
+                                  content: Material(
+                                    color: Colors.transparent,
+                                    child: TextField(
+                                      maxLength: 15,
+                                      onChanged: (value) {
+                                        _name = value;
+                                      },
+                                    ),
+                                  ),
                                   actions: [
                                     CupertinoActionSheetAction(
-                                        onPressed: () {
+                                        onPressed: () async {
+                                          await context
+                                              .read<UserinfoController>()
+                                              .changeUserName(_name);
                                           Navigator.of(context).pop();
                                         },
                                         child: const Text("确定")),

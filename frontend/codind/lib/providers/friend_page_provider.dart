@@ -15,7 +15,7 @@ import 'package:codind/utils/no_web/sqlite_utils.dart'
 
 class FriendPageController extends ChangeNotifier {
   List<Friend> _list = [];
-  late SqliteUtils sqlUtils;
+  late SqliteUtils sqlUtils = SqliteUtils();
 
   List<Friend> get friends => _list;
 
@@ -24,8 +24,23 @@ class FriendPageController extends ChangeNotifier {
       List<Friend>? _res = await sqlUtils.getAllFriends();
       if (_res != null) {
         _list = _res;
-        notifyListeners();
+        if (_list.isEmpty) {
+          _list = [
+            Friend(
+              userName: "测试用户",
+              userEmail: "test@xiaoshuyui.org.cn",
+            )
+          ];
+        }
+      } else {
+        _list = [
+          Friend(
+            userName: "测试用户",
+            userEmail: "test@xiaoshuyui.org.cn",
+          )
+        ];
       }
+      notifyListeners();
     } else {
       _list = [
         Friend(

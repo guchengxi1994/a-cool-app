@@ -33,4 +33,6 @@ abstract class AbstractSqliteUtils {
   Future<void> insertFriend(Friend f);
   // 获取所有friends
   Future<List<Friend>?> getAllFriends();
+  // 修改用户名
+  Future<void> setUserName(String s);
 }

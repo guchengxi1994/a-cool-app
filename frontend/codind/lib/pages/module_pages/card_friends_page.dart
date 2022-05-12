@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable, prefer_const_constructors
 
 import 'package:card_swiper/card_swiper.dart';
-import 'package:codind/utils/utils.dart';
 import 'package:codind/widgets/card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +36,7 @@ class _CardPageState<T> extends MobileBasePageState<CardPage> {
             height: 30,
           ),
           SizedBox(
-              height: 0.65 * CommonUtils.screenH(),
+              height: 0.65 * MediaQuery.of(context).size.height,
               child: Center(
                 child: Swiper(
                   key: UniqueKey(),
@@ -69,7 +68,7 @@ class _CardPageState<T> extends MobileBasePageState<CardPage> {
           ),
           SizedBox(
             height: 110,
-            width: CommonUtils.screenW(),
+            width: MediaQuery.of(context).size.width,
             child: ListView.separated(
                 separatorBuilder: (BuildContext context, int index) => SizedBox(
                       width: 20,

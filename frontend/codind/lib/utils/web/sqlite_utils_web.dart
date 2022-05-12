@@ -54,4 +54,7 @@ class SqliteUtils extends AbstractSqliteUtils {
   Future<List<Friend>?> getAllFriends() async {
     return null;
   }
+
+  @override
+  Future<void> setUserName(String s) async {}
 }

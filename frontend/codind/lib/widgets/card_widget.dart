@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors
 
+import 'dart:math';
+
 import 'package:codind/utils/platform_utils.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
@@ -8,11 +10,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 import '../_styles.dart';
 import '../entity/friend_entity.dart';
-import '../utils/common.dart';
 import 'main_page_widgets/main_page_expanded_widget.dart';
-
-// ignore: non_constant_identifier_names
-double GAP = (0.75 * CommonUtils.screenW() - 4 * 36) / 5;
 
 class CardWidget extends StatefulWidget {
   final int index;
@@ -27,6 +25,9 @@ class CardWidget extends StatefulWidget {
 class _CardWidgetState extends State<CardWidget> {
   late FlipCardController _controller;
   late Friend friend;
+
+  // ignore: non_constant_identifier_names
+  late double GAP = (0.75 * MediaQuery.of(context).size.width - 4 * 36) / 5;
 
   @override
   void initState() {
@@ -54,17 +55,21 @@ class _CardWidgetState extends State<CardWidget> {
                   left: 0,
                   child: SizedBox(
                     // color: Colors.green,
-                    width: 0.75 * CommonUtils.screenW(),
+                    width: 0.75 * MediaQuery.of(context).size.width,
+                    height: 0.4 * MediaQuery.of(context).size.height,
                     child: Stack(
                       children: [
-                        Image.asset(
-                          "assets/images/ctitle.png",
-                          fit: BoxFit.fitWidth,
+                        SizedBox(
+                          width: 0.75 * MediaQuery.of(context).size.width,
+                          child: Image.asset(
+                            "assets/images/ctitle.png",
+                            fit: BoxFit.fill,
+                          ),
                         ),
                         Center(
                           child: SizedBox(
-                            height: 0.5 * CommonUtils.screenW(),
-                            width: 0.5 * CommonUtils.screenW(),
+                            height: 0.4 * MediaQuery.of(context).size.width,
+                            width: 0.4 * MediaQuery.of(context).size.width,
                             child: Center(
                               child: PlatformUtils.isWeb
                                   ? Text(
@@ -73,7 +78,13 @@ class _CardWidgetState extends State<CardWidget> {
                                     )
                                   : QrImage(
                                       data: friend.toJson().toString(),
-                                      size: 0.45 * CommonUtils.screenW(),
+                                      size: min(
+                                          0.45 *
+                                              MediaQuery.of(context).size.width,
+                                          0.45 *
+                                              MediaQuery.of(context)
+                                                  .size
+                                                  .height),
                                     ),
                             ),
                           ),
@@ -85,16 +96,17 @@ class _CardWidgetState extends State<CardWidget> {
                   bottom: 18,
                   left: 0,
                   child: SizedBox(
-                    width: 0.75 * CommonUtils.screenW(),
+                    height: 150,
+                    width: 0.75 * MediaQuery.of(context).size.width,
                     child: Image.asset(
                       "assets/images/bottom.png",
-                      fit: BoxFit.fitWidth,
+                      fit: BoxFit.fill,
                     ),
                   )),
 
               /// 头像
               Positioned(
-                  top: 0.75 * CommonUtils.screenW() * 0.75,
+                  bottom: 0.3 * MediaQuery.of(context).size.height - 20,
                   left: 20,
                   child: SizedBox(
                     width: 48,
@@ -107,7 +119,7 @@ class _CardWidgetState extends State<CardWidget> {
                         : Image.network(friend.avatarPath!),
                   )),
               Positioned(
-                top: 0.75 * CommonUtils.screenW() * 0.75 + 60,
+                bottom: 0.3 * MediaQuery.of(context).size.height - 60,
                 left: 0,
                 child: Row(
                   children: [
@@ -137,7 +149,7 @@ class _CardWidgetState extends State<CardWidget> {
                 ),
               ),
               Positioned(
-                  top: 0.75 * CommonUtils.screenW() * 0.75 + 60 + 40,
+                  bottom: 0.2 * MediaQuery.of(context).size.height * 0.75,
                   left: 0,
                   child: Row(
                     children: [
@@ -159,7 +171,7 @@ class _CardWidgetState extends State<CardWidget> {
                   )),
 
               Positioned(
-                  top: 0.75 * CommonUtils.screenW() * 0.75 + 60 + 40,
+                  bottom: 0.2 * MediaQuery.of(context).size.height * 0.75,
                   right: 20,
                   child: Row(
                     children: [
@@ -175,7 +187,7 @@ class _CardWidgetState extends State<CardWidget> {
           ),
         ),
         back: SizedBox(
-          width: 0.75 * CommonUtils.screenW(),
+          width: 0.75 * MediaQuery.of(context).size.width,
           height: 500,
           child: CoolExpandedWidget(
             child: Stack(children: [

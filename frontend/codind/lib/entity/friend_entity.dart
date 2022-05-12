@@ -25,6 +25,15 @@ class Friend {
       this.isSelf,
       this.password});
 
+  @override
+  bool operator ==(Object other) {
+    if (other is! Friend) {
+      return false;
+    }
+
+    return other.userEmail == userEmail && other.userName == userName;
+  }
+
   Friend.fromJson(Map<String, dynamic> json) {
     fid = json['fid'];
     userName = json['userName'];
@@ -44,4 +53,7 @@ class Friend {
     data['isSelf'] = false;
     return data;
   }
+
+  @override
+  int get hashCode => userName.hashCode + userEmail.hashCode;
 }

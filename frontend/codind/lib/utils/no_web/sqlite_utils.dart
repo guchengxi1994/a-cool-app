@@ -197,6 +197,14 @@ class SqliteUtils extends AbstractSqliteUtils {
               `friendship` int
             );
           ''');
+
+      final stmt = db.prepare(
+          "INSERT INTO friend (userEmail,userPassword,isSelf,userName) values(?,?,?,?)");
+
+      stmt.execute(["test@xiaoshuyui.org.cn", "123456", 0, "测试用户"]);
+
+      stmt.dispose();
+      db.dispose();
     }
   }
 
@@ -222,6 +230,7 @@ class SqliteUtils extends AbstractSqliteUtils {
       db.dispose();
       return _friend;
     } catch (_) {
+      db.dispose();
       return null;
     }
   }
@@ -263,5 +272,16 @@ class SqliteUtils extends AbstractSqliteUtils {
     }
 
     return friendList;
+  }
+
+  @override
+  Future<void> setUserName(String s) async {
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+
+    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$friendsBasePath");
+    db.execute('''
+    UPDATE  friend set userName='$s' where isSelf=1;
+''');
+    db.dispose();
   }
 }

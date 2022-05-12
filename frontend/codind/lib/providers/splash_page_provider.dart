@@ -1,5 +1,6 @@
 // ignore_for_file: unused_local_variable
 
+import 'package:codind/entity/friend_entity.dart';
 import 'package:codind/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
@@ -16,7 +17,7 @@ class SplashPageScreenController extends ChangeNotifier {
   bool _isFirst = true;
   int _currentIndex = 0;
 
-  late SqliteUtils sqlUtils;
+  late SqliteUtils sqlUtils = SqliteUtils();
 
   int thresHold = 5;
 
@@ -53,7 +54,7 @@ class SplashPageScreenController extends ChangeNotifier {
   init() async {
     await _initPlatform();
     _isFirst = await ps.isFirstTime();
-    sqlUtils = SqliteUtils();
+
     changeValue(1);
     await _initKnowledgeDatabase();
     await _initFileDatabase();
@@ -99,7 +100,8 @@ class SplashPageScreenController extends ChangeNotifier {
   }
 
   _push() async {
-    if (await logdata.isTestAccount()) {
+    Friend? _friend = await sqlUtils.getFriend();
+    if (await logdata.isAccountAvailable(_friend)) {
       Global.navigatorKey.currentState!
           .pushNamedAndRemoveUntil(Routers.pageMain, (route) => false);
     } else {
@@ -112,5 +114,13 @@ class SplashPageScreenController extends ChangeNotifier {
 extension AccountTest on LoginData {
   Future<bool> isTestAccount() async {
     return name == "test@xiaoshuyui.org.cn" && password == "123456";
+  }
+
+  Future<bool> isAccountAvailable(Friend? _friend) async {
+    if (_friend != null) {
+      return _friend.userEmail == name && _friend.password == password;
+    } else {
+      return (await isTestAccount());
+    }
   }
 }
