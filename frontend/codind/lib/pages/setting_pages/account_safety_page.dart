@@ -40,7 +40,9 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return GenerateAvatarPage();
+                        return GenerateAvatarPage(
+                          pageName: "头像生成工具",
+                        );
                       }));
                     },
                     child: Stack(
@@ -105,38 +107,19 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
             alignment: Alignment.centerLeft,
             child: Text("账户与安全"),
           ),
-          // Container(
-          //   color: Colors.white,
-          //   child: ListTile(
-          //     title: Text(
-          //       "用户ID",
-          //       style: TextStyle(fontWeight: FontWeight.bold),
-          //     ),
-          //     trailing: Text("这里写ID"),
-          //   ),
-          // ),
 
           CustomListTile(
             style: const TextStyle(fontWeight: FontWeight.bold),
             title: "用户ID",
-            trailing: Text("这里写ID"),
+            trailing: Text(
+                context.read<UserinfoController>().userData.userName ?? "未知"),
           ),
-
-          // Container(
-          //   color: Colors.white,
-          //   child: ListTile(
-          //     title: Text(
-          //       "账户",
-          //       style: TextStyle(fontWeight: FontWeight.bold),
-          //     ),
-          //     trailing: Text("这里是email"),
-          //   ),
-          // ),
 
           CustomListTile(
             style: const TextStyle(fontWeight: FontWeight.bold),
             title: "账户",
-            trailing: Text("这里是email"),
+            trailing: Text(
+                context.read<UserinfoController>().userData.userEmail ?? "未知"),
           ),
 
           const SizedBox(

@@ -23,7 +23,8 @@ import '../base_pages/_mobile_base_page.dart';
 const quertStr = "https://avatars.dicebear.com/api/";
 
 class GenerateAvatarPage extends MobileBasePage {
-  GenerateAvatarPage({Key? key}) : super(key: key, pageName: null);
+  GenerateAvatarPage({Key? key, required String pageName})
+      : super(key: key, pageName: pageName);
 
   @override
   MobileBasePageState<MobileBasePage> getState() {
@@ -365,12 +366,6 @@ class _GenerateAvatarPageState<T>
                           "?background=%23${defaultBackgroundColor.value.toRadixString(16)}";
                     }
 
-                    // String url = quertStr +
-                    //     defaultType +
-                    //     "/" +
-                    //     _controller.text +
-                    //     ".svg?";
-
                     if (currentMood != "") {
                       if (url.endsWith("?")) {
                         url += "&mood[]=$currentMood";
@@ -409,6 +404,10 @@ class _GenerateAvatarPageState<T>
                 child: Text(
                     FlutterI18n.translate(context, "avatarPage.generate"))),
             if (remoteImageUrl != "" || svgData != "")
+              const SizedBox(
+                height: 20,
+              ),
+            if (remoteImageUrl != "" || svgData != "")
               ElevatedButton(
                   onPressed: () {
                     context.read<UserinfoController>().changeImg(
@@ -418,9 +417,13 @@ class _GenerateAvatarPageState<T>
                         remoteImageUrl,
                         svgData,
                         defaultBackgroundColor);
+                    showToastMessage("提交完成");
                   },
-                  child:
-                      Text(FlutterI18n.translate(context, "avatarPage.submit")))
+                  child: Text(
+                      FlutterI18n.translate(context, "avatarPage.submit"))),
+            const SizedBox(
+              height: 50,
+            ),
           ],
         ),
       ),

@@ -217,8 +217,33 @@ class _MinePageState extends MobileBasePageState<MinePage> {
                 size: 25,
               ),
             ),
+          if (PlatformUtils.isMobile)
+            CustomListTile(
+              style: AppTheme.settingPageListTileTitleStyle,
+              title: "备份数据",
+              onTap: () {
+                showCupertinoDialog(
+                    context: context,
+                    builder: (context) {
+                      return CupertinoAlertDialog(
+                        title: const Text("Under construction"),
+                        actions: [
+                          CupertinoActionSheetAction(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text("确定"))
+                        ],
+                      );
+                    });
+              },
+              trailing: const Icon(
+                Icons.chevron_right,
+                size: 25,
+              ),
+            ),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           InkWell(
             onTap: () async {
