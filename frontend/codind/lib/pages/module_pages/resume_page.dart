@@ -1,6 +1,7 @@
 // ignore_for_file: unused_element
 
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:codind/pages/mixins/_background_color_mixin.dart';
@@ -99,37 +100,36 @@ class _ResumePageState extends State<ResumePage> with BackgroundColorMixin {
 
                 if (result != null) {
                   String filePath;
-
+                  Uint8List? fileUint8list;
                   if (!PlatformUtils.isWeb) {
                     filePath = result.files.single.path!;
                     debugPrint("[file name]: $filePath");
-                    // File file = File(filePath);
-                    // data = await file.readAsBytes();
-
+                    File file = File(filePath);
+                    fileUint8list = await file.readAsBytes();
                   } else {
                     // filePath = result.files.single.path!;
-                    var fileUint8list = result.files.first.bytes;
-                    if (fileUint8list != null) {
-                      _YourResume yourResume = _YourResume.fromJson(
-                          jsonDecode(utf8.decode(fileUint8list)));
+                    fileUint8list = result.files.first.bytes;
+                  }
+                  if (fileUint8list != null) {
+                    _YourResume yourResume = _YourResume.fromJson(
+                        jsonDecode(utf8.decode(fileUint8list)));
 
-                      debugPrint("[debug]: ${yourResume.edu}");
+                    debugPrint("[debug]: ${yourResume.edu}");
 
-                      keyEdu.currentState!.setMemories(yourResume.edu);
-                      keyWork.currentState!.setMemories(yourResume.work);
-                      if (yourResume.skills != null &&
-                          yourResume.skills!.isNotEmpty) {
-                        keySkills.currentState!.setMemories(yourResume.skills!
-                            .map((e) => Detais(
-                                career: e,
-                                end: "2022-05-11",
-                                start: "2022-05-11"))
-                            .toList());
-                      }
-                      if (yourResume.imgData != null) {
-                        uint8list = base64.decode(yourResume.imgData!);
-                        imgKey.currentState!.changeData(uint8list);
-                      }
+                    keyEdu.currentState!.setMemories(yourResume.edu);
+                    keyWork.currentState!.setMemories(yourResume.work);
+                    if (yourResume.skills != null &&
+                        yourResume.skills!.isNotEmpty) {
+                      keySkills.currentState!.setMemories(yourResume.skills!
+                          .map((e) => Detais(
+                              career: e,
+                              end: "2022-05-11",
+                              start: "2022-05-11"))
+                          .toList());
+                    }
+                    if (yourResume.imgData != null) {
+                      uint8list = base64.decode(yourResume.imgData!);
+                      imgKey.currentState!.changeData(uint8list);
                     }
                   }
                 }
