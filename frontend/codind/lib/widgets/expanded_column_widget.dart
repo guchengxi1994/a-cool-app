@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/language_provider.dart';
-import '../providers/my_providers.dart' show ExperienceController;
 
 // ignore: must_be_immutable
 class ExpandedColumnWidget extends StatefulWidget {
@@ -15,24 +14,50 @@ class ExpandedColumnWidget extends StatefulWidget {
   String name;
 
   @override
-  State<ExpandedColumnWidget> createState() => _ExpandedColumnWidgetState();
+  State<ExpandedColumnWidget> createState() => ExpandedColumnWidgetState();
 }
 
-class _ExpandedColumnWidgetState extends State<ExpandedColumnWidget> {
+class ExpandedColumnWidgetState extends State<ExpandedColumnWidget> {
   List<Widget> children = [];
   List memories = [];
 
-  List getMemories() {
+  // ignore: library_private_types_in_public_api
+  List<Detais> getMemories() {
+    List<Detais> details = [];
     if (children.length > 1) {
-      for (int i = 1; i < children.length; i++) {
-        if (children[i].runtimeType == DeletableWidget) {}
+      for (int i = 0; i < children.length; i++) {
+        if (children[i].runtimeType == DeletableWidget) {
+          var _c =
+              ((children[i] as DeletableWidget).child as DetailedWidget).detais;
+          details.add(_c);
+        } else {
+          debugPrint("[runtime type]: ${children[i].runtimeType}");
+        }
       }
     }
-    return memories;
+    return details;
+  }
+
+  void setMemories(List<Detais>? details) {
+    if (details != null && details.isNotEmpty) {
+      if (children.length > 1) {
+        children.removeRange(0, children.length - 1);
+      }
+
+      for (var i in details) {
+        addWidget(DetailedWidget(
+          detais: i,
+        ));
+      }
+
+      setState(() {});
+    }
   }
 
   void addWidget(Widget? w) {
     int index = children.length;
+
+    debugPrint("[add widget runtime type ]: ${w.runtimeType}");
 
     if (w != null) {
       children.insert(
@@ -75,16 +100,16 @@ class _ExpandedColumnWidgetState extends State<ExpandedColumnWidget> {
     }, orElse: () => Container());
 
     if (w.runtimeType != Container) {
-      var _index = children.indexOf(w);
+      // var _index = children.indexOf(w);
 
-      context.read<ExperienceController>().removeValue(widget.name, _index);
+      // context.read<ExperienceController>().removeValue(widget.name, _index);
 
       setState(() {
         children.remove(w);
       });
 
-      debugPrint(
-          "[ExperienceController data] : ${context.read<ExperienceController>().edu}");
+      // debugPrint(
+      //     "[ExperienceController data] : ${context.read<ExperienceController>().edu}");
     }
   }
 
@@ -261,19 +286,12 @@ class _ExpandedColumnWidgetState extends State<ExpandedColumnWidget> {
                 });
 
             if (res == 1) {
-              addWidget(Column(
-                // mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${startTime!.toDateString(sep)}~${endTime!.toDateString(sep)}",
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(career),
-                ],
+              addWidget(DetailedWidget(
+                detais: Detais(
+                  career: career,
+                  start: startTime!.toDateString(sep),
+                  end: endTime!.toDateString(sep),
+                ),
               ));
             }
           },
@@ -289,6 +307,58 @@ class _ExpandedColumnWidgetState extends State<ExpandedColumnWidget> {
       child: Column(
         children: children,
       ),
+    );
+  }
+}
+
+class Detais {
+  String? start;
+  String? end;
+  String? career;
+
+  Detais.fromJson(Map<String, dynamic> json) {
+    start = json['start'];
+    end = json['end'];
+    career = json['career'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['start'] = start;
+    data['end'] = end;
+    data['career'] = career;
+    return data;
+  }
+
+  Detais({required this.career, required this.end, required this.start});
+
+  @override
+  String toString() {
+    return "$start~$end   $career";
+  }
+}
+
+class DetailedWidget extends StatelessWidget {
+  // ignore: library_private_types_in_public_api
+  const DetailedWidget({Key? key, required this.detais}) : super(key: key);
+  // ignore: library_private_types_in_public_api
+  final Detais detais;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      // mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "${detais.start}~${detais.start}",
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Text(detais.career ?? ""),
+      ],
     );
   }
 }

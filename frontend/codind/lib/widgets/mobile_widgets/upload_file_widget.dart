@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:codind/providers/multi_image_upload_provider.dart';
 import 'package:codind/utils/platform_utils.dart';
+import 'package:codind/utils/toast_utils.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
@@ -78,16 +79,25 @@ class _UploadMultiImageWidgetState extends State<_UploadMultiImageWidget> {
 
 class UploadSingleImageWidget extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
-  UploadSingleImageWidget({Key? key}) : super(key: key);
+  UploadSingleImageWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _UploadSingleImageWidgetState createState() =>
-      _UploadSingleImageWidgetState();
+  UploadSingleImageWidgetState createState() => UploadSingleImageWidgetState();
 }
 
-class _UploadSingleImageWidgetState extends State<UploadSingleImageWidget> {
+class UploadSingleImageWidgetState extends State<UploadSingleImageWidget> {
+  // ignore: library_private_types_in_public_api
   final GlobalKey<_ImageWidgetV2State> imageKey = GlobalKey();
+
+  changeData(Uint8List? d) {
+    imageKey.currentState!.data = d;
+    debugPrint("[debug] : change image data");
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -176,28 +186,32 @@ class _ImageWidgetV2State extends State<ImageWidgetV2> {
             ])
           : IconButton(
               onPressed: () async {
-                FilePickerResult? result =
-                    await FilePicker.platform.pickFiles();
-                if (result != null) {
-                  if (!PlatformUtils.isWeb) {
-                    imageName = result.files.single.path!;
-                    File file = File(imageName);
-                    data = await file.readAsBytes();
+                try {
+                  FilePickerResult? result =
+                      await FilePicker.platform.pickFiles();
+                  if (result != null) {
+                    if (!PlatformUtils.isWeb) {
+                      imageName = result.files.single.path!;
+                      File file = File(imageName);
+                      data = await file.readAsBytes();
 
-                    setState(() {});
-                  } else {
-                    data = result.files.first.bytes;
-                    imageName = result.files.first.name;
+                      setState(() {});
+                    } else {
+                      data = result.files.first.bytes;
+                      imageName = result.files.first.name;
 
-                    setState(() {});
+                      setState(() {});
+                    }
+
+                    if (widget.isMulti ?? false) {
+                      // ignore: use_build_context_synchronously
+                      context
+                          .read<MultiImageUploadController>()
+                          .addImg(ImgData(data: data, imgname: imageName));
+                    }
                   }
-
-                  if (widget.isMulti ?? false) {
-                    // ignore: use_build_context_synchronously
-                    context
-                        .read<MultiImageUploadController>()
-                        .addImg(ImgData(data: data, imgname: imageName));
-                  }
+                } catch (_) {
+                  showToastMessage("not a image");
                 }
               },
               icon: const Icon(

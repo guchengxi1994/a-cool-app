@@ -29,7 +29,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
 import 'package:codind/utils/no_web/mobile_utils.dart'
     if (dart.library.html) 'package:codind/utils/web/web_utils.dart'
-    show saveMdFile;
+    show saveFile;
 
 import '../base_pages/_base_page.dart';
 
@@ -1028,7 +1028,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                       isLoading = true;
                     });
                     try {
-                      saveMdFile(
+                      saveFile(
                           filename: res.endsWith(".md") ? res : "$res.md",
                           data: textEditingController.text);
                     } catch (_, s) {
