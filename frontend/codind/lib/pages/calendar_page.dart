@@ -1,12 +1,16 @@
-import 'dart:math';
-
 import 'package:codind/pages/base_pages/_mobile_base_page.dart';
 import 'package:codind/providers/language_provider.dart';
+import 'package:codind/utils/extensions/datetime_extension.dart';
 import 'package:codind/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:taichi/taichi.dart';
+// ignore: implementation_imports
+import 'package:taichi/src/UI/calendar_view/src/components/common_components.dart';
+
+import '../_styles.dart';
+import '../widgets/calendar.dart';
 
 class MyWeekDayTile extends StatelessWidget {
   const MyWeekDayTile(
@@ -65,8 +69,9 @@ class MyWeekDayTile extends StatelessWidget {
 
 // ignore: must_be_immutable
 class CalendarStatefulWidget extends MobileBasePage {
-  CalendarStatefulWidget({Key? key, required String pageName})
-      : super(key: key, pageName: pageName);
+  CalendarStatefulWidget({
+    Key? key,
+  }) : super(key: key, pageName: null);
 
   @override
   MobileBasePageState<MobileBasePage> getState() {
@@ -76,7 +81,8 @@ class CalendarStatefulWidget extends MobileBasePage {
 
 class _CalendarStatefulWidgetState
     extends MobileBasePageState<CalendarStatefulWidget> {
-  // double width = 600;
+  int count = 0;
+  final GlobalKey<MonthViewState> globalKey = GlobalKey();
 
   @override
   void initState() {
@@ -84,44 +90,111 @@ class _CalendarStatefulWidgetState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
   }
 
+  String _monthStringBuilderZh(DateTime date, {DateTime? secondaryDate}) {
+    return "${date.year}年${date.month}月";
+  }
+
+  String _monthStringBuilder(DateTime date, {DateTime? secondaryDate}) {
+    return "${date.month} - ${date.year}";
+  }
+
   @override
   Widget baseBuild(BuildContext context) {
-    return MonthView(
-      controller: context.read<EventController>(),
-      onCellTap: (events, date) {
-        debugPrint("[tap]: tap once ${date.toString()}");
-        context.read<EventController>().add(
-              CalendarEventData(
-                  date: date,
-                  endDate: date.add(Duration(days: 2)),
-                  event: "test",
-                  title: 'test title'),
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: AppTheme.baseAppbarColor,
+        elevation: 0,
+        title: const Text(
+          "日程",
+          style: TextStyle(
+              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.chevron_left,
+              size: AppTheme.leftBackIconSize,
+              color: Color.fromARGB(255, 78, 63, 63),
+            )),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return CalendarWidget();
+                }));
+              },
+              icon: const Icon(
+                Icons.edit_calendar_sharp,
+                size: AppTheme.leftBackIconSize,
+                color: Colors.black,
+              )),
+          const SizedBox(
+            width: 20,
+          )
+        ],
+      ),
+      body: Center(
+        child: MonthView(
+          key: globalKey,
+          controller: context.read<EventController>(),
+          headerBuilder: (date) {
+            return CalendarPageHeader(
+              leftIcon: Icons.arrow_left,
+              rightIcon: Icons.arrow_right,
+              onTitleTapped: () async {
+                final selectedDate = await showDatePicker(
+                  context: context,
+                  initialDate: date,
+                  firstDate: date.subtract(const Duration(days: 1000)),
+                  lastDate: date.add(const Duration(days: 1000)),
+                );
+
+                if (selectedDate == null) return;
+                globalKey.currentState!.jumpToMonth(selectedDate);
+              },
+              onPreviousDay: globalKey.currentState!.previousPage,
+              onNextDay: globalKey.currentState!.nextPage,
+              date: date,
+              dateStringBuilder:
+                  context.read<LanguageControllerV2>().currentLang == "zh_CN"
+                      ? _monthStringBuilderZh
+                      : _monthStringBuilder,
             );
-        // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-        //   return _DayPage(
-        //     date: date,
-        //   );
-        // }));
-        debugPrint(
-            "[EventController length]: ${context.read<EventController>().events.length}");
-      },
-      weekDayBuilder: (day) {
-        return MyWeekDayTile(
-            locale: context.read<LanguageControllerV2>().currentLang,
-            dayIndex: day);
-      },
-      width: PlatformUtils.isMobile
-          ? MediaQuery.of(context).size.height
-          : min(MediaQuery.of(context).size.width,
-              MediaQuery.of(context).size.height),
+          },
+          onCellTap: (events, date) {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return DayCalendarWidget(
+                date: date,
+                pageName:
+                    context.read<LanguageControllerV2>().currentLang == "zh_CN"
+                        ? "${date.toDateString(DatetimeSeparator.chinese)}的日程"
+                        : date.toDateString(DatetimeSeparator.slash),
+              );
+            }));
+            count += 1;
+          },
+          weekDayBuilder: (day) {
+            return MyWeekDayTile(
+                locale: context.read<LanguageControllerV2>().currentLang,
+                dayIndex: day);
+          },
+          width:
+              PlatformUtils.isMobile ? MediaQuery.of(context).size.height : 500,
+        ),
+      ),
     );
   }
 }
 
 // ignore: must_be_immutable
 class DayCalendarWidget extends MobileBasePage {
-  DayCalendarWidget({Key? key, required this.date})
-      : super(key: key, pageName: null);
+  DayCalendarWidget({Key? key, required this.date, required String pageName})
+      : super(key: key, pageName: pageName);
   final DateTime date;
 
   @override
@@ -131,24 +204,21 @@ class DayCalendarWidget extends MobileBasePage {
 }
 
 class _DayCalendarWidgetState extends MobileBasePageState<DayCalendarWidget> {
+  late DateTime _dateTime = widget.date;
+
   @override
   Widget baseBuild(BuildContext context) {
     return Scaffold(
       body: DayView(
-        initialDay: widget.date,
+        /// 这里要调整一下
+        onPageChange: (date, page) {
+          debugPrint("[date] : ${date.toString()}");
+          setState(() {
+            _dateTime = date;
+          });
+        },
+        initialDay: _dateTime,
       ),
-    );
-  }
-}
-
-class _DayPage extends StatelessWidget {
-  const _DayPage({Key? key, required this.date}) : super(key: key);
-  final DateTime date;
-
-  @override
-  Widget build(BuildContext context) {
-    return DayCalendarWidget(
-      date: date,
     );
   }
 }
@@ -160,23 +230,6 @@ class CalendarPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CalendarStatefulWidget(
       key: UniqueKey(),
-      pageName: '日程',
     );
   }
-}
-
-@immutable
-class Event {
-  final String title;
-
-  const Event({this.title = "Title"});
-
-  @override
-  bool operator ==(Object other) => other is Event && title == other.title;
-
-  @override
-  int get hashCode => title.hashCode;
-
-  @override
-  String toString() => title;
 }
