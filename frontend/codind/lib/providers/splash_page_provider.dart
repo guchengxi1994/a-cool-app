@@ -14,7 +14,6 @@ import '../utils/shared_preference_utils.dart';
 class SplashPageScreenController extends ChangeNotifier {
   PersistenceStorage ps = PersistenceStorage();
   // Directory? _appSupportDirectory;
-  bool _isFirst = true;
   int _currentIndex = 0;
 
   late SqliteUtils sqlUtils = SqliteUtils();
@@ -52,7 +51,6 @@ class SplashPageScreenController extends ChangeNotifier {
 
   init() async {
     await _initPlatform();
-    _isFirst = await ps.isFirstTime();
 
     changeValue(1);
     await _initKnowledgeDatabase();
@@ -64,23 +62,17 @@ class SplashPageScreenController extends ChangeNotifier {
   }
 
   _initKnowledgeDatabase() async {
-    if (_isFirst) {
-      sqlUtils.initKnowledgeBase();
-    }
+    await sqlUtils.initKnowledgeBase();
     changeValue(1);
   }
 
   _initFileDatabase() async {
-    if (_isFirst) {
-      sqlUtils.initFileBase();
-    }
+    await sqlUtils.initFileBase();
     changeValue(1);
   }
 
   _initTodoDatabase() async {
-    if (_isFirst) {
-      sqlUtils.initTodoBase();
-    }
+    await sqlUtils.initTodoBase();
     changeValue(1);
   }
 
@@ -92,9 +84,7 @@ class SplashPageScreenController extends ChangeNotifier {
   }
 
   _initFriend() async {
-    if (_isFirst) {
-      sqlUtils.initFriendsBase();
-    }
+    await sqlUtils.initFriendsBase();
     changeValue(1);
   }
 

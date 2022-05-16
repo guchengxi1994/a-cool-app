@@ -15,7 +15,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import 'utils/toast_utils.dart';
 
@@ -57,7 +57,7 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
 }
 
 void launchURL(String _url) async {
-  if (!await launch(_url)) {
+  if (!await launchUrlString(_url)) {
     showToastMessage("cannot launch url");
   }
 }

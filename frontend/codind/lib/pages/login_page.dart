@@ -175,6 +175,9 @@ class _LoginScreenState extends State<LoginScreen> {
         password: data.password,
       ));
 
+      await ps.setUserEmail(data.name ?? "test@xiaoshuyui.org.cn");
+      await ps.setUserPassword(data.password ?? "123456");
+
       context.read<UserinfoController>().login(_f);
       return null;
     } else {

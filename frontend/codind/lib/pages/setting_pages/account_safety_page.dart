@@ -72,7 +72,9 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
                   const SizedBox(
                     height: 10,
                   ),
-                  Text("用户名",
+                  Text(
+                      context.read<UserinfoController>().userData.userName ??
+                          "未修改用户名",
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,

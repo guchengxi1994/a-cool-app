@@ -206,6 +206,7 @@ class PersistenceStorage {
     await _storage!.setStringList("titleList", titles);
   }
 
+  @Deprecated("unnecessary")
   Future<bool> isFirstTime() async {
     await _initStorage();
 
