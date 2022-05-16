@@ -112,7 +112,7 @@ class _MainPageV2State extends State<MainPageV2> {
                       width: 10.w,
                     ),
                     Text(
-                      "测试用户的工作台",
+                      "${context.read<UserinfoController>().userData.userName!}的工作台",
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
                     )
@@ -165,18 +165,6 @@ class _MainPageV2State extends State<MainPageV2> {
           return [buildSliverGrid()];
         },
         body: buildBodyCards());
-  }
-
-  /// for test
-  buildImg(Color color, double height) {
-    return SizedBox(
-        height: height.h,
-        child: Container(
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.rectangle,
-          ),
-        ));
   }
 
   Widget buildBodyCards() {

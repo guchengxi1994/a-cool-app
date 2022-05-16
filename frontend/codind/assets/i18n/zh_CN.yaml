@@ -1,5 +1,5 @@
 label:
-  signin: "每日打卡"
+  signin: "日程表"
   main: "你好，{ user }!"
   localization: "本地化"
   personalCenter: "个人中心"

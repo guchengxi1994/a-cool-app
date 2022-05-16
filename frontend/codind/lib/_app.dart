@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:taichi/taichi.dart';
 import 'bloc/my_blocs.dart';
 import 'globals.dart';
 import 'pages/splash_page.dart';
@@ -117,6 +118,9 @@ List<SingleChildWidget> getProviders() {
     ),
     ChangeNotifierProvider(
       create: (_) => KnowledgeController(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => EventController(),
     ),
   ];
 }

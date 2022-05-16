@@ -29,6 +29,7 @@ class Routers {
   static const pageFriend = "/pageFriend";
   static const pageMine = "/pageMine";
   static const pageIntro = "/pageIntro";
+  static const pageCalendar = "/pageCalendar";
 
   static final Map<String, WidgetBuilder> routers = {
     pageMain: (ctx) => MainPageV2(),
@@ -45,5 +46,6 @@ class Routers {
     pageLogin: (context) => const LoginScreen(),
     pageMine: (context) => MinePage(pageName: "我的"),
     pageIntro: (context) => const IntroductionAnimationScreen(),
+    pageCalendar: (context) => const CalendarPage(),
   };
 }

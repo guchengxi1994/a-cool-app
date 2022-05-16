@@ -6,7 +6,6 @@ import 'package:codind/providers/my_providers.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:codind/widgets/main_page_widgets/main_page_expanded_widget.dart';
-import 'package:codind/widgets/mobile_widgets/qr_scanner_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -96,11 +95,15 @@ class SignupButton extends StatelessWidget {
       color: const Color.fromARGB(150, 199, 177, 152),
       child: InkWell(
         onTap: () {
-          if (PlatformUtils.isMobile) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return ScanMainPage().getPage();
-            }));
-          }
+          // if (PlatformUtils.isMobile) {
+          //   Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          //     return ScanMainPage().getPage();
+          //   }));
+          // }
+          // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          //   return const CalendarPage();
+          // }));
+          Navigator.of(context).pushNamed(Routers.pageCalendar);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
