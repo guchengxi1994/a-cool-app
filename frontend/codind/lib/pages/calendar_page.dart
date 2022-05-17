@@ -2,17 +2,17 @@ import 'package:codind/pages/base_pages/_mobile_base_page.dart';
 import 'package:codind/providers/language_provider.dart';
 import 'package:codind/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:taichi/taichi.dart';
 // ignore: implementation_imports
 import 'package:taichi/src/UI/calendar_view/src/components/common_components.dart';
 
 import '../_styles.dart';
+import '../bloc/my_blocs.dart';
 import '../widgets/calendar.dart';
-import 'base_pages/_base_stateless_page.dart';
 import 'module_pages/_create_new_todo_page_v2.dart';
+import 'package:codind/utils/common.dart' as my;
 
 class MyWeekDayTile extends StatelessWidget {
   const MyWeekDayTile(
@@ -322,11 +322,59 @@ class CalendarPage extends StatelessWidget {
 }
 
 // ignore: must_be_immutable
-class YearCalendarWrapper extends BaseStatelessPage {
-  YearCalendarWrapper({Key? key}) : super(key: key);
+class YearCalendarWrapper extends MobileBasePage {
+  YearCalendarWrapper({Key? key}) : super(key: key, pageName: null);
+
+  @override
+  MobileBasePageState<MobileBasePage> getState() {
+    return _YearCalendarWrapperState();
+  }
+}
+
+class _YearCalendarWrapperState
+    extends MobileBasePageState<YearCalendarWrapper> {
+  late int currentMonth;
+  late int currentYear;
+  final my.DateUtils _dateUtils = my.DateUtils();
+  // ignore: unused_field
+  late GanttBloc _ganttBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    currentMonth = _dateUtils.month;
+    currentYear = _dateUtils.year;
+    _ganttBloc = context.read<GanttBloc>();
+  }
 
   @override
   Widget baseBuild(BuildContext context) {
-    return CalendarWidget();
+    return BlocBuilder<GanttBloc, GanttState>(builder: (context, state) {
+      return Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: AppTheme.baseAppbarColor,
+          elevation: 0,
+          title: Text(
+            "$currentYear",
+            style: const TextStyle(
+                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+          centerTitle: true,
+          leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(
+                Icons.chevron_left,
+                size: AppTheme.leftBackIconSize,
+                color: Color.fromARGB(255, 78, 63, 63),
+              )),
+        ),
+        body: SingleChildScrollView(
+          child: CalendarWidgetV2(),
+        ),
+      );
+    });
   }
 }

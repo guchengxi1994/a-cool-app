@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 /*
  * @Descripttion: 
  * @version: 
@@ -5,7 +7,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-01-30 21:46:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-02 18:08:31
+ * @LastEditTime: 2022-05-17 21:14:37
  */
 import 'dart:math';
 
@@ -74,6 +76,37 @@ class DateUtils {
   final DateTime _dateTime = DateTime.now();
   int get year => _dateTime.year;
   int get month => _dateTime.month;
+  List<String> months_CN = [
+    "月份",
+    "1月",
+    "2月",
+    "3月",
+    "4月",
+    "5月",
+    "6月",
+    "7月",
+    "8月",
+    "9月",
+    "10月",
+    "11月",
+    "12月"
+  ];
+
+  List<String> months_en = [
+    "Month",
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
 
   static int getCurrentMonthDays(int year, int month) {
     Map<String, int> data = {
