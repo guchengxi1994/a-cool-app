@@ -78,7 +78,7 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.6
   add_2_calendar: ^2.1.2
   animations: ^2.0.0
-  # calendar_view: ^0.0.4
+  showcaseview: ^1.1.5
   ## github taichi
   # taichi:
   #   git:

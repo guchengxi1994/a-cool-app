@@ -251,40 +251,38 @@ class _GenerateAvatarPageState<T>
                           });
                     },
                   ),
-                  InkWell(
-                    child: Container(
-                      // color: defaultBackgroundColor,
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.red),
-                          borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                          color: defaultBackgroundColor),
-                      height: 40,
-                      width: 80,
-                      child: InkWell(
-                        child: Center(
-                          child: Text(
-                            FlutterI18n.translate(context, "avatarPage.select"),
-                            style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.bold),
-                          ),
+                  Container(
+                    // color: defaultBackgroundColor,
+                    decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.red),
+                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                        color: defaultBackgroundColor),
+                    height: 40,
+                    width: 80,
+                    child: InkWell(
+                      child: Center(
+                        child: Text(
+                          FlutterI18n.translate(context, "avatarPage.select"),
+                          style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.bold),
                         ),
-                        onTap: () async {
-                          Color? selectedColor = await showDialog(
-                              context: context,
-                              builder: (context) {
-                                return ColorPickerWidget(
-                                  currentColor: defaultBackgroundColor,
-                                );
-                              });
-                          if (null != selectedColor) {
-                            setState(() {
-                              debugPrint(selectedColor.value.toRadixString(16));
-                              defaultBackgroundColor = selectedColor;
-                            });
-                          }
-                        },
                       ),
+                      onTap: () async {
+                        Color? selectedColor = await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ColorPickerWidget(
+                                currentColor: defaultBackgroundColor,
+                              );
+                            });
+                        if (null != selectedColor) {
+                          setState(() {
+                            debugPrint(selectedColor.value.toRadixString(16));
+                            defaultBackgroundColor = selectedColor;
+                          });
+                        }
+                      },
                     ),
                   ),
                 ],

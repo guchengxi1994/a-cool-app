@@ -75,9 +75,9 @@ class SqliteUtils extends AbstractSqliteUtils {
     try {
       for (sql.Row row in resultSet) {
         var endTime = DateTime.parse(row['endTime'].toString());
-        var isDone = int.parse(row['isDone'].toString());
+        var eventStatus = int.parse(row['eventStatus'].toString());
 
-        if (isDone == 1) {
+        if (eventStatus == 1) {
           _done += 1;
         } else {
           if (endTime.isAfter(DateTime.now())) {
@@ -156,14 +156,15 @@ class SqliteUtils extends AbstractSqliteUtils {
             CREATE TABLE `todos` (
               `tid` INTEGER primary key AUTOINCREMENT,
               `startTime` varchar(25),
-              `todoName` varchar(25),     
+              `todoName` varchar(25),
+              `description` varchar(200),     
               `endTime` varchar(25),
-              `isDone` int
+              `eventStatus` int
             );
           ''');
 
       final stmt = db.prepare(
-          "INSERT INTO todos (startTime,todoName,endTime,isDone) values (?,?,?,?)");
+          "INSERT INTO todos (startTime,todoName,endTime,eventStatus) values (?,?,?,?)");
 
       stmt.execute([
         DateTime.now().toString(),
@@ -286,4 +287,7 @@ class SqliteUtils extends AbstractSqliteUtils {
 ''');
     db.dispose();
   }
+
+  @override
+  Future<void> insertAnEvent(EventEntity e) async {}
 }

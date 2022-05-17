@@ -17,6 +17,7 @@ import '../../utils/utils.dart';
 import '../../widgets/widgets.dart'
     show TodoTimepickerWidget, TodoTimepickerWidgetState;
 
+@Deprecated("use ```CreateNewTodoV2``` instead")
 class CreateNewTodo extends StatelessWidget {
   const CreateNewTodo({Key? key}) : super(key: key);
 

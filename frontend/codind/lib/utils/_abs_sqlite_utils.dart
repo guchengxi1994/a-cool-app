@@ -10,6 +10,7 @@
 import 'package:codind/entity/friend_entity.dart';
 import 'package:codind/entity/knowledge_entity.dart';
 
+import '../entity/event_entity.dart';
 import '../entity/work_entity.dart';
 
 abstract class AbstractSqliteUtils {
@@ -35,4 +36,6 @@ abstract class AbstractSqliteUtils {
   Future<List<Friend>?> getAllFriends();
   // 修改用户名
   Future<void> setUserName(String s);
+  // 插入一个todo的记录
+  Future<void> insertAnEvent(EventEntity e);
 }

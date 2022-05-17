@@ -57,4 +57,7 @@ class SqliteUtils extends AbstractSqliteUtils {
 
   @override
   Future<void> setUserName(String s) async {}
+
+  @override
+  Future<void> insertAnEvent(EventEntity e) async {}
 }
