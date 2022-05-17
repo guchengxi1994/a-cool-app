@@ -7,7 +7,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-04-21 19:47:56
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-05-11 21:19:46
+ * @LastEditTime: 2022-05-17 19:31:49
  */
 import 'package:codind/globals.dart';
 import 'package:codind/pages/base_pages/_mobile_base_page.dart';
@@ -90,19 +90,19 @@ class _MinePageState extends MobileBasePageState<MinePage> {
               size: 25,
             ),
           ),
-          if (PlatformUtils.isMobile)
-            const SizedBox(
-              height: 10,
-            ),
-          if (PlatformUtils.isMobile)
-            CustomListTile(
-              style: AppTheme.settingPageListTileTitleStyle,
-              title: "扫码登录桌面端",
-              trailing: const Icon(
-                Icons.chevron_right,
-                size: 25,
-              ),
-            ),
+          // if (PlatformUtils.isMobile)
+          //   const SizedBox(
+          //     height: 10,
+          //   ),
+          // if (PlatformUtils.isMobile)
+          //   CustomListTile(
+          //     style: AppTheme.settingPageListTileTitleStyle,
+          //     title: "扫码登录桌面端",
+          //     trailing: const Icon(
+          //       Icons.chevron_right,
+          //       size: 25,
+          //     ),
+          //   ),
           const SizedBox(
             height: 10,
           ),
