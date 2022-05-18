@@ -185,6 +185,17 @@ class PersistenceStorage {
     _storage!.setString("lastTopicTime", d.toString());
   }
 
+  Future<bool> getCalendarPageFirstOpen() async {
+    await _initStorage();
+
+    return _storage!.getBool("calendarFirst") ?? true;
+  }
+
+  Future<void> setCalendarPageFirstOpen() async {
+    await _initStorage();
+    _storage!.setBool("calendarFirst", false);
+  }
+
   Future<String> getTopic() async {
     await _initStorage();
 

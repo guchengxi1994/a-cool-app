@@ -1,6 +1,5 @@
 import 'package:codind/pages/base_pages/_mobile_base_page.dart';
 import 'package:codind/providers/language_provider.dart';
-import 'package:codind/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -10,6 +9,7 @@ import 'package:taichi/src/UI/calendar_view/src/components/common_components.dar
 
 import '../_styles.dart';
 import '../bloc/my_blocs.dart';
+import '../utils/utils.dart';
 import '../widgets/calendar.dart';
 import 'module_pages/_create_new_todo_page_v2.dart';
 import 'package:codind/utils/common.dart' as my;
@@ -90,13 +90,17 @@ class _CalendarStatefulWidgetState
   final GlobalKey _bodyKey = GlobalKey();
 
   static const double widgetWidth = 450;
+  PersistenceStorage ps = PersistenceStorage();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ShowCaseWidget.of(context)!
-          .startShowCase([_titleKey, _bodyKey, _bottomKey]);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      if (await ps.getCalendarPageFirstOpen()) {
+        ShowCaseWidget.of(context)!
+            .startShowCase([_titleKey, _bodyKey, _bottomKey]);
+        await ps.setCalendarPageFirstOpen();
+      }
     });
   }
 

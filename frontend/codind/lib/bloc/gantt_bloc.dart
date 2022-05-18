@@ -67,7 +67,7 @@ class GanttBloc extends Bloc<GanttEvent, GanttState> {
     ];
 
     emit(state.copyWith(
-      GanttStatus.initial,
+      GanttStatus.addSchedule,
       scheduleList,
       null,
       date.year,

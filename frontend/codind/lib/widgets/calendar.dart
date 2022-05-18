@@ -36,7 +36,7 @@ class CalendarWidget extends StatefulWidget {
   State<CalendarWidget> createState() => _CalendarWidgetState();
 }
 
-// ignore: deprecated_member_use_from_same_package
+@Deprecated("use ```CalendarWidgetV2``` instead")
 class _CalendarWidgetState extends State<CalendarWidget> {
   ScrollController scrollController = ScrollController();
   ScrollController scrollControllerJan = ScrollController();
@@ -224,8 +224,8 @@ class _DayBoxState extends State<DayBox> {
     }
 
     tootipMessage = widget.isWeekend
-        ? "${widget.rowId}月${widget.columnId + 1}日 周末"
-        : "${widget.rowId}月${widget.columnId + 1}日";
+        ? "${widget.rowId}月${widget.columnId}日 周末"
+        : "${widget.rowId}月${widget.columnId}日";
   }
 
   @override
@@ -350,7 +350,11 @@ class _CalendarWidgetV2State extends State<CalendarWidgetV2> {
                   return Center(child: Text("月/天"));
                 }
               }
-              return Center(child: Text((index % 32).toString()));
+              return Container(
+                margin: EdgeInsets.all(1),
+                color: Color.fromARGB(255, 185, 141, 105),
+                child: Center(child: Text((index % 32).toString())),
+              );
             }
 
             var lang = context.read<LanguageControllerV2>().currentLang;
@@ -384,15 +388,15 @@ class _CalendarWidgetV2State extends State<CalendarWidgetV2> {
                 boxStatus: status,
                 year: _dateUtils.year,
               );
+            } else {
+              return DayBox(
+                isWeekend: false,
+                rowId: rowId,
+                columnId: columnId,
+                boxStatus: BoxStatus.cannotSelected,
+                year: _dateUtils.year,
+              );
             }
-
-            return DayBox(
-              isWeekend: false,
-              rowId: rowId,
-              columnId: columnId,
-              boxStatus: BoxStatus.cannotSelected,
-              year: _dateUtils.year,
-            );
           }),
     );
   }
