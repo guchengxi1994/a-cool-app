@@ -219,6 +219,10 @@ class _MinePageState extends MobileBasePageState<MinePage> {
               ),
             ),
           if (TaichiDevUtils.isMobile)
+            const SizedBox(
+              height: 10,
+            ),
+          if (TaichiDevUtils.isMobile)
             CustomListTile(
               style: AppTheme.settingPageListTileTitleStyle,
               title: "备份数据",
