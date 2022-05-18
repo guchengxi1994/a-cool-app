@@ -1,9 +1,7 @@
-// ignore_for_file: must_be_immutable, prefer_const_constructors
+// ignore_for_file: must_be_immutable, prefer_const_constructors, depend_on_referenced_packages, use_build_context_synchronously, no_leading_underscores_for_local_identifiers
 
 import 'package:codind/pages/setting_pages/account_safety_page.dart';
 import 'package:codind/providers/my_providers.dart';
-import 'package:codind/router.dart';
-import 'package:codind/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -114,30 +112,6 @@ class _MobileMainSettingPageState<T>
               Icons.chevron_right,
               size: 25,
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          InkWell(
-            onTap: () async {
-              PersistenceStorage ps = PersistenceStorage();
-              await ps.setUserEmail("");
-              await ps.setUserPassword("");
-              Navigator.of(context)
-                  .pushNamedAndRemoveUntil(Routers.pageLogin, (route) => false);
-            },
-            child: Container(
-                height: 50,
-                color: Colors.white,
-                child: Center(
-                  child: Text(
-                    "退出登录",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red),
-                  ),
-                )),
           ),
         ],
       ),

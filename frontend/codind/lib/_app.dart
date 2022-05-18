@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
@@ -5,11 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'bloc/my_blocs.dart';
+import 'package:taichi/taichi.dart';
 import 'globals.dart';
 import 'pages/splash_page.dart';
 import 'providers/my_providers.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:nested/nested.dart';
 import 'providers/splash_page_provider.dart'
@@ -30,7 +31,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    if (PlatformUtils.isMobile) {
+    if (TaichiDevUtils.isMobile) {
       AwesomeNotifications().actionStream.listen((receivedNotification) {
         Global.navigatorKey.currentState!.pushNamedAndRemoveUntil(
             Routers.pageMain,
@@ -39,7 +40,7 @@ class _MyAppState extends State<MyApp> {
       });
     }
 
-    WidgetsBinding.instance!.addPostFrameCallback(
+    WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
         Future.delayed(const Duration(seconds: 1)).then((value) =>
             context.read<LanguageControllerV2>().changeLanguage(widget.lang!));
@@ -49,40 +50,28 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => GanttBloc()..add(InitialGanttEvent()),
-          ),
-          // BlocProvider(
-          //   create: (_) => SavedLinksBloc()..add(InitialSavedLinksEvent()),
-          // ),
-          // BlocProvider(
-          //   create: (_) => MindMapBloc()..add(InitialMindMapEvent()),
-          // )
-        ],
-        child: MaterialApp(
-          scrollBehavior: !PlatformUtils.isMobile
-              ? MyCustomScrollBehavior()
-              : const MaterialScrollBehavior(),
-          routes: Routers.routers,
-          debugShowCheckedModeBanner: false,
-          builder: (context, child) {
-            // child = TaichiFitnessUtil.rootBuilder(
-            //         designHeight: 932, designWidth: 500)!
-            //     .call(context, child);
-            child = FlutterI18n.rootAppBuilder().call(context, child);
-            return FlutterSmartDialog(child: child);
-          },
-          home: const SplashScreen(),
-          navigatorObservers: [FlutterSmartDialog.observer],
-          localizationsDelegates: [
-            getI18n(context.watch<LanguageControllerV2>().currentLang),
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate
-          ],
-          navigatorKey: Global.navigatorKey,
-        ));
+    return MaterialApp(
+      scrollBehavior: !TaichiDevUtils.isMobile
+          ? MyCustomScrollBehavior()
+          : const MaterialScrollBehavior(),
+      routes: Routers.routers,
+      debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        // child = TaichiFitnessUtil.rootBuilder(
+        //         designHeight: 932, designWidth: 500)!
+        //     .call(context, child);
+        child = FlutterI18n.rootAppBuilder().call(context, child);
+        return FlutterSmartDialog(child: child);
+      },
+      home: const SplashScreen(),
+      navigatorObservers: [FlutterSmartDialog.observer],
+      localizationsDelegates: [
+        getI18n(context.watch<LanguageControllerV2>().currentLang),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      navigatorKey: Global.navigatorKey,
+    );
   }
 }
 
@@ -102,7 +91,7 @@ List<SingleChildWidget> getProviders() {
       create: (_) => ExperienceController(),
     ),
     ChangeNotifierProvider(
-      create: (_) => AvatarController(),
+      create: (_) => UserinfoController(),
     ),
     ChangeNotifierProvider(
       create: (_) => LanguageControllerV2(),
@@ -115,6 +104,9 @@ List<SingleChildWidget> getProviders() {
     ),
     ChangeNotifierProvider(
       create: (_) => KnowledgeController(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => EventController(),
     ),
   ];
 }

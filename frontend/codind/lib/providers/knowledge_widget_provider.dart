@@ -11,6 +11,8 @@
  */
 import 'package:codind/entity/knowledge_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:codind/utils/no_web/sqlite_utils.dart'
+    if (dart.library.html) 'package:codind/utils/web/sqlite_utils_web.dart';
 
 import '../pages/module_pages/_create_single_knowledge_page.dart';
 
@@ -29,8 +31,12 @@ class KnowledgeController extends ChangeNotifier {
   List<KnowledgeEntity> _items = [];
   List<KnowledgeEntity> get items => _items;
 
-  addItem(KnowledgeEntity w) {
+  addItem(KnowledgeEntity w) async {
     _items.add(w);
+
+    var sqliteUtils = SqliteUtils();
+    await sqliteUtils.addNewKnowledge(w);
+
     notifyListeners();
   }
 

@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -31,7 +33,7 @@ class _QrPageState extends MobileBasePageState<QrPage> {
   void initState() {
     super.initState();
     debugPrint("[qr info ] ${widget.qrInfo}");
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       getLoginStatus(widget.qrInfo);
     });
   }
@@ -66,7 +68,7 @@ class _QrPageState extends MobileBasePageState<QrPage> {
             Global.navigatorKey.currentState!
                 .pushNamedAndRemoveUntil(Routers.pageMain, (route) => false);
           } else {
-            showToastMessage("登陆失败", context);
+            showToastMessage("登陆失败");
           }
         } else {
           debugPrint("[still connect to server]");

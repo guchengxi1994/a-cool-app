@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 /*
  * @Descripttion: 
  * @version: 
@@ -109,7 +111,7 @@ class PersistenceStorage {
         imgPath: imgPath,
         background: color == null || color == ""
             ? Colors.white
-            : Color(int.parse("0x" + color)));
+            : Color(int.parse("0x$color")));
     return _ava;
   }
 
@@ -183,6 +185,17 @@ class PersistenceStorage {
     _storage!.setString("lastTopicTime", d.toString());
   }
 
+  Future<bool> getCalendarPageFirstOpen() async {
+    await _initStorage();
+
+    return _storage!.getBool("calendarFirst") ?? true;
+  }
+
+  Future<void> setCalendarPageFirstOpen() async {
+    await _initStorage();
+    _storage!.setBool("calendarFirst", false);
+  }
+
   Future<String> getTopic() async {
     await _initStorage();
 
@@ -204,6 +217,7 @@ class PersistenceStorage {
     await _storage!.setStringList("titleList", titles);
   }
 
+  @Deprecated("unnecessary")
   Future<bool> isFirstTime() async {
     await _initStorage();
 

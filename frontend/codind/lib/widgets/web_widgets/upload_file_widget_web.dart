@@ -14,6 +14,7 @@ class UploadSingleImageWidget extends StatefulWidget {
   UploadSingleImageWidget({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _UploadSingleImageWidgetState createState() =>
       _UploadSingleImageWidgetState();
 }
@@ -59,6 +60,7 @@ class ImageWidget extends StatefulWidget {
   String imgName;
 
   @override
+  // ignore: library_private_types_in_public_api
   _ImageWidgetState createState() => _ImageWidgetState();
 }
 
@@ -213,6 +215,7 @@ class UploadMultiImageWidget extends StatefulWidget {
   int type;
 
   @override
+  // ignore: library_private_types_in_public_api
   _UploadImageMultiWidgetState createState() => _UploadImageMultiWidgetState();
 }
 

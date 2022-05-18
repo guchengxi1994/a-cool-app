@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:codind/entity/file_entity.dart';
@@ -38,7 +40,7 @@ class _FileExplorePageState extends State<FileExplorePage>
     // print(currentDepth);
     if (_e != null) {
       currentFatherPath =
-          _e.fatherPath == "" ? "" : _e.fatherPath + "/" + _e.name;
+          _e.fatherPath == "" ? "" : "${_e.fatherPath}/${_e.name}";
       // print(currentFatherPath);
     } else {
       currentFatherPath = "../root";
@@ -243,7 +245,7 @@ class _FileExploreStackState extends State<FileExploreStack> {
     var s = await ps.getFolderStructure();
     // EntityFolder? en = fromJsonToEntityAdd(s, fatherPath, depth, e, s);
     var res = flatten(EntityFolder.fromJson(json.decode(s)));
-    var _addFile = e.fatherPath + "/" + e.name;
+    var _addFile = "${e.fatherPath}/${e.name}";
 
     res.path.add(_addFile);
     EntityFolder? en = toStructured(res);
@@ -264,7 +266,7 @@ class _FileExploreStackState extends State<FileExploreStack> {
     // var s = await spGetFolderStructure();
     var s = await ps.getFolderStructure();
     var res = flatten(EntityFolder.fromJson(json.decode(s)));
-    var _addFile = e.fatherPath + "/" + e.name;
+    var _addFile = "${e.fatherPath}/${e.name}";
     // print(_addFile);
     res.files.add(e);
     res.path.add(_addFile);
@@ -354,7 +356,7 @@ class _FileExploreStackState extends State<FileExploreStack> {
       } else {
         EntityFolder _entity = list[i] as EntityFolder;
         widgets.add(FileWidget(
-          tooltip: _entity.children.length.toString() + "个文件",
+          tooltip: "${_entity.children.length}个文件",
           index: i,
           appearance: const Icon(Icons.folder),
           name: (list[i] as EntityFolder).name,

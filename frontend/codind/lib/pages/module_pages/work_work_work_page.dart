@@ -28,7 +28,8 @@ class WorkWorkWorkPage extends MobileBasePage {
 }
 
 class _WorkWorkWorkPageState<T> extends MobileBasePageState<WorkWorkWorkPage> {
-  late WorkWorkWork work;
+  late WorkWorkWork work =
+      WorkWorkWork(all: 1, delayed: 0, done: 0, underGoing: 1);
 
   // ignore: prefer_typing_uninitialized_variables
   var _loadDataFuture;
@@ -42,7 +43,8 @@ class _WorkWorkWorkPageState<T> extends MobileBasePageState<WorkWorkWorkPage> {
 
   loadDataBase() async {
     if (widget.work == null) {
-      work = await getWorkDays();
+      var sqliteUtils = SqliteUtils();
+      work = await sqliteUtils.getWorkDays();
     } else {
       work = widget.work!;
     }

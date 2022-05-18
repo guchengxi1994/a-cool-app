@@ -21,11 +21,11 @@ class SplashPageScreenController extends ChangeNotifier {
     "正在创建知识数据库...",
     "正在创建文件数据库...",
     "正在创建日程数据库...",
+    "正在创建好友数据库...",
     "正在验证身份...",
   ];
 
-  String get value =>
-      (_currentIndex / steps.length * 100).ceil().toString() + "%";
+  String get value => "${(_currentIndex / steps.length * 100).ceil()}%";
 
   List<String> get done => steps.getRange(0, _currentIndex).toList();
 
@@ -50,6 +50,7 @@ class SplashPageScreenController extends ChangeNotifier {
     await _initFileDatabase();
     await _initRole();
     await _initTodoDatabase();
+    await _initFriend();
     push();
   }
 
@@ -59,6 +60,11 @@ class SplashPageScreenController extends ChangeNotifier {
   }
 
   _initFileDatabase() async {
+    await Future.delayed(Duration(milliseconds: 500));
+    changeValue(1);
+  }
+
+  _initFriend() async {
     await Future.delayed(Duration(milliseconds: 500));
     changeValue(1);
   }

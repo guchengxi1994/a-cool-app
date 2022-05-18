@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 /*
  * @Descripttion: 
  * @version: 
@@ -10,25 +12,22 @@
 import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:taichi/taichi.dart' show TaichiDevUtils;
 
 import '_app.dart';
-import 'bloc/my_blocs.dart';
 import 'globals.dart';
 
 Future main() async {
   debugPrint(
       "use username= `test@xiaoshuyui.org.cn` &  password= `123456` to test");
 
-  // 获取 theme
   WidgetsFlutterBinding.ensureInitialized();
 
   // somehow on mobiles cannot access the avatar-generate-server
-  if (PlatformUtils.isMobile) {
+  if (TaichiDevUtils.isMobile) {
     HttpOverrides.global = MyHttpOverrides();
     ByteData data =
         await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
@@ -54,12 +53,10 @@ Future main() async {
         debug: true);
   }
 
-  BlocOverrides.runZoned(
-      (() => runApp(MultiProvider(
-            providers: getProviders(),
-            child: const MyApp(
-              lang: "zh_CN",
-            ),
-          ))),
-      blocObserver: SimpleBlocObserver());
+  runApp(MultiProvider(
+    providers: getProviders(),
+    child: const MyApp(
+      lang: "zh_CN",
+    ),
+  ));
 }

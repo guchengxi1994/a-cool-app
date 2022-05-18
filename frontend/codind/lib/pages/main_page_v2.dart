@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, no_leading_underscores_for_local_identifiers, use_build_context_synchronously
 
 /*
  * @Descripttion: 
@@ -7,7 +7,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 19:54:23
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-05-09 21:44:07
+ * @LastEditTime: 2022-05-11 21:23:04
  */
 
 /// 手机端的主页
@@ -22,11 +22,16 @@ import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
+import 'package:taichi/taichi.dart';
 
+import '../entity/friend_entity.dart';
 import '../providers/my_providers.dart';
 import 'module_pages/new_todos_page.dart';
 import 'module_pages/work_work_work_page.dart';
+import 'package:codind/utils/no_web/sqlite_utils.dart'
+    if (dart.library.html) 'package:codind/utils/web/sqlite_utils_web.dart';
 
 class MainPageV2 extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
@@ -39,14 +44,23 @@ class MainPageV2 extends StatefulWidget {
 class _MainPageV2State extends State<MainPageV2> {
   final ScrollController _controller = ScrollController();
   late double _position;
+  late SqliteUtils sqliteUtils = SqliteUtils();
+  late PersistenceStorage ps = PersistenceStorage();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       _controller.addListener(() {
         context.read<AngleController>().changeAngle(_controller.offset);
       });
+
+      if (await ps.getUserEmail() != "test@xiaoshuyui.org.cn") {
+        Friend? _friend = await sqliteUtils.getFriend();
+        if (_friend != null) {
+          context.read<UserinfoController>().login(_friend);
+        }
+      }
     });
   }
 
@@ -91,13 +105,14 @@ class _MainPageV2State extends State<MainPageV2> {
                     SizedBox(
                       height: 45.h,
                       width: 45.h,
-                      child: buildAvatar(context.watch<AvatarController>().img),
+                      child:
+                          buildAvatar(context.watch<UserinfoController>().img),
                     ),
                     SizedBox(
                       width: 10.w,
                     ),
                     Text(
-                      "测试用户的工作台",
+                      "${context.read<UserinfoController>().userData.userName!}的工作台",
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
                     )
@@ -152,18 +167,6 @@ class _MainPageV2State extends State<MainPageV2> {
         body: buildBodyCards());
   }
 
-  /// for test
-  buildImg(Color color, double height) {
-    return SizedBox(
-        height: height.h,
-        child: Container(
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.rectangle,
-          ),
-        ));
-  }
-
   Widget buildBodyCards() {
     return ListView.builder(
         physics: const BouncingScrollPhysics(),
@@ -196,8 +199,40 @@ class _MainPageV2State extends State<MainPageV2> {
           if (context.watch<MainPageCardController>().selectedCards[index] ==
               "label.friend") {
             return InkWell(
-                onTap: () =>
-                    Navigator.of(context).pushNamed(Routers.pageFriend),
+                onTap: () async {
+                  if (TaichiDevUtils.isMobile &&
+                      MediaQuery.of(context).orientation ==
+                          Orientation.portrait) {
+                    Navigator.of(context).pushNamed(Routers.pageFriend);
+                  } else {
+                    var res = await showCupertinoDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            title: const Text("确定要跳转吗？"),
+                            content: Material(
+                                color: Colors.transparent,
+                                child: Text("非移动端设备显示可能存在问题")),
+                            actions: [
+                              CupertinoActionSheetAction(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(1);
+                                  },
+                                  child: Text("确定")),
+                              CupertinoActionSheetAction(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(0);
+                                  },
+                                  child: Text("取消")),
+                            ],
+                          );
+                        });
+
+                    if (res == 1) {
+                      Navigator.of(context).pushNamed(Routers.pageFriend);
+                    }
+                  }
+                },
                 child: CoolCollapsWidget(
                   cardName: "label.friend",
                 ));
@@ -306,8 +341,45 @@ class _MainPageV2State extends State<MainPageV2> {
                     Expanded(
                       flex: 1,
                       child: UserAvatarWidget(
-                        avatarImg: context.watch<AvatarController>().img,
-                        userInfo: "测试用户",
+                        onTap: () async {
+                          var _name = "";
+                          await showCupertinoDialog(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoAlertDialog(
+                                  title: const Text("修改用户名"),
+                                  content: Material(
+                                    color: Colors.transparent,
+                                    child: TextField(
+                                      maxLength: 15,
+                                      onChanged: (value) {
+                                        _name = value;
+                                      },
+                                    ),
+                                  ),
+                                  actions: [
+                                    CupertinoActionSheetAction(
+                                        onPressed: () async {
+                                          await context
+                                              .read<UserinfoController>()
+                                              .changeUserName(_name);
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text("确定")),
+                                    CupertinoActionSheetAction(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text("取消")),
+                                  ],
+                                );
+                              });
+                        },
+                        avatarImg: context.watch<UserinfoController>().img,
+                        userInfo: context
+                            .watch<UserinfoController>()
+                            .userData
+                            .userName,
                       ),
                     ),
                     Expanded(

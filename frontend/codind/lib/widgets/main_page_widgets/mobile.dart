@@ -1,10 +1,11 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:card_swiper/card_swiper.dart';
 import 'package:codind/entity/avatar_img_entity.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:codind/widgets/main_page_widgets/main_page_expanded_widget.dart';
-import 'package:codind/widgets/mobile_widgets/qr_scanner_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -16,47 +17,50 @@ import '../../entity/entity.dart';
 
 // ignore: must_be_immutable
 class UserAvatarWidget extends StatelessWidget {
-  UserAvatarWidget({
-    Key? key,
-    required this.avatarImg,
-    required this.userInfo,
-  }) : super(key: key);
+  UserAvatarWidget(
+      {Key? key, required this.avatarImg, required this.userInfo, this.onTap})
+      : super(key: key);
 
   String? userInfo;
   AvatarImg? avatarImg;
+  // ignore: prefer_typing_uninitialized_variables
+  final onTap;
 
   @override
   Widget build(BuildContext context) {
     // debugPrint("[debug avatarImg]: ${avatarImg.toString()}");
-    return Card(
-      color: const Color.fromARGB(255, 199, 177, 152),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          SizedBox(
-            // height: MediaQuery.of(context).size.width * 0.2 <= 120
-            //     ? MediaQuery.of(context).size.width * 0.2
-            //     : 120,
-            // width: MediaQuery.of(context).size.width * 0.2 <= 120
-            //     ? MediaQuery.of(context).size.width * 0.2
-            //     : 120,
-            height: 120.sp,
-            width: 120.sp,
-            child: Transform.rotate(
-              angle: context.watch<AngleController>().angle,
-              child: buildAvatar(avatarImg),
+    return InkWell(
+      onTap: onTap,
+      child: Card(
+        color: const Color.fromARGB(255, 199, 177, 152),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SizedBox(
+              // height: MediaQuery.of(context).size.width * 0.2 <= 120
+              //     ? MediaQuery.of(context).size.width * 0.2
+              //     : 120,
+              // width: MediaQuery.of(context).size.width * 0.2 <= 120
+              //     ? MediaQuery.of(context).size.width * 0.2
+              //     : 120,
+              height: 120.sp,
+              width: 120.sp,
+              child: Transform.rotate(
+                angle: context.watch<AngleController>().angle,
+                child: buildAvatar(avatarImg),
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          if (userInfo != null)
-            Text(
-              userInfo ?? "用户A",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
+            const SizedBox(
+              height: 5,
             ),
-        ],
+            if (userInfo != null)
+              Text(
+                userInfo ?? "测试用户",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -91,11 +95,15 @@ class SignupButton extends StatelessWidget {
       color: const Color.fromARGB(150, 199, 177, 152),
       child: InkWell(
         onTap: () {
-          if (PlatformUtils.isMobile) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return ScanMainPage().getPage();
-            }));
-          }
+          // if (PlatformUtils.isMobile) {
+          //   Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          //     return ScanMainPage().getPage();
+          //   }));
+          // }
+          // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          //   return const CalendarPage();
+          // }));
+          Navigator.of(context).pushNamed(Routers.pageCalendar);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

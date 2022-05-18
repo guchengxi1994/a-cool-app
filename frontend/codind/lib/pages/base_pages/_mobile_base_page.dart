@@ -7,7 +7,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-04-07 19:09:19
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-10 12:33:45
+ * @LastEditTime: 2022-05-16 20:24:08
  */
 import 'package:codind/_styles.dart';
 import 'package:flutter/material.dart';
@@ -43,29 +43,30 @@ class MobileBasePageState<T extends MobileBasePage> extends State<T> {
                 : null),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            backgroundColor: AppTheme.baseAppbarColor,
-            elevation: 0,
-            title: widget.pageName != null
-                ? Text(
+          appBar: widget.pageName != null
+              ? AppBar(
+                  automaticallyImplyLeading: false,
+                  backgroundColor: AppTheme.baseAppbarColor,
+                  elevation: 0,
+                  title: Text(
                     widget.pageName!,
                     style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
-                  )
-                : null,
-            centerTitle: true,
-            leading: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(
-                  Icons.chevron_left,
-                  size: AppTheme.leftBackIconSize,
-                  color: Color.fromARGB(255, 78, 63, 63),
-                )),
-          ),
+                  ),
+                  centerTitle: true,
+                  leading: IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: const Icon(
+                        Icons.chevron_left,
+                        size: AppTheme.leftBackIconSize,
+                        color: Color.fromARGB(255, 78, 63, 63),
+                      )),
+                )
+              : null,
           body: baseBuild(context),
         ),
       ),

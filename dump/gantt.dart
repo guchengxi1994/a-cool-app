@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use_from_same_package
+
 /*
  * @Descripttion: 
  * @version: 
@@ -5,7 +7,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-14 20:24:08
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-04-13 21:39:20
+ * @LastEditTime: 2022-05-17 22:45:11
  */
 import 'package:codind/bloc/gantt_bloc.dart';
 import 'package:codind/entity/schedule.dart';
@@ -106,9 +108,7 @@ class _GanttPageState extends State<GanttPage> {
                                           },
                                           icon: const Icon(
                                               Icons.navigate_before)),
-                                      Text(currentYear.toString() +
-                                          "." +
-                                          currentMonth.toString()),
+                                      Text("$currentYear.$currentMonth"),
                                       IconButton(
                                           onPressed: () {
                                             setState(() {
@@ -235,10 +235,10 @@ class _GanttPageState extends State<GanttPage> {
             child: ThingsWidget(calendarType: _calendarType),
           ),
           Expanded(
+            flex: _flexRight,
             child: _calendarType == CalendarType.year
                 ? CalendarWidget()
                 : CalendarByMonth(),
-            flex: _flexRight,
           )
         ],
       );
@@ -256,10 +256,10 @@ class _GanttPageState extends State<GanttPage> {
               child: ThingsWidget(calendarType: _calendarType),
             ),
             Expanded(
+              flex: _flexRight,
               child: _calendarType == CalendarType.year
                   ? CalendarWidget()
                   : CalendarByMonth(),
-              flex: _flexRight,
             )
           ],
         );

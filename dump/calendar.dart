@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously, prefer_const_constructors
+
 /*
  * @Descripttion: 
  * @version: 
@@ -5,7 +7,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-02-13 22:10:24
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-02-24 20:11:31
+ * @LastEditTime: 2022-05-17 22:52:20
  */
 
 /// diy a scroll bar  https://www.jianshu.com/p/c14c5bd649c2
@@ -13,6 +15,7 @@
 import 'package:codind/bloc/gantt_bloc.dart';
 import 'package:codind/pages/module_pages/_schedule_detail_page.dart'
     show ScheduleDetailPage;
+import 'package:codind/providers/language_provider.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/common.dart' as my;
 import 'package:flutter/material.dart';
@@ -22,6 +25,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../entity/entity.dart';
 import '../utils/utils.dart';
 
+const double boxHeight = 30.5;
+
+@Deprecated("use ```CalendarWidgetV2``` instead")
 class CalendarWidget extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
   CalendarWidget({Key? key}) : super(key: key);
@@ -30,6 +36,7 @@ class CalendarWidget extends StatefulWidget {
   State<CalendarWidget> createState() => _CalendarWidgetState();
 }
 
+@Deprecated("use ```CalendarWidgetV2``` instead")
 class _CalendarWidgetState extends State<CalendarWidget> {
   ScrollController scrollController = ScrollController();
   ScrollController scrollControllerJan = ScrollController();
@@ -115,8 +122,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                             height: 20,
                             width: 20,
                             alignment: Alignment.center,
-                            child: Text((e + 1).toString()),
                             color: const Color.fromARGB(255, 175, 147, 145),
+                            child: Text((e + 1).toString()),
                           );
                         }).toList(),
                       ),
@@ -217,15 +224,8 @@ class _DayBoxState extends State<DayBox> {
     }
 
     tootipMessage = widget.isWeekend
-        ? widget.rowId.toString() +
-            "月" +
-            (widget.columnId + 1).toString() +
-            "日" +
-            " 周末"
-        : widget.rowId.toString() +
-            "月" +
-            (widget.columnId + 1).toString() +
-            "日";
+        ? "${widget.rowId}月${widget.columnId}日 周末"
+        : "${widget.rowId}月${widget.columnId}日";
   }
 
   @override
@@ -302,6 +302,102 @@ class _DayBoxState extends State<DayBox> {
                 }
               },
             ),
+    );
+  }
+}
+
+class CalendarWidgetV2 extends StatefulWidget {
+  // ignore: prefer_const_constructors_in_immutables
+  CalendarWidgetV2({Key? key}) : super(key: key);
+
+  @override
+  State<CalendarWidgetV2> createState() => _CalendarWidgetV2State();
+}
+
+class _CalendarWidgetV2State extends State<CalendarWidgetV2> {
+  final my.DateUtils _dateUtils = my.DateUtils();
+  late GanttBloc _ganttBloc;
+  late final List<int> _days = _dateUtils.data.values.toList();
+  @override
+  void initState() {
+    super.initState();
+    _ganttBloc = context.read<GanttBloc>();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<ScheduleDates> scheduleDates = _ganttBloc.state.getDates();
+    debugPrint("[dates list length]:${scheduleDates.length}");
+    var currentWidth = MediaQuery.of(context).size.width;
+    return SizedBox(
+      width: 35 * 32,
+      height: 35 * 13,
+      child: GridView.builder(
+          shrinkWrap: true,
+          physics: const ClampingScrollPhysics(),
+          itemCount: 32 * 13,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 32,
+            childAspectRatio: 1.0,
+          ),
+          itemBuilder: (context, index) {
+            var rowId = index ~/ 32;
+            if (rowId == 0) {
+              if ((index % 32) == 0) {
+                if (currentWidth < 35 * 32) {
+                  return Center(child: Text(""));
+                } else {
+                  return Center(child: Text("月/天"));
+                }
+              }
+              return Container(
+                margin: EdgeInsets.all(1),
+                color: Color.fromARGB(255, 185, 141, 105),
+                child: Center(child: Text((index % 32).toString())),
+              );
+            }
+
+            var lang = context.read<LanguageControllerV2>().currentLang;
+
+            var months =
+                lang == "zh_CN" ? _dateUtils.months_CN : _dateUtils.months_en;
+            var columnId = (index % 32);
+            if (columnId == 0) {
+              if (currentWidth < 35 * 32) {
+                return Center(child: Text(rowId.toString()));
+              }
+              return Center(child: Text(months[rowId]));
+            }
+
+            if (columnId < _days[rowId] + 1) {
+              var utc = DateTime(_dateUtils.year, rowId, columnId).isSaturday ||
+                  DateTime(_dateUtils.year, rowId, columnId).isSunday;
+              var thisDay = DateTime(_dateUtils.year, rowId, columnId);
+
+              BoxStatus status = BoxStatus.nothing;
+              for (var sd in scheduleDates) {
+                if (sd.dates.contains(thisDay)) {
+                  status = sd.status;
+                }
+              }
+
+              return DayBox(
+                isWeekend: utc,
+                rowId: rowId,
+                columnId: columnId,
+                boxStatus: status,
+                year: _dateUtils.year,
+              );
+            } else {
+              return DayBox(
+                isWeekend: false,
+                rowId: rowId,
+                columnId: columnId,
+                boxStatus: BoxStatus.cannotSelected,
+                year: _dateUtils.year,
+              );
+            }
+          }),
     );
   }
 }

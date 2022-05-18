@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:codind/_apis.dart';
 import 'package:codind/pages/base_pages/_mobile_base_page.dart';
 import 'package:codind/utils/dio_utils.dart';
@@ -5,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:scan/scan.dart';
+import 'package:taichi/taichi.dart';
 
 import '../../router.dart';
 import '../../utils/shared_preference_utils.dart';
@@ -146,52 +149,64 @@ class _MobileScanToLoginWidgetState
   String qrCode = "";
   final DioUtils _dioUtils = DioUtils();
   final PersistenceStorage ps = PersistenceStorage();
+  bool isLoading = false;
 
   @override
   baseBuild(BuildContext context) {
-    return SingleChildScrollView(
-        child: Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            margin: const EdgeInsets.only(top: 50),
-            height: 300,
-            width: 300,
-            child: ScanView(
-              controller: controller,
-              scanAreaScale: 0.8,
-              scanLineColor: const Color.fromARGB(255, 51, 34, 207),
-              onCapture: (data) {
-                debugPrint("[qr-result : $data]");
-                // qrcode = data;
+    return TaichiOverlay.simple(
+        isLoading: isLoading,
+        child: SingleChildScrollView(
+            child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 50),
+                height: 300,
+                width: 300,
+                child: ScanView(
+                  controller: controller,
+                  scanAreaScale: 0.8,
+                  scanLineColor: const Color.fromARGB(255, 51, 34, 207),
+                  onCapture: (data) {
+                    debugPrint("[qr-result : $data]");
+                    // qrcode = data;
 
-                setState(() {
-                  qrCode = data;
-                });
-              },
-            ),
+                    setState(() {
+                      qrCode = data;
+                    });
+                  },
+                ),
+              ),
+              if (qrCode != "")
+                ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+
+                      String email = await ps.getUserEmail();
+                      String url =
+                          "$apiRoute${Apis["login"]!}k=$qrCode&v=$email";
+
+                      Response? response = await _dioUtils.get(url);
+                      setState(() {
+                        isLoading = false;
+                      });
+
+                      if (response != null && response.data != null) {
+                        debugPrint(response.data);
+                        if (Global.navigatorKey.currentState != null) {
+                          Global.navigatorKey.currentState!
+                              .pushNamedAndRemoveUntil(
+                                  Routers.pageMain, (route) => false);
+                        }
+                      }
+                    },
+                    child: const Text("登录")),
+            ],
           ),
-          if (qrCode != "")
-            ElevatedButton(
-                onPressed: () async {
-                  String email = await ps.getUserEmail();
-                  String url =
-                      apiRoute + Apis["login"]! + "k=$qrCode" + "&v=$email";
-
-                  Response? response = await _dioUtils.get(url);
-                  if (response != null && response.data != null) {
-                    debugPrint(response.data);
-                    if (Global.navigatorKey.currentState != null) {
-                      Global.navigatorKey.currentState!.pushNamedAndRemoveUntil(
-                          Routers.pageMain, (route) => false);
-                    }
-                  }
-                },
-                child: const Text("登录")),
-        ],
-      ),
-    ));
+        )));
   }
 }

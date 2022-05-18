@@ -1,15 +1,16 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, must_be_immutable, prefer_const_constructors
+// ignore_for_file: prefer_typing_uninitialized_variables, must_be_immutable, prefer_const_constructors, no_leading_underscores_for_local_identifiers
 
 import 'package:codind/entity/schedule.dart';
-import 'package:codind/utils/platform_utils.dart';
 import 'package:codind/utils/toast_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:taichi/taichi.dart' show TaichiDevUtils;
 
 const double textButtonHeight = 20;
 const double textButtonWidth = 30;
 
+@Deprecated("use ```CreateNewTodoV2``` instead")
 class ScheduleDetailPage extends StatefulWidget {
   ScheduleDetailPage(
       {Key? key,
@@ -27,6 +28,7 @@ class ScheduleDetailPage extends StatefulWidget {
   State<ScheduleDetailPage> createState() => _ScheduleDetailPageState();
 }
 
+@Deprecated("use ```CreateNewTodoV2``` instead")
 class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
   List<Widget> widgets = [];
   late Schedule? schedule;
@@ -49,10 +51,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
               to: DateTime(widget.currentYear!, widget.month!, widget.day!)
                   .toString(),
               subCompletion: 0,
-              subTitle: widget.month.toString() +
-                  "月" +
-                  (widget.day).toString() +
-                  "日的事情"),
+              subTitle: "${widget.month}月${widget.day}日的事情"),
         );
       }
     }
@@ -125,7 +124,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
           IconButton(
             onPressed: () {
               if (schedule!.subject == null || schedule!.subject!.isEmpty) {
-                showToastMessage("子项目为空", null);
+                showToastMessage("子项目为空");
               } else {
                 if (schedule!.title == "") {
                   schedule!.title = "新建日程";
@@ -133,7 +132,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
 
                 for (var s in schedule!.subject!) {
                   if (!s.validate()) {
-                    showToastMessage("子项目验证失败，请确认提交", null);
+                    showToastMessage("子项目验证失败，请确认提交");
                     return;
                   }
                 }
@@ -372,10 +371,10 @@ class _SubRowWidgetState extends State<SubRowWidget> {
                       _subject.subCompletion = _res;
                       setState(() {});
                     } else {
-                      showToastMessage("完成度需大于0小于1", null);
+                      showToastMessage("完成度需大于0小于1");
                     }
                   } catch (_) {
-                    showToastMessage("数值异常", null);
+                    showToastMessage("数值异常");
                   }
                 });
               },
@@ -385,7 +384,7 @@ class _SubRowWidgetState extends State<SubRowWidget> {
               )),
         ),
         Expanded(
-            child: (PlatformUtils.isAndroid || PlatformUtils.isIOS)
+            child: (TaichiDevUtils.isMobile)
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -402,18 +401,18 @@ class _SubRowWidgetState extends State<SubRowWidget> {
                           onPressed: () {
                             setState(() {
                               if (_subject.subTitle == "") {
-                                showToastMessage("标题不能为空", null);
+                                showToastMessage("标题不能为空");
                                 return;
                               }
                               try {
                                 if (int.parse(_subject.duation) < 0) {
-                                  showToastMessage("开始时间比结束时间晚", null);
+                                  showToastMessage("开始时间比结束时间晚");
                                 } else {
                                   widget.commitSelf(widget.index, _subject);
                                 }
                               } catch (e) {
                                 debugPrint(e.toString());
-                                showToastMessage("录入失败", null);
+                                showToastMessage("录入失败");
                               }
                             });
                           },
@@ -438,18 +437,18 @@ class _SubRowWidgetState extends State<SubRowWidget> {
                           onPressed: () {
                             setState(() {
                               if (_subject.subTitle == "") {
-                                showToastMessage("标题不能为空", null);
+                                showToastMessage("标题不能为空");
                                 return;
                               }
                               try {
                                 if (int.parse(_subject.duation) < 0) {
-                                  showToastMessage("开始时间比结束时间晚", null);
+                                  showToastMessage("开始时间比结束时间晚");
                                 } else {
                                   widget.commitSelf(widget.index, _subject);
                                 }
                               } catch (e) {
                                 debugPrint(e.toString());
-                                showToastMessage("录入失败", null);
+                                showToastMessage("录入失败");
                               }
                             });
                           },

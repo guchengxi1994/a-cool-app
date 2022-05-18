@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable
+// ignore_for_file: prefer_const_constructors, must_be_immutable, depend_on_referenced_packages
 
 import 'package:codind/entity/entity.dart';
 import 'package:codind/providers/my_providers.dart';
@@ -23,7 +23,8 @@ import '../base_pages/_mobile_base_page.dart';
 const quertStr = "https://avatars.dicebear.com/api/";
 
 class GenerateAvatarPage extends MobileBasePage {
-  GenerateAvatarPage({Key? key}) : super(key: key, pageName: null);
+  GenerateAvatarPage({Key? key, required String pageName})
+      : super(key: key, pageName: pageName);
 
   @override
   MobileBasePageState<MobileBasePage> getState() {
@@ -250,40 +251,38 @@ class _GenerateAvatarPageState<T>
                           });
                     },
                   ),
-                  InkWell(
-                    child: Container(
-                      // color: defaultBackgroundColor,
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.red),
-                          borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                          color: defaultBackgroundColor),
-                      height: 40,
-                      width: 80,
-                      child: InkWell(
-                        child: Center(
-                          child: Text(
-                            FlutterI18n.translate(context, "avatarPage.select"),
-                            style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.bold),
-                          ),
+                  Container(
+                    // color: defaultBackgroundColor,
+                    decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.red),
+                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                        color: defaultBackgroundColor),
+                    height: 40,
+                    width: 80,
+                    child: InkWell(
+                      child: Center(
+                        child: Text(
+                          FlutterI18n.translate(context, "avatarPage.select"),
+                          style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.bold),
                         ),
-                        onTap: () async {
-                          Color? selectedColor = await showDialog(
-                              context: context,
-                              builder: (context) {
-                                return ColorPickerWidget(
-                                  currentColor: defaultBackgroundColor,
-                                );
-                              });
-                          if (null != selectedColor) {
-                            setState(() {
-                              debugPrint(selectedColor.value.toRadixString(16));
-                              defaultBackgroundColor = selectedColor;
-                            });
-                          }
-                        },
                       ),
+                      onTap: () async {
+                        Color? selectedColor = await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ColorPickerWidget(
+                                currentColor: defaultBackgroundColor,
+                              );
+                            });
+                        if (null != selectedColor) {
+                          setState(() {
+                            debugPrint(selectedColor.value.toRadixString(16));
+                            defaultBackgroundColor = selectedColor;
+                          });
+                        }
+                      },
                     ),
                   ),
                 ],
@@ -310,8 +309,8 @@ class _GenerateAvatarPageState<T>
                     ),
                     tapOnW2: () {
                       showToastMessage(
-                          FlutterI18n.translate(context, "avatarPage.warning4"),
-                          context);
+                        FlutterI18n.translate(context, "avatarPage.warning4"),
+                      );
                     },
                   ),
                   FindDropdown(
@@ -354,25 +353,16 @@ class _GenerateAvatarPageState<T>
                 onPressed: () async {
                   if (_controller.text == "") {
                     showToastMessage(
-                        FlutterI18n.translate(context, "avatarPage.warning3"),
-                        context);
+                      FlutterI18n.translate(context, "avatarPage.warning3"),
+                    );
                   } else {
-                    String url = quertStr +
-                        defaultType +
-                        "/" +
-                        _controller.text +
-                        ".$selectedImgType";
+                    String url =
+                        "$quertStr$defaultType/${_controller.text}.$selectedImgType";
 
                     if (selectedImgType == "svg") {
-                      url += "?background=%23" +
-                          defaultBackgroundColor.value.toRadixString(16);
+                      url +=
+                          "?background=%23${defaultBackgroundColor.value.toRadixString(16)}";
                     }
-
-                    // String url = quertStr +
-                    //     defaultType +
-                    //     "/" +
-                    //     _controller.text +
-                    //     ".svg?";
 
                     if (currentMood != "") {
                       if (url.endsWith("?")) {
@@ -412,18 +402,26 @@ class _GenerateAvatarPageState<T>
                 child: Text(
                     FlutterI18n.translate(context, "avatarPage.generate"))),
             if (remoteImageUrl != "" || svgData != "")
+              const SizedBox(
+                height: 20,
+              ),
+            if (remoteImageUrl != "" || svgData != "")
               ElevatedButton(
                   onPressed: () {
-                    context.read<AvatarController>().changeImg(
+                    context.read<UserinfoController>().changeImg(
                         selectedImgType == "png"
                             ? AvatarType.png
                             : AvatarType.svg,
                         remoteImageUrl,
                         svgData,
                         defaultBackgroundColor);
+                    showToastMessage("提交完成");
                   },
-                  child:
-                      Text(FlutterI18n.translate(context, "avatarPage.submit")))
+                  child: Text(
+                      FlutterI18n.translate(context, "avatarPage.submit"))),
+            const SizedBox(
+              height: 50,
+            ),
           ],
         ),
       ),

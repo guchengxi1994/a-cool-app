@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
+// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables, depend_on_referenced_packages, use_build_context_synchronously, no_leading_underscores_for_local_identifiers
 
 /*
  * @Descripttion: 
@@ -29,7 +29,8 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
 import 'package:codind/utils/no_web/mobile_utils.dart'
     if (dart.library.html) 'package:codind/utils/web/web_utils.dart'
-    show saveMdFile;
+    show saveFile;
+import 'package:taichi/taichi.dart' show TaichiDevUtils;
 
 import '../base_pages/_base_page.dart';
 
@@ -37,6 +38,7 @@ class _EmojiFutureEntity {
   List<String>? usedEmoji;
   String? jsonLikeStr;
 
+  // ignore: unused_element
   _EmojiFutureEntity({this.usedEmoji, this.jsonLikeStr});
 
   // ignore: unused_element
@@ -129,7 +131,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       FocusScope.of(context).requestFocus(focusNode);
       li = List<int>.generate(
           (context.read<RadioProvider>().mds.keys.toList().length),
@@ -308,7 +310,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
 
   @override
   baseBuild(BuildContext context) {
-    if (PlatformUtils.isIOS) {
+    if (TaichiDevUtils.isIOS) {
       return buildView(context);
     }
 
@@ -321,10 +323,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                 context: context,
                 builder: (context) {
                   return CupertinoAlertDialog(
-                    title: Text(FlutterI18n.translate(
-                            context, "label.exitWarning") +
-                        "\n" +
-                        FlutterI18n.translate(context, "label.unSavedWarning")),
+                    title: Text(
+                        "${FlutterI18n.translate(context, "label.exitWarning")}\n${FlutterI18n.translate(context, "label.unSavedWarning")}"),
                     actions: [
                       CupertinoActionSheetAction(
                           onPressed: () {
@@ -357,13 +357,13 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
         extendBody: false,
         key: _scaffoldKey,
         endDrawer: SizedBox(
+          width: 0.8 * MediaQuery.of(context).size.width,
           child: Scaffold(
             body: Markdown(
               padding: const EdgeInsets.only(bottom: 100),
               data: markdownStr,
             ),
           ),
-          width: 0.8 * MediaQuery.of(context).size.width,
         ),
         body: w,
         bottomSheet: bottomSheet(),
@@ -376,22 +376,22 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
+              flex: 1,
               child: Scaffold(
                 body: w,
               ),
-              flex: 1,
             ),
             const VerticalDivider(
               thickness: 2,
               color: Colors.grey,
             ),
             Expanded(
+              flex: 1,
               child: Scaffold(
                   body: _ChangedMdEditor(
                 key: _globalKey,
                 mdData: textEditingController.text,
               )),
-              flex: 1,
             )
           ],
         ),
@@ -977,7 +977,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                     textEditingController.text +=
                         convertTabelScaleToString(result[0], result[1]);
                   } else {
-                    showToastMessage("行列数值错误", null);
+                    showToastMessage("行列数值错误");
                   }
                 },
                 icon: const Icon(Icons.table_chart)),
@@ -1029,8 +1029,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                       isLoading = true;
                     });
                     try {
-                      saveMdFile(
-                          filename: res.endsWith(".md") ? res : res + ".md",
+                      saveFile(
+                          filename: res.endsWith(".md") ? res : "$res.md",
                           data: textEditingController.text);
                     } catch (_, s) {
                       debugPrint(s.toString());
@@ -1041,8 +1041,8 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                     });
                   } else {
                     showToastMessage(
-                        FlutterI18n.translate(context, "errors.invalidName"),
-                        null);
+                      FlutterI18n.translate(context, "errors.invalidName"),
+                    );
                   }
                 },
                 icon: const Icon(Icons.file_download))

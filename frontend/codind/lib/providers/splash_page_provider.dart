@@ -1,23 +1,22 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, no_leading_underscores_for_local_identifiers
 
-import 'dart:io';
-
+import 'package:codind/entity/friend_entity.dart';
 import 'package:codind/router.dart';
-import 'package:codind/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:sqlite3/sqlite3.dart';
 
-import '../globals.dart';
+import 'package:codind/utils/no_web/sqlite_utils.dart'
+    if (dart.library.html) 'package:codind/utils/web/sqlite_utils_web.dart';
+
 import '../utils/shared_preference_utils.dart';
 
 /// not on webs
 class SplashPageScreenController extends ChangeNotifier {
   PersistenceStorage ps = PersistenceStorage();
-  Directory? _appSupportDirectory;
-  bool _isFirst = true;
+  // Directory? _appSupportDirectory;
   int _currentIndex = 0;
+
+  late SqliteUtils sqlUtils = SqliteUtils();
 
   int thresHold = 5;
 
@@ -29,6 +28,7 @@ class SplashPageScreenController extends ChangeNotifier {
     "正在创建知识数据库...",
     "正在创建文件数据库...",
     "正在创建日程数据库...",
+    "正在创建好友数据库...",
     "正在验证身份...",
   ];
 
@@ -37,8 +37,7 @@ class SplashPageScreenController extends ChangeNotifier {
   List<String> get splashPageRows =>
       done.length <= 5 ? done : done.sublist(done.length - 4);
 
-  String get value =>
-      (_currentIndex / steps.length * 100).ceil().toString() + "%";
+  String get value => "${(_currentIndex / steps.length * 100).ceil()}%";
 
   changeValue(int step) {
     _currentIndex += step;
@@ -52,75 +51,28 @@ class SplashPageScreenController extends ChangeNotifier {
 
   init() async {
     await _initPlatform();
-    _isFirst = await ps.isFirstTime();
-    if (_isFirst) {
-      _appSupportDirectory = await getApplicationSupportDirectory();
-    }
+
     changeValue(1);
     await _initKnowledgeDatabase();
     await _initFileDatabase();
     await _initTodoDatabase();
     await _initRole();
+    await _initFriend();
     _push();
   }
 
   _initKnowledgeDatabase() async {
-    if (_isFirst && _appSupportDirectory != null) {
-      // var dbPath = "knowledge.db";
-
-      File _dbFile = File("${_appSupportDirectory!.path}/$knowLedgebasePath");
-
-      if (!_dbFile.existsSync()) {
-        var db =
-            sqlite3.open("${_appSupportDirectory!.path}/$knowLedgebasePath");
-        debugPrint(
-            "[knowledge base path] ${_appSupportDirectory!.path}/$knowLedgebasePath}");
-        db.execute('''
-            CREATE TABLE `knowledge` (
-              `time` varchar(25),
-              `title` varchar(25),
-              `detail` text,
-              `summary` text,
-              `fromUrlOrOthers` varchar(50),
-              `codes` text,
-              `tag` text,
-              `imgs` text,
-              `codeStyle` text,
-              `kid` INTEGER primary key AUTOINCREMENT
-            );
-        ''');
-      }
-    }
+    await sqlUtils.initKnowledgeBase();
     changeValue(1);
   }
 
   _initFileDatabase() async {
-    if (_isFirst && _appSupportDirectory != null && PlatformUtils.isMobile) {
-      var db = sqlite3.open("${_appSupportDirectory!.path}/$fileBasePath");
-    }
+    await sqlUtils.initFileBase();
     changeValue(1);
   }
 
   _initTodoDatabase() async {
-    if (_isFirst && _appSupportDirectory != null) {
-      File _dbFile = File("${_appSupportDirectory!.path}/$todosBasePath");
-
-      if (!_dbFile.existsSync()) {
-        var db = sqlite3.open("${_appSupportDirectory!.path}/$todosBasePath");
-        debugPrint(
-            "[todo base path] ${_appSupportDirectory!.path}/$todosBasePath}");
-
-        db.execute('''
-            CREATE TABLE `todos` (
-              `startTime` varchar(25),
-              `todoName` varchar(25),
-              `tid` INTEGER primary key AUTOINCREMENT,
-              `endTime` varchar(25),
-              `idDone` int
-            );
-          ''');
-      }
-    }
+    await sqlUtils.initTodoBase();
     changeValue(1);
   }
 
@@ -131,8 +83,14 @@ class SplashPageScreenController extends ChangeNotifier {
     changeValue(1);
   }
 
+  _initFriend() async {
+    await sqlUtils.initFriendsBase();
+    changeValue(1);
+  }
+
   _push() async {
-    if (await logdata.isTestAccount()) {
+    Friend? _friend = await sqlUtils.getFriend();
+    if (await logdata.isAccountAvailable(_friend)) {
       Global.navigatorKey.currentState!
           .pushNamedAndRemoveUntil(Routers.pageMain, (route) => false);
     } else {
@@ -145,5 +103,13 @@ class SplashPageScreenController extends ChangeNotifier {
 extension AccountTest on LoginData {
   Future<bool> isTestAccount() async {
     return name == "test@xiaoshuyui.org.cn" && password == "123456";
+  }
+
+  Future<bool> isAccountAvailable(Friend? _friend) async {
+    if (_friend != null) {
+      return _friend.userEmail == name && _friend.password == password;
+    } else {
+      return (await isTestAccount());
+    }
   }
 }

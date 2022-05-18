@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 /*
  * @Descripttion: 
  * @version: 
@@ -5,7 +7,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 21:47:48
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-05-09 21:41:52
+ * @LastEditTime: 2022-05-11 21:34:21
  */
 import 'dart:io';
 
@@ -13,12 +15,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import 'utils/toast_utils.dart';
 
 // ignore: constant_identifier_names
-const AppVersion = "1.0.0-frontend-alpha+8";
+const AppVersion = "1.0.0-frontend-alpha+10";
 
 // ignore: constant_identifier_names
 const AppName = "助手";
@@ -55,11 +57,12 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
 }
 
 void launchURL(String _url) async {
-  if (!await launch(_url)) {
-    showToastMessage("cannot launch url", null);
+  if (!await launchUrlString(_url)) {
+    showToastMessage("cannot launch url");
   }
 }
 
-const knowLedgebasePath = "knowledge.db";
+const knowledgeBasePath = "knowledge.db";
 const todosBasePath = "todo.db";
 const fileBasePath = "file.db";
+const friendsBasePath = "friend.db";

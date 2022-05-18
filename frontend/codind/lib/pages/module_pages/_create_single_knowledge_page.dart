@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: must_be_immutable, prefer_const_constructors, prefer_const_literals_to_create_immutables, depend_on_referenced_packages, no_leading_underscores_for_library_prefixes
 
 /*
  * @Descripttion: 
@@ -25,10 +25,10 @@ import 'package:highlight/languages/cpp.dart' as _cpp;
 import 'package:highlight/languages/rust.dart' as _rust;
 import 'package:highlight/languages/python.dart' as _python;
 import 'package:highlight/languages/java.dart' as _java;
+import 'package:taichi/taichi.dart' show TaichiDevUtils;
 
 import '../../entity/knowledge_entity.dart';
 import '../../providers/my_providers.dart';
-import '../../utils/platform_utils.dart';
 import '../../widgets/mobile_widgets/qr_scanner_widget.dart';
 import '../base_pages/_mobile_base_page.dart';
 
@@ -227,24 +227,24 @@ class _CreateKnowledgeWidgetState<T>
               hint: Text(currentLang),
               items: [
                 DropdownMenuItem(
-                  child: Text("Dart"),
                   value: 0,
+                  child: Text("Dart"),
                 ),
                 DropdownMenuItem(
-                  child: Text("C++"),
                   value: 1,
+                  child: Text("C++"),
                 ),
                 DropdownMenuItem(
-                  child: Text("Rust"),
                   value: 2,
+                  child: Text("Rust"),
                 ),
                 DropdownMenuItem(
-                  child: Text("Python"),
                   value: 3,
+                  child: Text("Python"),
                 ),
                 DropdownMenuItem(
-                  child: Text("Java"),
                   value: 4,
+                  child: Text("Java"),
                 ),
               ],
               onChanged: (value) {
@@ -283,7 +283,7 @@ class _CreateKnowledgeWidgetState<T>
               Expanded(
                   child: IconButton(
                 onPressed: () {
-                  if (PlatformUtils.isMobile) {
+                  if (TaichiDevUtils.isMobile) {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
                       return ScanMainPage().getPage();
@@ -386,15 +386,16 @@ class _CreateKnowledgeWidgetState<T>
                   },
                   child: Text("预览")),
               ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     context
                         .read<KnowledgeWidgetController>()
                         .addItem(KnowledgeSummaryWidget(
                           summary: _summaryController.text,
                         ));
-                    context
+                    await context
                         .read<KnowledgeController>()
                         .addItem(_knowledgeEntity);
+                    // ignore: use_build_context_synchronously
                     Navigator.of(context).pop();
                   },
                   child:

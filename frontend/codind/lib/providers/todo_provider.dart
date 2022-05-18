@@ -18,7 +18,8 @@ class TodoProvider extends ChangeNotifier {
   WorkWorkWork get work => _work;
 
   init() async {
-    _work = await getWorkDays();
+    var sqliteUtils = SqliteUtils();
+    _work = await sqliteUtils.getWorkDays();
     notifyListeners();
   }
 }

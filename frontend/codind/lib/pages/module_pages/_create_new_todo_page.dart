@@ -1,5 +1,5 @@
 /// modified from https://github.com/Im-unk/simple_login_form_flutter_UI/blob/master/lib/Views/login.dart
-// ignore_for_file: constant_identifier_names, unused_field, prefer_const_constructors
+// ignore_for_file: constant_identifier_names, unused_field, prefer_const_constructors, depend_on_referenced_packages, no_leading_underscores_for_local_identifiers
 
 import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:codind/notifications/notifications.dart';
@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:provider/provider.dart';
+import 'package:taichi/taichi.dart' show TaichiDevUtils;
 
 import '../../_styles.dart';
 import '../../entity/entity.dart' show ScheduleNotificationEntity;
@@ -17,6 +18,7 @@ import '../../utils/utils.dart';
 import '../../widgets/widgets.dart'
     show TodoTimepickerWidget, TodoTimepickerWidgetState;
 
+@Deprecated("use ```CreateNewTodoV2``` instead")
 class CreateNewTodo extends StatelessWidget {
   const CreateNewTodo({Key? key}) : super(key: key);
 
@@ -160,6 +162,10 @@ class _CreateNewTodoState extends State<_CreateNewTodo> with LoadingPageMixin {
             width: 250,
             height: 250,
             child: Container(
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                      colors: [Colors.purple[700]!, Colors.pink[700]!])),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -170,10 +176,6 @@ class _CreateNewTodoState extends State<_CreateNewTodo> with LoadingPageMixin {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                      colors: [Colors.purple[700]!, Colors.pink[700]!])),
             ),
           ),
         ],
@@ -382,11 +384,11 @@ class _CreateNewTodoState extends State<_CreateNewTodo> with LoadingPageMixin {
                 buttonStr: FlutterI18n.translate(context, "todo.select2"),
               ),
 
-              if (PlatformUtils.isMobile)
+              if (TaichiDevUtils.isMobile)
                 const SizedBox(
                   height: 20,
                 ),
-              if (PlatformUtils.isMobile)
+              if (TaichiDevUtils.isMobile)
                 CheckboxListTile(
                     secondary: Icon(
                       Icons.notifications_active,
@@ -410,12 +412,12 @@ class _CreateNewTodoState extends State<_CreateNewTodo> with LoadingPageMixin {
                     onTap: () async {
                       var s = validate();
                       if (s != "") {
-                        showToastMessage(s, context);
+                        showToastMessage(s);
                         return;
                       }
 
-                      if (!PlatformUtils.isMobile) {
-                        showToastMessage("当前平台不支持", context);
+                      if (!TaichiDevUtils.isMobile) {
+                        showToastMessage("当前平台不支持");
                         return;
                       }
 

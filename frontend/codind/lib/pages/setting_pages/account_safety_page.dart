@@ -1,7 +1,7 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, depend_on_referenced_packages
 
 import 'package:codind/pages/setting_pages/generate_avatar_page.dart';
-import 'package:codind/providers/avatar_provider.dart';
+import 'package:codind/providers/userinfo_provider.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +40,9 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return GenerateAvatarPage();
+                        return GenerateAvatarPage(
+                          pageName: "头像生成工具",
+                        );
                       }));
                     },
                     child: Stack(
@@ -49,9 +51,11 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
                           height: 100,
                           width: 100,
                           child: buildAvatar(
-                              context.watch<AvatarController>().img),
+                              context.watch<UserinfoController>().img),
                         ),
                         Positioned(
+                          right: 0,
+                          bottom: 0,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
                             child: Container(
@@ -61,8 +65,6 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
                                   const Icon(Icons.photo, color: Colors.blue),
                             ),
                           ),
-                          right: 0,
-                          bottom: 0,
                         )
                       ],
                     ),
@@ -70,7 +72,9 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
                   const SizedBox(
                     height: 10,
                   ),
-                  Text("用户名",
+                  Text(
+                      context.read<UserinfoController>().userData.userName ??
+                          "未修改用户名",
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
@@ -79,6 +83,8 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
               ),
             ),
             Positioned(
+              left: 5,
+              top: 5,
               child: IconButton(
                 icon: const Icon(
                   Icons.chevron_left,
@@ -89,8 +95,6 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
                   Navigator.of(context).pop();
                 },
               ),
-              left: 5,
-              top: 5,
             ),
           ],
         ),
@@ -105,38 +109,19 @@ class _AccountSafetyPageState extends State<AccountSafetyPage>
             alignment: Alignment.centerLeft,
             child: Text("账户与安全"),
           ),
-          // Container(
-          //   color: Colors.white,
-          //   child: ListTile(
-          //     title: Text(
-          //       "用户ID",
-          //       style: TextStyle(fontWeight: FontWeight.bold),
-          //     ),
-          //     trailing: Text("这里写ID"),
-          //   ),
-          // ),
 
           CustomListTile(
             style: const TextStyle(fontWeight: FontWeight.bold),
             title: "用户ID",
-            trailing: Text("这里写ID"),
+            trailing: Text(
+                context.read<UserinfoController>().userData.userName ?? "未知"),
           ),
-
-          // Container(
-          //   color: Colors.white,
-          //   child: ListTile(
-          //     title: Text(
-          //       "账户",
-          //       style: TextStyle(fontWeight: FontWeight.bold),
-          //     ),
-          //     trailing: Text("这里是email"),
-          //   ),
-          // ),
 
           CustomListTile(
             style: const TextStyle(fontWeight: FontWeight.bold),
             title: "账户",
-            trailing: Text("这里是email"),
+            trailing: Text(
+                context.read<UserinfoController>().userData.userEmail ?? "未知"),
           ),
 
           const SizedBox(

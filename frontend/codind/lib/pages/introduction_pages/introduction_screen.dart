@@ -7,6 +7,7 @@ class IntroductionAnimationScreen extends StatefulWidget {
   const IntroductionAnimationScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _IntroductionAnimationScreenState createState() =>
       _IntroductionAnimationScreenState();
 }

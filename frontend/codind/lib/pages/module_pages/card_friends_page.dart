@@ -1,10 +1,11 @@
-// ignore_for_file: must_be_immutable, prefer_const_constructors
+// ignore_for_file: must_be_immutable, prefer_const_constructors, depend_on_referenced_packages
 
 import 'package:card_swiper/card_swiper.dart';
-import 'package:codind/utils/utils.dart';
 import 'package:codind/widgets/card_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../providers/friend_page_provider.dart';
 import '../base_pages/_mobile_base_page.dart';
 
 /// friend page
@@ -35,16 +36,19 @@ class _CardPageState<T> extends MobileBasePageState<CardPage> {
             height: 30,
           ),
           SizedBox(
-              height: 0.65 * CommonUtils.screenH(),
+              height: 0.65 * MediaQuery.of(context).size.height,
               child: Center(
                 child: Swiper(
                   key: UniqueKey(),
                   itemBuilder: (BuildContext context, int index) {
                     return CardWidget(
                       index: index,
+                      friend:
+                          context.watch<FriendPageController>().friends[index],
                     );
                   },
-                  itemCount: 10,
+                  itemCount:
+                      context.watch<FriendPageController>().friends.length,
                   index: currentIndex,
                   viewportFraction: 0.75,
                   scale: 0.8,
@@ -64,7 +68,7 @@ class _CardPageState<T> extends MobileBasePageState<CardPage> {
           ),
           SizedBox(
             height: 110,
-            width: CommonUtils.screenW(),
+            width: MediaQuery.of(context).size.width,
             child: ListView.separated(
                 separatorBuilder: (BuildContext context, int index) => SizedBox(
                       width: 20,
@@ -72,7 +76,7 @@ class _CardPageState<T> extends MobileBasePageState<CardPage> {
                 padding: EdgeInsets.only(left: 20, right: 20),
                 controller: scrollController,
                 scrollDirection: Axis.horizontal,
-                itemCount: 10,
+                itemCount: context.watch<FriendPageController>().friends.length,
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
@@ -90,6 +94,9 @@ class _CardPageState<T> extends MobileBasePageState<CardPage> {
                           : null,
                       child: CardListWidget(
                         index: index,
+                        friend: context
+                            .watch<FriendPageController>()
+                            .friends[index],
                       ),
                     ),
                   );
@@ -97,6 +104,20 @@ class _CardPageState<T> extends MobileBasePageState<CardPage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CardPageWithProvider extends StatelessWidget {
+  const CardPageWithProvider({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => FriendPageController()..init(),
+      builder: (context, _) {
+        return CardPage();
+      },
     );
   }
 }
