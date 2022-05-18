@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 
+@Deprecated("use taichi TaichiDevUtils instead")
 class PlatformUtils {
   static bool _isWeb() {
     return kIsWeb == true;

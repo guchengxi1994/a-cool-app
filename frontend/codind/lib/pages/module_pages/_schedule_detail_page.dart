@@ -1,15 +1,16 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, must_be_immutable, prefer_const_constructors, no_leading_underscores_for_local_identifiers
 
 import 'package:codind/entity/schedule.dart';
-import 'package:codind/utils/platform_utils.dart';
 import 'package:codind/utils/toast_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:taichi/taichi.dart' show TaichiDevUtils;
 
 const double textButtonHeight = 20;
 const double textButtonWidth = 30;
 
+@Deprecated("use ```CreateNewTodoV2``` instead")
 class ScheduleDetailPage extends StatefulWidget {
   ScheduleDetailPage(
       {Key? key,
@@ -27,6 +28,7 @@ class ScheduleDetailPage extends StatefulWidget {
   State<ScheduleDetailPage> createState() => _ScheduleDetailPageState();
 }
 
+@Deprecated("use ```CreateNewTodoV2``` instead")
 class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
   List<Widget> widgets = [];
   late Schedule? schedule;
@@ -382,7 +384,7 @@ class _SubRowWidgetState extends State<SubRowWidget> {
               )),
         ),
         Expanded(
-            child: (PlatformUtils.isAndroid || PlatformUtils.isIOS)
+            child: (TaichiDevUtils.isMobile)
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

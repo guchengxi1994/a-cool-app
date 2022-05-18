@@ -9,8 +9,6 @@
  */
 
 export './color_picker_widget.dart';
-export './calendar.dart';
-export './calendar_by_month.dart';
 export './selectable_icon.dart';
 export './main_page_widgets/mobile.dart';
 export './expanded_column_widget.dart';

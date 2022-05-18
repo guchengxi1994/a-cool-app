@@ -22,7 +22,6 @@ class Global {
 class Routers {
   static const pageMain = '/pageMain';
   static const pageMdEditor = '/pageMdEditor';
-  static const pageSchedule = '/pageSchedule';
   static const pageResumePage = "/resume";
   static const pageLogin = "/pageLogin";
   static const pageMobileSettingsPage = "/pageMobileSettingsPage";
@@ -37,7 +36,6 @@ class Routers {
           routeName: FlutterI18n.translate(context, "label.md"),
           needLoading: true,
         ),
-    pageSchedule: (context) => const GanttPage(),
     pageResumePage: (context) => const ResumePage(),
     pageMobileSettingsPage: (context) => MobileMainSettingPage(
           pageName: FlutterI18n.translate(context, "label.settings"),

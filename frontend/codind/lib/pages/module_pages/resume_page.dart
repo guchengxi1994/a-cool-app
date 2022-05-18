@@ -16,6 +16,7 @@ import 'package:codind/utils/no_web/mobile_utils.dart'
     if (dart.library.html) 'package:codind/utils/web/web_utils.dart'
     show saveFile;
 import 'package:path_provider/path_provider.dart';
+import 'package:taichi/taichi.dart' show TaichiDevUtils;
 
 import '../../_styles.dart';
 
@@ -86,7 +87,7 @@ class _ResumePageState extends State<ResumePage> with BackgroundColorMixin {
               onPressed: () async {
                 FilePickerResult? result;
 
-                if (PlatformUtils.isWeb) {
+                if (TaichiDevUtils.isWeb) {
                   result = await FilePicker.platform.pickFiles(
                       allowedExtensions: ["resume"], type: FileType.custom);
                 } else {
@@ -101,7 +102,7 @@ class _ResumePageState extends State<ResumePage> with BackgroundColorMixin {
                 if (result != null) {
                   String filePath;
                   Uint8List? fileUint8list;
-                  if (!PlatformUtils.isWeb) {
+                  if (!TaichiDevUtils.isWeb) {
                     filePath = result.files.single.path!;
                     debugPrint("[file name]: $filePath");
                     File file = File(filePath);

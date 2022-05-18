@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:provider/provider.dart';
+import 'package:taichi/taichi.dart' show TaichiDevUtils;
 
 import '../../_styles.dart';
 import '../../entity/entity.dart' show ScheduleNotificationEntity;
@@ -383,11 +384,11 @@ class _CreateNewTodoState extends State<_CreateNewTodo> with LoadingPageMixin {
                 buttonStr: FlutterI18n.translate(context, "todo.select2"),
               ),
 
-              if (PlatformUtils.isMobile)
+              if (TaichiDevUtils.isMobile)
                 const SizedBox(
                   height: 20,
                 ),
-              if (PlatformUtils.isMobile)
+              if (TaichiDevUtils.isMobile)
                 CheckboxListTile(
                     secondary: Icon(
                       Icons.notifications_active,
@@ -415,7 +416,7 @@ class _CreateNewTodoState extends State<_CreateNewTodo> with LoadingPageMixin {
                         return;
                       }
 
-                      if (!PlatformUtils.isMobile) {
+                      if (!TaichiDevUtils.isMobile) {
                         showToastMessage("当前平台不支持");
                         return;
                       }

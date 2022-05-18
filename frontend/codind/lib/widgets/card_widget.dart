@@ -2,11 +2,11 @@
 
 import 'dart:math';
 
-import 'package:codind/utils/platform_utils.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:taichi/taichi.dart' show TaichiDevUtils;
 
 import '../_styles.dart';
 import '../entity/friend_entity.dart';
@@ -72,7 +72,7 @@ class _CardWidgetState extends State<CardWidget> {
                             height: 0.4 * MediaQuery.of(context).size.width,
                             width: 0.4 * MediaQuery.of(context).size.width,
                             child: Center(
-                              child: PlatformUtils.isWeb
+                              child: TaichiDevUtils.isWeb
                                   ? Text(
                                       "由于web端不支持本地存储：\n请使用客户端展示二维码\n扫码可添加好友",
                                       style: TextStyle(fontSize: 20),
@@ -245,7 +245,7 @@ class _CardWidgetState extends State<CardWidget> {
                           ),
                         ),
                       ),
-                      if (!PlatformUtils.isWeb)
+                      if (!TaichiDevUtils.isWeb)
                         Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: CustomPaint(
@@ -260,7 +260,7 @@ class _CardWidgetState extends State<CardWidget> {
                             ),
                           ),
                         ),
-                      if (PlatformUtils.isWeb)
+                      if (TaichiDevUtils.isWeb)
                         Container(
                           padding: const EdgeInsets.all(4.0),
                           height: 108,

@@ -30,6 +30,7 @@ import 'package:provider/provider.dart';
 import 'package:codind/utils/no_web/mobile_utils.dart'
     if (dart.library.html) 'package:codind/utils/web/web_utils.dart'
     show saveFile;
+import 'package:taichi/taichi.dart' show TaichiDevUtils;
 
 import '../base_pages/_base_page.dart';
 
@@ -309,7 +310,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
 
   @override
   baseBuild(BuildContext context) {
-    if (PlatformUtils.isIOS) {
+    if (TaichiDevUtils.isIOS) {
       return buildView(context);
     }
 

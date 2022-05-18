@@ -4,8 +4,8 @@ import 'package:codind/utils/extensions/datetime_extension.dart';
 import 'package:codind/utils/toast_utils.dart';
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:provider/provider.dart';
 import 'package:taichi/taichi.dart';
 
 import '../../widgets/color_picker_widget.dart';

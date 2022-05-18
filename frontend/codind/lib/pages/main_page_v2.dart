@@ -14,7 +14,6 @@
 
 import 'package:codind/pages/module_pages/create_things_page.dart';
 import 'package:codind/router.dart';
-import 'package:codind/utils/platform_utils.dart';
 import 'package:codind/utils/shared_preference_utils.dart';
 import 'package:codind/utils/common.dart';
 import 'package:codind/widgets/main_page_widgets/main_page_collaps_widget.dart';
@@ -25,6 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
+import 'package:taichi/taichi.dart';
 
 import '../entity/friend_entity.dart';
 import '../providers/my_providers.dart';
@@ -200,7 +200,7 @@ class _MainPageV2State extends State<MainPageV2> {
               "label.friend") {
             return InkWell(
                 onTap: () async {
-                  if (PlatformUtils.isMobile &&
+                  if (TaichiDevUtils.isMobile &&
                       MediaQuery.of(context).orientation ==
                           Orientation.portrait) {
                     Navigator.of(context).pushNamed(Routers.pageFriend);

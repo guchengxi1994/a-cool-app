@@ -2,12 +2,12 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:codind/providers/multi_image_upload_provider.dart';
-import 'package:codind/utils/platform_utils.dart';
 import 'package:codind/utils/toast_utils.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:taichi/taichi.dart' show TaichiDevUtils;
 
 class UploadMultiImageWidget extends StatelessWidget {
   const UploadMultiImageWidget({Key? key}) : super(key: key);
@@ -190,7 +190,7 @@ class _ImageWidgetV2State extends State<ImageWidgetV2> {
                   FilePickerResult? result =
                       await FilePicker.platform.pickFiles();
                   if (result != null) {
-                    if (!PlatformUtils.isWeb) {
+                    if (!TaichiDevUtils.isWeb) {
                       imageName = result.files.single.path!;
                       File file = File(imageName);
                       data = await file.readAsBytes();

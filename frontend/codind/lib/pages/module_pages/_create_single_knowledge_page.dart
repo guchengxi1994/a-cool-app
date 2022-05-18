@@ -25,10 +25,10 @@ import 'package:highlight/languages/cpp.dart' as _cpp;
 import 'package:highlight/languages/rust.dart' as _rust;
 import 'package:highlight/languages/python.dart' as _python;
 import 'package:highlight/languages/java.dart' as _java;
+import 'package:taichi/taichi.dart' show TaichiDevUtils;
 
 import '../../entity/knowledge_entity.dart';
 import '../../providers/my_providers.dart';
-import '../../utils/platform_utils.dart';
 import '../../widgets/mobile_widgets/qr_scanner_widget.dart';
 import '../base_pages/_mobile_base_page.dart';
 
@@ -283,7 +283,7 @@ class _CreateKnowledgeWidgetState<T>
               Expanded(
                   child: IconButton(
                 onPressed: () {
-                  if (PlatformUtils.isMobile) {
+                  if (TaichiDevUtils.isMobile) {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
                       return ScanMainPage().getPage();

@@ -159,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<String?> _signupUser(SignupData data) async {
     debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
-    if (PlatformUtils.isWeb) {
+    if (TaichiDevUtils.isWeb) {
       return "web端暂不支持创建用户";
     }
     var _f = Friend(
@@ -209,7 +209,7 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [
-          if (!PlatformUtils.isMobile)
+          if (!TaichiDevUtils.isMobile)
             IconButton(
                 onPressed: () async {
                   setState(() {
@@ -245,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Icons.qr_code,
                   color: Color.fromARGB(255, 19, 41, 133),
                 )),
-          if (!PlatformUtils.isMobile)
+          if (!TaichiDevUtils.isMobile)
             SizedBox(
               width: 10,
             ),

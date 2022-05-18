@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:taichi/taichi.dart' show TaichiDevUtils;
 
 import '../../_styles.dart';
 import '../../widgets/widgets.dart';
@@ -62,7 +63,7 @@ class _MinePageState extends MobileBasePageState<MinePage> {
             // nextPage: MobileMainSettingPage(
             //   pageName: "设置",
             // ),
-            onTap: PlatformUtils.isMobile
+            onTap: TaichiDevUtils.isMobile
                 ? null
                 : () {
                     showCupertinoDialog(
@@ -82,7 +83,7 @@ class _MinePageState extends MobileBasePageState<MinePage> {
                           );
                         });
                   },
-            route: PlatformUtils.isMobile ? Routers.pageIntro : null,
+            route: TaichiDevUtils.isMobile ? Routers.pageIntro : null,
             style: AppTheme.settingPageListTileTitleStyle,
             title: "查看APP介绍",
             trailing: const Icon(
@@ -90,11 +91,11 @@ class _MinePageState extends MobileBasePageState<MinePage> {
               size: 25,
             ),
           ),
-          // if (PlatformUtils.isMobile)
+          // if (TaichiDevUtils.isMobile)
           //   const SizedBox(
           //     height: 10,
           //   ),
-          // if (PlatformUtils.isMobile)
+          // if (TaichiDevUtils.isMobile)
           //   CustomListTile(
           //     style: AppTheme.settingPageListTileTitleStyle,
           //     title: "扫码登录桌面端",
@@ -198,11 +199,11 @@ class _MinePageState extends MobileBasePageState<MinePage> {
               size: 25,
             ),
           ),
-          if (PlatformUtils.isMobile)
+          if (TaichiDevUtils.isMobile)
             const SizedBox(
               height: 10,
             ),
-          if (PlatformUtils.isMobile)
+          if (TaichiDevUtils.isMobile)
             CustomListTile(
               style: AppTheme.settingPageListTileTitleStyle,
               onTap: () {
@@ -217,7 +218,7 @@ class _MinePageState extends MobileBasePageState<MinePage> {
                 size: 25,
               ),
             ),
-          if (PlatformUtils.isMobile)
+          if (TaichiDevUtils.isMobile)
             CustomListTile(
               style: AppTheme.settingPageListTileTitleStyle,
               title: "备份数据",

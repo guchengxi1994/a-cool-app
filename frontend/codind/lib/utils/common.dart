@@ -11,9 +11,10 @@
  */
 import 'dart:math';
 
-import 'package:codind/utils/platform_utils.dart';
 import 'package:flutter/material.dart';
 import "dart:ui" as ui;
+
+import 'package:taichi/taichi.dart';
 
 class Responsive {
 // This size work fine on my design, maybe you need some customization depends on your design
@@ -50,13 +51,13 @@ class CommonUtils {
   static const double _designWidth = 500;
 
   static double get scaleWidth =>
-      PlatformUtils.isMobile ? _width / _designWidth : 1;
+      TaichiDevUtils.isMobile ? _width / _designWidth : 1;
 
   static double get scaleHeight =>
-      PlatformUtils.isMobile ? _height / _designHeight : 1;
+      TaichiDevUtils.isMobile ? _height / _designHeight : 1;
 
   static double get scaleText =>
-      PlatformUtils.isMobile ? min(scaleWidth, scaleHeight) : 1;
+      TaichiDevUtils.isMobile ? min(scaleWidth, scaleHeight) : 1;
 
   /// 获取屏幕大小
   static MediaQueryData mediaQuery = MediaQueryData.fromWindow(ui.window);
