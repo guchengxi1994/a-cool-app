@@ -102,8 +102,9 @@ class SqliteUtils extends AbstractSqliteUtils {
   }
 
   @override
-  List<KnowledgeEntity> queryAllKnowledge() {
-    throw UnimplementedError();
+  Future<List<KnowledgeEntity>> queryAllKnowledge() async {
+    List<KnowledgeEntity> entities = [];
+    return entities;
   }
 
   @override
@@ -159,7 +160,8 @@ class SqliteUtils extends AbstractSqliteUtils {
               `todoName` varchar(25),
               `description` varchar(200),     
               `endTime` varchar(25),
-              `eventStatus` int
+              `eventStatus` int,
+              `eventColor` varchar(20)
             );
           ''');
 
@@ -169,7 +171,7 @@ class SqliteUtils extends AbstractSqliteUtils {
       stmt.execute([
         DateTime.now().toString(),
         '第一次运行',
-        DateTime.now().add(const Duration(days: 365)).toString(),
+        DateTime.now().add(const Duration(days: 1)).toString(),
         0
       ]);
 
@@ -289,5 +291,48 @@ class SqliteUtils extends AbstractSqliteUtils {
   }
 
   @override
-  Future<void> insertAnEvent(EventEntity e) async {}
+  Future<void> insertAnEvent(EventEntity e) async {
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$todosBasePath");
+
+    final stmt = db.prepare(
+        " insert into todos(startTime,todoName,description,endTime,eventStatus,eventColor) values (?,?,?,?,?,?) ");
+
+    stmt.execute([
+      e.startTime,
+      e.todoName,
+      e.description,
+      e.endTime,
+      e.eventStatus,
+      e.color
+    ]);
+
+    stmt.dispose();
+    db.dispose();
+  }
+
+  @override
+  Future<List<EventEntity>> getAllEvents() async {
+    List<EventEntity> events = [];
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$todosBasePath");
+    final sql.ResultSet resultSet = db.select("select * from todos");
+    for (var r in resultSet) {
+      try {
+        EventEntity e = EventEntity(
+            description: r["description"] ?? "",
+            endTime: r["endTime"] ?? "",
+            eventStatus: r["eventStatus"] ?? 0,
+            startTime: r["startTime"] ?? "",
+            todoName: r["todoName"] ?? "",
+            color: r["eventColor"] ?? "745db3be");
+        events.add(e);
+      } catch (_) {
+        continue;
+      }
+    }
+
+    db.dispose();
+    return events;
+  }
 }

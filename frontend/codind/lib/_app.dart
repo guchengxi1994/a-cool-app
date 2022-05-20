@@ -1,7 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:codind/router.dart';
+import 'package:codind/utils/extensions/event_controller_extension.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -31,14 +31,14 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    if (TaichiDevUtils.isMobile) {
-      AwesomeNotifications().actionStream.listen((receivedNotification) {
-        Global.navigatorKey.currentState!.pushNamedAndRemoveUntil(
-            Routers.pageMain,
-            (route) =>
-                (route.settings.name != Routers.pageMain || route.isFirst));
-      });
-    }
+    // if (TaichiDevUtils.isMobile) {
+    //   AwesomeNotifications().actionStream.listen((receivedNotification) {
+    //     Global.navigatorKey.currentState!.pushNamedAndRemoveUntil(
+    //         Routers.pageMain,
+    //         (route) =>
+    //             (route.settings.name != Routers.pageMain || route.isFirst));
+    //   });
+    // }
 
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
@@ -106,7 +106,7 @@ List<SingleChildWidget> getProviders() {
       create: (_) => KnowledgeController(),
     ),
     ChangeNotifierProvider(
-      create: (_) => EventController(),
+      create: (_) => EventController()..init(),
     ),
   ];
 }

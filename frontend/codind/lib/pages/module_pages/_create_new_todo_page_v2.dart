@@ -1,3 +1,4 @@
+import 'package:codind/entity/entity.dart';
 import 'package:codind/pages/base_pages/_mobile_base_page.dart';
 import 'package:codind/providers/language_provider.dart';
 import 'package:codind/utils/extensions/datetime_extension.dart';
@@ -7,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 import 'package:taichi/taichi.dart';
+import 'package:codind/utils/no_web/sqlite_utils.dart'
+    if (dart.library.html) 'package:codind/utils/web/sqlite_utils_web.dart';
 
 import '../../widgets/color_picker_widget.dart';
 
@@ -29,6 +32,7 @@ class _CreateNewTodoV2State extends MobileBasePageState<CreateNewTodoV2> {
   final TextEditingController _endTimeController = TextEditingController();
   final TextEditingController _desController = TextEditingController();
   Color defaultBackgroundColor = Colors.white;
+  SqliteUtils sqliteUtils = SqliteUtils();
 
   late DateTime eventDate = DateTime.now();
   late DateTime startDate = DateTime.now();
@@ -149,7 +153,7 @@ class _CreateNewTodoV2State extends MobileBasePageState<CreateNewTodoV2> {
                 width: 120,
                 height: 40,
                 child: InkWell(
-                  onTap: () {
+                  onTap: () async {
                     var eventStatus = 0;
                     String subStr = "";
 
@@ -172,6 +176,16 @@ class _CreateNewTodoV2State extends MobileBasePageState<CreateNewTodoV2> {
                             description: _desController.text,
                             color: defaultBackgroundColor,
                           ));
+
+                      EventEntity e = EventEntity(
+                          description: _desController.text,
+                          endTime: endDate.toString(),
+                          eventStatus: eventStatus,
+                          startTime: startDate.toString(),
+                          todoName: _eventTitleController.text + subStr,
+                          color:
+                              defaultBackgroundColor.value.toRadixString(16));
+                      await sqliteUtils.insertAnEvent(e);
                       showToastMessage("已创建");
                     } else {
                       showToastMessage("开始时间需小于结束时间");
@@ -395,9 +409,8 @@ class _CreateNewTodoV2State extends MobileBasePageState<CreateNewTodoV2> {
             );
             if (res != null) {
               _startTimeController.text = formatDaytime(res);
-              var d = DateTime.now();
-              startDate = DateTime(d.year, d.month, d.day,
-                  (res as TimeOfDay).hour, (res).minute);
+              startDate = DateTime(eventDate.year, eventDate.month,
+                  eventDate.day, (res as TimeOfDay).hour, (res).minute);
               setState(() {});
             }
           },
@@ -455,8 +468,7 @@ class _CreateNewTodoV2State extends MobileBasePageState<CreateNewTodoV2> {
             );
             if (res != null) {
               _endTimeController.text = formatDaytime(res);
-              var d = DateTime.now();
-              endDate = DateTime(d.year, d.month, d.day,
+              endDate = DateTime(eventDate.year, eventDate.month, eventDate.day,
                   (res as TimeOfDay).hour, (res).minute);
               setState(() {});
             }

@@ -1,11 +1,12 @@
 // ignore_for_file: deprecated_member_use_from_same_package
 
 import 'package:codind/pages/base_pages/_mobile_base_page.dart';
+import 'package:codind/pages/module_pages/_create_new_todo_page_v2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
+import '../../router.dart';
 import '../../widgets/widgets.dart' show CustomListTile;
-import '_create_new_todo_page.dart';
 
 // ignore: must_be_immutable
 class NewTodosPage extends MobileBasePage {
@@ -39,7 +40,7 @@ class _NewTodosPageState<T> extends MobileBasePageState<NewTodosPage> {
             style: _style,
             onTap: () async {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const CreateNewTodo();
+                return CreateNewTodoV2();
               }));
             },
             title: FlutterI18n.translate(context, "todo.create2"),
@@ -53,6 +54,9 @@ class _NewTodosPageState<T> extends MobileBasePageState<NewTodosPage> {
           ),
           CustomListTile(
             style: _style,
+            onTap: () {
+              Navigator.of(context).pushNamed(Routers.pageCalendar);
+            },
             title: FlutterI18n.translate(context, "todo.check"),
             trailing: const Icon(
               Icons.chevron_right,

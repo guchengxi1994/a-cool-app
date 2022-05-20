@@ -19,7 +19,7 @@ abstract class AbstractSqliteUtils {
   // insert 日程
   Future<void> addNewKnowledge(KnowledgeEntity w);
   // 获取所有diary
-  List<KnowledgeEntity> queryAllKnowledge();
+  Future<List<KnowledgeEntity>> queryAllKnowledge();
   // 初始化日志数据量
   Future<void> initTodoBase();
   // 初始化文件数据库
@@ -38,4 +38,6 @@ abstract class AbstractSqliteUtils {
   Future<void> setUserName(String s);
   // 插入一个todo的记录
   Future<void> insertAnEvent(EventEntity e);
+  // 获取所有的event
+  Future<List<EventEntity>> getAllEvents();
 }
