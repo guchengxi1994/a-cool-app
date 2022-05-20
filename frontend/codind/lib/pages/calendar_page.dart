@@ -276,6 +276,8 @@ class _DayCalendarWidgetState extends MobileBasePageState<DayCalendarWidget> {
   Widget baseBuild(BuildContext context) {
     return Scaffold(
       body: DayView(
+        minDay: DateTime(2022, 1, 1),
+        maxDay: DateTime(2100, 1, 1),
         key: globalKey,
         dayTitleBuilder: (date) {
           return CalendarPageHeader(
