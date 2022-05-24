@@ -20,7 +20,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'utils/toast_utils.dart';
 
 // ignore: constant_identifier_names
-const AppVersion = "1.0.0-frontend-alpha+11";
+const AppVersion = "1.0.0-frontend-dev+12";
 
 // ignore: constant_identifier_names
 const AppName = "助手";

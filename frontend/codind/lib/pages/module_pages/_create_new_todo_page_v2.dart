@@ -34,8 +34,8 @@ class _CreateNewTodoV2State extends MobileBasePageState<CreateNewTodoV2> {
   Color defaultBackgroundColor = Colors.white;
   SqliteUtils sqliteUtils = SqliteUtils();
 
-  late DateTime eventDate = DateTime.now();
-  late DateTime startDate = DateTime.now();
+  late DateTime eventDate = widget.date ?? DateTime.now();
+  late DateTime startDate = widget.date ?? DateTime.now();
   late DateTime endDate = DateTime.now();
 
   double editWidth = 400;
@@ -351,11 +351,13 @@ class _CreateNewTodoV2State extends MobileBasePageState<CreateNewTodoV2> {
             controller: _dateController,
 
             ///用来配置 TextField 的样式风格
-            decoration: const InputDecoration(
-              labelText: "Event Date",
-              labelStyle: TextStyle(color: Colors.blue),
+            decoration: InputDecoration(
+              labelText: widget.date == null
+                  ? "Event Date"
+                  : widget.date!.toDateString(DatetimeSeparator.slash),
+              labelStyle: const TextStyle(color: Colors.blue),
               hintText: "选择日期",
-              disabledBorder: OutlineInputBorder(
+              disabledBorder: const OutlineInputBorder(
                 ///设置边框四个角的弧度
                 borderRadius: BorderRadius.all(Radius.circular(10)),
 
