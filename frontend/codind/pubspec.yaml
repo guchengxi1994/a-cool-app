@@ -88,7 +88,7 @@ dependencies:
 
   ## local taichi
   taichi:
-    path: D:/github_repo/taichi
+    path: D:/github_repo/taichi/taichi_core
 
 # dependency_overrides:
 #   js: ^0.6.4
