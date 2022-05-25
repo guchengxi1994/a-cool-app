@@ -325,6 +325,7 @@ class SqliteUtils extends AbstractSqliteUtils {
             eventStatus: r["eventStatus"] ?? 0,
             startTime: r["startTime"] ?? "",
             todoName: r["todoName"] ?? "",
+            tid: r["tid"] ?? 0,
             color: r["eventColor"] ?? "745db3be");
         events.add(e);
       } catch (_) {
@@ -334,5 +335,15 @@ class SqliteUtils extends AbstractSqliteUtils {
 
     db.dispose();
     return events;
+  }
+
+  @override
+  Future<void> setEventStatus(int eventId, int statusId) async {
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$todosBasePath");
+    db.execute('''
+      UPDATE  todos set eventStatus=$statusId where tid=$eventId;
+    ''');
+    db.dispose();
   }
 }

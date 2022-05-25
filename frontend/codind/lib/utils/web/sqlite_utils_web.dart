@@ -65,4 +65,7 @@ class SqliteUtils extends AbstractSqliteUtils {
   Future<List<EventEntity>> getAllEvents() async {
     return [];
   }
+
+  @override
+  Future<void> setEventStatus(int eventId, int statusId) async {}
 }

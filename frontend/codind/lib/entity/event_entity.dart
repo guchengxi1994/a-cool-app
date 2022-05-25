@@ -8,6 +8,7 @@ class EventEntity {
   String endTime;
   int eventStatus;
   String color;
+  int? tid;
 
   EventEntity(
       {required this.description,
@@ -15,5 +16,6 @@ class EventEntity {
       required this.eventStatus,
       required this.startTime,
       required this.todoName,
-      required this.color});
+      required this.color,
+      this.tid});
 }

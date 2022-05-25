@@ -40,4 +40,6 @@ abstract class AbstractSqliteUtils {
   Future<void> insertAnEvent(EventEntity e);
   // 获取所有的event
   Future<List<EventEntity>> getAllEvents();
+  // 修改event状态
+  Future<void> setEventStatus(int eventId, int statusId);
 }

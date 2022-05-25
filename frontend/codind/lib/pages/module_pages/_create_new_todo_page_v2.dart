@@ -155,19 +155,23 @@ class _CreateNewTodoV2State extends MobileBasePageState<CreateNewTodoV2> {
                 child: InkWell(
                   onTap: () async {
                     var eventStatus = 0;
-                    String subStr = "";
+                    // String subStr = "";
 
-                    if (DateTime.now().isBefore(eventDate)) {
-                      subStr = "(进行中)";
-                    } else {
-                      subStr = "(已延迟)";
+                    if (!DateTime.now().isBefore(eventDate)) {
                       eventStatus = 2;
                     }
+
+                    // if (DateTime.now().isBefore(eventDate)) {
+                    //   subStr = "(进行中)";
+                    // } else {
+                    //   subStr = "(已延迟)";
+                    //   eventStatus = 2;
+                    // }
 
                     if (startDate.isBefore(endDate)) {
                       context.read<EventController>().add(CalendarEventData(
                             eventStatus: eventStatus,
-                            title: _eventTitleController.text + subStr,
+                            title: _eventTitleController.text,
                             date: eventDate,
                             startTime: startDate,
                             endTime: endDate,
@@ -182,7 +186,7 @@ class _CreateNewTodoV2State extends MobileBasePageState<CreateNewTodoV2> {
                           endTime: endDate.toString(),
                           eventStatus: eventStatus,
                           startTime: startDate.toString(),
-                          todoName: _eventTitleController.text + subStr,
+                          todoName: _eventTitleController.text,
                           color:
                               defaultBackgroundColor.value.toRadixString(16));
                       await sqliteUtils.insertAnEvent(e);

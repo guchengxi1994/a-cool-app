@@ -14,6 +14,7 @@ extension EventControl on EventController {
     for (var e in list) {
       result.add(CalendarEventData(
           title: e.todoName,
+          event: e.tid,
           eventStatus: e.eventStatus,
           color: HexColor(e.color),
           startTime: DateTime.parse(e.startTime),

@@ -7,6 +7,8 @@ import 'package:showcaseview/showcaseview.dart';
 import 'package:taichi/taichi.dart';
 // ignore: implementation_imports
 import 'package:taichi/src/UI/calendar_view/src/components/common_components.dart';
+import 'package:codind/utils/no_web/sqlite_utils.dart'
+    if (dart.library.html) 'package:codind/utils/web/sqlite_utils_web.dart';
 
 import '../_styles.dart';
 import '../utils/utils.dart';
@@ -271,6 +273,7 @@ class DayCalendarWidget extends MobileBasePage {
 class _DayCalendarWidgetState extends MobileBasePageState<DayCalendarWidget> {
   late final DateTime _dateTime = widget.date;
   final GlobalKey<DayViewState> globalKey = GlobalKey();
+  SqliteUtils sqliteUtils = SqliteUtils();
 
   String _dayStringBuilderZh(DateTime date, {DateTime? secondaryDate}) {
     return "${date.year}年${date.month}月${date.day}日";
@@ -315,7 +318,12 @@ class _DayCalendarWidgetState extends MobileBasePageState<DayCalendarWidget> {
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.bold),
                               )),
-                          onTap: () {},
+                          onTap: () async {
+                            await sqliteUtils.setEventStatus(
+                                calendarDataList.first.event as int, 1);
+                            // ignore: use_build_context_synchronously
+                            Navigator.of(context).pop();
+                          },
                         ),
                         const SizedBox(
                           height: 30,
@@ -330,7 +338,12 @@ class _DayCalendarWidgetState extends MobileBasePageState<DayCalendarWidget> {
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.bold),
                               )),
-                          onTap: () {},
+                          onTap: () async {
+                            await sqliteUtils.setEventStatus(
+                                calendarDataList.first.event as int, 2);
+                            // ignore: use_build_context_synchronously
+                            Navigator.of(context).pop();
+                          },
                         ),
                       ],
                     ),
