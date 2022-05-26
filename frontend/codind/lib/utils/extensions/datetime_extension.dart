@@ -13,7 +13,7 @@ extension SDateTime on DateTime {
     if (sep == DatetimeSeparator.dot) {
       if (fillZero) {
         String _month = month < 10 ? "0$month" : month.toString();
-        String _day = month < 10 ? "0$day" : day.toString();
+        String _day = day < 10 ? "0$day" : day.toString();
         return "$year.$_month.$_day";
       }
       return "$year.$month.$day";
@@ -22,7 +22,7 @@ extension SDateTime on DateTime {
     if (sep == DatetimeSeparator.slash) {
       if (fillZero) {
         String _month = month < 10 ? "0$month" : month.toString();
-        String _day = month < 10 ? "0$day" : day.toString();
+        String _day = day < 10 ? "0$day" : day.toString();
         return "$year/$_month/$_day";
       }
       return "$year/$month/$day";

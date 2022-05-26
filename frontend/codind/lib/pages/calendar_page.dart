@@ -1,11 +1,15 @@
 import 'package:codind/pages/base_pages/_mobile_base_page.dart';
 import 'package:codind/providers/language_provider.dart';
+import 'package:codind/utils/extensions/event_controller_extension.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:taichi/taichi.dart';
 // ignore: implementation_imports
 import 'package:taichi/src/UI/calendar_view/src/components/common_components.dart';
+import 'package:codind/utils/no_web/sqlite_utils.dart'
+    if (dart.library.html) 'package:codind/utils/web/sqlite_utils_web.dart';
 
 import '../_styles.dart';
 import '../utils/utils.dart';
@@ -139,6 +143,11 @@ class _CalendarStatefulWidgetState
               description: "点击查看全年日程",
               child: IconButton(
                   onPressed: () {
+                    if (TaichiDevUtils.isMobile) {
+                      showToastMessage("请使用桌面版打开本页面");
+                      return;
+                    }
+
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
                       return YearCalendarWrapper();
@@ -206,7 +215,9 @@ class _CalendarStatefulWidgetState
                 onCellTap: (events, date) async {
                   await Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) {
-                    return CreateNewTodoV2();
+                    return CreateNewTodoV2(
+                      date: date,
+                    );
                   }));
                 },
                 weekDayBuilder: (day) {
@@ -263,6 +274,7 @@ class DayCalendarWidget extends MobileBasePage {
 class _DayCalendarWidgetState extends MobileBasePageState<DayCalendarWidget> {
   late final DateTime _dateTime = widget.date;
   final GlobalKey<DayViewState> globalKey = GlobalKey();
+  SqliteUtils sqliteUtils = SqliteUtils();
 
   String _dayStringBuilderZh(DateTime date, {DateTime? secondaryDate}) {
     return "${date.year}年${date.month}月${date.day}日";
@@ -276,7 +288,82 @@ class _DayCalendarWidgetState extends MobileBasePageState<DayCalendarWidget> {
   Widget baseBuild(BuildContext context) {
     return Scaffold(
       body: DayView(
+        controller: context.read<EventController>(),
+        minDay: DateTime(2022, 1, 1),
+        maxDay: DateTime(2100, 1, 1),
         key: globalKey,
+        onEventTap: (calendarDataList, date) async {
+          debugPrint("[debug datetime]:$date");
+          debugPrint("[debug calendar list]:${calendarDataList.length}");
+          debugPrint("[event data]:${calendarDataList.first.toJson()}");
+          await showCupertinoDialog(
+              context: context,
+              builder: (context) {
+                return CupertinoAlertDialog(
+                  title: const Text("修改状态"),
+                  content: Container(
+                    height: 200,
+                    color: Colors.transparent,
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        InkWell(
+                          child: Container(
+                              width: 200,
+                              padding: const EdgeInsets.all(5),
+                              color: Colors.lightBlue,
+                              child: const Text(
+                                "标记为已完成",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              )),
+                          onTap: () async {
+                            await sqliteUtils.setEventStatus(
+                                calendarDataList.first.event as int, 1);
+                            // ignore: use_build_context_synchronously
+                            await context.read<EventController>().init();
+                            // ignore: use_build_context_synchronously
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        InkWell(
+                          child: Container(
+                              width: 200,
+                              padding: const EdgeInsets.all(5),
+                              color: Colors.redAccent,
+                              child: const Text(
+                                "标记为放弃",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              )),
+                          onTap: () async {
+                            await sqliteUtils.setEventStatus(
+                                calendarDataList.first.event as int, 3);
+                            // ignore: use_build_context_synchronously
+                            await context.read<EventController>().init();
+                            // ignore: use_build_context_synchronously
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  actions: [
+                    CupertinoActionSheetAction(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text("取消"))
+                  ],
+                );
+              });
+          setState(() {});
+        },
         dayTitleBuilder: (date) {
           return CalendarPageHeader(
             leftIcon: Icons.arrow_left,
@@ -372,6 +459,7 @@ class _YearCalendarWrapperState
       ),
       body: SingleChildScrollView(
         child: YearView(
+          controller: context.read<EventController>(),
           locale: context.read<LanguageControllerV2>().currentLang,
         ),
       ),

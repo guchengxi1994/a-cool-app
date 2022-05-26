@@ -34,7 +34,7 @@ import '../base_pages/_mobile_base_page.dart';
 
 /// maybe something like a diary
 class CreateKnowledgeWidget extends MobileBasePage {
-  CreateKnowledgeWidget({Key? key}) : super(key: key, pageName: null);
+  CreateKnowledgeWidget({Key? key}) : super(key: key, pageName: "新建笔记");
 
   @override
   MobileBasePageState<MobileBasePage> getState() {

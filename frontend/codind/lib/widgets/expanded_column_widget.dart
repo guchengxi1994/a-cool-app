@@ -5,6 +5,7 @@ import 'package:codind/widgets/create_event_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:taichi/taichi.dart';
 
 import '../providers/language_provider.dart';
 
@@ -140,8 +141,9 @@ class ExpandedColumnWidgetState extends State<ExpandedColumnWidget> {
             var res = await showCupertinoDialog(
                 context: context,
                 builder: (context) {
-                  return UnconstrainedBox(
-                    child: SizedBox(
+                  if (TaichiDevUtils.isMobile) {
+                    return SafeArea(
+                        child: SizedBox(
                       width: MediaQuery.of(context).size.width * 0.8,
                       height: MediaQuery.of(context).size.height * 0.6,
                       child: Dialog(
@@ -237,7 +239,7 @@ class ExpandedColumnWidgetState extends State<ExpandedColumnWidget> {
                               Container(
                                 constraints:
                                     const BoxConstraints(minHeight: 100),
-                                width: MediaQuery.of(context).size.width * 0.75,
+                                width: MediaQuery.of(context).size.width * 0.95,
                                 child: TextField(
                                   maxLength: 200,
                                   maxLines: null,
@@ -281,11 +283,162 @@ class ExpandedColumnWidgetState extends State<ExpandedColumnWidget> {
                           ),
                         ),
                       ),
-                    ),
-                  );
+                    ));
+                  } else {
+                    return UnconstrainedBox(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: MediaQuery.of(context).size.height * 0.6,
+                        child: Dialog(
+                          insetPadding: EdgeInsets.zero,
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(
+                                      blurRadius: 10,
+                                      spreadRadius: 1,
+                                      color: Color(0xFFF7F7F7))
+                                ],
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "请输入",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("选择开始时间"),
+                                    TextButton(
+                                        onPressed: () async {
+                                          showDatePicker(
+                                                  locale: context
+                                                              .read<
+                                                                  LanguageControllerV2>()
+                                                              .currentLang ==
+                                                          "zh_CN"
+                                                      ? const Locale("zh", "CH")
+                                                      : const Locale(
+                                                          "en", "US"),
+                                                  context: context,
+                                                  initialDate: startTime!,
+                                                  firstDate: DateTime(1970),
+                                                  lastDate: DateTime(
+                                                      startTime!.year + 20))
+                                              .then((value) {
+                                            if (value != null) {
+                                              setState(() {
+                                                startTime = value;
+                                              });
+                                            }
+                                          });
+                                        },
+                                        child:
+                                            Text(startTime!.toDateString(sep)))
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("选择结束时间"),
+                                    TextButton(
+                                        onPressed: () async {
+                                          showDatePicker(
+                                                  locale: context
+                                                              .read<
+                                                                  LanguageControllerV2>()
+                                                              .currentLang ==
+                                                          "zh_CN"
+                                                      ? const Locale("zh", "CH")
+                                                      : const Locale(
+                                                          "en", "US"),
+                                                  context: context,
+                                                  initialDate: startTime!,
+                                                  firstDate: DateTime(1970),
+                                                  lastDate: DateTime(
+                                                      endTime!.year + 20))
+                                              .then((value) {
+                                            if (value != null) {
+                                              setState(() {
+                                                endTime = value;
+                                              });
+                                            }
+                                          });
+                                        },
+                                        child: Text(endTime!.toDateString(sep)))
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                  constraints:
+                                      const BoxConstraints(minHeight: 100),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.75,
+                                  child: TextField(
+                                    maxLength: 200,
+                                    maxLines: null,
+                                    decoration: const InputDecoration(
+                                      disabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Color.fromARGB(
+                                                  255, 39, 50, 100),
+                                              width: 3)),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.amber, width: 2),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15))),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.green, width: 3)),
+                                    ),
+                                    onChanged: (v) {
+                                      career = v;
+                                    },
+                                  ),
+                                ),
+                                Expanded(child: Container()),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop(0);
+                                        },
+                                        child: const Text("取消")),
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop(1);
+                                        },
+                                        child: const Text("确定")),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
                 });
 
             if (res == 1) {
+              debugPrint("[debug-starttime]:$startTime");
+              debugPrint("[debug-endtime]:$endTime");
               addWidget(DetailedWidget(
                 detais: Detais(
                   career: career,
@@ -351,7 +504,7 @@ class DetailedWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "${detais.start}~${detais.start}",
+          "${detais.start}~${detais.end}",
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         const SizedBox(

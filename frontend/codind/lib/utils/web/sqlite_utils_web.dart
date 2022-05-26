@@ -23,8 +23,8 @@ class SqliteUtils extends AbstractSqliteUtils {
   }
 
   @override
-  List<KnowledgeEntity> queryAllKnowledge() {
-    throw UnimplementedError();
+  Future<List<KnowledgeEntity>> queryAllKnowledge() async {
+    return [];
   }
 
   @override
@@ -60,4 +60,20 @@ class SqliteUtils extends AbstractSqliteUtils {
 
   @override
   Future<void> insertAnEvent(EventEntity e) async {}
+
+  @override
+  Future<List<EventEntity>> getAllEvents() async {
+    return [];
+  }
+
+  @override
+  Future<void> setEventStatus(int eventId, int statusId) async {}
+
+  @override
+  Future<void> addMdFile(FileLoggedToDbEntity entity) async {}
+
+  @override
+  Future<List<FileLoggedToDbEntity>> getAllMdFiles() async {
+    return [];
+  }
 }

@@ -11,7 +11,6 @@
  */
 import 'dart:io';
 
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -33,24 +32,24 @@ Future main() async {
         await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
     SecurityContext.defaultContext
         .setTrustedCertificatesBytes(data.buffer.asUint8List());
-    AwesomeNotifications().initialize(
-        'resource://drawable/icon',
-        [
-          NotificationChannel(
-              channelKey: 'basic_channel',
-              channelName: 'Basic notifications',
-              channelDescription: 'Notification channel for basic tests',
-              defaultColor: const Color(0xFF9D50DD),
-              ledColor: Colors.white),
-          NotificationChannel(
-              channelKey: 'scheduled_channel',
-              channelName: 'Scheduled notifications',
-              defaultColor: Colors.teal,
-              locked: true,
-              importance: NotificationImportance.High,
-              ledColor: Colors.white),
-        ],
-        debug: true);
+    // AwesomeNotifications().initialize(
+    //     'resource://drawable/icon',
+    //     [
+    //       NotificationChannel(
+    //           channelKey: 'basic_channel',
+    //           channelName: 'Basic notifications',
+    //           channelDescription: 'Notification channel for basic tests',
+    //           defaultColor: const Color(0xFF9D50DD),
+    //           ledColor: Colors.white),
+    //       NotificationChannel(
+    //           channelKey: 'scheduled_channel',
+    //           channelName: 'Scheduled notifications',
+    //           defaultColor: Colors.teal,
+    //           locked: true,
+    //           importance: NotificationImportance.High,
+    //           ledColor: Colors.white),
+    //     ],
+    //     debug: true);
   }
 
   runApp(MultiProvider(

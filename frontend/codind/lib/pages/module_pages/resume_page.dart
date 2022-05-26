@@ -66,9 +66,7 @@ class _ResumePageState extends State<ResumePage> with BackgroundColorMixin {
         title: Text(
           FlutterI18n.translate(context, "resume.title"),
           style: const TextStyle(
-              fontSize: bigSize,
-              fontWeight: FontWeight.bold,
-              color: Colors.black),
+              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,

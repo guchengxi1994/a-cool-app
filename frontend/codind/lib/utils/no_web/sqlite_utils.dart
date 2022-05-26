@@ -102,8 +102,9 @@ class SqliteUtils extends AbstractSqliteUtils {
   }
 
   @override
-  List<KnowledgeEntity> queryAllKnowledge() {
-    throw UnimplementedError();
+  Future<List<KnowledgeEntity>> queryAllKnowledge() async {
+    List<KnowledgeEntity> entities = [];
+    return entities;
   }
 
   @override
@@ -138,8 +139,26 @@ class SqliteUtils extends AbstractSqliteUtils {
   @override
   Future<void> initFileBase() async {
     var _appSupportDirectory = await getApplicationSupportDirectory();
-    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$fileBasePath");
-    db.dispose();
+    File _dbFile = File("${_appSupportDirectory.path}/$fileBasePath");
+    // var db = sql.sqlite3.open("${_appSupportDirectory.path}/$fileBasePath");
+
+    if (!_dbFile.existsSync()) {
+      var db = sql.sqlite3.open("${_appSupportDirectory.path}/$fileBasePath");
+      debugPrint(
+          "[todo base path] ${_appSupportDirectory.path}/$fileBasePath}");
+
+      db.execute('''
+          create table `files` (
+            `fileId` INTEGER primary key AUTOINCREMENT,
+            `savedTime` varchar(25),
+            `filename` varchar(50),
+            `savedLocation` varchar(100),
+            `isDeleted` int
+            );
+        ''');
+
+      db.dispose();
+    }
   }
 
   @override
@@ -159,7 +178,8 @@ class SqliteUtils extends AbstractSqliteUtils {
               `todoName` varchar(25),
               `description` varchar(200),     
               `endTime` varchar(25),
-              `eventStatus` int
+              `eventStatus` int,
+              `eventColor` varchar(20)
             );
           ''');
 
@@ -169,7 +189,7 @@ class SqliteUtils extends AbstractSqliteUtils {
       stmt.execute([
         DateTime.now().toString(),
         '第一次运行',
-        DateTime.now().add(const Duration(days: 365)).toString(),
+        DateTime.now().add(const Duration(days: 1)).toString(),
         0
       ]);
 
@@ -289,5 +309,101 @@ class SqliteUtils extends AbstractSqliteUtils {
   }
 
   @override
-  Future<void> insertAnEvent(EventEntity e) async {}
+  Future<void> insertAnEvent(EventEntity e) async {
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$todosBasePath");
+
+    final stmt = db.prepare(
+        " insert into todos(startTime,todoName,description,endTime,eventStatus,eventColor) values (?,?,?,?,?,?) ");
+
+    stmt.execute([
+      e.startTime,
+      e.todoName,
+      e.description,
+      e.endTime,
+      e.eventStatus,
+      e.color
+    ]);
+
+    stmt.dispose();
+    db.dispose();
+  }
+
+  @override
+  Future<List<EventEntity>> getAllEvents() async {
+    List<EventEntity> events = [];
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$todosBasePath");
+    final sql.ResultSet resultSet = db.select("select * from todos");
+    for (var r in resultSet) {
+      try {
+        EventEntity e = EventEntity(
+            description: r["description"] ?? "",
+            endTime: r["endTime"] ?? "",
+            eventStatus: r["eventStatus"] ?? 0,
+            startTime: r["startTime"] ?? "",
+            todoName: r["todoName"] ?? "",
+            tid: r["tid"] ?? 0,
+            color: r["eventColor"] ?? "745db3be");
+        events.add(e);
+      } catch (_) {
+        continue;
+      }
+    }
+
+    db.dispose();
+    return events;
+  }
+
+  @override
+  Future<void> setEventStatus(int eventId, int statusId) async {
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$todosBasePath");
+    db.execute('''
+      UPDATE  todos set eventStatus=$statusId where tid=$eventId;
+    ''');
+    db.dispose();
+  }
+
+  @override
+  Future<void> addMdFile(FileLoggedToDbEntity entity) async {
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$fileBasePath");
+    final stmt = db.prepare(
+        "insert into files(savedTime,filename,savedLocation,isDeleted) values(?,?,?,?)");
+
+    stmt.execute([
+      entity.savedTime,
+      entity.filename,
+      entity.savedLocation,
+      entity.isDeleted
+    ]);
+
+    stmt.dispose();
+    db.dispose();
+  }
+
+  @override
+  Future<List<FileLoggedToDbEntity>> getAllMdFiles() async {
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$fileBasePath");
+    List<FileLoggedToDbEntity> result = [];
+
+    final sql.ResultSet resultSet =
+        db.select("select * from files where isDeleted=0");
+
+    for (var r in resultSet) {
+      try {
+        FileLoggedToDbEntity e = FileLoggedToDbEntity(
+            filename: r["filename"] ?? "",
+            savedLocation: r["savedLocation"] ?? "",
+            savedTime: r["savedTime"] ?? "",
+            fileId: r["fileId"] ?? 0);
+
+        result.add(e);
+      } catch (_) {}
+    }
+
+    return result;
+  }
 }

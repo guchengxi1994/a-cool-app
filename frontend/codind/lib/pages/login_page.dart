@@ -7,7 +7,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2022-03-22 19:54:23
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2022-05-11 21:35:36
+ * @LastEditTime: 2022-05-25 19:04:27
  */
 
 import 'dart:convert';
@@ -260,10 +260,24 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           CupertinoSwitch(
               value: isOffline,
-              onChanged: (v) {
+              onChanged: (v) async {
                 setState(() {
                   isOffline = v;
                 });
+                if (v) {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await _authUser(LoginData(
+                      name: "test@xiaoshuyui.org.cn", password: "123456"));
+                  setState(() {
+                    isLoading = false;
+                  });
+
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => MainPageV2(),
+                  ));
+                }
               })
         ],
       ),
