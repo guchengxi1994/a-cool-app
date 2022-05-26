@@ -18,6 +18,7 @@
 */
 import 'dart:convert';
 
+import 'package:codind/entity/file_entity.dart';
 import 'package:codind/providers/my_providers.dart';
 import 'package:codind/utils/utils.dart';
 import 'package:codind/widgets/widgets.dart';
@@ -26,13 +27,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:codind/utils/no_web/mobile_utils.dart'
     if (dart.library.html) 'package:codind/utils/web/web_utils.dart'
     show saveFile;
+import 'package:codind/utils/no_web/sqlite_utils.dart'
+    if (dart.library.html) 'package:codind/utils/web/sqlite_utils_web.dart';
 import 'package:taichi/taichi.dart' show TaichiDevUtils;
 
-import '../base_pages/_base_page.dart';
+import '../../base_pages/_base_page.dart';
 
 class _EmojiFutureEntity {
   List<String>? usedEmoji;
@@ -116,6 +120,7 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
 
   late TextEditingController? _controllerRow = TextEditingController();
   late TextEditingController? _controllerColumn = TextEditingController();
+  late SqliteUtils sqliteUtils = SqliteUtils();
 
   late String markdownStr = "";
 
@@ -1029,11 +1034,23 @@ class _WritingPageState<T> extends BasePageState<WritingPage>
                       isLoading = true;
                     });
                     try {
-                      saveFile(
-                          filename: res.endsWith(".md") ? res : "$res.md",
-                          data: textEditingController.text);
+                      var dir = await getApplicationSupportDirectory();
+                      var filename = res.endsWith(".md") ? res : "$res.md";
+                      await saveFile(
+                          filename: filename,
+                          data: textEditingController.text,
+                          path: dir);
+                      if (!TaichiDevUtils.isWeb) {
+                        await sqliteUtils.addMdFile(FileLoggedToDbEntity(
+                            isDeleted: 0,
+                            filename: res.endsWith(".md") ? res : "$res.md",
+                            savedLocation: "${dir.path}/$filename",
+                            savedTime: DateTime.now().toString()));
+                      }
+                      showToastMessage("保存成功");
                     } catch (_, s) {
                       debugPrint(s.toString());
+                      showToastMessage("保存失败");
                     }
 
                     setState(() {

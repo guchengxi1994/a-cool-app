@@ -45,4 +45,6 @@ abstract class AbstractSqliteUtils {
   Future<void> setEventStatus(int eventId, int statusId);
   // 添加一个md文件到系统
   Future<void> addMdFile(FileLoggedToDbEntity entity);
+  // 获取所有 md files
+  Future<List<FileLoggedToDbEntity>> getAllMdFiles();
 }

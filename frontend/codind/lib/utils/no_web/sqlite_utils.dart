@@ -382,4 +382,28 @@ class SqliteUtils extends AbstractSqliteUtils {
     stmt.dispose();
     db.dispose();
   }
+
+  @override
+  Future<List<FileLoggedToDbEntity>> getAllMdFiles() async {
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$fileBasePath");
+    List<FileLoggedToDbEntity> result = [];
+
+    final sql.ResultSet resultSet =
+        db.select("select * from files where isDeleted=0");
+
+    for (var r in resultSet) {
+      try {
+        FileLoggedToDbEntity e = FileLoggedToDbEntity(
+            filename: r["filename"] ?? "",
+            savedLocation: r["savedLocation"] ?? "",
+            savedTime: r["savedTime"] ?? "",
+            fileId: r["fileId"] ?? 0);
+
+        result.add(e);
+      } catch (_) {}
+    }
+
+    return result;
+  }
 }

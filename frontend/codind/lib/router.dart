@@ -32,10 +32,11 @@ class Routers {
 
   static final Map<String, WidgetBuilder> routers = {
     pageMain: (ctx) => MainPageV2(),
-    pageMdEditor: (context) => WritingPage(
-          routeName: FlutterI18n.translate(context, "label.md"),
-          needLoading: true,
-        ),
+    // pageMdEditor: (context) => WritingPage(
+    //       routeName: FlutterI18n.translate(context, "label.md"),
+    //       needLoading: true,
+    //     ),
+    pageMdEditor: (context) => MarkdownMainPage(),
     pageResumePage: (context) => const ResumePage(),
     pageMobileSettingsPage: (context) => MobileMainSettingPage(
           pageName: FlutterI18n.translate(context, "label.settings"),

@@ -71,4 +71,9 @@ class SqliteUtils extends AbstractSqliteUtils {
 
   @override
   Future<void> addMdFile(FileLoggedToDbEntity entity) async {}
+
+  @override
+  Future<List<FileLoggedToDbEntity>> getAllMdFiles() async {
+    return [];
+  }
 }

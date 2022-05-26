@@ -8,7 +8,7 @@
  * @LastEditTime: 2022-04-13 21:37:59
  */
 
-export 'module_pages/markdown_writing_page.dart';
+export 'module_pages/markdown_main_page.dart';
 export 'module_pages/resume_page.dart';
 export './setting_pages/generate_avatar_page.dart';
 export './setting_pages/mobile_main_setting_page.dart';
