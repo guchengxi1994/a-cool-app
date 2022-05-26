@@ -139,8 +139,26 @@ class SqliteUtils extends AbstractSqliteUtils {
   @override
   Future<void> initFileBase() async {
     var _appSupportDirectory = await getApplicationSupportDirectory();
-    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$fileBasePath");
-    db.dispose();
+    File _dbFile = File("${_appSupportDirectory.path}/$fileBasePath");
+    // var db = sql.sqlite3.open("${_appSupportDirectory.path}/$fileBasePath");
+
+    if (!_dbFile.existsSync()) {
+      var db = sql.sqlite3.open("${_appSupportDirectory.path}/$fileBasePath");
+      debugPrint(
+          "[todo base path] ${_appSupportDirectory.path}/$fileBasePath}");
+
+      db.execute('''
+          create table `files` (
+            `fileId` INTEGER primary key AUTOINCREMENT,
+            `savedTime` varchar(25),
+            `filename` varchar(50),
+            `savedLocation` varchar(100),
+            `isDeleted` int
+            );
+        ''');
+
+      db.dispose();
+    }
   }
 
   @override
@@ -344,6 +362,24 @@ class SqliteUtils extends AbstractSqliteUtils {
     db.execute('''
       UPDATE  todos set eventStatus=$statusId where tid=$eventId;
     ''');
+    db.dispose();
+  }
+
+  @override
+  Future<void> addMdFile(FileLoggedToDbEntity entity) async {
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$fileBasePath");
+    final stmt = db.prepare(
+        "insert into files(savedTime,filename,savedLocation,isDeleted) values(?,?,?,?)");
+
+    stmt.execute([
+      entity.savedTime,
+      entity.filename,
+      entity.savedLocation,
+      entity.isDeleted
+    ]);
+
+    stmt.dispose();
     db.dispose();
   }
 }

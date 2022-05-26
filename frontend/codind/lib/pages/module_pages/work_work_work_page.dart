@@ -116,6 +116,9 @@ class _wrapper extends StatelessWidget {
                 Text(comment ?? "boo freaking hoo")
               ],
             )),
+            const SizedBox(
+              width: 10,
+            ),
             child
           ],
         ),

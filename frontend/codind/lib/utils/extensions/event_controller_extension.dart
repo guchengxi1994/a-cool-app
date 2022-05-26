@@ -7,6 +7,7 @@ import '../../_styles.dart';
 
 extension EventControl on EventController {
   Future<void> init() async {
+    clearAll();
     SqliteUtils sqliteUtils = SqliteUtils();
     List<EventEntity> list = await sqliteUtils.getAllEvents();
 

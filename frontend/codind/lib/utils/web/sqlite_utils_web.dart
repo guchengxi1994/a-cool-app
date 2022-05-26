@@ -68,4 +68,7 @@ class SqliteUtils extends AbstractSqliteUtils {
 
   @override
   Future<void> setEventStatus(int eventId, int statusId) async {}
+
+  @override
+  Future<void> addMdFile(FileLoggedToDbEntity entity) async {}
 }

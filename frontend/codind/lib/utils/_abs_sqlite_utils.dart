@@ -11,6 +11,7 @@ import 'package:codind/entity/friend_entity.dart';
 import 'package:codind/entity/knowledge_entity.dart';
 
 import '../entity/event_entity.dart';
+import '../entity/file_entity.dart' show FileLoggedToDbEntity;
 import '../entity/work_entity.dart';
 
 abstract class AbstractSqliteUtils {
@@ -42,4 +43,6 @@ abstract class AbstractSqliteUtils {
   Future<List<EventEntity>> getAllEvents();
   // 修改event状态
   Future<void> setEventStatus(int eventId, int statusId);
+  // 添加一个md文件到系统
+  Future<void> addMdFile(FileLoggedToDbEntity entity);
 }

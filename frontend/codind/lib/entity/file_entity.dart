@@ -488,3 +488,18 @@ class FileSystem {
 
   static EntityFolder? toStructured(List<EntityFile> files) {}
 }
+
+class FileLoggedToDbEntity {
+  int? fileId;
+  String filename;
+  String savedLocation;
+  int isDeleted;
+  String savedTime;
+
+  FileLoggedToDbEntity(
+      {this.fileId,
+      required this.filename,
+      required this.savedLocation,
+      this.isDeleted = 0,
+      required this.savedTime});
+}

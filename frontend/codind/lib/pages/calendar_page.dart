@@ -1,5 +1,6 @@
 import 'package:codind/pages/base_pages/_mobile_base_page.dart';
 import 'package:codind/providers/language_provider.dart';
+import 'package:codind/utils/extensions/event_controller_extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -322,6 +323,8 @@ class _DayCalendarWidgetState extends MobileBasePageState<DayCalendarWidget> {
                             await sqliteUtils.setEventStatus(
                                 calendarDataList.first.event as int, 1);
                             // ignore: use_build_context_synchronously
+                            await context.read<EventController>().init();
+                            // ignore: use_build_context_synchronously
                             Navigator.of(context).pop();
                           },
                         ),
@@ -340,7 +343,9 @@ class _DayCalendarWidgetState extends MobileBasePageState<DayCalendarWidget> {
                               )),
                           onTap: () async {
                             await sqliteUtils.setEventStatus(
-                                calendarDataList.first.event as int, 2);
+                                calendarDataList.first.event as int, 3);
+                            // ignore: use_build_context_synchronously
+                            await context.read<EventController>().init();
                             // ignore: use_build_context_synchronously
                             Navigator.of(context).pop();
                           },
@@ -357,6 +362,7 @@ class _DayCalendarWidgetState extends MobileBasePageState<DayCalendarWidget> {
                   ],
                 );
               });
+          setState(() {});
         },
         dayTitleBuilder: (date) {
           return CalendarPageHeader(

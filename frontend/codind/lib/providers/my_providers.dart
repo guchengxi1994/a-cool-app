@@ -21,3 +21,4 @@ export './multi_image_upload_provider.dart';
 export './knowledge_widget_provider.dart';
 export './todo_provider.dart';
 export './friend_page_provider.dart';
+export './package_info_provider.dart';
