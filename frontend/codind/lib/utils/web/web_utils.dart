@@ -2,7 +2,8 @@ import 'dart:convert';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 
-Future<void> saveFile({required String filename, required String data}) async {
+Future<void> saveFile(
+    {required String filename, required String data, Object? path}) async {
   final bytes = utf8.encode(data);
   final blob = html.Blob([bytes]);
   final url = html.Url.createObjectUrlFromBlob(blob);
