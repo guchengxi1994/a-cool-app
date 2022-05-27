@@ -23,3 +23,4 @@ export './todo_provider.dart';
 export './friend_page_provider.dart';
 export './package_info_provider.dart';
 export './files_provider.dart';
+export './user_status_provider.dart';

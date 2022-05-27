@@ -14,8 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:codind/utils/no_web/sqlite_utils.dart'
     if (dart.library.html) 'package:codind/utils/web/sqlite_utils_web.dart';
 
-import '../pages/module_pages/_create_single_knowledge_page.dart';
+import '../pages/module_pages/knowledge_pages/_create_single_knowledge_page.dart';
 
+@Deprecated("use ```KnowledgeController``` instead")
 class KnowledgeWidgetController extends ChangeNotifier {
   List<KnowledgeSummaryWidget> _items = [];
 
@@ -31,12 +32,39 @@ class KnowledgeController extends ChangeNotifier {
   List<KnowledgeEntity> _items = [];
   List<KnowledgeEntity> get items => _items;
 
-  addItem(KnowledgeEntity w) async {
+  List<KnowledgeSummaryWidget> _widgets = [];
+  List<KnowledgeSummaryWidget> get widgets => _widgets;
+  var sqliteUtils = SqliteUtils();
+
+  addItem(KnowledgeEntity w, {bool insertTable = true}) async {
     _items.add(w);
+    if (insertTable) {
+      await sqliteUtils.addNewKnowledge(w);
+    }
 
-    var sqliteUtils = SqliteUtils();
-    await sqliteUtils.addNewKnowledge(w);
+    notifyListeners();
+  }
 
+  fetchAll() async {
+    _widgets.clear();
+    _items.clear();
+    List<KnowledgeEntity> list = await sqliteUtils.queryAllKnowledge();
+    await sqliteUtils.getKnowledgeCount();
+
+    // debugPrint("[debug entity length]:${list.length}");
+    for (var i in list) {
+      // debugPrint("[debug entity]:${i.toJson().toString()}");
+      addItem(i, insertTable: false);
+      addWidget(KnowledgeSummaryWidget(
+        summary: i.summary ?? "",
+      ));
+    }
+
+    notifyListeners();
+  }
+
+  addWidget(KnowledgeSummaryWidget w) {
+    _widgets.add(w);
     notifyListeners();
   }
 

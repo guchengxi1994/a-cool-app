@@ -4,7 +4,6 @@ import 'package:codind/providers/my_providers.dart'
     show RadioProvider, MainPageCardController;
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 
 import '../_styles.dart';

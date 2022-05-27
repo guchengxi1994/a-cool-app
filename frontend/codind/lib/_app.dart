@@ -100,9 +100,6 @@ List<SingleChildWidget> getProviders() {
       create: (_) => MainPageCardController()..init(),
     ),
     ChangeNotifierProvider(
-      create: (_) => KnowledgeWidgetController(),
-    ),
-    ChangeNotifierProvider(
       create: (_) => KnowledgeController(),
     ),
     ChangeNotifierProvider(

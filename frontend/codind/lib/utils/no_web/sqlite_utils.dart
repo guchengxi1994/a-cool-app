@@ -104,6 +104,32 @@ class SqliteUtils extends AbstractSqliteUtils {
   @override
   Future<List<KnowledgeEntity>> queryAllKnowledge() async {
     List<KnowledgeEntity> entities = [];
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+
+    var db =
+        sql.sqlite3.open("${_appSupportDirectory.path}/$knowledgeBasePath");
+
+    final sql.ResultSet resultSet = db.select("select * from knowledge");
+
+    for (var r in resultSet) {
+      try {
+        KnowledgeEntity k = KnowledgeEntity(
+            time: r["time"] ?? "",
+            title: r["title"] ?? "",
+            detail: r["detail"] ?? "",
+            summary: r["summary"] ?? "",
+            fromUrlOrOthers: r["fromUrlOrOthers"] ?? "",
+            codes: r["codes"] ?? "",
+            tag: r["tag"] ?? "",
+            imgs: r["imgs"] == null ? [] : (r["imgs"] as String).split(";"),
+            codeStyle: r["codeStyle"] ?? "");
+        entities.add(k);
+      } catch (e) {
+        // ignore: avoid_print
+        print("[flutter error]:${e.toString()}");
+      }
+    }
+    db.dispose();
     return entities;
   }
 
@@ -403,7 +429,44 @@ class SqliteUtils extends AbstractSqliteUtils {
         result.add(e);
       } catch (_) {}
     }
-
+    db.dispose();
     return result;
+  }
+
+  @override
+  Future<int> getKnowledgeCount() async {
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+
+    var db =
+        sql.sqlite3.open("${_appSupportDirectory.path}/$knowledgeBasePath");
+
+    var result = db.select("SELECT COUNT(1) from knowledge;");
+    // debugPrint("[debug length]:${result.first.values.first}");
+    db.dispose();
+    return result.first.values.first;
+  }
+
+  @override
+  Future<int> getMarkdownCount() async {
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+
+    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$fileBasePath");
+
+    var result = db.select("SELECT COUNT(1) from files where isDeleted = 0;");
+    // debugPrint("[debug length]:${result.first.values.first}");
+    db.dispose();
+    return result.first.values.first;
+  }
+
+  @override
+  Future<int> getFriendsCount() async {
+    var _appSupportDirectory = await getApplicationSupportDirectory();
+
+    var db = sql.sqlite3.open("${_appSupportDirectory.path}/$friendsBasePath");
+
+    var result = db.select("SELECT COUNT(1) from friend where isSelf=0;");
+    // debugPrint("[debug length]:${result.first.values.first}");
+    db.dispose();
+    return result.first.values.first;
   }
 }

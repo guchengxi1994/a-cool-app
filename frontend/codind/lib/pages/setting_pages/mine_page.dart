@@ -9,6 +9,7 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-05-17 19:31:49
  */
+
 import 'package:codind/globals.dart';
 import 'package:codind/pages/base_pages/_mobile_base_page.dart';
 import 'package:codind/providers/userinfo_provider.dart';
@@ -24,6 +25,7 @@ import 'package:taichi/taichi.dart' show TaichiDevUtils;
 
 import '../../_styles.dart';
 import '../../widgets/widgets.dart';
+import '_backup_data_page.dart';
 import 'about_page.dart';
 import 'mobile_main_setting_page.dart';
 
@@ -218,29 +220,37 @@ class _MinePageState extends MobileBasePageState<MinePage> {
                 size: 25,
               ),
             ),
-          if (TaichiDevUtils.isMobile)
+          if (TaichiDevUtils.isMobile || TaichiDevUtils.isWindows)
             const SizedBox(
               height: 10,
             ),
-          if (TaichiDevUtils.isMobile)
+          if (TaichiDevUtils.isMobile || TaichiDevUtils.isWindows)
             CustomListTile(
               style: AppTheme.settingPageListTileTitleStyle,
               title: "备份数据",
-              onTap: () {
-                showCupertinoDialog(
-                    context: context,
-                    builder: (context) {
-                      return CupertinoAlertDialog(
-                        title: const Text("Under construction"),
-                        actions: [
-                          CupertinoActionSheetAction(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text("确定"))
-                        ],
-                      );
-                    });
+              onTap: () async {
+                if (TaichiDevUtils.isMobile) {
+                  showCupertinoDialog(
+                      context: context,
+                      builder: (context) {
+                        return CupertinoAlertDialog(
+                          title: const Text("Under construction"),
+                          actions: [
+                            CupertinoActionSheetAction(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text("确定"))
+                          ],
+                        );
+                      });
+                  return;
+                }
+
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return BackupDataPage();
+                }));
               },
               trailing: const Icon(
                 Icons.chevron_right,

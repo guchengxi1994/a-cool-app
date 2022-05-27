@@ -10,24 +10,21 @@
  * @LastEditTime: 2022-05-11 21:23:04
  */
 
-/// 手机端的主页
-
-import 'package:codind/pages/module_pages/create_things_page.dart';
+import 'package:codind/pages/module_pages/knowledge_pages/_knowledge_summary_page.dart';
 import 'package:codind/router.dart';
 import 'package:codind/utils/shared_preference_utils.dart';
 import 'package:codind/utils/common.dart';
 import 'package:codind/widgets/main_page_widgets/main_page_collaps_widget.dart';
-import 'package:codind/widgets/main_page_widgets/radar_chart.dart';
 import 'package:codind/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:taichi/taichi.dart';
 
 import '../entity/friend_entity.dart';
 import '../providers/my_providers.dart';
+import '../widgets/main_page_widgets/bar_chart.dart';
 import 'module_pages/new_todos_page.dart';
 import 'module_pages/work_work_work_page.dart';
 import 'package:codind/utils/no_web/sqlite_utils.dart'
@@ -172,15 +169,25 @@ class _MainPageV2State extends State<MainPageV2> {
         physics: const BouncingScrollPhysics(),
         itemCount: context.watch<MainPageCardController>().selectedCards.length,
         itemBuilder: (context, index) {
+          double width = MediaQuery.of(context).size.width;
+          if (width > 500) {
+            width = 500 * 0.8;
+          }
+
           if (context.watch<MainPageCardController>().selectedCards[index] ==
               "resume.abi") {
             return MainPageCard(
               collapsedWidget: CoolCollapsWidget(
                 cardName: "resume.abi",
               ),
-              expanedWidget: Padding(
-                padding: EdgeInsets.all(5.sp),
-                child: RadarAbilityChart(),
+              expanedWidget: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(5.sp),
+                  child: SizedBox(
+                    width: width,
+                    child: BarChartProviderWidget(),
+                  ),
+                ),
               ),
               closeIconColor: Colors.black,
             );
@@ -271,7 +278,7 @@ class _MainPageV2State extends State<MainPageV2> {
                     // return NewTodosPage(
                     //   pageName: FlutterI18n.translate(context, "label.kb"),
                     // );
-                    return CreateKnowledgeBasePage(
+                    return KnowledgeSummaryPage(
                       pageName: FlutterI18n.translate(context, "label.kb"),
                     );
                   }));

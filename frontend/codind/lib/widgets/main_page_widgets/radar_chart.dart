@@ -12,6 +12,7 @@ const boxingColor = Color(0xff83dea7);
 const entertainmentColor = Colors.white70;
 const offRoadColor = Color(0xFFFFF59D);
 
+@Deprecated("will be removed to dump folder later")
 class RadarAbilityChart extends StatefulWidget {
   const RadarAbilityChart({Key? key}) : super(key: key);
 
@@ -19,6 +20,7 @@ class RadarAbilityChart extends StatefulWidget {
   _RadarAbilityChartState createState() => _RadarAbilityChartState();
 }
 
+// ignore: deprecated_member_use_from_same_package
 class _RadarAbilityChartState extends State<RadarAbilityChart> {
   int selectedDataSetIndex = -1;
 

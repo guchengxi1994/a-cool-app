@@ -1,15 +1,19 @@
 // ignore_for_file: must_be_immutable, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:codind/entity/knowledge_entity.dart';
+import 'package:codind/providers/userinfo_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../_styles.dart';
+import '../../../_styles.dart';
 
 class KnowlegetPreviewPage extends StatelessWidget {
   KnowlegetPreviewPage({Key? key, required this.data}) : super(key: key);
   KnowledgeEntity data;
   @override
   Widget build(BuildContext context) {
+    // debugPrint("[entity data]: ${data.toJson()}");
+
     return Scaffold(
       appBar: AppBar(
         title: Text("预览"),
@@ -78,7 +82,10 @@ class KnowlegetPreviewPage extends StatelessWidget {
                       text: "by ",
                     ),
                     TextSpan(
-                        text: "测试用户",
+                        text: context
+                            .watch<UserinfoController>()
+                            .userData
+                            .userName,
                         style: TextStyle(
                           fontStyle: FontStyle.italic,
                         ))

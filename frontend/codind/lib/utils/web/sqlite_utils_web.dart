@@ -76,4 +76,19 @@ class SqliteUtils extends AbstractSqliteUtils {
   Future<List<FileLoggedToDbEntity>> getAllMdFiles() async {
     return [];
   }
+
+  @override
+  Future<int> getKnowledgeCount() async {
+    return 0;
+  }
+
+  @override
+  Future<int> getMarkdownCount() async {
+    return 0;
+  }
+
+  @override
+  Future<int> getFriendsCount() async {
+    return 0;
+  }
 }

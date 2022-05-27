@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:codind/providers/multi_image_upload_provider.dart';
 import 'package:codind/utils/toast_utils.dart';
-// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';

@@ -23,7 +23,6 @@ import 'package:taichi/taichi.dart';
 import '../entity/friend_entity.dart';
 import './main_page_v2.dart';
 import 'package:codind/providers/my_providers.dart';
-// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:codind/utils/no_web/sqlite_utils.dart'
     if (dart.library.html) 'package:codind/utils/web/sqlite_utils_web.dart';

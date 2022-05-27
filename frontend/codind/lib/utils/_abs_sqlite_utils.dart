@@ -17,10 +17,12 @@ import '../entity/work_entity.dart';
 abstract class AbstractSqliteUtils {
   // 获取所有日程
   Future<WorkWorkWork> getWorkDays();
-  // insert 日程
+  // insert 新的knowledge
   Future<void> addNewKnowledge(KnowledgeEntity w);
-  // 获取所有diary
+  // 获取所有 knowledge
   Future<List<KnowledgeEntity>> queryAllKnowledge();
+  // 获取knowledge 个数
+  Future<int> getKnowledgeCount();
   // 初始化日志数据量
   Future<void> initTodoBase();
   // 初始化文件数据库
@@ -47,4 +49,8 @@ abstract class AbstractSqliteUtils {
   Future<void> addMdFile(FileLoggedToDbEntity entity);
   // 获取所有 md files
   Future<List<FileLoggedToDbEntity>> getAllMdFiles();
+  // 获取 markdown 数量
+  Future<int> getMarkdownCount();
+  // 获取所有朋友数量
+  Future<int> getFriendsCount();
 }
