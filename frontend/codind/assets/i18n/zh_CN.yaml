@@ -111,7 +111,7 @@ resume:
   email: "邮箱地址"
   edu: "教育经历"
   work: "工作经历"
-  abi: "专业能力" 
+  abi: "用户行为汇总" 
 
 avatarPage:
   chooseImgType: "选择图片类型"
