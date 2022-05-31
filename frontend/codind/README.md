@@ -23,11 +23,12 @@ Tools • Dart 2.17.0 • DevTools 2.12.2
 
 #### 3. 当前版本
 
-```1.0.0-frontend-alpha+10```
+```0.1.0```
 
 #### 4. packages介绍
 
 * *cupertino_icons* ：自带的
+* **package_info_plus** : 获取安装包信息，使用的```1.4.2```版本需要jdk11
 * **provider** ：状态管理用的包（先前使用```bloc```，但是遇到了一些问题，所以全部替换成了provider）
 * **flutter_i18n** ： 本地化/国际化用的包
 * **flutter_smart_dialog** ： 本来是使用```fluttertoast```来弹出消息的，但是打包的时候会有问题（warning，可以正常使用，但是心里膈应。可能是flutter版本太高了引起的）
