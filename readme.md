@@ -7,6 +7,10 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2022-04-18 20:50:23
 -->
+
+查看这个新的项目 https://github.com/guchengxi1994/knowledge_one
+
+
 # a-cool-app
 
 The coolest thing is build an app on your own!
